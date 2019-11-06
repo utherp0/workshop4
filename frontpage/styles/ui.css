@@ -1,0 +1,70 @@
+/* Basic Link Definitions */
+A { cursor:hand; color:black }
+
+A:hover { color:red }
+A:visited { color:black }
+
+A.noUnderline:hover { text-decoration:none }
+A.noUnderline { text-decoration: none }
+
+/* Cursor Definitions */
+input {cursor:hand}
+img {cursor:hand}
+
+body { background-color:white;color:black;font-family:arial;font-size:9pt }
+body.loadingBody { background-color:#888888;font-family:arial;font-size:16pt;color:white }
+body.controller { background-color:#c9c9c9;font-family:arial;font-size:9pt;color:black }
+
+.messageDefault { font-size:16pt;color:white; text-decoration: none}
+.messageHighlight { font-size:17pt;color:yellow;text-decoration: bold}
+
+.logo { width:100%;align:center;border:solid;border-width:1px;border-color:#cccccc;padding:2px }
+.navigationPanel { width:100%;background-color:yellow;border:solid;border-width:1px;border-color:black;padding:2px }
+.navigationHeader {width:100%;padding:0px;text-align:right;font-weight:bold;color:black;font-size:8pt}
+.navigationSubsetHeader { width:100%;padding:0px;text-align:left;font-weight:bold;color:red;font-size:8pt }
+.navigationSubsetLink { width:100%;padding:0px;text-align:left;font-weight:normal;color:#555555;font-size:8pt }
+.navigationText { width:100%;border:#d0d0d0;border-width:1px; padding:2px;text-align:left;font-weight:normal;color:#555555;font-size:8pt }
+.navigationDivider { color:#dddddd;width:100% }
+.header { width:100%;background-color:#444444;border:solid;border-width:1px;border-color:#cccccc;padding:2px;font-weight:bold;color:white }
+.inputForm { width:100%;background-color:white;border:solid;border-width:1px;border-color:#cccccc;padding:2px }
+.inputFormSizable { background-color:white;border:solid;border-width:1px;border-color:#cccccc;padding:2px }
+.errorMessage { width:100%;background-color:#ffaaaa;border:solid;border-width:1px;border-color:#ff0000;color:#ff0000;padding:2px }
+.indexList { font-family:verdana;font-size:8pt;font-weight:normal;width:100%;background-color:yellow;}
+.inputBright { background-color:yellow;color:black;font-size:9pt}
+.information { background-color:#ebebeb;color:black;}
+.clearOutput { background-color:white;color:black;font-size:9pt}
+.parametersLabelSimple {padding:0px;text-align:right;font-weight:normal;color:#555555;font-size:8pt}
+.markup1 { font-weight:bold;text-decoration: underline;color:red}
+
+.messages { width:100%;background-color:#dddddd;border:solid;border-width:1px;border-color:black;padding:2px;color:black }
+.information { width:100%;background-color:yellow;border:solid;border-width:1px;border-color:black;padding:2px;color:black }
+.statusInformation { width:100%;background-color:#dedede;border:solid;border-width:1px;border-color:black;font-family:arial;font-size:8pt;}
+.yellowInformation { width:100%;background-color:yellow;border:solid;border-width:1px;border-color:black;font-family:arial;font-size:8pt;}
+a.smallLink {font-family:arial;font-size:8pt }
+td.status {font-family:arial;font-size:8pt}
+td.standard {font-family:arial;font-size:9pt;color:black }
+.dheader { font-family:arial; font-size:9pt;color:black;font-weight:bold;text-align:center}
+tr.theader { background-color:yellow ! important }
+tr.broken { background-color:#ff1616;color:white }
+.submission { background-color:#555555;color:white;padding:3px }
+.even { background-color:#dddddd }
+.odd { background-color:#eeeeee }
+
+.outputLarge { background-color:white;color:black;font-size:16pt }
+
+#loading_screen
+{
+  display: none;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding-top: 25px;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
