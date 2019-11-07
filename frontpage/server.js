@@ -74,7 +74,7 @@ app.get( '/geturl', function (req,res) {
 
   if( targetURL == null )
   {
-    res.send( "NO DEFINED URL ENV");
+    res.send( "<i>Add WORKSHOP_URL env variable to deployment config...</i>");
   }
   else
   {
@@ -87,7 +87,7 @@ app.get( '/getterminal', function (req,res) {
 
   if( targetURL == null )
   {
-    res.send( "NO DEFINED TERMINAL ENV");
+    res.send( "<i>Add TERMINAL_URL env variable to deployment config...</i>");
   }
   else
   {
