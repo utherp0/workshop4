@@ -1,0 +1,11 @@
+= OpenShift 4.x DevEx Workshop
+{author} <{email}>
+
+include::intro.asciidoc[]
+include::setup.asciidoc[]
+include::webconsole.asciidoc[]
+include::lifecycle.asciidoc[]
+include::SDN.asciidoc[]
+include::RBAC.asciidoc[]
+include::pipeline.asciidoc[]
+include::wrap-up.asciidoc[]

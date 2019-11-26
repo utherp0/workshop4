@@ -1,0 +1,6 @@
+= OpenShift 4.x DevEx Workshop
+{author} <{email}>
+
+include::intro.asciidoc[]
+include::topic-applicationbasics.asciidoc[]
+

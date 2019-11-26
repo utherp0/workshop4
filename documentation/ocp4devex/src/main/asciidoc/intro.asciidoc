@@ -1,0 +1,33 @@
+[[intro]]
+
+== Introduction
+
+=== Attendee details
+
+[cols="<.>a,<.>a"]
+|===
+|Name:
+|
+
+
+|User ID (userX):
+|
+
+
+|===
+
+This workshop is designed to introduce Developers to *OpenShift 4* and explain the usage and technologies around it from a developer perspective.
+
+==== What is Openshift
+
+Red Hat® OpenShift® is a hybrid cloud, enterprise, secure Kubernetes application platform.
+
+OpenShift is a family of containerization software developed by Red Hat. 
+Its flagship product is the OpenShift Container Platform—an on-premises platform as a service built around OCI standard containers orchestrated and 
+managed by Kubernetes on a foundation of Red Hat Enterprise Linux. 
+
+==== Links
+
+* https://www.openshift.com/learn/what-is-openshift[https://www.openshift.com/learn/what-is-openshift]
+* https://en.wikipedia.org/wiki/OpenShift[https://en.wikipedia.org/wiki/OpenShift]
+* https://www.openshift.com/products/container-platform[https://www.openshift.com/products/container-platform]

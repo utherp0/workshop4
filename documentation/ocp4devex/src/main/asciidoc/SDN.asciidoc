@@ -1,0 +1,197 @@
+[[sdn]]
+
+== Software Defined Networking
+
+OpenShift maintains an isolated internal Network for traffic between the Services that are orchestrated within it. This *SDN* (Software Defined Network) maintains an
+abstracted internal Network allowing the Services to interact or be isolated from each other. The other important feature of this SDN is that all
+Services have an abstracted interface such that each Service has a unique Cluster address, which provides the linkage to the outside world
+via Routes that are attached to the Service, and the actual instances of the Application Pods. This singular Cluster IP address works as a load-balancer
+across all the actual instances, which have seperate IP addresses. This nice feature means that the Service endpoint, as opposed to the 
+Pod endpoint, is singular within the SDN and additional configuration can be applied to define the behaviour of internal load-balancing 
+(for instance round-robin, least-connection or label driven routing).
+
+If you have *Cluster Admin* rights which provide visibility of *all* Objects in the Cluster (you shouldn't at this point), you can get the cluster network:
+
+[source,shell]
+----
+oc get clusternetwork
+NAME      CLUSTER NETWORKS   SERVICE NETWORK   PLUGIN NAME
+default   10.1.0.0/16:9      172.30.0.0/16     redhat/openshift-ovs-subnet
+----
+
+OpenShift 3.x provides three types of *SDN* plugin which offer different levels of visibility for the Objects within them. By default an installation
+will implement the *Subnet* plugin, meaning the SDN is flat and all projects share the same network ID, meaning Project A can directly call Project B across the 
+Service network. 
+
+The next available type is *Multitenant* which enforces a different Network ID *per* Project. This means that the Projects are network isolated by default, although
+Cluster Admin rights holders can _join_ Project networks, which makes individual Projects share Network IDs, so that Services can call each other (but only in Projects
+that have been joined).
+
+The highest level of fine-grain network isolation and control is imposed by installing the *Network Policy* SDN plugin. This allows individual Network Policies to be implemented
+for _Objects_ within the Projects. This allows for a complex and controlled definition of ingress and exgress for the traffic, for instance you 
+could define a Policy allowing a single Service within a Project to be visible outside of the Project and all other Services to be hidden.
+
+Let's create a new test project using the CLI:
+
+[source,shell]
+----
+oc new-project sdntest-userX --description="SDN Test" --display-name="SDN Test"
+----
+
+You can make sure you are using the newly created project:
+
+[source,shell]
+----
+oc get project sdntest-user1
+----
+
+Now let's ad Applications to our new project:
+
+[source,shell]
+----
+oc new-app registry.access.redhat.com/rhscl/nodejs-8-rhel7~https://github.com/utherp0/nodejs-ex --name="nodetest1"
+oc new-app registry.access.redhat.com/rhscl/nodejs-8-rhel7~https://github.com/utherp0/nodejs-ex --name="nodetest2"
+----
+
+*Note* that unlike the use of a Template creating an Application with the 'oc new-app' command does not automatically expose a Route. The Applications 
+will be deployed as per normal with defined Service endpoints but no external connectivity.
+
+Back in the Web Console. Make sure that you select the `SDN Test` Project in the project dropdown.
+
+In the menu:Overview[] page you will see the two nodetest application we just created. 
+
+Click on the kbd:[Pod ring] for nodetest1, under the `Status` section you will see the IP address for this Pod.
+
+Navigate to menu:Applications[Services]. Note the Cluster IP's for nodetest1 and nodetest2.
+
+Now go back to menu:Overview[] and select the kbd:[Pod ring] for nodetest1.
+
+Select the `Terminal` tab and type the following:
+
+[source,shell]
+----
+curl http://localhost:8080
+----
+
+This will return the basic HTML for the node.js application, example:
+
+[source,html]
+----
+<html>
+<head>
+  <title>Test Page for nodejs-ex app</title>
+</head>
+
+<body>
+<b>Test page for nodejs-ex</b> - served from res.render.
+
+This is a simple webpage rendered from the node.js application at the root endpoint.<p/>
+
+</body>
+</html>
+----
+
+Again note that when within the Containwr itself it thinks it is an OS. The networking exposed to the Container allows the Container to 
+refer to its own network space using the 'localhost' name. Also note that, unlike Routes which auto-redirect the traffic to the appropriate Port 
+by definition, we need to add the :8080 when using an internal curl. 
+
+Now do the same, but using the pod name:
+
+[source,shell]
+----
+curl http://nodetest1:8080
+----
+
+You will see the same response.
+
+Note that we can refer _directly_ to the Service name itself as a resolvable network address. The internal network space provided to the Container injects a DNS resolvable name for
+*all* Services in the Project (unless over-written by Network Policies particular to that Project). 
+
+Let's see if we can see the other Pod from here:
+
+[source,shell]
+----
+curl http://nodetest2:8080
+----
+
+As you can see the name is resolved to the correct IP for a Pod.
+
+Note that the most important thing about this example is that we can directly refer and connect to *other* Services within the Project using 
+the shortname of the Service. 
+
+Let's now do a full name resolution:
+
+[source,shell]
+----
+getent hosts nodetest1
+----
+
+You will see the Cluster IP and the full URL for nodetest1, example:
+
+[source,shell]
+----
+172.30.179.70   nodetest1.sdntest-user1.svc.cluster.local
+----
+
+In addition to exposing the shortnames of the Services as resolvable DNS entries into the networking for the Container OpenShift also, depending on the type 
+of SDN installed, exposes *all* Services in the Cluster with a *FQDN* (Fully Qualified Domain Name). This name takes the format of 
+*_(service_shortname).(project_shortname).svc.cluster.local_*. Again note that this is dependent on the SDN installed - in the case of multitenant for example every
+Project will, by default, be defined in its own NetworkID and the FQDNs for Services external to the Project will not be resolvable.
+
+Now curl the full URL:
+
+[source,shell]
+----
+curl http://nodetest1.sdntest-userX.svc.cluster.local:8080
+----
+
+You will again get the test page as a response.
+
+A quick re-mention here of the mechanisms by which the end IP is determined - the FQDN resolves to the singular Service IP address which acts as a load-balancer (using HAProxy) across 
+all the current replicas for the Application. This IP translates, based on the rules chosen (by default RoundRobin) to the IP of the _Pod_.
+
+Let's try the person next to you:
+
+[source,shell]
+----
+curl http://nodetest1.sdntest-userX+1.svc.cluster.local:8080
+----
+
+Now let's create a route, navigate to menu:Applications[Route] and click btn:[Create Route]:
+
+* *Name:* canaryroute
+* *Service:* nodetest1
+* *Alternate Services:* select 'Split Traffic Across Multiple Services'
+** *Service:* nodetest2
+** *Service Weights:* 80% nodetest1, 20% nodetest2
+
+Click btn:[Create]
+
+image::screenshot_route.png[Create Route]
+
+Now select the newly created `canaryroute`.
+
+What we have done here by creating a Route but splitting the traffic, on a percentage basis, across two Service endpoints is to introduce a further level 
+of initial load-balanacing for the traffic coming into this Route. Now, when a consumer initially makes a call to the Route, the target *Service* is chosen based on the 
+percentage of traffic. This Endpoint is then given to the Route for that consumer, which then goes through the load-balancing rules for 
+the _Service_ itself to determine which end *Pod* is resolved by the Route.
+
+If you go back to the menu:Overview[] page, note that both applications has got the same external route.
+
+Click on the kbd:[Pod ring] of nodetest1, select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+getent hosts canaryroute-sdntest-userX.(domain)
+----
+
+This will return the IP of the OCP router, example:
+
+[source,shell]
+----
+3.219.175.39    canaryroute-sdntest-user1.apps.jhb-94d8.openshiftworkshop.com
+----
+
+Note that the IP returned to the consumer for *all* Routes will be one of the IPs for the *Routers* running in the OpenShift Cluster. This is because the
+resolution of the endpoint is done internally within OpenShift and the Routers are the *only* way to access the Services. You can associate other IP addresses to refer to 
+Projects but this functionality is outside of the scope of this workshop.

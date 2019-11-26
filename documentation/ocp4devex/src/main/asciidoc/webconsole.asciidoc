@@ -1,0 +1,128 @@
+[[webconsole]]
+
+== Web Console overview
+
+=== Sandbox project
+
+So you have already created your first project using the web console (`oconline-userX`). 
+
+Let's create another project where we can play in:
+
+*Create a new project:*
+
+** *Name:* sandbox-userX
+** *Display Name:* Sandbox
+
+Click btn:[Create]
+
+You should now have 2 projects like this:
+
+image::screenshot_sandbox.png[Sandbox]
+
+Click the *Sandbox* project to go to the _Application Console_ for that project, you will see:
+
+* *Project selector* (top left): Here you can switch between your projects
+* *Menu* (left): This is all the sections available.
+* *Context area* (center): This will display content based on the menu item selected.
+* *User menu* (top right): Here you can get the cli login command.
+
+image::screenshot_application_console.png[Sandbox]
+
+=== Build options
+
+A build is the process of transforming input parameters into a resulting object. 
+Most often, the process is used to transform input parameters or source code into a runnable image. 
+A BuildConfig object is the definition of the entire build process.
+OpenShift Container Platform leverages Kubernetes by creating Docker-formatted containers from build images and pushing them to a container image registry.
+Build objects share common characteristics: inputs for a build, the need to complete a build process, 
+logging the build process, publishing resources from successful builds, 
+and publishing the final status of the build. Builds take advantage of resource restrictions, 
+specifying limitations on resources such as CPU usage, memory usage, and build or pod execution time.
+
+The OpenShift Container Platform build system provides extensible support for build strategies that are based on selectable types specified in the build API. 
+There are three primary build strategies available:
+
+* Docker build
+* Source-to-Image (S2I) build
+* Custom build
+
+By default, Docker builds and S2I builds are supported.
+The resulting object of a build depends on the builder used to create it. For Docker and S2I builds, the resulting objects are runnable images. 
+For Custom builds, the resulting objects are whatever the builder image author has specified.
+
+Additionally, the Pipeline build strategy can be used to implement sophisticated workflows:
+
+* continuous integration
+* continuous deployment
+
+NOTE: Also see the *Builds and Image Streams*: 
+https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/builds_and_image_streams.html#builds[https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/builds_and_image_streams.html#builds]
+
+We have already done a docker build with `oconline`.
+
+=== The catalog
+
+Click btn:[Browse Catalog].
+
+TIP: OpenShift Container Platform provides out of the box a set of languages and databases for developers with corresponding 
+implementations and tutorials that allow you to kickstart your application development. 
+Language support centers around the Quickstart templates, which in turn leverage builder images.
+
+*Openshift* is effectively *Kubernetes*, and as such it works with Objects that are part of the 
+Kubernetes/Openshift Object model. When interacting with this model through the interfaces, be it CLI via 'oc' or
+the web interface, a User is creating, deleting and changing Objects in this model.
+
+The *Catalog* is designed as a quickstart way to interact with the Openshift instance by pre-creating the
+objects you need for a specific Application. It does this by providing Templates, which are pre-created sets of
+objects with parameterised components that have to be provided to create the application - a good
+example of this is the node.js Template, which requires only three initial parameters (with a lot of advanced and
+optional parameters for deeper configuration) to create a full Application within Openshift.
+
+These parameters, in the case of the node.js Template, are the base image to build upon, the name to assign to all the Objects created as part of the
+Template and the git repo containing the node.js source to build into the Application
+image. When you choose this Template from the catalog you are provided with a Wizard that prompts for
+those three essential parameters (plus provides advanced inputs for the additional ones).
+
+There is another type of Template supported by Openshift called a 'Quickstart'. This is identical in theory to
+the Template but instead has all the required Parameters pre-defined so a User can simply create an instance
+of the Quickstart without having to provide any information other than the name of the Application to create.
+
+In Openshift 3 the Catalog also supports *Services*. This is an implementation of the Service Broker concept and allows external and pre-created Services,
+where Service in this case refers to an external Service providing functionality as opposed to the services internally which are
+Application endpoints within Openshift. Services provided via the Service Broker are external interfaces with a provided
+Service definition that defines how to call them and what they contain. A User can add a Service to his namespace/project, and when he does
+that Service is callable vie the defined interface from his Applications in the namespace/project. This functionality is being
+wound down as part of Openshift 4 with the functionality being instead provided by *Operators*.
+
+*Operators* are a fantastic new concept that simplifies the administration and on-going maintenance of Kubernetes applications. How they work is very elegant - 
+an Operator maintains the state of a set of Objects within the Openshift/Kubernetes object model *but* can also extend it. An Operator is itself a running Pod, and this Pod
+handles installation of Objects, updates of Objects and monitoring and response to change events in the Object state and behaviour. 
+
+An easier explanation is this - imagine you are writing an Application that needs to be deployed in Openshift. This Application is complex, consisting of multiple 
+Pods, configuration options, and you want to be able to update it in real time as fast as you can. By producing an Operator, which installs the Object model and 
+then can act on changes and events concerning it (which it does by extending the Openshift/Kubernetes Object model with Custom Resource Definitions, which can then be
+triggered to be updated by simply providing updated YAML defintitions of the type defined), the Application can be deployed simply by passing the appropriate
+YAML for the Custom Resource, which is specific and contextual _only_ to the Application, to the Operator. 
+
+Red Hat has been instrumental in creating the operatorhub.io site, where people can publish Operators than can be easily consumed by Openshift 4. In fact 
+the functionality for Operators has been back ported into Openshift 3.11 because it is so powerful and essential. As of Openshift 4 the Catalog has direct
+linkage to the operatorhub and allows Users to request Operators to consume.
+
+Interestingly these are handled in a much more secure way than with vanilla Kubernetes. The Operator, when installed, needs to alter the core Object model of the Cluster,
+which is very dangerous. Openshift prohibits the installation of Operators (you need Cluster Admin anyway) by implementing an Operator itself, called the Operator Lifecycle Manager.
+
+This Operator (shortened to *OLM*) allows Admins to install Operators as _Subscriptions_ which can then be used by named Users, Projects or globally depending on 
+the security required. The OLM handles the update of the Operators, and the Users can consume them simply by creating Objects of the appropriate Custom Resource. This way 
+Users do not need to install the Operators themselves - installation and Object model update is controlled centrally by the OLM and Administrators.
+
+=== The oc login token 
+
+TIP: It is good practise to use the 'Copy Login Command' from the UI to generate the login statement for accessing the system via oc. This provided token
+is expired when the UI login expires or the User logs out.
+
+Openshift provides a rich and full RESTful API for interacting, based on the security constraints of the user, with the Openshift
+object model. The UI will generate a valid OAUTH token based on a successful login which can and should be used to attach the 'oc' client to
+a valid session. 
+
+NOTE: Also see the *Web Console Walkthrough*: 
+https://docs.openshift.com/container-platform/3.11/getting_started/developers_console.html[https://docs.openshift.com/container-platform/3.11/getting_started/developers_console.html]

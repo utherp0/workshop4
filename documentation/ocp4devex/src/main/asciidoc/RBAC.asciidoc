@@ -1,0 +1,66 @@
+[[rbac]]
+== User Role based access control
+
+OpenShift maintains a comprehensive and configurable *RBAC* (Role Based Access Control) mechanism across the Objects within a Project. 
+
+In order to discuss and understand this we need to understand the nature of *Users* and *Roles* within the OpenShift system. Their are actually two types of Users within a Project, the _Users_
+which are physical Users, and _Service Accounts_ which are effectively internal 'virtual' Users that are used by OpenShift to actually execute tasks.
+
+Think of _Service Accounts_ as proxy-users within the Project that are individually controlled and constrained on the _actions_ they can do within the Project. 
+For example by default a Service Account is created within the Project with the following name - system:serviceaccount:*(PROJECT_NAME)*.default - this user is used to 
+do the builds and deployments within the Project and has access to the Objects within the Project *and* the rights to perform a build, push to the registry in the name of this Project and deploy Containers.
+
+Users themselves are bound by a visibility role that gives them different levels of visibility and accessability to the Objects within the Project. There are four distinct
+tiers of access provided:
+
+*Admin* - a user with Admin rights, which are applied to the creating User of a Project, can create and delete Objects within the Project and give and remove access rights to other Users.
+
+*Edit* - a user with Edit rights can change the *value* of existing Objects within the Project but cannot create or delete Objects, or assign rights to other Users.
+
+*Read* - a user with Read rights can see the values of existing Objects within the Project but cannot create or delete objects and cannot change the values of existing Objects either.
+
+*None* - without being assigned rights to a Project a user has *no* visibility of the Project or the Objects within it.
+
+Using the project dropdown, go back to the `Sandbox` project we create earlier.
+
+Go to the menu:Resources[Membership] page. (using the left side menu)
+
+You will see 3 tabs:
+
+* *Users:* This should list your user (userX).
+* *Groups:* - TODO: explain the difference between the full name system:serviceaccount:sandbox-userX and the 'all' groups system:serviceaccounts:projectName
+* *Service Accounts* - TODO: explain the concept of a 'virtual' user within the namespace.
+
+In the `Users` Tab, click btn:[Edit Membership] and add the attendee next to you as a user:
+
+* *Name:* UserX+1
+* *Roles:* admin
+
+Click btn:[Add]
+
+You will now see the project assigned to you in your Project list, 
+example `User2` can see `sandbox-user-1` project:
+
+image::screenshot_users.png[User access]
+
+(click on the OPENSHIFT CONTAINER PLATFORM logo)
+
+Now do a build of the application in that project.
+
+Next, let's remove the access from that user using CLI.
+
+First make sure you are using the correct project:
+
+[source,shell]
+----
+oc project sandbox-userX
+----
+
+Next remove the access:
+
+[source,shell]
+----
+oc adm policy remove-role-from-user admin userX+1
+----
+
+Now go back to your project list and note that your access has been removed.

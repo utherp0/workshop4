@@ -1,0 +1,660 @@
+[[lifecycle]]
+== Simple application lifecycle
+
+=== Quick Introduction to the Build process
+One of the most exciting features of OpenShift from a developer's perspective is the concept of the S2I, or *Source-2-Image* 
+which provides a standardised way of taking a base image, containing, for example, the framework for running a node.js application, 
+a source code repository, containing the code of the application that matches the framework provided in the base image, and constructing 
+and delivering a composite Application image to the Registry. 
+
+The standardised nature of the S2I approach means that, in the case where Red Hat do not provide out-of-the-box facilities for 
+a framework, it is simple to create the S2I scripts and use them in exactly the same fashion as the out-of-the-box scripts.
+
+The S2I works in effectively three phases - a compilation phase, which is OpenShift agnostic and simply, in the case of requiring it, 
+compiles the source material to the binary components, or interim bytecode formats, required for the framework. In the case of Java, for example, 
+this would entail executing a Maven build on the source provided in the repository. The second phase is to construct the composite
+image for the Application by injecting the binary components into the appropriate filespace in the base image. The third phase is to setup 
+the execution context for the Application, i.e. how it is started, for example in the case of a Java web-app running on a Tomcat base 
+this would be executing the bin/startup.sh script.
+
+A nice feature of this approach is the capability of the S2I scripts to also be executed in what is called *Binary* mode. This allows the 
+script to ignore the compilation phase and be provided with the binary components required to build the Application. This is a usecase for 
+developers who wish to either bring pre-compiled components for their Apps or in the situation where an organisation has an existing 
+build farm for applications where the binary artefacts are tested and config controlled outside of OpenShift. This mode is called 'binary build'.
+
+In the following example we will take advantage of the node.js builder S2I script in OpenShift.
+
+[[lifecycle-s2i]]
+=== Deploying an application using S2I
+
+In the Catalog of your sandbox project:
+
+* Filter (top tab bar) *Languages*
+* Select *JavaScript*
+* Choose *Node.js*
+
+image::screenshot_catalog_filter_js.png[Node application]
+
+You will now go though a wizard to gather all data needed for this S2I build config:
+
+The UI provides Wizards based on the templates installed (which are the selections chosen from in the Catalog). These Wizards 
+explain the nature of the chosen template, and then prompt the User for specific information which is required to perform the full lifecycle 
+build and deployment of the target application. 
+
+* Click btn:[Next] on first page of Wizard.
+
+Each template has a set of parameters that are either optional or mandatory. The Wizard provides a way for the User to enter the 
+information - in the case of the node.js there are only three pieces of mandatory information required to create, build and deploy the 
+node.js application. The Wizards also provide additional 'advanced' options which are the optional parameters for specialising the build, for 
+example if you are using a code repository that has secure access you need to provide what is known as a *Pull Secret* which will allow 
+OpenShift, which is running the Build as a standalone Pod, to clone the source material from your repository. This is one of the optional parameters. 
+
+* Select node image version *10*
+* Enter name as `nodetest`
+* Enter the following url as the github repo https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode]
+
+Click btn:[Create], then btn:[Close] to close the wizard
+
+image::screenshot_s2i_wizard.png[S2I Wizard]
+
+Now go back to the menu:Overview[] page.
+
+What has happened is that the OpenShift system has processed the template, in this case one for a node.js Application 
+based on an S2I build, and produced *all* of the Objects needed within the User's project to realise this. If you are quick enough to 
+watch the Overview you'll see first a Build appear. This is a Build Pod that has been spun off within the Project using the configuration 
+generated from the Templates and implemented in a *BuildConfig* Object. The small window in the bottom right corner shows the 
+log of the build as it happens - the source will be cloned into the Build Pod, the code compiled appropriately (using npm in this case)
+and then the composite Application Image is constructed (you will see layers being written).
+
+When the Image is completed it is delivered from the BuildPod into the Integrated Registry within OpenShift with the appropriate labels and tags
+that identify it as the nodetest Application in this Project. As part of the template realisation a DeploymentConfig would have been created 
+as well - this is sitting watching the Registry for the creation or update of the named Image, and when the build is complete the 
+addition of that Image to the Registry will automatically start a deployment.
+
+The Template defines this deployment to be a single Pod of the Application with a service (hooking into the 8080 port of the Pod), and a *Route* for 
+external connectivity. All of these are created automatically and once the deployment starts you can watch the state of the deployment 
+by looking at the colour of the ring around the Pod - when gray it is *pulling* the Image from the Integrated Registry and delivering it 
+to the Node that has been targetted (internally within OpenShift) to host this instance. When the ring turns to light blue the Pod is running 
+successfully and is ready to service requests.
+
+[[lifecycle-running]]
+=== The running application
+
+When in the Overview page, you will see all running applications. Expand the `nodetest` application we just deployed.
+You will see an overview of the running application:
+
+* Information on the running container
+* Number of pods and the status (a.k.a kbd:[Pod ring]) of the pods
+* Networking information including internal port mapping and external routes
+* Build history and information
+
+image::screenshot_app_overview.png[Application Overview]
+
+To see the application in action, click on the link in the external route.
+This will open the basic node.js application:
+
+image::screenshot_node_app.png[Node.js Application]
+
+[[lifecycle-application-services]]
+==== Application Services
+
+Using the menu on the left go to the menu:Applications[Services] page.
+
+image::screenshot_app_services.png[Application Services]
+
+Another thing that makes Kubernetes and OpenShift so powerful is the abstracted nature of the service endpoints. Each running Application has 
+a single service endpoint, which is the load-balancing point for the Application within the *Software-Defined-Network* that OpenShift
+uses for internal communication. From the outside consumers of the Application use a FQDN (fully qualified domain name) which refers to the *Route*.
+This is translated at the edge of OpenShift into the singular service cluster IP. This is then a load-balancer across *all* the replicas of 
+the Application. This means that you can change the number of replicas and even the target services of the Route without having to rebuild or redeploy the 
+applications. This disconnect is very powerful in usecases such as Canary Deployments and zero-downtime upgrades/downgrades of Applications. 
+
+NOTE: More info here: 
+https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/pods_and_services.html#services[https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/pods_and_services.html#services]
+
+Go back to the menu:Overview[] page.
+
+[[lifecycle-application-pods]]
+==== Application Pods
+
+Click on the kbd:[Pod ring], or alternatively use the menu menu:Applications[Pods > nodetest-****]
+
+image::screenshot_app_pod.png[Application Pod]
+
+TIP: See the differing IP address for the Pod compared to the cluster IP
+
+Go back to the menu:Overview[] page.
+
+[[lifecycle-application-scaling]]
+==== Application Scaling
+
+Let's pretend that this app is suddenly getting many requests from many users (so there is a load increase on the app).
+So we need to scale the application to 3 instances.
+
+Click the menu:Up arrow[] (^) until there are 3 replicas.
+
+image::screenshot_scaling_up.png[Application Scaling]
+
+A quick note on the colour schemes of the Pod UI - the system uses the colour to indicate the state of the Pod(s) in realtime. It can be 
+one of five different colours - transparent indicates the Pod is being physically created; it has been allocated to a Node, that node is allocating the file space 
+but has yet to copy the Image file-layers to it.
+
+Gray indicates the Image is being loaded from the Registry and pushed to the Node.
+
+Light blue indicates the Pod is operational and reporting healthy.
+
+Dark blue indicates the Pod has received an event to terminate and is gracefully removing itself.
+
+Red indicates the Pod is in what is called a CrashLoopBackoff state. This is due to the way in which Pods report healthy and the way in which 
+OpenShift deals with unhealthy Pods. A Pod has two health probes - *liveness* and *readiness*. Liveness indicates the Pod file-layers have been initialised, 
+any additional file mounts have been completed *but* the Application is not ready (internally) to process requests. *Liveness* indicates the 
+Application within the Pod is ready to service requests. OpenShift maintains x replicas, as defined by the *deploymentconfig* of an Application 
+and the replica count applies to Pods that are reporting *live*. If a Pod fails to report *live* it is sent a closedown event, OpenShift decides where to deploy 
+the Pod and the Pod is rescheduled. A CrashLoopBackoff occurs when the Pod continually reports unhealthy and is continually recreated,
+a state, because of the nature of the system, which is attempting to self-recover. We'll talk later about ways to debug these kind of 'Red' ring Pods.
+
+Click on the kbd:[Pod ring], or alternatively use the menu menu:Applications[Deployments > nodetest > #1 (latest)].
+
+Scroll down to where the Pods are listed:
+
+image::screenshot_app_pods_3.png[Pod listing]
+
+TIP: See the difference in age between the initial pod and the 2 recent scaled pods.
+
+Select on of the recent (younger) pods.
+
+TIP: Note the IP difference compared to the initial pod.
+
+
+[[lifecycle-application-route]]
+==== Application Route
+
+Using the menu on the left go to the menu:Applications[Routes] page.
+
+image::screenshot_app_routes.png[Application Routes]
+
+TIP: Note the mapping of the fully qualified domain name to the cluster IP via the service name
+
+Select the nodetest link in the service column. 
+
+image::screenshot_route_service.png[Route service]
+
+TIP: Note that the route maps to the cluster IP
+
+[[lifecycle-application-cli]]
+==== Application from CLI
+
+Now let's go to the console (either using `localhost` or `oconline` as explained in the <<setup-cli>> section)
+
+Make sure you are still logged in:
+
+[source,shell]
+----
+oc whoami
+----
+
+(if not, log in again as explained in the <<setup-login>> section)
+
+Make sure we are using our sandbox project:
+
+[source,shell]
+----
+oc project sandbox-userX
+----
+
+This will print: 
+
+[source,shell,subs=attributes+]
+----
+Now using project "sandbox-userX" on server "{webConsoleUrl}:443".
+----
+
+You can find all `objects` that you can interact with in this namespace/project:
+
+[source,shell]
+----
+oc get all
+----
+
+Get all `pods`:
+
+[source,shell]
+----
+oc get pods -o wide
+----
+
+This will output something similar to this:
+
+[source,shell]
+----
+NAME               READY     STATUS      RESTARTS   AGE       IP          NODE                      NOMINATED NODE
+nodetest-1-2g2dz   1/1       Running     0          23h       10.1.2.67   node1.jhb-94d8.internal   <none>
+nodetest-1-54fw7   1/1       Running     0          3h        10.1.2.74   node1.jhb-94d8.internal   <none>
+nodetest-1-6xw6g   1/1       Running     0          3h        10.1.2.75   node1.jhb-94d8.internal   <none>
+nodetest-1-build   0/1       Completed   0          23h       10.1.2.65   node1.jhb-94d8.internal   <none>
+----
+
+TIP: Note the pod used to build the project is there, just inactive. +
+Also note the differing IPs for the individual Pods and the NODE information.
+
+In the Web Console, make sure you are on the btn:[Overview] page, then do the following in CLI while watching the page:
+
+[source,shell]
+----
+oc delete pod nodetest-****
+----
+(Replace ******** with once of the running pods)
+
+image::screenshot_deleting_pod.png[Deleting a pod]
+
+[[lifecycle-health-checks]]
+==== Health Checks
+
+In the Web Console, go to menu:Applications[Deployments > nodetest > Configuration].
+
+Under Template, click `Add Health Checks`:
+
+image::screenshot_add_health.png[Adding Health Checks]
+
+TIP:
+Click on the `Learn More` link or 
+here: https://docs.openshift.com/container-platform/3.11/dev_guide/application_health.html[https://docs.openshift.com/container-platform/3.11/dev_guide/application_health.html]
+to read more about Health probes
+
+[[lifecycle-rolling-recreate]]
+==== Application Deployment Strategies
+
+From the menu: menu:Applications[Deployment > nodetest > Configuration]
+
+The deployments can be done in one of two strategic ways. These strategies were designed to cater for two prominent real-world usecases. The first of which is 
+the case where you want to perform a zero-downtime deployment. This is the case where, for example, you have an Application that requires cosmetic changes. In this situation 
+you would set the strategy of the deployment to 'Rolling'. This works by ensuring that during the transition, which entails creating a new copy of the Application Pod, then 
+sending one of the previous Pods a 'shutdown' event. This means at *all* time the count of active Pods does *not* fall below the required replica count.
+
+The second usecase involves needing to remove *all* active copies of the older versions of the Pod before starting the new version. This would cater for situation where, for instances, there was a
+serious security flaw in the Container Image that needed to be fixed instantly. Setting the strategy to 'recreate' forces OpenShift to not only send a shutdown event 
+to every active Pod in the Application but also to wait for all the Pods to complete terminating before the new versions of the Application are started.
+
+In the top right corner, click the btn:[Actions > Edit] button.
+
+Change the btn:[Strategy Type] to `Recreate` and click btn:[Save]
+
+image::screenshot_deployment_recreate.png[Recreate]
+
+Now go to menu:Applications[Deployments > notetest]
+
+TIP: Note that Deployment \#1 is active.
+
+Click the btn:[Deploy] button (top right) and the quickly go back to the menu:Overview[] page.
+
+image::screenshot_deployment_recreate_pod_ring.png[Recreate in action]
+
+TIP: Note that all instances is being recreate and there is zero instances available above.
+
+Go back to menu:Applications[Deployments > notetest]
+
+TIP: Note that Deployment \#2 is active.
+
+Change back to Rolling Strategy: btn:[Actions > Edit] then change the
+btn:[Strategy Type] to `Rolling` and click btn:[Save]
+
+Now again click the btn:[Deploy] and quickly go back to the menu:Overview[] page.
+
+image::screenshot_deployment_rolling_pod_ring.png[Rolling in action]
+
+TIP: Note that the number of available pods never drops beneath the required number of replicas
+
+Read more about deployment strategies here: https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/deployment_strategies.html[https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/deployment_strategies.html]
+
+[[lifecycle-storage]]
+==== Storage
+
+Go to menu:Storage[] page and select btn:[Create Storage]:
+
+* *Name:* test
+* *Access Mode:* RWO
+* *Size:* 1 GiB 
+
+Click btn:[Create]
+
+*Persistent Volumes* and *Persistent Volume Claims* are a fantastic feature of OpenShift that allow file systems to be mounted into Containers that retain 
+file storage when the Container goes away or is restarted. The concept of *Persisted Volume* is a chunk of storage that is ring-fenced for a Project. This means when 
+you create a PV that space is assigned to the Project only, but *not* mapped into the Containers. To map the storage the concept of *Persisted Volume Claim* is used 
+which locks the storage into a mount point in the Container. 
+
+The PVs can be created with different retention strategies. How this works is when there are no longer any PVCs that refer to the PV it is either *retained*, meaning the PV is kept ring-fenced and 
+the contents of the PV are left as is so when a new PVC is created it can continue, or *deleted* meaning the contents of the PV are wiped and the storage is released for other 
+projects to consume. 
+
+Now we will assign this storage to our application. Go to menu:Applications[Deployments] and select `nodetest` and select the `Configuration` tab. 
+Under the Volumes section, click `Add Storage`
+
+Select the `test` storage option (This is the one we just created)
+
+In the *Mount Path* make sure that the path is unique to you, so make it `/usrX` (Where X is your assigned ID).
+Click btn:[Add]
+
+image::screenshot_assign_vol.png[Assign Volumes]
+
+Go back to the menu:Overview[] page.
+
+TIP: Note the redeployment, this is because above is a config change and a new image needs to be build to make this mount point available
+
+Click on the kbd:[Pod ring] and select the first (top) pod in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+id
+----
+
+This will print the unique id for this pod, example:
+
+[source,shell]
+----
+uid=1000360000 gid=0(root) groups=0(root),1000360000
+----
+
+Now type the following in the terminal:
+
+[source,shell]
+----
+df -h
+----
+
+This will report information on the disk space for this pod, example:
+
+[source,shell]
+----
+Filesystem                                                 Size  Used Avail Use% Mounted on
+overlay                                                     50G  7.3G   43G  15% /
+tmpfs                                                       32G     0   32G   0% /dev
+tmpfs                                                       32G     0   32G   0% /sys/fs/cgroup
+support1.fourways-3631.internal:/srv/nfs/user-vols/vol411  197G  498M  187G   1% /usr1
+/dev/xvda2                                                  50G  7.3G   43G  15% /etc/hosts
+shm                                                         64M     0   64M   0% /dev/shm
+tmpfs                                                       32G   16K   32G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs                                                       32G     0   32G   0% /proc/acpi
+tmpfs                                                       32G     0   32G   0% /proc/scsi
+tmpfs                                                       32G     0   32G   0% /sys/firmware
+----
+
+You will see the volume create earlier mounted under `/usrX`.
+
+Type the following:
+
+[source,shell]
+----
+ps -ef
+----
+
+At their core Containers are simply file systems with delusions of grandeur. The Image is written to the Node and the Container Runtime then executes it as a process. 
+As far as the Container is concerned it is an Operating System. OpenShift cleverly locks the aspects of the Node specifically to the individual Containers - 
+each Container is locked down using SELINUX constraints meaning not only can it not see the Host components that don't have the appropriate SELINUX labels but 
+also not see other Containers _from the same Application_ as they have sub-labelled SELINUX constraints of their own. This means that 
+when you remote-shell into the Application and examine the user, the processes and the filesystems you *only* see the ones specific to the Container - OpenShift
+*contains* Containers.
+
+Now let's go to the volume mount point and create a file in the root:
+
+[source,shell]
+----
+cd /usrX
+touch test.txt
+----
+
+List the contents of the folder:
+
+[source,shell]
+----
+ls -alZ
+----
+
+You will see a list of directories and files, example:
+
+[source,shell]
+----
+drwxrwxrwx. root       root  system_u:object_r:nfs_t:s0                     .
+drwxr-xr-x. root       root  system_u:object_r:container_file_t:s0:c9,c19   ..
+-rw-r--r--. 1000360000 65534 system_u:object_r:nfs_t:s0                     test1.txt
+----
+
+Note the SELINUX constraints on the file systems. The s0:c9:c19 label is specific to the _container_.
+
+Now, in the CLI (NOT the terminal we have been using just now), do the following:
+
+[source,shell]
+----
+oc get pods -o wide
+----
+
+You will see a list of all pods, example:
+
+[source,shell]
+----
+NAME               READY   STATUS      RESTARTS   AGE   IP          NODE                           NOMINATED NODE
+nodetest-1-build   0/1     Completed   0          1h    10.1.4.8    node1.jhb-94d8.internal   <none>
+nodetest-2-5lcdq   1/1     Running     0          15m   10.1.4.12   node1.jhb-94d8.internal   <none>
+nodetest-2-7dnjv   1/1     Running     0          12m   10.1.4.14   node1.jhb-94d8.internal   <none>
+nodetest-2-nfnlf   1/1     Running     0          12m   10.1.4.13   node1.jhb-94d8.internal   <none>
+----
+
+Choose two Pods that have landed on different physical Nodes. Make a note of the two Pod names - for information the structure of the Pod name is as follows - 
+_(ApplicationName)_-_(deployment number)_-_(random five character identifier)_
+
+Go back to the menu:Overview[] page.
+
+Click on the kbd:[Pod ring] and select the first (top) pod in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+cd /usrX
+vi test.txt
+----
+
+Once in `vi`, press *i* to enter *insert* mode.
+
+Now type something, example: `Hello World`.
+
+Then press *Esc* (to exit the insert mode) and then *:wq* to write and quit vi.
+You can do a `cat` to make sure the contents is saved in the file:
+
+[source,shell]
+----
+cat test.txt 
+Hello world
+----
+
+Now go back to the menu:Overview[] page.
+
+Click on the kbd:[Pod ring] and select any pod except the first (top) one in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+cd /usrX
+cat test.txt
+Hello world
+----
+
+As you can see the file is available on all pods.
+
+Note that because we chose the *RWO* (ReadWriteOnce) this sets up a Persisted Volume that exists *once* across the entire Cluster. This means that if you
+have multiple replicas of an Application in Pods on different Nodes they are all mounted to the *same* piece of filespace. If one Pod 
+changes the contents of a file that change is visible to all Pods of that Application.
+
+[[lifecycle-config-maps]]
+==== Config Maps
+
+Navigate to menu:Resources[Config Maps] and then click btn:[Create Config Map]
+
+In this scenario we are going to express the contents of a configmap within the Container as environment variables. You can 
+already define environment variables to be expressed into an Application as part of the *deploymentconfig* but these are Application specific in 
+that they are controlled and injected as part of the deployment. With a configmap that is within the Project but external to the Application these environment 
+variables can be shared across multiple Applications and centrally changed.
+
+Enter the following in the fields:
+* *Name:* configmapenv
+* *Key:* CONFIGENV
+* *Value:* somevaluefortheenv
+
+Then click btn:[Create]
+
+image::screenshot_config_map.png[Config Map]
+
+Navigate to menu:Applications[Deployments] select `nodetest` and then the `Environment` Tab.
+
+In the `Environment From` section, select the `configmapenv` we just created.
+
+Click the `Add ALL Values from Config Map or Secret` link and then btn:[Save].
+
+Now go back to the menu:Overview[] page, and watch the deployment finish.
+
+Click on the kbd:[Pod ring] and select the first (top) pod in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+env | grep CONFIGENV
+----
+
+You will see the key/value we just created.
+
+Now let's create another config map.
+Navigate back to menu:Resources[Config Maps] and then click btn:[Create Config Map]
+
+This approach entails expressing the contents of a configmap into the Container as a physical file. This is extremely powerful in that you can physically overwrite
+files that are defined in the Image itself - a good example of this is having an Image for a technology that is configured at runtime by reading values from
+a configuration file. Using a configmap you can express different versions of the file into the Container _without having to rebuild the Image_.
+
+Enter the following in the fields:
+* *Name:* configmapfile
+* *Key:* myapp.conf
+* *Value:* hello!
+
+Then click btn:[Create]
+
+Navigate to menu:Applications[Deployments] select `nodetest` and then the `Configuration` Tab.
+
+In the `Volumes` section, select `Add Config Files`:
+
+* *Source:* configmapfile
+* *Mount Path:* /config/app
+
+Click btn:[Add]
+
+Now go back to the menu:Overview[] page, and watch the deployment finish.
+
+Click on the kbd:[Pod ring] and select the first (top) pod in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+cd /config/app
+cat myapp.conf
+----
+
+You will see the value we just created.
+
+How this actually works is the configmap, and also *secrets* which work in a similar fashion but are encrypted at rest and on the nodes, are
+copied to the filesystem of the Node and then linked into the running Container using a symbolic link locked down with the appropriate SELINUX constraints.
+The file doesn't appear as a mounted filesystem, like the *Persisted Volumes* and is separate physically from the Container, again meaning you can change the
+contents of the configmap, a deployment will automatically occur (as you've changed the configuration of the deployment) and the new Pod will have the
+new configmap file visible.
+
+[[lifecycle-secrets]]
+==== Secrets
+
+Navigate to menu:Resources[Secrets] and then click btn:[Create Secrets].
+Enter the following:
+
+* *Secret Type:* Generic Secret
+* *Secret Name:* nodetestsecret
+* *Key:* mypassword
+* *Value:* mydodgypassword
+
+Click btn:[Create]
+
+image::screenshot_secret.png[Secret]
+
+Now select the newly created secret `nodetestsecret` and then click btn:[Add to Application].
+
+Select the `nodetest` application and click btn:[Save].
+
+Now go back to the menu:Overview[] page, and watch the deployment finish.
+
+Click on the kbd:[Pod ring] and select the first (top) pod in the `Pods` section.
+Select the `Terminal` tab and then type the following:
+
+[source,shell]
+----
+env | grep password
+----
+
+Secrets are a specially handled Object within OpenShift in that they are encrypted at creation, so before they are linked to any deployment they are unreadable, and when
+they are written to the Nodes and expressed into the Container they are encrypted on the filesystem of the Node, meaning a sysadmin with access to the Node would not be able to
+read them. They are unencrypted within the running Container.
+
+Now, in the CLI (NOT the terminal we have been using just now), do the following:
+
+[source,shell]
+----
+oc describe secret nodetestsecret
+----
+
+This will show the secret, example:
+
+[source,shell]
+----
+Name:         nodetestsecret
+Namespace:    sandbox-user1
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+mypassword:  15 bytes
+----
+
+Now look at the secret in the object:
+
+[source,shell]
+----
+oc edit secret nodetestsecret
+----
+
+Here you can see the secret is encrypted:
+
+[source,yaml]
+----
+apiVersion: v1
+data:
+  mypassword: bXlkb2RneXBhc3N3b3Jk
+kind: Secret
+metadata:
+  creationTimestamp: "2019-07-31T05:09:01Z"
+  name: nodetestsecret
+  namespace: sandbox-user1
+  resourceVersion: "167161"
+  selfLink: /api/v1/namespaces/sandbox-user1/secrets/nodetestsecret
+  uid: 4f06e44d-b351-11e9-b116-16c647cb1fdc
+type: Opaque
+----
+
+[[lifecycle-cleanup]]
+=== Clean up
+
+Now let's clean up everything we did in the <<lifecycle>> section:
+
+[source,shell]
+----
+oc describe bc nodetest
+oc delete all -l "app=nodetest"
+----
+
+*Note* - when we created the Application the template prompted us for the name of the Application. This was then auto-appended to *all* 
+Objects created as part of the Application as a label set to "app=_name_", in this example "app=nodetest". This allows us to issue commands dealing with
+all the Objects by appending the '-l "app=nodetest"' which makes the command apply *only* to all Objects with that label. 
