@@ -1,0 +1,106 @@
+[[healthprobes]]
+
+== Pod Health Probes
+
+OpenShift provides an integrated facility for the execution of Pipelines as part of the Build process. It was decided, at OpenShift 3.x, to integrate to
+Jenkins - this is facilitated by running a Jenkins Master in a Pod as an Application and then executing an externally held Pipeline definition, written in
+the Jenkins DSL with OpenShift DSL extensions (in Groovy) which is contained as a Build within OpenShift.
+
+This allows for some sophisticated steps as part of a Build (the Pipeline strategy is one of the available Build types with OpenShift) including automated testing using 
+tools such as Sonatype, manual stage-gates and multiple Build steps. A successful Build is indicated by Jenkins completing the Pipeline script with no failures.
+
+As of OpenShift4 this functionality is replaced with the Kubernetes Tekton project, which introduces CICD Pipelines as *fully* integrated and controlled Objects within the Object model. This is 
+a far nicer approach - handing off responsibility and ownership of the entire Pipeline to an embedded Jenkins Pod removes control from the orchestration platform.
+
+This exercise is provided for use within the Workshop as an example of the integration of CICD within OpenShift but is highly advised that any Users wishing to use Pipelines
+going forward look at Tekton.
+
+This exercise requires a little manual intervention in the scripts which is described below - this uses a script to install, pre-configure and define 
+the Pipeline to be used. Normally this would be an automated process but for the sake of the workshop it has been simplified.
+
+In your chosen CLI, let's get the workshop workshop_material:
+
+[source,shell]
+----
+mkdir ocp_workshop
+cd ocp_workshop
+git clone https://github.com/utherp0/workshop_material
+cd workshop_material/attendee
+ls
+----
+
+We will be using two scripts from this repo for this example, *groovy_pipeline.sh* which sets up the Application we will be using and injects the 
+Groovy Pipeline DSL, which is defined embedded in a *BuildConfig* within *pipeline_complex_bc.yaml*. Note that in actual real world usage the 
+Groovy components would be injected from a repo (which is the other option for definition as part of a BuildConfig as opposed to embedding the actual script into YAML).
+
+[source,shell]
+----
+cat groovy_pipeline.sh
+----
+
+We now have to perform a manual task to replace the *PROJECT.NAME* placeholder in both scripts. This is because a Project name needs to be 
+unique across an OpenShift cluster so each user has to use a unique Project name. We will use the Linux 'sed' command to run a replace as shown in the following instructions.
+
+[source,shell]
+----
+sed -i 's/PROJECT.NAME/pipeline-userX/g' groovy_pipeline.sh
+cat groovy_pipeline.sh
+----
+
+You should now see the PROJECT.NAME being replaced by your unique name.
+
+[source,shell]
+----
+sed -i 's/PROJECT.NAME/pipeline-userX/g' pipeline_complex_bc.yaml
+----
+
+Before we run the script, make sure you are still connected to the OCP Cluster:
+
+[source,shell]
+----
+oc whoami
+----
+
+Then run the script
+
+[source,shell]
+----
+./groovy_pipeline.sh
+----
+
+What the script is doing is defining a new Application, called _nodetest_, setting up the Build and Deployment that we will then automate (automatically using the script) using 
+the Pipeline technology. The script creates the Application, waits for the Pod to appear, then install and starts the Pipeline process.
+
+The Pipeline will Build, Deploy and then *Scale* the Application automatically.
+
+*Note* that we had to remove the automatic trigger on the Deployment - the reason for this is by default an Application will automatically deploy when a Build has finished. If
+we are running the Build and then the Deploy as part of the Pipeline we would see *two* deployments, the first being as a result of the Build, executed 
+by the Pipeline, and the second manually by the Pipeline. The script changes the configuration of the Deployment to have no automatic triggers. 
+
+Once the process has started, go to the Web Console and select the `pipeline-userX` project.
+
+In the menu:Overview[] page you will see the Jenkins Ephemeral Pod being started up.
+
+*Note* this step may take a while. The Jenkins Pod is a large and complex Pod that takes a while to start up, and if you are running this on a demo 
+installation of OpenShift the shared resources may make starting a large number of these Pods take a while. Once the Jenkins Pod has started correctly (indicated by 
+the Pod ring going Blue) you can click on the Route and see the logs within Jenkins as it kicks off the Build Pod, completes, then executes the Deployment.
+
+Back in the Web Console, go to menu:Builds[Pipelines]. Here you can see the pipeline running.
+
+*Note* that all the stages of the Pipeline are rendered separately. Each step covers the appropriate code in the Groovy script including start, build, deploy and scale.
+
+If for any reason the Build or the Deployment fails check the script to ensure the Project name is set correctly.
+
+[source,shell]
+----
+oc delete bc {old_name}
+oc create -f pipeline_complex_bc.yaml
+----
+
+[UI] Overview - show the six pods running, point out the deployment number, Discuss the removal of the triggers on the deployment and why (with automation in place the creation of an image would force a deployment which would interfere with the pipeline, we disable the deployment on image and config triggers so the pipeline can control it all)
+Discuss complexities of pipelines, the addition of Jenkins commands into the Groovy etc
+[UI] Go back to the Jenkins Route - select Open Blue Ocean. Choose the Pipeline, click on the build, show the prettier Jenkins UI
+[UI] Builds/Pipelines - click on complexpipeline - Actions/Edit
+[UI] Replace the line ‘dc,scale(“--replicas=6”)’ with ‘dc.scale(“--replicas=4”)’
+[UI] Start Pipeline, then switch to Overview
+Explain what is happening, show the Pod count changing
