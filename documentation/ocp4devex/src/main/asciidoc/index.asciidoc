@@ -3,4 +3,6 @@
 
 include::intro.asciidoc[]
 include::topic-applicationbasics.asciidoc[]
+include::healthprobes.asciidoc[]
+
 
