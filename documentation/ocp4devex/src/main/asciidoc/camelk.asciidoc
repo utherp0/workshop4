@@ -28,7 +28,7 @@ oc new-project camelk-userx
 Camel K uses the Operator Lifecycle manager, this means that new Custom Resource Definitions (CRDs) will be added to Openshift. These CRDs will extend the Openshift data model and allow Camel K to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will demonstrate the installation of the operator shortly.
 ****
 
-Before installing Camel K make sure that the CRDs do not exist.
+Before installing Camel K, make sure that the CRDs do not exist.
 
 In the terminal window type
 
@@ -47,7 +47,7 @@ oc get integrations
 oc get integrationplatforms
 ----
 
-Both of these commands should return an *error*
+Both of these commands should return a *resource type* error
 
 *'ADMIN only - Presenter demonstrates'*
 
@@ -55,17 +55,19 @@ Explain both of the above CRDs and what they are used for in Camel K
 
 Install Camel K:
 
-If you are not already logged on go to the UI URL and login as ‘opentlc-mgr’ (Don’t forget to explain that this is a cluster admin function) and the admin password
+If you are not already logged on go to the UI URL and login as 'opentlc-mgr' (Don’t forget to explain that this is a cluster admin function) and the admin password
 
-Make sure you are on the ‘Administration View’ in the console
+Make sure you are on the 'Administration View' in the console
 
 Go to 'Operators/Operator Hub'
 
-Search for ‘camel k’
+Search for 'camel k'
 
 Install for all 'namespaces' in the cluster
 
-Wait until the ‘Camel K Operator’ is shown as installed on the Operators/Installed Operators window
+image::camelk-1.png[Camel K Operator Installation]
+
+Wait until the 'Camel K Operator' is shown as installed on the Operators/Installed Operators window
 
 *'ADMIN only - finished'*
 
@@ -85,9 +87,11 @@ Download the 'Camel K' examples using the browser terminal :-
 === Download and configure your environment
 Create a directory to download the examples
 
-type 'mkdir camel'
-
-type 'cd camel'
+[source,shell]
+----
+mkdir camel
+cd camel
+----
 
 Download the Camel K examples
 
