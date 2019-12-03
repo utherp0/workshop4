@@ -29,7 +29,7 @@ the project and the objects within.*
 
 In the top left of the UI, where the label indicates the view mode, change the mode from Administrator to Developer
 
-image::topic-applicationbasics-2.png[Developer Context]
+image::applicationbasics-2.png[Developer Context]
 
 Click 'Add'
 
@@ -46,14 +46,14 @@ Select ‘From Catalog’
 
 Enter ‘node’ in the search box
 
-image::topic-applicationbasics-1.png[Node Choice]
+image::applicationbasics-1.png[Node Choice]
 
 *OpenShift allows for multiple base images to be built upon - the selection of node searches for any images or templates registered into the system 
 with the label 'node'. In the screenshot above, and in the catalog you will be presented with, there will be a selection of base images.*
 
 Select ‘Node.js’
 
-image::topic-applicationbasics-3.png[Node Choice]
+image::applicationbasics-3.png[Node Choice]
 
 *When you select an option, in this case the Node.js builder one, you are presented with a wizard that shows you exactly what 
 components will be created as part of your Project. In this case, with Node.js, the template will create a build config, that will build the 
@@ -96,7 +96,7 @@ Click 'Create'
 
 Click on the Icon marked 'Node'
 
-image::topic-applicationbasics-4.png[Node Sidepanel]
+image::applicationbasics-4.png[Node Sidepanel]
 
 *The side-panel contains an overview of the Application you chose. In this case it will cover 
 the build. Once a build has completed this side panel shows the Pods that are running, the builds that have completed, the services 

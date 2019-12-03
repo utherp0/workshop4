@@ -2,7 +2,7 @@
 {author} <{email}>
 
 include::intro.asciidoc[]
-include::topic-applicationbasics.asciidoc[]
+include::applicationbasics.asciidoc[]
 include::healthprobes.asciidoc[]
 include::camelk.asciidoc[]
 
