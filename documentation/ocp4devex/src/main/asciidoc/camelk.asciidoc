@@ -97,14 +97,14 @@ Download the Camel K examples
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M3.tar.gz
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
 ----
 
 Uncompress the file
 
 [source,shell]
 ----
-tar -xf camel-k-examples-1.0.0-M3.tar.gz
+tar -xf camel-k-examples-1.0.0-M4.tar.gz
 ----
 
 To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
@@ -113,13 +113,13 @@ In the same directory, type
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M3-linux-64bit.tar.gz
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M4-linux-64bit.tar.gz
 ----
 
 Uncompress the file
 [source,shell]
 ----
-tar -xf camel-k-client-1.0.0-M3-linux-64bit.tar.gz
+tar -xf camel-k-client-1.0.0-M4-linux-64bit.tar.gz
 ----
 
 Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
@@ -132,6 +132,10 @@ oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/mas
 ----
 
 *You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.*
+
+If you type 'ls' on the command line, then you should see a similer list of files to those below
+
+image::camelk-2.png[Camel K Operator Installation]
 
 === Deploy a Camel K Interation
 
