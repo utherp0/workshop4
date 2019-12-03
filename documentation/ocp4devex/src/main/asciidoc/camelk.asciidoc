@@ -18,7 +18,7 @@ In the browser based terminal window, create a new project called 'camelk-userx'
 
 [source,shell]
 ----
-oc project camelk-userx
+oc new-project camelk-userx
 ----
 
 === Camel K and the Operator Lifecycle Manager
