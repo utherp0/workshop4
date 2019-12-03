@@ -272,3 +272,5 @@ Click back on the browser to go to the Deployment Configs/nodenews overview
 Watch the colour of the Pod ring
 
 *In the case of a Recreate strategy the system insures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application*
+
+

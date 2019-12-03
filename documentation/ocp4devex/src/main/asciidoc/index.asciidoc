@@ -4,6 +4,7 @@
 include::intro.asciidoc[]
 include::applicationbasics.asciidoc[]
 include::deployments.asciidoc[]
+include::sdn.asciidoc[]
 include::healthprobes.asciidoc[]
 include::camelk.asciidoc[]
 
