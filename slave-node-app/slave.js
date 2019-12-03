@@ -15,34 +15,30 @@ var log = bunyan.createLogger({
     }]
   });
 
-var targetPort;  
-targetPort = process.env.NODE_APP_SLAVE_SERVICE_PORT;
-log.info({app: 'slave', phase: 'setup' }, `targetPort  ${targetPort}`);
-if (targetPort === undefined) {
-  targetPort = process.env.NODE_APP_SLAVE_APP_SERVICE_PORT;
-}
+var targetPort = 8080;
+var versionIdentifier = "v1.0";
 
 const port = targetPort;
 var counter = 0;
 var ignore_switch = 0;
 
 app.get('/', (request, response) => {
-  response.send('Hello - this is the simple slave REST interface');
+  response.send('Hello - this is the simple slave REST interface ' + versionIdentifier);
 });
 
 app.get('/health', (request, response) => {
   if (ignore_switch == 0) {
     var millis = Date.now() - start;
 
-    response.send('..  The slave has been running for ' + (millis / 1000) + ' seconds');
+    response.send(versionIdentifier + ' ..  The slave has been running for ' + (millis / 1000) + ' seconds');
   }
 });
 
 app.get('/ip', (request, response) => {
   if (ignore_switch == 0) {
-    var messageText = ip.address();
+    var messageText = ip.address() + " " + versionIdentifier;
     counter++;
-    log.info({app: 'slave', phase: 'operational', id: id, counter: counter, slave_ip: ip.address()}, " responded .... " + counter);
+    log.info({app: 'slave', phase: 'operational', version: versionIdentifier, counter: counter, slave_ip: ip.address()}, " responded .... " + counter);
     response.json(messageText);
   }
 });
@@ -50,7 +46,7 @@ app.get('/ip', (request, response) => {
 app.get('/ignore', (request, response) => {
   var messageText = ip.address() + " ignore switch activated";
   counter++;
-  log.info({app: 'slave', phase: 'probe management', slave_ip: ip.address()}, " ignore switch activated");
+  log.info({app: 'slave', phase: 'probe management', version: versionIdentifier, slave_ip: ip.address()}, " ignore switch activated");
   if (ignore_switch == 0) {
     ignore_switch = 1;
   }
@@ -60,7 +56,7 @@ app.get('/ignore', (request, response) => {
 app.get('/restore', (request, response) => {
   var messageText = ip.address() + " restore switch activated";
   counter++;
-  log.info({app: 'slave', phase: 'probe management', slave_ip: ip.address()}, " restore switch activated");
+  log.info({app: 'slave', phase: 'probe management', version: versionIdentifier, slave_ip: ip.address()}, " restore switch activated");
   if (ignore_switch == 1) {
     ignore_switch = 0;
   }
