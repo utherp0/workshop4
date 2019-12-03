@@ -100,11 +100,18 @@ Download the Camel K examples
 wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
 ----
 
+Create a new directory for the examples
+
+[source,shell]
+----
+mkdir examples
+----
+
 Uncompress the file
 
 [source,shell]
 ----
-tar -xf camel-k-examples-1.0.0-M4.tar.gz
+tar -xf camel-k-examples-1.0.0-M4.tar.gz -C examples
 ----
 
 To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
@@ -135,7 +142,7 @@ oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/mas
 
 If you type 'ls' on the command line, then you should see a similer list of files to those below
 
-image::camelk-2.png[Camel K Operator Installation]
+image::camelk-2.png[Camel K file list]
 
 === Deploy a Camel K Interation
 
@@ -143,10 +150,10 @@ Firstly, let’s start by deploying a simple integration, type
 
 [source,shell]
 ----
-./kamel run simple.groovy
+./kamel run examples/simple.groovy
 ----
 
-NOTE: The first time you deploy an Integration, it will take a few minutes. The operator manages all dependencies required by the Integration and downloads these from the Red Hat repository on demand. Once downloaded, the operator caches dependancies therefore subsequent deployments are significantly quicker.  
+NOTE: The first time you deploy an Integration, it will take a few minutes. The operator manages all dependencies required by the Integration and downloads these from the Red Hat repository on demand. Once downloaded, the operator caches dependancies therefore subsequent deployments are significantly quicker. If you want to see what's happen, in the terminal window type 'oc get pods', you will see that there are builds running
 
 You can see what’s going on :-
 
@@ -156,13 +163,19 @@ Click on 'Topology'
 
 Click on 'Simple' (this is your integration), and you can see what’s going on.
 
-Once the pod has a dark blue ring around it, it is running
+Once the pod has a dark blue ring around it, it is running, as per the screenshot below
+
+image::camelk-3.png[Running Integration]
+
+If you haven't already, click 'inside the circle' to open the overview window
 
 Click on 'Resources'
 
 Click on 'Pods -> simple-xxxxxxxx' (xxxxxxx is randomly generated)
 
-Click on 'Logs' to see the output from the integration
+Click on 'Logs' to see the output from the integration, it should look similer to the screenshot below
+
+image::camelk-4.png[Integration logs]
 
 The integration is a simple timer that triggers every 1 second and writes to the log file.
 
@@ -189,7 +202,7 @@ Let’s make a change to the integration
 In the browser terminal window
 [source,shell]
 ----
-vi simple.groovy 
+vi examples/simple.groovy 
 ----
 You will see the text - 'Hello Camel K from ${routeId}'
 
@@ -203,7 +216,7 @@ Type
 
 [source,shell]
 ----
-./kamel run simple.groovy
+./kamel run examples/simple.groovy
 ----
 
 If you are quick enough (you need to be really quick!), you’ll see the integration doing a rolling deployment
@@ -238,10 +251,14 @@ NOTE: This is the great thing about CRDs, you can use the normal Openshift cli t
 Lets deploy the integration in developer mode, type
 [source,shell]
 ----
-./kamel run simple.groovy --dev
+./kamel run examples/simple.groovy --dev
 ----
 
-You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on
+You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on. The output should look similer to the screenshot below
+
+image::camelk-5.png[Developer Mode]
+
+
 
 For the next exercise, you will need 2 terminal windows.
 
@@ -256,7 +273,7 @@ https://xxxxxxxxxxxxx/terminal/session/1
 Change the url to a new session number e.g.
 https://xxxxxxxxxxxxx/terminal/session/2
 
-In the new terminal, make sure you go back to the camel directory - if you followed the instructions, it will be called 'camel'
+In the new terminal, make sure you go back to the camel directory - if you followed the instructions, it will be called 'camel' (cd 'camel')
 
 Make another change to the text in “simple.groovy” by following the same instructions above
 
@@ -279,7 +296,7 @@ The integration should have been deleted -
 Feel free to take a look at some of the other examples
 
 TIP: Instructions on how to run the integrations are in the integration source code
-E.g. ./kamel run --name=rest-with-restlet --dependency=camel-rest --dependency=camel-restlet RestWithRestlet.java
+E.g. ./kamel run --name=rest-with-restlet --dependency=camel-rest --dependency=camel-restlet examples/RestWithRestlet.java
 
 The example above demonstrates Camel K deploying a Java based Camel Route that exposes a Restful service via an Openshift route - the Camel K operator does all the hard work for you
 
