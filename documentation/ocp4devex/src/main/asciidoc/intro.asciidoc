@@ -31,5 +31,15 @@ managed by Kubernetes on a foundation of Red Hat Enterprise Linux.
 * https://www.openshift.com/learn/what-is-openshift[https://www.openshift.com/learn/what-is-openshift]
 * https://en.wikipedia.org/wiki/OpenShift[https://en.wikipedia.org/wiki/OpenShift]
 * https://www.openshift.com/products/container-platform[https://www.openshift.com/products/container-platform]
-* {webConsoleUrl}[{webConsoleUrl}] (the Web Console URL for the Workshop)
+* {webConsoleUrl} (the Web Console URL for the Workshop)
+* {terminalUrl} (The Web Terminal URL for the workshop)
+
+==== Contributors
+Red Hat UK DSA Team:
+
+* Phil Prosser
+* Mark Roberts
+* ''Uther'' Lawson
+
+Original asciidoc project for DevEx3.x by Phillip Kruger, Red Hat CEMEA
 
