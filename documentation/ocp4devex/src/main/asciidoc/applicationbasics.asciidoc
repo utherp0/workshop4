@@ -1,4 +1,4 @@
-== Application Concepts
+== Application Basics
 
 === Introduction
 
@@ -8,7 +8,7 @@ TIP: The attendee will be using a browser for interacting with both the OpenShif
 
 === Starting up - logging on and creating a project
 
-Log on to cluster as userx, password openshift
+Log on to cluster at {webConsoleUrl}[{webConsoleUrl}] as 'userx', where x is the number assigned to you by the course administrator, password 'openshift'
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
@@ -268,7 +268,7 @@ Note that there are two pods running with the application now
 
 Change the mode from Developer to Administrator
 
-Select the sandboxx project in the project list
+Select the 'sandboxx' project in the project list
 
 Note the metrics for the project
 
@@ -279,3 +279,9 @@ Change to Developer mode and then select Topology if the Topology page isn’t a
 Click and hold on the forumstaticassets Pod and drag it onto the ocpnode-app
 
 Select ‘move’ when it prompts whether you want to move it
+
+*This concept of Application grouping allows for much better visualisation of the complete application.*
+
+Continue on with the Deployments chapter, which uses the applications created here to show the capabilities of the deployment configuration and how to alter the behaviour and file system of a Container without changing the image.
+
+
