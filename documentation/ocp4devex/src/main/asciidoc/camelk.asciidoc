@@ -18,7 +18,7 @@ In the browser based terminal window, create a new project called 'camelk-userx'
 
 [source,shell]
 ----
-oc project camelk-userx
+oc new-project camelk-userx
 ----
 
 === Camel K and the Operator Lifecycle Manager
@@ -28,7 +28,7 @@ oc project camelk-userx
 Camel K uses the Operator Lifecycle manager, this means that new Custom Resource Definitions (CRDs) will be added to Openshift. These CRDs will extend the Openshift data model and allow Camel K to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will demonstrate the installation of the operator shortly.
 ****
 
-Before installing Camel K make sure that the CRDs do not exist.
+Before installing Camel K, make sure that the CRDs do not exist.
 
 In the terminal window type
 
@@ -47,7 +47,7 @@ oc get integrations
 oc get integrationplatforms
 ----
 
-Both of these commands should return an *error*
+Both of these commands should return a *resource type* error
 
 *'ADMIN only - Presenter demonstrates'*
 
@@ -55,17 +55,19 @@ Explain both of the above CRDs and what they are used for in Camel K
 
 Install Camel K:
 
-If you are not already logged on go to the UI URL and login as ‘opentlc-mgr’ (Don’t forget to explain that this is a cluster admin function) and the admin password
+If you are not already logged on go to the UI URL and login as 'opentlc-mgr' (Don’t forget to explain that this is a cluster admin function) and the admin password
 
-Make sure you are on the ‘Administration View’ in the console
+Make sure you are on the 'Administration View' in the console
 
 Go to 'Operators/Operator Hub'
 
-Search for ‘camel k’
+Search for 'camel k'
 
 Install for all 'namespaces' in the cluster
 
-Wait until the ‘Camel K Operator’ is shown as installed on the Operators/Installed Operators window
+image::camelk-1.png[Camel K Operator Installation]
+
+Wait until the 'Camel K Operator' is shown as installed on the Operators/Installed Operators window
 
 *'ADMIN only - finished'*
 
@@ -85,22 +87,31 @@ Download the 'Camel K' examples using the browser terminal :-
 === Download and configure your environment
 Create a directory to download the examples
 
-type 'mkdir camel'
-
-type 'cd camel'
+[source,shell]
+----
+mkdir camel
+cd camel
+----
 
 Download the Camel K examples
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M3.tar.gz
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
+----
+
+Create a new directory for the examples
+
+[source,shell]
+----
+mkdir examples
 ----
 
 Uncompress the file
 
 [source,shell]
 ----
-tar -xf camel-k-examples-1.0.0-M3.tar.gz
+tar -xf camel-k-examples-1.0.0-M4.tar.gz -C examples
 ----
 
 To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
@@ -109,13 +120,13 @@ In the same directory, type
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M3-linux-64bit.tar.gz
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M4-linux-64bit.tar.gz
 ----
 
 Uncompress the file
 [source,shell]
 ----
-tar -xf camel-k-client-1.0.0-M3-linux-64bit.tar.gz
+tar -xf camel-k-client-1.0.0-M4-linux-64bit.tar.gz
 ----
 
 Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
@@ -129,16 +140,20 @@ oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/mas
 
 *You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.*
 
+If you type 'ls' on the command line, then you should see a similer list of files to those below
+
+image::camelk-2.png[Camel K file list]
+
 === Deploy a Camel K Interation
 
 Firstly, let’s start by deploying a simple integration, type
 
 [source,shell]
 ----
-./kamel run simple.groovy
+./kamel run examples/simple.groovy
 ----
 
-NOTE: The first time you deploy an Integration, it will take a few minutes. The operator manages all dependencies required by the Integration and downloads these from the Red Hat repository on demand. Once downloaded, the operator caches dependancies therefore subsequent deployments are significantly quicker.  
+NOTE: The first time you deploy an Integration, it will take a few minutes. The operator manages all dependencies required by the Integration and downloads these from the Red Hat repository on demand. Once downloaded, the operator caches dependancies therefore subsequent deployments are significantly quicker. If you want to see what's happen, in the terminal window type 'oc get pods', you will see that there are builds running
 
 You can see what’s going on :-
 
@@ -148,13 +163,19 @@ Click on 'Topology'
 
 Click on 'Simple' (this is your integration), and you can see what’s going on.
 
-Once the pod has a dark blue ring around it, it is running
+Once the pod has a dark blue ring around it, it is running, as per the screenshot below
+
+image::camelk-3.png[Running Integration]
+
+If you haven't already, click 'inside the circle' to open the overview window
 
 Click on 'Resources'
 
 Click on 'Pods -> simple-xxxxxxxx' (xxxxxxx is randomly generated)
 
-Click on 'Logs' to see the output from the integration
+Click on 'Logs' to see the output from the integration, it should look similer to the screenshot below
+
+image::camelk-4.png[Integration logs]
 
 The integration is a simple timer that triggers every 1 second and writes to the log file.
 
@@ -181,7 +202,7 @@ Let’s make a change to the integration
 In the browser terminal window
 [source,shell]
 ----
-vi simple.groovy 
+vi examples/simple.groovy 
 ----
 You will see the text - 'Hello Camel K from ${routeId}'
 
@@ -195,7 +216,7 @@ Type
 
 [source,shell]
 ----
-./kamel run simple.groovy
+./kamel run examples/simple.groovy
 ----
 
 If you are quick enough (you need to be really quick!), you’ll see the integration doing a rolling deployment
@@ -230,10 +251,14 @@ NOTE: This is the great thing about CRDs, you can use the normal Openshift cli t
 Lets deploy the integration in developer mode, type
 [source,shell]
 ----
-./kamel run simple.groovy --dev
+./kamel run examples/simple.groovy --dev
 ----
 
-You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on
+You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on. The output should look similer to the screenshot below
+
+image::camelk-5.png[Developer Mode]
+
+
 
 For the next exercise, you will need 2 terminal windows.
 
@@ -248,7 +273,7 @@ https://xxxxxxxxxxxxx/terminal/session/1
 Change the url to a new session number e.g.
 https://xxxxxxxxxxxxx/terminal/session/2
 
-In the new terminal, make sure you go back to the camel directory - if you followed the instructions, it will be called 'camel'
+In the new terminal, make sure you go back to the camel directory - if you followed the instructions, it will be called 'camel' (cd 'camel')
 
 Make another change to the text in “simple.groovy” by following the same instructions above
 
@@ -271,7 +296,7 @@ The integration should have been deleted -
 Feel free to take a look at some of the other examples
 
 TIP: Instructions on how to run the integrations are in the integration source code
-E.g. ./kamel run --name=rest-with-restlet --dependency=camel-rest --dependency=camel-restlet RestWithRestlet.java
+E.g. ./kamel run --name=rest-with-restlet --dependency=camel-rest --dependency=camel-restlet examples/RestWithRestlet.java
 
 The example above demonstrates Camel K deploying a Java based Camel Route that exposes a Restful service via an Openshift route - the Camel K operator does all the hard work for you
 
