@@ -9,7 +9,7 @@ If you are not already logged on go to the UI URL at {webConsoleUrl} and logon a
 
 === The basics of Service Addressing
 
-*In this section we will create a coupel of simple applications and show how they are represented via the Service and load-balancing of Pods within the SDN itself.*
+*In this section we will create a couple of simple applications and show how they are represented via the Service and load-balancing of Pods within the SDN itself.*
 
 Open another tab in the browser and go to the terminal URL {terminalUrl} and again logon as 'userx' with password openshift
 

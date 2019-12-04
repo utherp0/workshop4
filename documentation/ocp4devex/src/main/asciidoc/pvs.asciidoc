@@ -1,0 +1,220 @@
+
+== Understanding Persistent Volumes
+
+=== Introduction
+
+If you are not already logged on go to the UI URL {webConsoleUrl} and logon as userx (x is the number provided to you) and password openshift. 
+
+Open another tab in the browser and go to the terminal URL {terminalUrl} and again logon as userx with password openshift
+
+Ensure you are on the Administrator View (top level, select Administrator)
+
+Click on ‘Create Project’
+
+Enter ‘pvtestx’ for the name, where x is your user number
+
+Enter ‘PV Test’ for the Display Name and Description
+
+Hit ‘Create’
+
+Switch to the Developer UI (click on Developer in the top left pulldown)
+
+Select ‘From Catalog’
+
+Search for ‘node’
+
+Click on the ‘node.js’ option 
+
+Click ‘Create Application’
+
+Leave the Builder Image Version as ‘10’
+
+Enter the following for the Git Repo URL - ‘https://github.com/utherp0/workshop4’
+
+Click on ‘Show Advanced Git Options’
+
+In Context Dir put ‘/nodeatomic’
+
+In Application Name put ‘nodeatomic’
+
+In Name put ‘nodeatomic’
+
+Click on ‘Create’
+
+When the Topology page appears click on the node Pod to see the information window
+
+image::pvs-1.png[Active Application]
+
+Ensure the build completes correctly
+
+In the informational panel choose ‘Action/Edit Count’
+
+Up the count to 4 and hit ‘Save’
+
+Watch the Topology and ensure four copies of the Pod appear and are healthy
+
+=== Adding a Persistent Volume to an Application
+
+Switch to the Administrator view (top left pulldown)
+
+Click on 'Storage/Persistent Volume Claims'
+
+Click on ‘Create Persistent Volume Claim’
+
+Leave the Storage Class as ‘gp2’
+
+*Storage Classes are objects configured by the Administrator of the Cluster which allow you to request externalised persistent storage for your Applications. In this case we are using the default storage class for the Cluster which happens to be AWS storage*
+
+Set the Persistent Volume Claim Name to ‘testpvx’ where x is your user number
+
+Ensure the Access Mode is set to ‘RWO’
+
+*The Access Mode for a Persistent Volume defines how the storage is offered to the Applications. If you choose RWO, Read/Write/Once, a single piece of storage is allocated which is shared across ALL instances of the Application. If you choose RWM, Read/Write/Many, the volume will be created independently on all Nodes where the Application runs, meaning the storage will only be shared by co-resident Pods on Nodes.*
+
+Set the size to 1Gi
+
+Ensure the Use Label Selectors checkbox is not set
+
+Click on ‘Create’
+
+Click on Storage/Persistent Volume Claims
+
+*The status of the claim will sit at 'Pending'. This is because the Persistent Volume itself is not created until it is assigned to a Deployment Config.*
+
+Click on 'Workloads/Deployment Configs'
+
+Click on the nodeatomic DC
+
+Click on 'Actions/Add Storage'
+
+In the Add Storage page ensure ‘Use existing claim’ is checked
+
+In the ‘Select Claim’ pulldown select the created claim (testpvx based on your user number)
+
+Set the Mount Path to ‘/pvtest/files’
+
+*What this will do is to export the Persistent Volume into the file space of the Containers at the mount point stated.*
+
+Click on ‘Save’
+
+*As we have changed the configuration of the Deployment, and the default triggers are set to redeploy if the Image changes OR the configuration of the Deployment changes, a redeployment will now occur.*
+
+When the deployment has completed, click on ‘Pods’
+
+Select the first running Pod - take a note of its name (nodeatomic-2-xxxxx) - click on the Pod
+
+Click on Terminal
+
+In the terminal window type:
+
+[source,shell]
+----
+df -h’
+----
+
+*Note the *
+
+image::pvs-2.png[Additional file mount]
+
+In the terminal window type:
+
+[source,shell]
+----
+ls -alZ /pvtest/files
+----
+
+Click on 'Networking/Routes'
+
+On the Location of the nodeatomic RT (route) press the right mouse button (two fingers on the Mac mousepad) and select ‘Open link in new tab’
+
+Ensure the OpenShift NodeAtomic Example webpage is displayed
+
+Add ‘/containerip’ to the end of the URL in the browser window and hit return
+
+Take a note of the address returned
+
+Switch back to the OCP UI and choose Workloads/Pods
+
+Click on *each* of the Pods until you find the one that has the IP returned by the webpage, take a note of the Pod name ('*1')
+
+Go back to the tab with the nodeatomic webpage in it
+
+Remove ‘/containerip’ from the end of the URL and replace it with ‘/fileappend?file=/pvtest/files/webfile1.txt&text=Hello%20World’ and then press return
+
+Ensure the webservice returns ‘Updated '/pvtest/files/webfile1.txt' with 'Hello World'’
+
+Switch back to the browser tab with the OCP UI in it. Select 'Workloads/Pods' and click on the Pod with the name that matches the IP discovered in ('*1')
+
+Click on 'Terminal'
+
+In the terminal type:
+
+[source,shell]
+----
+cat /pvtest/files/webfile1.txt
+----
+
+Ensure ‘Hello World’ is displayed
+
+*The Webservice endpoint provided appends the given text to the given file.*
+
+Click on 'Workloads/Pods'
+
+Select another Pod (*NOT* the one that matched the IP from the (*1) step
+
+Click on 'Terminal'
+
+In the terminal type:
+
+[source,shell]
+----
+cat /pvtest/files/webfile1.txt
+----
+
+*Note that this separate Pod has the SAME file with the same contents*
+
+Switch back to the nodeatomic webservice browser tab
+
+Alter the end of the URL to read ‘Hello%20Again’ and press return
+
+Return to the OCP UI tab window (the terminal should still be active) and type:
+[source,shell]
+----
+cat /pvtest/files/webfile1.txt
+----
+
+*Again note the file has been updated by another container but this container shares the same file system.*
+
+Close the web service browser tab
+
+=== Demonstrating survivability of removal of all Pods
+
+Click on 'Workloads/Deployment Configs'
+
+Click on the nodeatomic DC
+
+Scale to ZERO pods
+
+Ensure the Pod graphic displays zero running Pods.
+
+Scale the deployment back up to ONE Pod using the arrows
+
+When the Pod indicator goes to dark blue indicating the Pod has started, click on Pods
+
+Select the one active Pod and click on it
+
+Click on 'Terminal'
+
+In the terminal window type:
+[source,shell]
+---
+cat /pvtest/files/webfile1.txt
+----
+
+*Note that the contents of the file have survived the destruction of ALL Pods*
+
+Click on 'Home/Projects'
+
+On the triple dot next to the ‘pvtestx’ project (where x is your user number) select Delete Project
+
+In the pop-up type ‘pvtestx’ (where x is your user number) and hit Delete
