@@ -16,12 +16,19 @@ The terminal URL can be derived by logging on to the RHPDS cluster as the opentl
 There are a couple of pre-requisites you need to do before starting the course:
 
 Log on as cluster admin (opentlc-mgr)
+
 Go to Operator Hub
+
 Search for ‘Pipeline’
+
 Select the Community OpenShift Pipelines Operator
+
 Install for all namespaces in the cluster
+
 Go to Operator Hub
+
 Select Red Hat Service Mesh
+
 Install for all namespaces in the cluster
 
 
