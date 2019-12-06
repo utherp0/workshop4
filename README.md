@@ -9,7 +9,11 @@ Generate the documentation for the attendees using Maven - clone this repo, go t
 
 mvn clean package -DfacilitatorName='YOUR NAME' -DfacilitatorEmail='YOUR EMAIL' -DfacilitatorTitle='YOUR JOB TITLE' -DwebConsoleUrl='CONSOLE URL FOR OCP4' -DterminalUrl='TERMINAL URL FOR OCP4'
 
-It is worth creating short URLs for the console and terminal using the internal Red Hat URL shortener for ease of use by the attendees.
+It is worth creating short URLs for the following URLs to be provided to the attendees:
+
+1: The Console URL (the console login point for the attendees)
+2: The Terminal URL (the URL for the 'command line in a window' application)
+3: The API Endpoint URL (the URL used to make direct calls, primarily for the Tekton chapter)
 
 The terminal URL can be derived by logging on to the RHPDS cluster as the opentlc-mgr user and looking at Networking/Routes for the Terminal application. 
 
