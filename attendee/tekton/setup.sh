@@ -16,6 +16,8 @@ if [ -z "$2" ]; then
   exit 0
 fi
 
+curl https://raw.githubusercontent.com/utherp0/workshop4/master/attendee/tekton/watch.sh > watch.sh
+
 sed -i 's#USER#'"$1"'#g' tasktest1.yaml
 
 sed -i 's#SERVER#'"$2"'#g' tasktest1.yaml
