@@ -21,3 +21,9 @@ spec:
       args:
         - "project"
         - "tektonNUMBER"
+    - name: whoami
+      image: quay.io/ilawson/oconline
+      command:
+        - oc
+      args:
+        - "whoami"
