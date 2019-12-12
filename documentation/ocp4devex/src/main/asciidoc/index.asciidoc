@@ -10,5 +10,6 @@ include::rbac.asciidoc[]
 include::pvs.asciidoc[]
 include::healthprobes.asciidoc[]
 include::camelk.asciidoc[]
+include::camelkocpserverless.asciidoc[]
 
 
