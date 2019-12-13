@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: tasklogin
+spec:
+  steps:
+    - name: logon
+      image: quay.io/ilawson/oconline
+      command:
+        - oc
+      args:
+        - "login"
+        - "--username=userNUMBER"
+        - "--password=openshift" 
+        - "--server=SERVER"
+        - "--insecure-skip-tls-verify"
+    - name: setproject
+      image: quay.io/ilawson/oconline
+      command:
+        - oc
+      args:
+        - "project"
+        - "tektonNUMBER"
+    - name: whoami
+      image: quay.io/ilawson/oconline
+      command:
+        - oc
+      args:
+        - "whoami"
