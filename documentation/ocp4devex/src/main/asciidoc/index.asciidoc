@@ -4,7 +4,7 @@
 include::intro.asciidoc[]
 include::applicationbasics.asciidoc[]
 include::deployments.asciidoc[]
-include::deploymentstrategies.asciidoc[]
+include::applicationdeploymentstrategies.asciidoc[]
 include::sdn.asciidoc[]
 include::rbac.asciidoc[]
 include::pvs.asciidoc[]

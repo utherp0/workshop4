@@ -1,4 +1,4 @@
-== Deployments Configurations and DevOps Approaches
+== Application Deployment Configurations and DevOps Approaches
 
 === Introduction
 
