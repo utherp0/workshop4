@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: taskclone
+spec:
+  steps:
+    - name: watchfetch
+      image: quay.io/ilawson/oconline
+      command:
+        - git
+      args:
+        - "clone"
+        - "https://github.com/utherp0/workshop4"
+    - name: watchchmod
+      image: quay.io/ilawson/oconline
+      command:
+        - chmod
+      args:
+        - "700"
+        - "workshop4/attendee/tekton/watch.sh"
+    - name: watchls
+      image: quay.io/ilawson/oconline
+      command:
+        - ls
+      args:
+        - "-al"
+        - "workshop4/attendee/tekton"

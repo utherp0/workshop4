@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: taskruntest
+  name: taskrunclone
 spec:
   taskRef:
-    name: taskwatch
+    name: taskclone
