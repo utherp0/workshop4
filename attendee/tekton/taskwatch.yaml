@@ -4,24 +4,15 @@ metadata:
   name: taskwatch
 spec:
   steps:
-    - name: watchfetch
+    - name: watchls
       image: quay.io/ilawson/oconline
       command:
-        - curl
+        - ls
       args:
-        - "https://raw.githubusercontent.com/utherp0/workshop4/master/attendee/tekton/watch.sh"
-        - ">"
-        - "watch.sh" 
-    - name: watchsetperm
-      image: quay.io/ilawson/oconline
-      command:
-        - chmod
-      args:
-        - "700"
-        - "watch.sh"
+        - "-alR"
     - name: watchwait
       image: quay.io/ilawson/oconline
       command:
         - /bin/bash
       args:
-        - "watch.sh"
+        - "workshop4/attendee/tekton/watch.sh"
