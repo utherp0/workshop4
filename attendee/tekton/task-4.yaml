@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-4
+spec:
+  inputs:
+    params:
+      - name: parameter1
+      - name: parameter2
+        default: "Default value for parameter 2"
+    resources:
+    - name: git-repo-slave
+      type: git
+  steps:
+    - name: echo-statement-1
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: ["Parameter 1 : $(inputs.params.parameter1)"]
+    - name: echo-statement-2
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: ["Parameter 2 : $(inputs.params.parameter2)"]
+    - name: view-workspace-content
+      image: quay.io/openshift/origin-cli:latest
+      command: ["ls"]

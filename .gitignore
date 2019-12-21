@@ -6,3 +6,5 @@ documentation/.project
 documentation/.settings
 documentation/.settings
 documentation/ocp4devex/.project
+.vscode/settings.json
+.vscode/spellright.dict
