@@ -26,6 +26,20 @@ oc adm policy add-role-to-user edit -z pipeline
 
 === Tasks
 
+==== Download pipeline assets
+
+*The pipeline assets are located in a GIT repository. Using your terminal window download the assets using the command below.*
+
+If you are using the terminal in a pod ensure that the current directory is /workspace. If you are using your local machine select an appropriate location to which you have write access.
+
+git clone https://github.com/utherp0/workshop4.git
+
+cd workshop4/attendee/tekton/
+
+ls -al
+
+You should now see a list of yaml files that are used during the remainder of this chapter.
+
 ==== Simple task creation and execution
 
 *In the simplest format a task can be executed by a taskrun object. The digram below shows a simple taskrun calling a single task.*
@@ -38,10 +52,10 @@ A new command line utility is used to manage the Tekton command line. The comman
 
 The Tekton command line is downloaded from here : https://github.com/tektoncd/cli 
 
+If you are using the terminal within a container (option 2) from the installation details in the Application Basics chapter then you already have the tkn command line available to you. If you have chosen to install the OC command line utility locally on your laptop then you will need to install tkn using the download location above.
+
 To use the command simply type 'tkn' and you will see help regarding the objects and to get help on a specific object use 'tkn <object> --help'.
 ****
-
---- Need to add something here regarding downloading the assets.
 
 *To execute the above pipeline use the following commands to create the pipeline objects. Note that when creating the taskrun objects the associated task(s) will run immediately.*
 
@@ -279,9 +293,56 @@ git-repo-slave-resource   git    url: https://github.com/marrober/slave-node-app
 
 *The use of pipeline resource objects for git repositories and created images (as output resources) helps teams to create generic build, test and deploy pipelines that can be reused across multiple projects where the projects simply define the custom pipeline resource objects that are specific to their project or environment.*
 
-=== Volumes
+=== Workspaces and Volumes
 
-*Volumes are used to create storage space for the steps within a task. For sharing data between steps within the same task an emptyDir volume type is an appropriate solution, however if you want data to persist across pipeline executions then a persistent volume is appropriate.* 
+*Workspaces allow you to organise the content used by tasks and the assets that are produced by tasks. This can be useful to add structure to the content during large complex pipelines. Workspaces are storage structures within the pod that runs the containers of the pipeline and workspaces are scoped at the task level. Separate steps within a task can see the same workspace. Volumes are similar to workspaces except for the fact that they are backed by persistent volumes. This ensures that content written to the volume is accessible by steps from multiple tasks, allowing for a greater separation of steps into different tasks. For example a generic build task could be used to create an executable, writing the deliverable to a volume. A separate testing task could then be invoked by a pipeline to perform tests against the newly created deliverable. Accessing the file via a volume will work for the two separate tasks.*
+
+*Task 5 has steps for creating files in the workspace and in a volume, followed by steps to display the files in the workspace and the volume which work fine. Task 6 only has tasks for attempting to display the content of the workspace and the volume. Since the workspace in task 6 is a different workspace to that used in task 5 there is no content to display. The volume however shows the file written in the step in task 5. Tasks 5 and 6 are orchestrated by the pipeline called pipeline-5.*
+
+Create the persistent volume claim to use in this exercise with the command :
+
+oc create -f persistentvolumeclaim.yaml
+
+Create tasks 5 and 6 :
+
+oc create -f task-5.yaml
+oc create -f task-6.yaml
+
+Create the pipeline task :
+
+oc create -f pipeline-5.yaml 
+
+*The persistent volume will show that it is in an pending state after creation as no resource has attempted to consume it. After the task has been executed look again at the persistent volume and it will show that it is bound.*
+
+oc get pvc
+
+*Before executing the task*
+
+[source,shell]
+----
+NAME                    STATUS        VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+tekton-task-cache-pvc   Pending                                                                            gp2            4s
+----
+
+*After executing the task*
+
+[source,shell]
+----
+NAME                    STATUS        VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+tekton-task-cache-pvc   Bound         pvc-1d894a93-2646-11ea-9f45-0a9970779e5c   1Gi        RWO            gp2            2m2s
+----
+
+
+Execute the pipeline :
+
+tkn pipeline start pipeline-5
+
+The results (including the colour of the output) is shown below:
+
+image::pipelines-6.png[Workspace and volume example output]
+
+*As shown above in task 5 the creation of the file in the workspace and in the volume functions as required and the files are present. When task 6 attempts to display the files there is an empty workspace, but the volume does show the file created in task 5*
+
 
 
 
