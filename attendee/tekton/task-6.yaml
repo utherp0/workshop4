@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-6
+spec:
+  steps:
+    - name: view-workspace-content
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash"]
+      args: ['-c', 'echo view workspace content && ls -al /workspace']
+    - name: view-volume-content
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash"]
+      args: ['-c', 'ls /var/run && cat /var/run/message']
+      volumeMounts:
+        - mountPath: /var/run
+          name: pipeline-cache
+  volumes:
+  - name: pipeline-cache
+    persistentVolumeClaim:
+      claimName: tekton-task-cache-pvc 

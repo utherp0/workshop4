@@ -2,7 +2,7 @@
 
 === Introduction
 
-This chapter will introduce the attendee to the mechanics of creating and manipulating Applications using OpenShift Container Platform. It will introduce the two distinct contexts of the User Interface, the Adminstrator and Developer views, and guide the attendee through creating some Applications.
+This chapter will introduce the attendee to the mechanics of creating and manipulating Applications using OpenShift Container Platform. It will introduce the two distinct contexts of the User Interface, the Administrator and Developer views, and guide the attendee through creating some Applications.
 
 TIP: The attendee will be using a browser for interacting with both the OpenShift Container Platform UI and the provided terminal (for command line exercises). It is suggested the attendee uses Chrome or Firefox.
 
@@ -12,9 +12,7 @@ Log on to cluster at {webConsoleUrl}[{webConsoleUrl}] as 'userx', where x is the
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
-*The Administrator view provides you with an extended functionality interface that allows you to deep dive into
-the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system 
-for developers. This workshop will have you swapping between the contexts for different tasks.*
+*The Administrator view provides you with an extended functionality interface that allows you to deep dive into the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system for developers. This workshop will have you swapping between the contexts for different tasks.*
 
 Click on 'Create Project'
 
@@ -182,23 +180,101 @@ Click on the ‘ocpnode’ Application in the topology - click on the ‘cross�
 
 === Interacting with OpenShift through the Command Line
 
-Open another tab in the browser and go to the terminal app route (noted earlier)
+With the OpenShift Enterprise command line interface (CLI), you can create applications and manage OpenShift projects from a terminal. 
+The CLI is ideal in situations where you are:
 
-Log on with the same user credentials as used for the Ux (i.e. userx and openshift)
+* Working directly with project source code.
+* Scripting OpenShift Enterprise operations.
+* Restricted by bandwidth resources and cannot use the web console.
 
-When the terminal window renders type:
+The CLI is available using the oc command:
+
+[source,shell]
+----
+oc {command}
+----
+
+You have two options to get a working CLI. Either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
+
+==== Option 1: Installing the CLI on localhost
+
+The easiest way to download the CLI is by accessing the Command Line Tools page on the web console from the question mark on teh top right corner [ (?)-> Command Line Tools ]
+
+image::applicationbasics-5.png[Command Line Tools]
+
+From this page you can download the oc and odo command line tools.
+
+If you wish to install the command line tools locally then you may also need to download and command line tools for OpenShift Pipelines (Tekton) and Kamel. Instructions on this is at the start of each chapter.
+
+==== Option 2: Use a pre-configured docker image on OpenShift
+
+This option installs and runs a docker image inside OpenShift that already has oc (and other command line tools) installed and configured. To install this image, do the following:
+
+Login to the OCP system through the UI. (userX / openshift)
+Ensure that you are in the Developer mode of the user interface by selecting Developer in the top left corner menu. Select the project drop down menu and select Create Project.
+Create a new project:
+Name: oconline-userX
+Display Name: OC Terminal
+
+You will then see a Topology view that allows you to create new workloads from a variety of sources as shown below:
+
+image::applicationbasics-6.png[Topology view]
+
+Select container image and paste into the image name :
+
+[source,shell]
+----
+quay.io/marrober/devex-terminal-4
+----
+
+Press the search button on the end of the line to force the application to examine the repository image.
+
+For the Application name enter : DevEx-Terminal
+For the Name : enter DevEx-Terminal
+Ensure the box is ticked for 'Create a route to the application'
+
+Click create.
+
+Wait for the pod to spin up and show a dark blue ring on the topology view.
+
+Click on the pod and on then on the resources tab on the right hand side click on the route. This will launch the terminal in a new browser window. 
+
+Keep this terminal window open for the remainder of the workshop for all of your command line interaction.
+
+[[setup-login]]
+=== Using your terminal (Both options)
+
+If this document refer to _your terminal_ it will either be on your localhost or the containerised terminal depending your option above.
+
+(Login options for the installed OC command line tool only).
+* In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
+* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full likne that behind with oc login --token......
+* Paste this into the command line window on your local machine where you have access to run the oc command. Note that oc must be added to your path.
+
+The response to executing the login command should look similar to that shown below :
+
+[source,shell]
+----
+Logged into "https://api.cluster-london-a6e1.london-a6e1.example.opentlc.com:6443" as "user1" using the token provided.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+----
+
+Make sure `oc` is working, type:
 
 [source,shell]
 ----
 oc whoami
-----
-
-Ensure the user listed is the user that was logged on
-
-[source,shell]
-----
 oc version
 ----
+
+image::screenshot_whoami_version.png[Basic oc commands]
+
+NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html]
+
+To explore the command line further execute the following commands and observe the results.
 
 [source,shell]
 ----
@@ -219,7 +295,7 @@ User should now be using the sandboxX project created and configured earlier
 oc get users
 ----
 
-*There is a level of permission within the OpenShift system called ''Cluster Admin''. This permission allows a User to access *any* of the objects on the 
+*There is a level of permission within the OpenShift system called ''Cluster Admin''. This permission allows a User to access any of the objects on the 
 system regardless of Project. It is effectively a super-user and as such normal users do not normally have this level of access.*
 
 [source,shell]
@@ -283,5 +359,7 @@ Select ‘move’ when it prompts whether you want to move it
 *This concept of Application grouping allows for much better visualisation of the complete application.*
 
 Continue on with the Deployments chapter, which uses the applications created here to show the capabilities of the deployment configuration and how to alter the behaviour and file system of a Container without changing the image.
+
+=== Download content for the workshops
 
 

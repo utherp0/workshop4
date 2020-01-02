@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-1
+spec:
+  steps:
+    - name: echo-statement-1
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: ["This is my first task in Tekton"]
+    - name: echo-statement-2
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: [
+        "------------------------------------------------------------\n",
+        " - This is a multi-line comment\n",
+        " - This is useful as a separator but each line has\n",
+        " - the title repeated next to it using different colours\n",
+        " - which helps with the identification of different tasks.\n",
+        "------------------------------------------------------------\n",
+      ]
