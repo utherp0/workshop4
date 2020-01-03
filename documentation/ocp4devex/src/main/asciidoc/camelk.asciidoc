@@ -1,5 +1,3 @@
-[[webconsole]]
-
 == Camel K on Openshift
 
 === Introduction

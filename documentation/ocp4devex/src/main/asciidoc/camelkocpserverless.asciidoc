@@ -1,5 +1,3 @@
-[[webconsole]]
-
 == Camel K and Openshift Serverless
 
 === Introduction
