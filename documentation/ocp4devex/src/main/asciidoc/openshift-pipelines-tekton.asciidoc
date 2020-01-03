@@ -52,7 +52,7 @@ A new command line utility is used to manage the Tekton command line. The comman
 
 The Tekton command line is downloaded from here : https://github.com/tektoncd/cli 
 
-If you are using the terminal within a container (option 2) from the installation details in the Application Basics chapter then you already have the tkn command line available to you. If you have chosen to install the OC command line utility locally on your laptop then you will need to install tkn using the download location above.
+If you are using the terminal within a container (option 2) from the installation details in the Application Basics chapter then you already have the tkn command line available to you. If you have chosen to install the command line utilities locally on your laptop then you will need to install tkn using the download location above.
 
 To use the command simply type 'tkn' and you will see help regarding the objects and to get help on a specific object use 'tkn <object> --help'.
 ****
@@ -306,6 +306,7 @@ oc create -f persistentvolumeclaim.yaml
 Create tasks 5 and 6 :
 
 oc create -f task-5.yaml
+
 oc create -f task-6.yaml
 
 Create the pipeline task :
