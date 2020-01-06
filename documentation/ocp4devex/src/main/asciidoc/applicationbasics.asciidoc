@@ -270,8 +270,6 @@ oc whoami
 oc version
 ----
 
-image::screenshot_whoami_version.png[Basic oc commands]
-
 NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html]
 
 To explore the command line further execute the following commands and observe the results.
@@ -360,6 +358,5 @@ Select ‘move’ when it prompts whether you want to move it
 
 Continue on with the Deployments chapter, which uses the applications created here to show the capabilities of the deployment configuration and how to alter the behaviour and file system of a Container without changing the image.
 
-=== Download content for the workshops
 
 
