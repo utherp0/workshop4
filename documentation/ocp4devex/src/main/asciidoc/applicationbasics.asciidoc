@@ -216,8 +216,11 @@ This option installs and runs a docker image inside OpenShift that already has o
 
 Login to the OCP system through the UI. (userX / openshift)
 Ensure that you are in the Developer mode of the user interface by selecting Developer in the top left corner menu. Select the project drop down menu and select Create Project.
+
 Create a new project:
+
 Name: oconline-userX
+
 Display Name: OC Terminal
 
 You will then see a Topology view that allows you to create new workloads from a variety of sources as shown below:
@@ -234,7 +237,9 @@ quay.io/marrober/devex-terminal-4
 Press the search button on the end of the line to force the application to examine the repository image.
 
 For the Application name enter : DevEx-Terminal
-For the Name : enter DevEx-Terminal
+
+For the Name enter : devex-terminal
+
 Ensure the box is ticked for 'Create a route to the application'
 
 Click create.
