@@ -128,7 +128,7 @@ In the Terminal window type (and replace x with your number):
 
 [source,shell]
 ----
-curl http://application1.networktest(x).svc.cluster.local:8080
+curl http://application1.networktestx.svc.cluster.local:8080
 ----
 
 *And this is the fully qualified version of the Service. by including the namespace/project name we can reach, effectively, any service on the SDN assuming the SDN has been configured to allow that. In this case we are just targeting our own Service from the application Container, now we will try the other application in the namespace.* 
@@ -141,7 +141,7 @@ In the terminal type:
 
 [source,shell]
 ----
-curl http://application2:8080’
+curl http://application2:8080
 ----
 
 *We can also connect to any of the Services hosted within the namespace/project by default*
@@ -163,7 +163,7 @@ Click on 'Network/Network Policies'
 
 For each of the policies listed click on the triple dot icon on the far right and choose ‘Delete Network Policy’.
 
-image::sdn-5.png
+image::sdn-5.png[Delete Network Policies]
 
 The Network Policy tab should display ‘No Network Policies Found’.
 
