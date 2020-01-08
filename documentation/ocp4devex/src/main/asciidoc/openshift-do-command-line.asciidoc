@@ -67,11 +67,25 @@ Component Shortcuts:
 
 === Logging in
 
+In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
+* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the server url beginning with https:// and ending with 6443.
+
 *To login using odo enter the command :*
 
-odo login <user-name>
+[source,shell]
+----
+odo login <copied-url-from-above> --username=userX --password=openshift
+----
 
-*If you are already logged in with the oc command then the credentials will be cached (assuming you use the same user name) and you will not have to enter a password.*
+for example :
+
+[source,shell]
+----
+odo login https://api.cluster-hursley-ac63.hursley-ac63.example.opentlc.com:6443 --username=user99 --password=openshift
+----
+
+
+*If you do not wish to display the password on the UI you can leave it off and be prompted.*
 
 *The odo command will evolve over time and it performs a check to see if you have the latest version each time it is used. If there is an update available you will see a prompt similar to that which is shown below, underneath the text reporting the project that you are using.*
 
@@ -103,7 +117,7 @@ ls -al
 
 === Create, push source & run cycle
 
-*Create a new project using the odo command replacing X with your user number below.*
+*Create a new application using the odo command replacing X with your user number below. This command will create a new project and the application within the project.*
 
 odo create nodejs node-app-slave --project master-slave-odo
 
