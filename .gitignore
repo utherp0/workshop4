@@ -8,3 +8,4 @@ documentation/.settings
 documentation/ocp4devex/.project
 .vscode/settings.json
 .vscode/spellright.dict
+attendee/slave/.odo/
