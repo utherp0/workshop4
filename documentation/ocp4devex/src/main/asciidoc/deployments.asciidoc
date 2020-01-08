@@ -236,7 +236,7 @@ Ignore the 404 (race condition) - click Back on the browser to go to the deploym
 
 Watch the colours of the Pods
 
-*Deployments can have one of two strategies. This example uses the 'Rolling' strategy which is designed for zero downtime deployments. It works but spinning up a single copy of the new Pod, and when that Pod reports as being healthy only then is one of the old Pods removed. This insures that at all times the required number of replicas are running healthy with no downtime for the Application itself.*
+*Deployments can have one of two strategies. This example uses the 'Rolling' strategy which is designed for zero downtime deployments. It works but spinning up a single copy of the new Pod, and when that Pod reports as being healthy only then is one of the old Pods removed. This ensures that at all times the required number of replicas are running healthy with no downtime for the Application itself.*
 
 Click on 'Workloads/Deployment Configs', click on the nodenews DC again
 
@@ -271,6 +271,6 @@ Click back on the browser to go to the Deployment Configs/nodenews overview
 
 Watch the colour of the Pod ring
 
-*In the case of a Recreate strategy the system insures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application*
+*In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application*
 
 
