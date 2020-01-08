@@ -73,7 +73,7 @@ Change the Builder Image Version to 8
 *The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
 versions.*
 
-Git repo - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews]
+Enter the following for the Git repo for the application - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews]
 
 In a separate browser tab go to https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews]
 
