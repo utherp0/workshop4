@@ -135,11 +135,11 @@ Leave Image Version as 2.4
 
 Set the git repo to ‘https://github.com/utherp0/forumstaticassets’
 
-Ensure the Application is ‘nodenews-app’
+Make sure the Application is ‘nodenews-app’
 
-Ensure the name is forumstaticassets
+Make sure the Name is forumstaticassets
 
-Ensure the ‘Create a Route’ checkbox is clicked
+Make sure the ‘Create a Route’ checkbox is clicked
 
 Click 'Create'
 
