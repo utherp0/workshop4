@@ -182,7 +182,7 @@ Type ‘:q!’ to quit out of the editor
 
 === Dependency Injection of sensitive information using Secrets
 
-*The config map to be written as a gile is actually written to the Container Hosts as a file, and then expressed into the running Container as a symbolic link. This is good but can be seen as somewhat insecure because the file is stored 'as-is' on the Container Hosts, where the Containers are executed*
+*The config map to be written as a file is actually written to the Container Hosts as a file, and then expressed into the running Container as a symbolic link. This is good but can be seen as somewhat insecure because the file is stored 'as-is' on the Container Hosts, where the Containers are executed*
 
 *For secure information, such as passwords, connection strings and the like, OpenShift has the concept of 'Secrets'. These act like config maps 'but' importantly the contents of the secrets are encrypted at creation, encrypted at storage when written to the Container Hosts and then unencrypted only when expressed into the Container, meaning only the running Container can see the value of the secret.*
 
