@@ -42,7 +42,7 @@ image::healthprobes-1.png[Project creation]
 
 *By default when you create a Project within OpenShift your user is given administration rights. This allows the user to create any objects that they have rights to create and to change the security and access settings for the project itself, i.e. add users as Administrators, Edit Access, Read access or disable other user's abilities to even see the project and the objects within.*
 
-*In the top left of the UI, where the label indicates the view mode, change the mode from Administrator to Developer and select the Topology view.*
+In the top left of the UI, where the label indicates the view mode, change the mode from Administrator to Developer and select the Topology view.
 
 Select ‘From Catalog’
 
@@ -129,18 +129,21 @@ Click on the Tick at the bottom left of the Pod. Note that this display can also
 
 Click on the arrow on the top right corner of the Pod, or click on the route URL shown in the right hand side resource details window. The application window will launch in a new browser window and should display text as shown below:
 
-*+Hello - this is the simple slave REST interface+*
+*+Hello - this is the simple slave REST interface v1.0+*
 
 === Liveness Probe
 
 *A number of probes will be created to show the different behaviours. The first probe will be a liveness probe that will result in the restart of the pod.*
 
+*Since this work will be done using the oc command line you need to switch the current oc command line to work with the new project using the command:*
+
+oc project probesX
+
+(Where X is the number that you used when you created the project)
+
 *To create the probe use the OC command line interface to execute the following command.*
 
-[source,shell]
-----
 oc set probe dc/node-app-slave --liveness --initial-delay-seconds=30 --failure-threshold=1 --period-seconds=10 --get-url=http://:8080/health
-----
 
 *The above probe will create a new liveness probe with the characteristics:*
 
@@ -158,10 +161,7 @@ deploymentconfig.apps.openshift.io/node-app-slave probes updated
 
 *Review the liveness probe information by executing the command:*
 
-[source,shell]
-----
 oc describe dc/node-app-slave
-----
 
 *The output of this command will include the following section that highlights the new liveness probe*
 
@@ -184,11 +184,8 @@ Pod Template:
 
 *Alternatively to view the probe in a different format use the command below:*
 
-[source,shell]
-----
-oc get dc/node-app-slave -o yaml
-----
 
+oc get dc/node-app-slave -o yaml
 
 *Part of the output will show:*
 
@@ -245,19 +242,15 @@ Switch to the application tab and put /health on the end of the url and hit retu
 
 *In order to experiment with the readiness probe it is necessary to switch off the liveness probe. This can either be done by changing the deployment configuration YAML definition using the web interface or by executing the following command line:*
 
-[source,shell]
-----
+
 oc set probe dc/node-app-slave --liveness --remove
-----
 
 === Readiness Probe
 
 *To create the probe use the OC command line interface to execute the following command.*
 
-[source,shell]
-----
+
 oc set probe dc/node-app-slave --readiness --initial-delay-seconds=30 --failure-threshold=3 --success-threshold=1  --period-seconds=5 --get-url=http://:8080/health
-----
 
 *The above command will create a new readiness probe with the characteristics:*
 
@@ -275,22 +268,18 @@ deploymentconfig.apps.openshift.io/node-app-slave probes updated
 ----
 
 *Review the probe created using the commands above:*
-[source,shell]
-----
+
 oc describe dc/node-app-slave
-----
+
 and
-[source,shell]
-----
+
 oc get dc/node-app-slave -o yaml
-----
 
 *View the state of the pod within the endpoints using the command below:*
 
-[source,shell]
-----
+
 oc get ep/node-app-slave -o yaml
-----
+
 
 *The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
 
@@ -365,10 +354,9 @@ image::healthprobes-5.png[Pod events showing activation of the readiness probe]
 
 View the state of the pod within the endpoints using the command below:
 
-[source,shell]
-----
+
 oc get ep/node-app-slave -o yaml
-----
+
 
 *The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
 
@@ -391,10 +379,9 @@ Switch to the OpenShift browser window that was showing the pod events.
 
 Select the terminal window tab and enter the command :
 
-[source,shell]
-----
+
 curl -k localhost:8080/restore
-----
+
 
 *You should see a response similar to that shown below (with a different IP address):*
 
@@ -405,10 +392,9 @@ curl -k localhost:8080/restore
 
 View the state of the pod within the endpoints using the command below:
 
-[source,shell]
-----
+
 oc get ep/node-app-slave -o yaml
-----
+
 
 *You should see that the line of interest, previously shown above, has changed back to that shown below:*
 

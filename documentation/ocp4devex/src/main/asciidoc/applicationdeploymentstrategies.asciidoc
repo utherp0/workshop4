@@ -45,7 +45,10 @@ image::deployment-strategies-1.png[Deployment artefacts]
 
 *To identify the URL of the route execute the command shown below:*
 
-oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"\n"}'
+[source,shell]
+----
+oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
+----
 
 *This will display a formatted URL with the 'http://' part at the beginning which will be similar to :*
 
@@ -54,7 +57,7 @@ http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.ope
 *To test the application use the command line window to issue a curl command to:
 
 
-curl -k <url from the above command>/ip
+curl -k <url from the above command>
 
 
 *The response should be as shown below (example ip address) :*
@@ -96,7 +99,10 @@ image::deployment-strategies-2.png[Deployment artefacts]
 
 *Get the URI of the route using the command :*
 
+[source,shell]
+----
 oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
+----
 
 *Copy the result of the above command and past it into the shell script below:*
 
@@ -110,7 +116,10 @@ for i in {1..1000}; do curl -k <URI> ; echo ""; sleep 1; done
 
 *Switch back to the original command window and execute the command below to patch the route to version 2 of the application.*
 
+[source,shell]
+----
 oc patch route/slave-app-route -p '{"spec":{"to":{"name":"slave-app-v2-0"}}}'
+----
 
 *Switch back to the command window with the shell script running and you should see the responses have a new ip address and now report v2 of the application. This has completed a migration from the old version of the application to the new.*
 
@@ -158,8 +167,10 @@ status:
 ----
 
 *Before moving to the A/B deployment strategy switch back to version v1 with the command:*
-
+[source,shell]
+----
 oc patch route/slave-app-route -p '{"spec":{"to":{"name":"slave-app-v1-0"}}}'
+----
 
 *Confirm this has worked in the command window executing the shell script.*
 
