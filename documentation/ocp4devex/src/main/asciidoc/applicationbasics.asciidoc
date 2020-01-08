@@ -194,7 +194,9 @@ The CLI is available using the oc command:
 oc {command}
 ----
 
-You have two options to get a working CLI. Either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
+For the duration of the course you will be using a provided Application hosted within OpenShift itself - this is reachable at {terminalUrl}[{terminalUrl}]
+
+If you want to optionally install the oc client or use the terminal applications plus additional command line tools, such as ODO and tkn, you have two options; either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
 
 ==== Option 1: Installing the CLI on localhost
 
@@ -322,6 +324,8 @@ oc get dc
 *DC is an abbreviation for Deployment Config. These are Objects that directly define how an Application is deployed within OpenShift. This is the ''ops''
 side of the OpenShift system. Deployment Configs are different to Kubernetes Deployments in that they are an extension and contain things such as Config Maps, Secrets, 
 Volume Mounts, labelled targetting of Nodes and the like.* 
+
+Enter the command below to tell OpenShift to scale the number of instances of the Deployment Config 'nodenews' to two rather than the default one.
 
 [source,shell]
 ----
