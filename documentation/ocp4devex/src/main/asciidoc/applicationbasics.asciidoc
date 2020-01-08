@@ -200,7 +200,7 @@ If you want to optionally install the oc client or use the terminal applications
 
 ==== Option 1: Installing the CLI on localhost
 
-The easiest way to download the CLI is by accessing the Command Line Tools page on the web console from the question mark on teh top right corner [ (?)-> Command Line Tools ]
+The easiest way to download the CLI is by accessing the Command Line Tools page on the web console from the question mark on the top right corner [ (?)-> Command Line Tools ]
 
 image::applicationbasics-5.png[Command Line Tools]
 
