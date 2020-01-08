@@ -12,6 +12,6 @@ include::healthprobes.asciidoc[]
 include::openshift-do-command-line.asciidoc[]
 include::openshift-pipelines-tekton.asciidoc[]
 include::camelk.asciidoc[]
-include::camelkocpserverless.asciidoc[]
+//include::camelkocpserverless.asciidoc[]
 
 
