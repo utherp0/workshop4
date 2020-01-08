@@ -52,10 +52,9 @@ oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
 
 *This will display a formatted URL with the 'http://' part at the beginning which will be similar to :*
 
-http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com
+http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
 
 *To test the application use the command line window to issue a curl command to:
-
 
 curl -k <url from the above command>
 

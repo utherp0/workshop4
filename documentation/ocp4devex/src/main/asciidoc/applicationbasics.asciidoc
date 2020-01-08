@@ -234,7 +234,9 @@ quay.io/marrober/devex-terminal-4
 Press the search button on the end of the line to force the application to examine the repository image.
 
 For the Application name enter : DevEx-Terminal
-For the Name : enter DevEx-Terminal
+
+For the Name : enter devex-terminal
+
 Ensure the box is ticked for 'Create a route to the application'
 
 Click create.
