@@ -196,6 +196,8 @@ oc {command}
 
 For the duration of the course you will be using a provided Application hosted within OpenShift itself - this is reachable at {terminalUrl}[{terminalUrl}]
 
+The first time you visit the terminal application you will be prompted for a logon - use the same credentials as your OpenShift logon, userx and openshift
+
 If you want to optionally install the oc client or use the terminal applications plus additional command line tools, such as ODO and tkn, you have two options; either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
 
 ==== Option 1: Installing the CLI on localhost
