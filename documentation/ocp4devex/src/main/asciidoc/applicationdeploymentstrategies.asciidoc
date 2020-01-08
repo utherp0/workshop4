@@ -44,7 +44,7 @@ It is important to understand the artefacts and content that are created by the 
 * A service is created as part of the application creation process. The service endpoints will point to the pod(s) created by the build process. In the case of a rebuild and redeploy operation the service endpoints are updated to point to the new pods in accordance with the deployment strategy of the deployment configuration.
 * The service is then exposed external to the cluster by the creation of a route. The route has a fully qualified domain name for access from machines outside the cluster. 
 
-The diagram below shows the above and how the relate together.
+The diagram below shows the above and how they relate together.
 
 image::deployment-strategies-1.png[Deployment artefacts]
 ****
