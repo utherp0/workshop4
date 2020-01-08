@@ -22,9 +22,7 @@ This workshop is designed to introduce Developers to *OpenShift 4* and explain t
 
 Red Hat® OpenShift® is a hybrid cloud, enterprise, secure Kubernetes application platform.
 
-OpenShift is a family of containerization software developed by Red Hat. 
-Its flagship product is the OpenShift Container Platform—an on-premises platform as a service built around OCI standard containers orchestrated and 
-managed by Kubernetes on a foundation of Red Hat Enterprise Linux. 
+OpenShift is an Enterprise strength, secure implementation of the Kubernetes container orchestration project with additional tooling designed to make the lives of Developer and Administrators as easy as possible.
 
 ==== Links
 

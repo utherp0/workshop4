@@ -10,7 +10,7 @@ TIP: The attendee will be using a browser for interacting with both the OpenShif
 
 Log on to cluster at {webConsoleUrl}[{webConsoleUrl}] as 'userx', where x is the number assigned to you by the course administrator, password 'openshift'
 
-Ensure you are on the Administrator View (top level, select Administrator)
+Ensure you are on the Administrator View - at the top left of the UI is a selection box which describes the current view selected.
 
 *The Administrator view provides you with an extended functionality interface that allows you to deep dive into the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system for developers. This workshop will have you swapping between the contexts for different tasks.*
 
@@ -127,7 +127,7 @@ Click 'From Catalog'
 
 Search for ‘httpd’
 
-Select the (httpd) template
+Select the (httpd) template - if there is more than one you want to select the one that is a *builder* and not the example application one
 
 Click on 'Create Application'
 
