@@ -121,8 +121,8 @@ Find the setting for ‘imagePullPolicy’. Put the cursor to the end of the lin
 [source,shell]
 ----
         volumeMounts:
-           - name: workshop-testfile
-             mountPath: /workshop/config
+          - name: workshop-testfile
+            mountPath: /workshop/config
 ----
 
 Make sure the indentation is the same as for the ‘imagePullPolicy’.
