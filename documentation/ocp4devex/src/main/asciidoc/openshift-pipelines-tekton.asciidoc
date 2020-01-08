@@ -18,12 +18,6 @@ Further documentation on the specifics of Tekton can be found on the github site
 
 oc new-project pipelines-userX
 
-*In order to use the pipeline capability of OpenShift within the project the following commands must be executed to manage the security profile of the project:*
-
-oc adm policy add-scc-to-user privileged -z pipeline
-
-oc adm policy add-role-to-user edit -z pipeline
-
 === Tasks
 
 ==== Download pipeline assets
