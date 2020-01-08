@@ -47,11 +47,11 @@ Click on ‘Create Config Map’
 
 In the editor change the name: from example to ‘nodenewsconfig’
 
-Delete all of the lines below data:
+Delete all of the lines below *data:*
 
 Add “  env1: test”
 
-Add “  env2:test2”
+Add “  env2: test”
 
 The YAML should look similar to the screenshot below, with your project name instead of sandbox99 and the name you have entered rather than CHANGETHIS.
 
