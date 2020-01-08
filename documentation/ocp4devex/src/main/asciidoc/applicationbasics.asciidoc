@@ -290,6 +290,8 @@ oc project sandboxX
 
 User should now be using the sandboxX project created and configured earlier
 
+Next we will try a command that will fail because of OpenShift's security controls
+
 [source,shell]
 ----
 oc get users
