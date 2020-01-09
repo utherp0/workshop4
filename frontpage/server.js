@@ -95,6 +95,19 @@ app.get( '/getterminal', function (req,res) {
   }
 });
 
+app.get( '/getdocurl', function (req,res) {
+  var targetURL = process.env["DOCUMENT_URL"];
+
+  if( targetURL == null )
+  {
+    res.send( "<i>Add DOCUMENT_URL env variable to deployment config...</i>");
+  }
+  else
+  {
+    res.send( targetURL );
+  }
+});
+
 app.get( '/envs', function (req,res) {
   res.send( getEnvs() );
 });
