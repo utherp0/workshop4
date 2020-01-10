@@ -1,8 +1,9 @@
-== Workshops
+== Advanced Workshop
 
-This repo contains workshop4 materials for attendees for various workshops.
+This contains the asciidoc material to generate documentation for the advanced module.
 
-To generate the documentation comment out the topics you *do not* need in the
-index.asciidoc and run the following command from the root directory:
+The advanced module covers the extra technical components of OCP4 including Tekton, Camel-K, Knative and ServiceMesh
+
+Run the following mvn command from the documentationadvanced directory:
 
 mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'
