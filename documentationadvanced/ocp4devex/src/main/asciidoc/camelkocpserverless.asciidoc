@@ -1,0 +1,280 @@
+== Camel K and Openshift Serverless
+
+=== Introduction
+
+Openshift Serverless, based on Knative is the serverless technology that was introduced in Openshift 4.2. Openshift Serverless enables Pods running on Openshift to be scaled to 0 therefore taking zero processing power. Only when called, Openshift Serverless will scale the Pod up on demand before processing the request. Openshift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
+
+Openshift Serverless supports "Serving" and "Eventing"
+
+"Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at eventing, and how easy it is to integration with Camel K.
+
+=== Create a new project
+
+In the browser based terminal window, create a new project called 'knative-userx' where 'x' is your allocated user number 
+
+[source,shell]
+----
+oc new-project knative-userx
+----
+
+=== Openshift Serverless and the Operator Lifecycle Manager
+
+.Openshift Serverless and the Operator Lifecycle Manager
+****
+Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will demonstrate the installation of the operator shortly.
+****
+
+=== Install Openshift Serverless
+
+The Openshift Serverless operator has to be installed by a higher level privilage. The presenter with demonstrate this to you shortly. 
+
+*'ADMIN only - Presenter demonstrates'*
+
+Ensure that the Camel K operator is installed. Instructions can be found in the Camel K on Openshift lab guide.
+
+Install Openshift Serverless:
+
+If you are not already logged on go to the UI URL and login as 'opentlc-mgr' (Don’t forget to explain that this is a cluster admin function) and the admin password
+
+Make sure you are on the 'Administration View' in the console
+
+Go to 'Operators/Operator Hub'
+
+Search for 'openshift serverless'
+
+Install for all 'namespaces' in the cluster
+
+image::camekknative-1.png[Serverless Operator Installation]
+
+Wait until 'Openshift Serverless' is shown as installed on the Operators/Installed Operators window
+
+NOTE: When complete, Status will say 'InstallSucceeded'
+
+Create a new project called knative-serving
+
+NOTE: Make sure you create the knative-serving project as cluster admin (opentlc-mgr)
+
+[source,shell]
+----
+oc new-project knative-serving
+----
+
+add Knative Serving custom resource definition
+
+[source,shell]
+----
+oc apply -f https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/master/knative/serving.yaml
+----
+
+*Wait for Knative serving to be ready, you can check this by typing the following (This will take a few minutes)*
+
+[source,shell]
+----
+oc get KnativeServing
+----
+
+Once Knative Serving is ready, it will look like the screenshot below
+
+image::camekknative-2.png[Knative Serving Ready]
+
+*Now install Knative eventing*
+
+Go to 'Operators/Operator Hub'
+
+Search for 'knative eventing'
+
+Click on 'Knative Eventing Operator'
+
+Install for all 'namespaces' in the cluster as per the screenshot below
+
+image::camekknative-3.png[Knative Eventing]
+
+Wait for the Operator to complete its installation
+
+*'ADMIN only - finished'*
+
+=== Download and configure your environment
+
+*If you completed the 'Camel K' on Openshift lab then you do not need to follow this set of instructions. Move on to 'Create Knative Messaging Channel'*
+
+Create a directory to download the examples
+
+[source,shell]
+----
+mkdir camel
+cd camel
+----
+
+Download the Camel K examples
+
+[source,shell]
+----
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
+----
+
+Create a new directory for the examples
+
+[source,shell]
+----
+mkdir examples
+----
+
+Uncompress the file
+
+[source,shell]
+----
+tar -xf camel-k-examples-1.0.0-M4.tar.gz -C examples
+----
+
+To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
+
+In the same directory, type
+
+[source,shell]
+----
+wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M4-linux-64bit.tar.gz
+----
+
+Uncompress the file
+[source,shell]
+----
+tar -xf camel-k-client-1.0.0-M4-linux-64bit.tar.gz
+----
+
+Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
+
+In the terminal window, type
+
+[source,shell]
+----
+oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/master/camelkconfig/integrationplatform.yaml
+----
+
+*You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.*
+
+=== Create Knative Messaging Channel 
+
+By default, Knative uses an in memory messaging channel. In this lab we will configure 2 of these channels to use with Camel K
+
+In the browser terminal window
+
+Type:
+
+[source,shell]
+----
+oc apply -f examples/knative/messages-channel.yaml
+oc apply -f examples/knative/words-channel.yaml
+----
+
+Make sure the channels have been created correctly
+
+Type:
+
+[source,shell]
+----
+oc get InMemoryChannel
+----
+
+You should see a screenshot like the one below
+
+image::camekknative-4.png[InMemory Channels Ready]
+
+You are looking for 'Ready' to be 'True'
+
+=== Deploy the Integrations
+
+.Introduction to the integrations that we will use
+****
+Now that we have deployed 2 message channels, we will deploy 3 Camel K Integrations. 'feed.groovy' will generate a simple sentence every 3 seconds, and send this to the 'message channel', 'splitter.groovy' will subscribe to the 'message channel', take the message, split the message into individual words before sending the individual words to 'words channel'. Finally, 'printer.groovy' will subscribe to the 'words.channel', read the words from the channel and print them to the output log.
+
+The flow looks like :-
+
+feed -> message channel -> spilter -> words channel -> printer
+
+****
+
+In the terminal window, deploy the 3 integrations
+
+[source,shell]
+----
+./kamel run examples/knative/feed.groovy
+./kamel run examples/knative/splitter.groovy
+./kamel run examples/knative/printer.groovy
+----
+
+Go to the developer view in the Openshift Console
+
+Make sure you have chosen the project 'knative-user1'
+
+NOTE: If this is the first time you've deployed a Camel K integration, it will take a few minutes to download the dependancies
+
+NOTE: Until the 'splitter.grovy' integration deploys, expect to see errors from the 'feed.groovy' integration.  
+
+Once, all 3 of the Integrations are deployed, the topology view should look like the screnshot below
+
+image::camekknative-5.png[Integrations running]
+
+Each of the integrations is producing log information. To view the log for a running pod in the console
+
+In the topology view, 
+
+Click inside the circle of an Integration to see the pop window, make sure the overview tab is selected. If should look like the screenshot below:-
+
+image::camekknative-6.png[Viewing overview of running Integration]
+
+On the overview page, you will see a 'pod selector'.
+
+'Click' on the pod selector
+
+This will show you a screen like the one below:-
+
+image::camekknative-7.png[Running Pod]
+
+'Click' on row entry under name e.g. splitter-zpsqt-deployment-77f946649-tfg5q in the screenshot above
+
+This will show you the pod details screen like the one below
+
+image::camekknative-8.png[Pod Details]
+
+'Click' on 'Logs' to view the log for the pod. It should look something like the one below
+
+image::camekknative-9.png[Pod Details]
+
+Repeat the steps above for the other 3 Integrations.
+
+=== Knative in action
+
+Make sure you are in the developer portal, looking at the Topology view before continuing
+
+The 2 Integrations "hooked" into Knative Eventing are the 'spilter' and 'printer' integrations. 
+
+Let's see if the promise of scale to zero works.
+
+To stop the integrations, we need to stop messages arriving at the "messages.channel". To do this, we need to stop the feed integration.
+
+Lets delete the 'feed.groovy' integration
+
+In the terminal browser window, type
+
+[source,shell]
+----
+./kamel delete feed
+----
+
+Go back to the topology view, you will notice that the feed integration has gone. 
+
+Show some patience now, keep lookng at the topology view, we are waiting (and hoping!) that the integrations scale down to zero.
+
+You will know when this starts as the rings around the circles will change from the normal blue to a very dark blue, before going white. Once they are white, the integrations are scaled to zero just like the screenshot below
+
+image::camekknative-10.png[Scaled to zero]
+
+To wake the Integrations up again, redeploy the 'feed' integration.
+
+[source,shell]
+----
+./kamel run examples/knative/feed.groovy
+----
+
+Go back to the topology view and you should see the 'feed' integration redeploy, and the 'spillter' and 'printer' integrations awake from their slumber!
+

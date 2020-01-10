@@ -1,0 +1,8 @@
+== Workshops
+
+This repo contains workshop4 materials for attendees for various workshops.
+
+To generate the documentation comment out the topics you *do not* need in the
+index.asciidoc and run the following command from the root directory:
+
+mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'
