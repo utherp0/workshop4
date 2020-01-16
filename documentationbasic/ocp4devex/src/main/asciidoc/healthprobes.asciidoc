@@ -320,7 +320,7 @@ subsets:
     protocol: TCP
 ----
 
-The lies of interest above are:
+The lines of interest above are:
 [source,shell]
 ----
 subsets:
