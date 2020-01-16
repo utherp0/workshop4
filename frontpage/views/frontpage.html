@@ -22,6 +22,7 @@
     function getURL()
     {
       $.ajax({url: "geturl", success: function( result ) {
+        alert(result);
         $("#outputURL").html(result);
       }});
     }
