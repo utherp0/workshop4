@@ -21,9 +21,12 @@
 
     function getURL()
     {
-      $.ajax({url: "geturl", success: function( result ) {
-        alert(result);
+      $.ajax({url: "geturl", success: function( result ) {        
         $("#outputURL").html(result);
+
+        targetLink = document.getElementById("URLlink");
+        targetLink.href = result;
+        targetLink.innerHTML = result;
       }});
     }
 
@@ -67,6 +70,7 @@
 <div align="center">
 <h1>Openshift Container Platform 4.2.x DevEx Workshop</h1><br/>
 <b class="outputLarge">Workshop Address: </b><span class="outputLarge" id="outputURL"></span><br/><br/>
+<b class="outputLarge">Workshop Address Test: </b><a class="outputLarge" id="URLlink" target="_new"></a><br/><br/>
 <b class="outputLarge">Terminal Address: </b><span class="outputLarge" id="outputTerminal"></span><br/><br/>
 <b class="outputLarge">Documentation Address: </b><span class="outputLarge" id="outputDocument"></span><br/><br/>
 <b class="outputLarge">Attendee Material: </b><span class="outputLarge">https://github.com/utherp0/workshop4/attendee</span><br/><br/>
