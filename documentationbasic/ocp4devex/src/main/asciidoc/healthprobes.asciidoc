@@ -377,11 +377,14 @@ Switch to the OpenShift browser window that was showing the pod events.
 
 *Note that you will see a large number of pod readiness probe failures while you were reading the notes.*
 
-Select the terminal window tab and enter the command :
+In the OpenShift Console choose Adminstrator View, then Workloads/Pods. Click on the Pod that is active and in the Pod information page click on the Terminal option.
 
+Within the Pod Terminal enter the command :
 
+[source,shell]
+----
 curl -k localhost:8080/restore
-
+----
 
 *You should see a response similar to that shown below (with a different IP address):*
 
