@@ -393,11 +393,14 @@ curl -k localhost:8080/restore
 "10.128.2.146 restore switch activated"sh-4.2$
 ----
 
+Now go back to the Terminal tab where you enter 'oc' commands
+
 View the state of the pod within the endpoints using the command below:
 
-
+[source,shell]
+----
 oc get ep/node-app-slave -o yaml
-
+----
 
 *You should see that the line of interest, previously shown above, has changed back to that shown below:*
 
