@@ -256,9 +256,10 @@ Keep this terminal window open for the remainder of the workshop for all of your
 If this document refer to _your terminal_ it will either be on your localhost or the containerised terminal depending your option above.
 
 (Login options for the installed OC command line tool only).
+
 * In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
-* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full likne that behind with oc login --token......
-* Paste this into the command line window on your local machine where you have access to run the oc command. Note that oc must be added to your path.
+* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full line that begins with `oc login --token`
+* Paste this command into your terminal where you have access to run the `oc` command. Note that `oc` must be added to your PATH.
 
 The response to executing the login command should look similar to that shown below :
 
