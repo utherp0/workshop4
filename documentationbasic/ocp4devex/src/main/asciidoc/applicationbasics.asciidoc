@@ -164,7 +164,7 @@ Leave at Builder Image Version 10
 
 Set the git repo to ‘https://github.com/utherp0/ocpnode’
 
-In the ‘Application’ pulldown select ‘Create Application
+In the ‘Application’ pulldown select ‘Create Application‘
 
 In the ‘Application Name’ enter ‘ocpnode-app’
 
@@ -251,9 +251,9 @@ Click on the pod and on then on the resources tab on the right hand side click o
 Keep this terminal window open for the remainder of the workshop for all of your command line interaction.
 
 [[setup-login]]
-=== Using your terminal (Both options)
+=== Using your terminal (both options)
 
-If this document refer to _your terminal_ it will either be on your localhost or the containerised terminal depending your option above.
+If this document refers to _your terminal_ it will either be on your localhost or the containerised terminal depending on your option above.
 
 (Login options for the installed OC command line tool only).
 * In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
