@@ -320,7 +320,7 @@ subsets:
     protocol: TCP
 ----
 
-The lies of interest above are:
+The lines of interest above are:
 [source,shell]
 ----
 subsets:
@@ -377,11 +377,14 @@ Switch to the OpenShift browser window that was showing the pod events.
 
 *Note that you will see a large number of pod readiness probe failures while you were reading the notes.*
 
-Select the terminal window tab and enter the command :
+In the OpenShift Console choose Adminstrator View, then Workloads/Pods. Click on the Pod that is active and in the Pod information page click on the Terminal option.
 
+Within the Pod Terminal enter the command :
 
+[source,shell]
+----
 curl -k localhost:8080/restore
-
+----
 
 *You should see a response similar to that shown below (with a different IP address):*
 
@@ -390,11 +393,14 @@ curl -k localhost:8080/restore
 "10.128.2.146 restore switch activated"sh-4.2$
 ----
 
+Now go back to the Terminal tab where you enter 'oc' commands
+
 View the state of the pod within the endpoints using the command below:
 
-
+[source,shell]
+----
 oc get ep/node-app-slave -o yaml
-
+----
 
 *You should see that the line of interest, previously shown above, has changed back to that shown below:*
 

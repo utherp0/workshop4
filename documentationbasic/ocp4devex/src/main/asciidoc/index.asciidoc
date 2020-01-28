@@ -1,4 +1,4 @@
-= OpenShift 4.x DevEx Workshop
+= OpenShift 4.x DevEx Basics Workshop
 {author} <{email}>
 
 include::intro.asciidoc[]
@@ -9,9 +9,3 @@ include::sdn.asciidoc[]
 include::rbac.asciidoc[]
 include::pvs.asciidoc[]
 include::healthprobes.asciidoc[]
-include::openshift-do-command-line.asciidoc[]
-include::openshift-pipelines-tekton.asciidoc[]
-include::camelk.asciidoc[]
-//include::camelkocpserverless.asciidoc[]
-
-

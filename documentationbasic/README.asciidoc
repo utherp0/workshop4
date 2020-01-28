@@ -1,0 +1,9 @@
+== Basic Workshop
+
+This contains the asciidoc material to generate documentation for the basic module.
+
+The basic module covers the core aspects of OCP4
+
+Run the following mvn command from the documentationbasic directory:
+
+mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'

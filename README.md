@@ -1,11 +1,13 @@
 # workshop4
-Developer Experience Workshop for OCP4.2+
+Developer Experience Workshops for OCP4.2+
 
-This repo contains all the collateral and material for running the DevEx Workshop for OCP4.2+
+This repo contains all the collateral and material for running the DevEx Workshops for OCP4.2+
 
 To run a workshop request an OpenShift4.2 Workshop via RHPDS.
 
-Generate the documentation for the attendees using Maven - clone this repo, go to the documentation directory and run:
+The workshop has been split into two components, a 'basics' and an 'advanced' module. These are built separately as documents and can be given independently - the course takes about 6-8 hours to do them both depending on attendee level.
+
+Generate the documentations for the attendees using Maven - clone this repo, go to the documentation directories (documentationbasic and documentationadvanced) and run:
 
 mvn clean package -DfacilitatorName='YOUR NAME' -DfacilitatorEmail='YOUR EMAIL' -DfacilitatorTitle='YOUR JOB TITLE' -DwebConsoleUrl='CONSOLE URL FOR OCP4' -DterminalUrl='TERMINAL URL FOR OCP4'
 
@@ -17,7 +19,7 @@ It is worth creating short URLs for the following URLs to be provided to the att
 
 The terminal URL can be derived by logging on to the RHPDS cluster as the opentlc-mgr user and looking at Networking/Routes for the Terminal application. 
 
-There are a couple of pre-requisites you need to do before starting the course:
+There are a couple of pre-requisites you need to do before starting the advanced course:
 
 Log on as cluster admin (opentlc-mgr)
 
