@@ -119,7 +119,7 @@ ls -al
 
 *Create a new application using the odo command replacing X with your user number below. This command will create a new project and the application within the project.*
 
-odo create nodejs node-app-slave --project master-slave-odo
+odo create nodejs node-app-slave --project master-slave-odo-userX
 
 *The syntax of the above command is :*
 
