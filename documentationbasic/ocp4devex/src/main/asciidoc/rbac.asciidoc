@@ -25,7 +25,7 @@ Click on 'Create'
 
 === Examining Service Accounts
 
-Once the project has been created, click on 'Administration/Service Accounts'
+Once the project has been created, click on 'User Management/Service Accounts'
 
 image::rbac-1.png[List of Service Accounts]
 
@@ -51,6 +51,8 @@ Set the Application Name to ‘rbac’
 
 Set the Name to ‘rbactest’
 
+In Resources set the deployment to DeploymentConfig
+
 Click 'Create'
 
 Click on the Node pod indicator so the informational panel appears
@@ -61,9 +63,7 @@ Once the build is complete ensure the deployment occurs. The Pod ring will turn 
 
 Switch back to Administrator view using the top left selection point
 
-Click on 'Home/Projects'
-
-Click on Administration/Role Bindings
+Click on User Management/Role Bindings
 
 image::rbac-2.png[Admin Role]
 
@@ -81,7 +81,7 @@ Click on the (CR) admin Role Ref
 
 === Adding Role Bindings to your namespace/project
 
-Click on 'Administration/Role Bindings'
+Click on 'User Management/Role Bindings'
 
 Click on 'Create Binding'
 
@@ -133,7 +133,7 @@ Confirm deletion in the pop-up message box
 
 === Giving Users lower levels of permission
 
-Click on 'Administration/Role Bindings'
+Click on 'User Management/Role Bindings'
 
 Click on 'Create Binding'
 
