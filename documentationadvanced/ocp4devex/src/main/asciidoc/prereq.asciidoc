@@ -28,6 +28,44 @@ Leave everything else as default and scroll down to the bottom of the page. Hit 
 
 Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
 
+In the topology page click on the 'Show URL' icon as shown below
+
+image::prereq-1.png[Selecting the Show URL]
+
+This will open another tab with a command line in it - this is your terminal for the duration of the advanced workshop
+
+Switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command' as shown below
+
+image:prereq-2.png[Selecting Copy Login]
+
+In the new tab that appears login with your userx (unique number instead of x) and password 'openshift'
+
+Click on 'Display Token'
+
+Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command
+
+Close this tab and switch to the terminal tab - if you have closed the terminal tab go back to the UI and select the 'Show URL' from the topology view in the Developer UI
+
+Paste and execute the command
+
+Press 'y' to use insecure connections
+
+The terminal should now be logged on - to check it try
+
+[source,shell]
+----
+oc whoami
+oc version
+----
+
+The terminal should display your user for the first command and the client and Kubernetes versions for the second command
+
+
+
+
+
+
+
 
 
 
