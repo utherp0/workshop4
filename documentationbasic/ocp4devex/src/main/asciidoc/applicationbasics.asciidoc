@@ -188,7 +188,7 @@ Ensure the ‘Create Route’ is checked
 
 Click 'Create'
 
-Click on the ‘ocpnode’ Application in the topology - click on the ‘cross’ icon (if you hang over it it will say 'Fit To Screen') situated at the bottom left of the Topology panel to centralise the topology
+Click on the ‘ocpnode’ Application in the topology - click on the image:expand-arrows.png[cross] icon (if you hang over it it will say 'Fit To Screen') situated at the bottom left of the Topology panel to centralise the topology
 
 *Now we have created a new Application grouping you will see two ''cloud'' groupings, labelled with the appropriate Application name you entered.*
 
