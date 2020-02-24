@@ -1,0 +1,34 @@
+== Workshop Pre-requisites
+
+=== Setting up the UI and Terminal
+
+*The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used whenever possible*
+
+Open the browser and navigate to the console url {webConsoleUrl}
+
+Logon using the user provided by the course administrator (userx where x is a unique number for your session)
+
+When logged on you will be presented with a screen listing the projects, of which there are currently none
+
+Hit 'Create Project'
+
+For 'Name' enter advterminalx, where x is your unique number
+
+'Display Name' and 'Description' are optional labels
+
+Once the project has been created (you will be given a dashboard) change the mode of the UI from Administrator to Developer by clicking on the top left of the UI where it says 'Administrator' and selecting 'Developer'
+
+On the Topology page it will state 'No workloads found' - Click on 'Container Image'
+
+In 'Image Name' enter 'quay.io/marrober/devex-terminal-4'
+
+Click on the search icon to the right of the text box
+
+Leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
+
+Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
+
+
+
+
+
