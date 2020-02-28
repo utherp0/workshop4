@@ -1,0 +1,7 @@
+---
+# file: main.yml
+
+# Deploy Knative Eventing - currently using community operator
+- name: Deploy Openshift Serverless Eventing Operator
+  shell: oc apply -f {{ role_path }}/files/serverlesseventingoperator.yaml
+  ignore_errors: no

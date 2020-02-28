@@ -6,7 +6,7 @@ Openshift Serverless, based on Knative is the serverless technology that was int
 
 Openshift Serverless supports "Serving" and "Eventing"
 
-"Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at eventing, and how easy it is to integration with Camel K.
+"Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at both serverless and eventing, and how easy it is to integration with Camel K.
 
 === Create a new project
 
