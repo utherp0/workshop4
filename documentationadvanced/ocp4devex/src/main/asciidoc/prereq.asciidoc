@@ -1,0 +1,72 @@
+== Workshop Pre-requisites
+
+=== Setting up the UI and Terminal
+
+*The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used whenever possible*
+
+Open the browser and navigate to the console url {webConsoleUrl}
+
+Logon using the user provided by the course administrator (userx where x is a unique number for your session)
+
+When logged on you will be presented with a screen listing the projects, of which there are currently none
+
+Hit 'Create Project'
+
+For 'Name' enter advterminalx, where x is your unique number
+
+'Display Name' and 'Description' are optional labels
+
+Once the project has been created (you will be given a dashboard) change the mode of the UI from Administrator to Developer by clicking on the top left of the UI where it says 'Administrator' and selecting 'Developer'
+
+On the Topology page it will state 'No workloads found' - Click on 'Container Image'
+
+In 'Image Name' enter 'quay.io/marrober/devex-terminal-4'
+
+Click on the search icon to the right of the text box
+
+Leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
+
+Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
+
+In the topology page click on the 'Show URL' icon as shown below
+
+image::prereq-1.png[Selecting the Show URL]
+
+This will open another tab with a command line in it - this is your terminal for the duration of the advanced workshop
+
+Switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command' as shown below
+
+image:prereq-2.png[Selecting Copy Login]
+
+In the new tab that appears login with your userx (unique number instead of x) and password 'openshift'
+
+Click on 'Display Token'
+
+Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command
+
+Close this tab and switch to the terminal tab - if you have closed the terminal tab go back to the UI and select the 'Show URL' from the topology view in the Developer UI
+
+Paste and execute the command
+
+Press 'y' to use insecure connections
+
+The terminal should now be logged on - to check it try
+
+[source,shell]
+----
+oc whoami
+oc version
+----
+
+The terminal should display your user for the first command and the client and Kubernetes versions for the second command
+
+
+
+
+
+
+
+
+
+
+

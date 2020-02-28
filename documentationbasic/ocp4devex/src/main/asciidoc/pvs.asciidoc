@@ -39,6 +39,8 @@ In Application Name put ‘nodeatomic’
 
 In Name put ‘nodeatomic’
 
+In Resources set the deployment to DeploymentConfig
+
 Click on ‘Create’
 
 When the Topology page appears click on the node Pod to see the information window
@@ -99,7 +101,9 @@ Click on ‘Save’
 
 *As we have changed the configuration of the Deployment, and the default triggers are set to redeploy if the Image changes OR the configuration of the Deployment changes, a redeployment will now occur.*
 
-When the deployment has completed, click on ‘Pods’
+image::pvs-1b.png[Active Application]
+
+When the deployment has completed, click on ‘Pods’ in the DeploymentConfig display (not Workloads/Pods)
 
 Select the first running Pod - take a note of its name (nodeatomic-2-xxxxx) - click on the Pod
 
@@ -125,7 +129,7 @@ ls -alZ /pvtest/files
 
 Click on 'Networking/Routes'
 
-On the Location of the nodeatomic RT (route) press the right mouse button (two fingers on the Mac mousepad) and select ‘Open link in new tab’
+Click on the Route address for the nodeatomic route - it should open in a separate tab
 
 Ensure the OpenShift NodeAtomic Example webpage is displayed
 
@@ -193,7 +197,7 @@ Click on 'Workloads/Deployment Configs'
 
 Click on the nodeatomic DC
 
-Scale to ZERO pods
+Scale to ZERO pods by clicking the down arrow displayed next to the Pod icon until the count reaches 0
 
 Ensure the Pod graphic displays zero running Pods.
 

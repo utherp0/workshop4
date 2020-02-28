@@ -41,6 +41,8 @@ Set the 'Application Name' to ‘application1-app’
 
 Set the 'Name' to 'application1'
 
+In Resources set the deployment type to DeploymentConfig
+
 Click 'Create'
 
 Click on ‘+Add’
@@ -59,6 +61,8 @@ Set the 'Application Name' to 'application2-app'
 
 Set the Name to ‘application2’
 
+In Resources set the deployment type to DeploymentConfig
+
 Click 'Create'
 
 Wait until both applications have built and deployed. The Topology view will look similar to the image below:
@@ -73,7 +77,7 @@ Click on 'Networking/Services'
 
 image::sdn-2.png[Example Services]
 
-*The Services UI shows the services currently availble in the Project. Note that there is a Service per application, so in this case there are two Services, application1 and application2. The Location is a singular IP address for each Service within the SDN - more on this later.*
+*The Services UI shows the services currently available in the Project. Note that there is a Service per application, so in this case there are two Services, application1 and application2. The Location is a singular IP address for each Service within the SDN - more on this later.*
 
 Click on 'Workloads/Deployment Configs'
 
@@ -81,7 +85,7 @@ Click on the application1 dc
 
 Using the arrows next to the Pod indicator scale the application to three replicas
 
-Click on ‘Pods’
+Click on ‘Pods’ in the DC view (not Workloads/Pods)
 
 image::sdn-3.png[Pod Listing]
 

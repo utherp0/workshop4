@@ -81,7 +81,7 @@ In a separate browser tab go to https://github.com/utherp0/nodenews[https://gith
 
 Close the github tab
 
-Back at the OCP4.2 Ux leave the Application as ‘Create Application’.
+Back at the OCP4.3 UI click on the 'Application Name' entry box. It will auto-fill with the Application Name and the Name will auto-fill as well. 
 
 *OpenShift 4 introduces the concept of Application Grouping. This allows a visualisation of multiple Applications in the same 'group', making visibility of the Application much 
 simpler.*
@@ -89,6 +89,10 @@ simpler.*
 Ensure the application name is ‘nodenews-app’
 
 Ensure the Name is ‘nodenews’
+
+Scroll down to 'Resources'. Click the selection box for 'Deployment Config' rather than the default of 'Deployment'
+
+*OpenShift supports the Kubernetes mechanism of 'Deployment' but DeploymentConfigs are more advanced and offer more features for deploying an application, including strategies.*
 
 Ensure the ‘Create Route is checked’
 
@@ -105,6 +109,8 @@ the build. Once a build has completed this side panel shows the Pods that are ru
 exported for the Application and the routes, if the Application has any.*
 
 Wait for the Build to finish, the Pod to change from Container Creating to Running
+
+image::applicationbasics-4b.png[Node Sidepanel with App Running]
 
 *When an Application is created the Pod ring will be empty, indicating that an Application will appear once the build has completed. When the build 
 completes the Pod ring will switch to light blue, indicating the Pod is being pulled (the image is being pulled from the registry to the Node where the 
@@ -127,7 +133,7 @@ Click 'From Catalog'
 
 Search for ‘httpd’
 
-Select the (httpd) template - if there is more than one you want to select the one that is a *builder* and not the example application one
+Select the Apache HTTP Server (httpd) template - Note that there are two options, you want to choose the one that is labelled (httpd) and starts with the text 'Build and serve static content'
 
 Click on 'Create Application'
 
@@ -137,7 +143,11 @@ Set the git repo to ‘https://github.com/utherp0/forumstaticassets’
 
 Make sure the Application is ‘nodenews-app’
 
+Click on the entry point for 'Name' - it should autofill
+
 Make sure the Name is forumstaticassets
+
+In the Resources section leave the Deployment as 'Deployment'
 
 Make sure the ‘Create a Route’ checkbox is clicked
 
@@ -148,7 +158,9 @@ the group as a single action.*
 
 Click on the forumstaticassets Pod
 
-Watch the build complete, the Container Creating and the Running event
+Watch the build complete, the Container Creating and the Running event.
+
+image::applicationbasics-4c.png[Multi-app topology]
 
 Click 'Add'
 
@@ -170,13 +182,17 @@ In the ‘Application Name’ enter ‘ocpnode-app’
 
 Ensure the Name is ‘ocpnode’
 
+In 'Resources' set the deployment type to DeploymentConfig
+
 Ensure the ‘Create Route’ is checked
 
 Click 'Create'
 
-Click on the ‘ocpnode’ Application in the topology - click on the ‘cross’ icon situated at the bottom left of the Topology panel to centralise the topology
+Click on the ‘ocpnode’ Application in the topology - click on the image:expand-arrows.png[cross] icon (if you hang over it it will say 'Fit To Screen') situated at the bottom left of the Topology panel to centralise the topology
 
 *Now we have created a new Application grouping you will see two ''cloud'' groupings, labelled with the appropriate Application name you entered.*
+
+image::applicationbasics-4d.png[Multi-app topology]
 
 === Interacting with OpenShift through the Command Line
 
@@ -197,6 +213,8 @@ oc {command}
 For the duration of the course you will be using a provided Application hosted within OpenShift itself - this is reachable at {terminalUrl}[{terminalUrl}]
 
 The first time you visit the terminal application you will be prompted for a logon - use the same credentials as your OpenShift logon, userx and openshift
+
+*For the sakes of simplicity we advise you use the Terminal application provided - the following instructions for installation are completely optional*
 
 If you want to optionally install the oc client or use the terminal applications plus additional command line tools, such as ODO and tkn, you have two options; either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
 
@@ -256,9 +274,10 @@ Keep this terminal window open for the remainder of the workshop for all of your
 If this document refers to _your terminal_ it will either be on your localhost or the containerised terminal depending on your option above.
 
 (Login options for the installed OC command line tool only).
+
 * In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
-* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full likne that behind with oc login --token......
-* Paste this into the command line window on your local machine where you have access to run the oc command. Note that oc must be added to your path.
+* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full line that begins with `oc login --token`
+* Paste this command into your terminal where you have access to run the `oc` command. Note that `oc` must be added to your PATH.
 
 The response to executing the login command should look similar to that shown below :
 
@@ -361,13 +380,21 @@ Note the metrics for the project
 
 Click on 'Workloads' and then select Pods.
 
+In the headers for the Pods panel you will see a number of selectable points describing the types of Pods.
+
+Click on 'Running' to toggle them off
+
+Click on 'Completed' to toggle them on
+
+*Note that all the builds and deployments you have done, for the deployments that have a DeploymentConfig, have completed Pods. All of the actions are executed in separate Pods which is one of the key features that makes OpenShift so scaleable*
+
 Change to Developer mode and then select Topology if the Topology page isn’t already shown
 
-Click and hold on the forumstaticassets Pod and drag it onto the ocpnode-app
+Hold down the shift button, click and hold on the forumstaticassets icon, and pull it out of the application grouping graphic. Release the hold on the forumstaticassets icon.
 
-Select ‘move’ when it prompts whether you want to move it
+*The UI will now promnpt you if you wish to remove the application component. Select Remove. This component is now separated from the application group*
 
-*This concept of Application grouping allows for much better visualisation of the complete application.*
+Now hold down the shift button again, click and hold on the free floating forumstaticassets icon, and drag back over the boundary displayed for the nodenews-app application group. Release the hold and the application should be re-grouped.
 
 Continue on with the Deployments chapter, which uses the applications created here to show the capabilities of the deployment configuration and how to alter the behaviour and file system of a Container without changing the image.
 

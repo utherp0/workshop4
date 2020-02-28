@@ -1,7 +1,8 @@
-= OpenShift 4.x DevEx Advanced Workshop
+= OpenShift 4.3 DevEx Advanced Workshop
 {author} <{email}>
 
 include::intro.asciidoc[]
+include::prereq.asciidoc[]
 include::openshift-do-command-line.asciidoc[]
 include::openshift-pipelines-tekton.asciidoc[]
 include::camelk.asciidoc[]
