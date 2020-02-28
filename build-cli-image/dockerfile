@@ -6,26 +6,27 @@ RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/cli
 tar -C /tmp -xf /tmp/oc.tar.gz --no-same-owner && \
 mv /tmp/oc /usr/local/bin && \
 chmod +x /usr/local/bin/oc && \
-rm /tmp/* &&
+rm /tmp/*
 
 RUN curl -sL -o /tmp/tkn.tar.gz https://github.com/tektoncd/cli/releases/download/v0.6.0/tkn_0.6.0_Linux_x86_64.tar.gz && \
 tar -C /tmp -xf /tmp/tkn.tar.gz --no-same-owner && \
 mv /tmp/tkn /usr/local/bin && \
 chmod +x /usr/local/bin/tkn && \
-rm /tmp/* &&
+rm /tmp/*
 
 RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-M4/camel-k-client-1.0.0-M4-linux-64bit.tar.gz && \
 tar -C /tmp -xf /tmp/kamel.tar.gz --no-same-owner && \
 mv /tmp/kamel /usr/local/bin && \
 chmod +x /usr/local/bin/kamel && \
-rm /tmp/* && 
+rm /tmp/*
 
 RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 && \
 chmod +x /usr/local/bin/odo
+
+RUN dnf -y install podman container-selinux --enablerepo updates-testing
 
 run chmod a+w /tmp
 
 run useradd student
 
 USER student
-
