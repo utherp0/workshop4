@@ -6,6 +6,8 @@ Apache Camel K is a lightweight integration framework built from Apache Camel th
 
 Users of Camel K can instantly run integration code written in Camel DSL on their preferred cloud (Kubernetes or OpenShift).
 
+The purpose of this lab is to show you how easy it is to build, deploy, and delete Camel K integations using very simple examples. It is not the goal of this lab to demonstrate the integration capabilities of Camel K.
+
 We are going to use a new project to create our Camel K integrations
 
 TIP: If you are not already logged on go to the UI URL and login as userx (x is the number provided to you) and password openshift. Open another tab in the browser and go to the terminal URL provided and again logon as userx with password openshift
@@ -23,53 +25,10 @@ oc new-project camelk-userx
 
 .Camel K and the Operator Lifecycle Manager
 ****
-Camel K uses the Operator Lifecycle manager, this means that new Custom Resource Definitions (CRDs) will be added to Openshift. These CRDs will extend the Openshift data model and allow Camel K to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will demonstrate the installation of the operator shortly.
+Camel K uses the Operator Lifecycle manager, this means that new Custom Resource Definitions (CRDs) will be added to Openshift. These CRDs will extend the Openshift data model and allow Camel K to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage. Please check with the presenter to ensure the operator has already been installed
 ****
 
-Before installing Camel K, make sure that the CRDs do not exist.
-
-In the terminal window type
-
-[source,shell]
-----
-oc whoami
-----
-
-If the response from the command is not your user name. Type ‘oc login’ and enter your username (userx) and password ‘openshift’. Rather than using your username and password, you could also use the recommended solution in the web console overview.
-
-In the terminal browser window, type:-
-
-[source,shell]
-----
-oc get integrations
-oc get integrationplatforms
-----
-
-Both of these commands should return a *resource type* error
-
-*'ADMIN only - Presenter demonstrates'*
-
-Explain both of the above CRDs and what they are used for in Camel K
-
-Install Camel K:
-
-If you are not already logged on go to the UI URL and login as 'opentlc-mgr' (Don’t forget to explain that this is a cluster admin function) and the admin password
-
-Make sure you are on the 'Administration View' in the console
-
-Go to 'Operators/Operator Hub'
-
-Search for 'camel k'
-
-Install for all 'namespaces' in the cluster
-
-image::camelk-1.png[Camel K Operator Installation]
-
-Wait until the 'Camel K Operator' is shown as installed on the Operators/Installed Operators window
-
-*'ADMIN only - finished'*
-
-In the browser terminal window
+If the presenter is busy, you can check yourself. In the browser terminal window
 Type:
 
 [source,shell]
@@ -78,11 +37,15 @@ oc get integrations
 oc get integrationplatforms
 ----
 
-This time, both commands should return “no resources found”
+If these commands do not return an error, the Camel K operator is installed.
+
+If an error is returned, please speak to the presenter before continuing.
 
 Download the 'Camel K' examples using the browser terminal :-
 
 === Download and configure your environment
+
+Perform the following commands in the browser terminal
 Create a directory to download the examples
 
 [source,shell]
@@ -95,7 +58,7 @@ Download the Camel K examples
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
+wget https://github.com/utherp0/workshop4/raw/master/camelfiles/camelexamples/camel-k-examples-1.0.0-RC2.tar.gz
 ----
 
 Create a new directory for the examples
@@ -109,7 +72,7 @@ Uncompress the file
 
 [source,shell]
 ----
-tar -xf camel-k-examples-1.0.0-M4.tar.gz -C examples
+tar -xf camel-k-examples-1.0.0-RC2.tar.gz -C examples
 ----
 
 To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
@@ -118,13 +81,13 @@ In the same directory, type
 
 [source,shell]
 ----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M4-linux-64bit.tar.gz
+wget https://github.com/utherp0/workshop4/raw/master/camelfiles/camelkcli/camel-k-client-1.0.0-RC2-linux-64bit.tar.gz
 ----
 
 Uncompress the file
 [source,shell]
 ----
-tar -xf camel-k-client-1.0.0-M4-linux-64bit.tar.gz
+tar -xf camel-k-client-1.0.0-RC2-linux-64bit.tar.gz
 ----
 
 Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
@@ -133,7 +96,7 @@ In the terminal window, type
 
 [source,shell]
 ----
-oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/master/camelkconfig/integrationplatform.yaml
+oc apply -f https://raw.githubusercontent.com/utherp0/workshop4/master/camelfiles/camelkplatform/integrationplatform.yaml
 ----
 
 *You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.*
@@ -157,7 +120,11 @@ You can see what’s going on :-
 
 If you go to the console UI in the Browser, make sure you are switched to 'Developer view'
 
-Click on 'Topology'
+Click on 'Advanced'
+
+Click on 'Topology / Project Details' - The activity pane on the far right will show you whats going on. It will look similar to the one below
+
+image::camelk-2a.png[Deploying Camel K activity]
 
 Click on 'Simple' (this is your integration), and you can see what’s going on.
 

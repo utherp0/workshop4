@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+
+  roles:
+    - login_ocp
+    - deploy_serverless_operator
+    - deploy_serverlesseventing_operator
+    - deploy_camelk_operator

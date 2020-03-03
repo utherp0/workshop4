@@ -1,0 +1,7 @@
+---
+# file: main.yml
+
+# Deploy Camel K operator - currently using community operator
+- name: Deploy Camel K Operator
+  shell: oc apply -f {{ role_path }}/files/camelkoperator.yaml
+  ignore_errors: no
