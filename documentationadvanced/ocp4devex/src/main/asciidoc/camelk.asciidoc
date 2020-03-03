@@ -43,6 +43,9 @@ If an error is returned, please speak to the presenter before continuing.
 
 Download the 'Camel K' examples using the browser terminal :-
 
+// Using the terminal created by Mark with Kamel cli and examples pre-installed so not required for now
+////  
+
 === Download and configure your environment
 
 Perform the following commands in the browser terminal
@@ -74,6 +77,7 @@ Uncompress the file
 ----
 tar -xf camel-k-examples-1.0.0-RC2.tar.gz -C examples
 ----
+//// 
 
 To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
 
