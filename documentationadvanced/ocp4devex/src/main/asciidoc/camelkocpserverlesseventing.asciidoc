@@ -1,4 +1,4 @@
-== Camel K and Openshift Serverless
+== Camel K and Openshift Serverless Eventing
 
 === Introduction
 
