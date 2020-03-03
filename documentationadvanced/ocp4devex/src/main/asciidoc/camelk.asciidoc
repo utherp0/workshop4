@@ -135,9 +135,12 @@ If you go to the console UI in the Browser, make sure you are switched to 'Devel
 
 Click on 'Advanced'
 
-Click on 'Topology / Project Details' - The activity pane on the far right will show you whats going on. It will look similar to the one below
+Click on 'Topology / Project Details' - The activity pane on the far right will show you whats going on. It will look similar to the one below (please be patient)
 
 image::camelk-2a.png[Deploying Camel K activity]
+
+
+Once the deployment is complete, you will see 'Simple' deployed on the topology view
 
 Click on 'Simple' (this is your integration), and you can see what’s going on.
 
@@ -238,20 +241,11 @@ image::camelk-5.png[Developer Mode]
 
 
 
-For the next exercise, you will need 2 terminal windows.
+NOTE: For the next exercise, you will need 2 terminal windows. Copy the URL for the “browser terminal” and paste into a new browser tab
 
-Copy the URL for the “browser terminal” and paste into a new browser tab
+*In the first tab, you will notice that the terminal window is outputting the log - useful!* 
 
-It should look something like :-
-https://xxxxxxxxxxxxx/terminal/session/1
-
-
-*You will notice that the terminal window is also outputting the log, you need to create a new terminal session* 
-
-Change the url to a new session number e.g.
-https://xxxxxxxxxxxxx/terminal/session/2
-
-In the new terminal, make sure you go back to the camel directory - if you followed the instructions, it will be called 'camel' (cd 'camel')
+In the new terminal, make sure you go back to the 'workspace' directory.
 
 Make another change to the text in “simple.groovy” by following the same instructions above
 
