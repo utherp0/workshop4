@@ -105,23 +105,23 @@ image::camekknative-5.png[Integrations running]
 
 Each of the integrations is producing log information. To view the log for a running pod in the console
 
-In the topology view, 
+At the time of writing, there is no easy way to view the pod log files of a knative service in the console, so in the developer view
 
-Click inside the circle of an Integration to see the pop window, make sure the overview tab is selected. If should look like the screenshot below:-
+click on advanced
+
+click on Project details, and choose workloads, your screen should look similar to the one below
 
 image::camekknative-6.png[Viewing overview of running Integration]
 
-On the overview page, you will see a 'pod selector'.
+For each workload, you should see a '1 or 1 pods' on the right hand side. 'Click' on one of these.
 
-'Click' on the pod selector
-
-This will show you a screen like the one below:-
+You should see a screen similar to the one below
 
 image::camekknative-7.png[Running Pod]
 
-'Click' on row entry under name e.g. splitter-zpsqt-deployment-77f946649-tfg5q in the screenshot above
+'Click' on the row name e.g. printer-xxxxxxxxxxxx
 
-This will show you the pod details screen like the one below
+This should show you a screen similar to the one below
 
 image::camekknative-8.png[Pod Details]
 
@@ -129,13 +129,13 @@ image::camekknative-8.png[Pod Details]
 
 image::camekknative-9.png[Pod Details]
 
-Repeat the steps above for the other 3 Integrations.
+Repeat the steps above for the other 2 Integrations if you like.
 
 === Knative in action
 
-Make sure you are in the developer portal, looking at the Topology view before continuing
+Make sure you are in the developer view of the console, looking at the Topology view before continuing
 
-The 2 Integrations "hooked" into Knative Eventing are the 'spilter' and 'printer' integrations. 
+The 2 Integrations "hooked" into Knative Eventing are the 'spilter' and 'printer' integrations (you can visually see this on the topology view). 
 
 Let's see if the promise of scale to zero works.
 
