@@ -6,7 +6,18 @@ Openshift Serverless, based on Knative is the serverless technology that was int
 
 Openshift Serverless supports "Serving" and "Eventing"
 
+At the time of writing, Serving is in technology preview, and Eventing is in Developer Preview
+
 "Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at both serverless and eventing, and how easy it is to integration with Camel K.
+
+Whilst Openshift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into Openshift Serverless.
+
+=== Openshift Serverless and the Operator Lifecycle Manager
+
+.Openshift Serverless and the Operator Lifecycle Manager
+****
+Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will have already set these up for you.
+****
 
 === Create a new project
 
@@ -17,144 +28,22 @@ In the browser based terminal window, create a new project called 'knative-userx
 oc new-project knative-userx
 ----
 
-=== Openshift Serverless and the Operator Lifecycle Manager
-
-.Openshift Serverless and the Operator Lifecycle Manager
-****
-Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilage so the presenter will demonstrate the installation of the operator shortly.
-****
-
-=== Install Openshift Serverless
-
-The Openshift Serverless operator has to be installed by a higher level privilage. The presenter with demonstrate this to you shortly. 
-
-*'ADMIN only - Presenter demonstrates'*
-
-Ensure that the Camel K operator is installed. Instructions can be found in the Camel K on Openshift lab guide.
-
-Install Openshift Serverless:
-
-If you are not already logged on go to the UI URL and login as 'opentlc-mgr' (Don’t forget to explain that this is a cluster admin function) and the admin password
-
-Make sure you are on the 'Administration View' in the console
-
-Go to 'Operators/Operator Hub'
-
-Search for 'openshift serverless'
-
-Install for all 'namespaces' in the cluster
-
-image::camekknative-1.png[Serverless Operator Installation]
-
-Wait until 'Openshift Serverless' is shown as installed on the Operators/Installed Operators window
-
-NOTE: When complete, Status will say 'InstallSucceeded'
-
-Create a new project called knative-serving
-
-NOTE: Make sure you create the knative-serving project as cluster admin (opentlc-mgr)
-
-[source,shell]
-----
-oc new-project knative-serving
-----
-
-add Knative Serving custom resource definition
-
-[source,shell]
-----
-oc apply -f https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/master/knative/serving.yaml
-----
-
-*Wait for Knative serving to be ready, you can check this by typing the following (This will take a few minutes)*
-
-[source,shell]
-----
-oc get KnativeServing
-----
-
-Once Knative Serving is ready, it will look like the screenshot below
-
-image::camekknative-2.png[Knative Serving Ready]
-
-*Now install Knative eventing*
-
-Go to 'Operators/Operator Hub'
-
-Search for 'knative eventing'
-
-Click on 'Knative Eventing Operator'
-
-Install for all 'namespaces' in the cluster as per the screenshot below
-
-image::camekknative-3.png[Knative Eventing]
-
-Wait for the Operator to complete its installation
-
-*'ADMIN only - finished'*
-
-=== Download and configure your environment
-
-*If you completed the 'Camel K' on Openshift lab then you do not need to follow this set of instructions. Move on to 'Create Knative Messaging Channel'*
-
-Create a directory to download the examples
-
-[source,shell]
-----
-mkdir camel
-cd camel
-----
-
-Download the Camel K examples
-
-[source,shell]
-----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelexamples/camel-k-examples-1.0.0-M4.tar.gz
-----
-
-Create a new directory for the examples
-
-[source,shell]
-----
-mkdir examples
-----
-
-Uncompress the file
-
-[source,shell]
-----
-tar -xf camel-k-examples-1.0.0-M4.tar.gz -C examples
-----
-
-To allow a developer to easily interact with an Openshift cluster, Camel K has it's own command line interface. Download the 'Camel K cli' :-
-
-In the same directory, type
-
-[source,shell]
-----
-wget https://github.com/pprosser-redhat/devex-camelk/raw/master/camelkcli/camel-k-client-1.0.0-M4-linux-64bit.tar.gz
-----
-
-Uncompress the file
-[source,shell]
-----
-tar -xf camel-k-client-1.0.0-M4-linux-64bit.tar.gz
-----
-
 Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
 
 In the terminal window, type
 
 [source,shell]
 ----
-oc apply -f   https://raw.githubusercontent.com/pprosser-redhat/devex-camelk/master/camelkconfig/integrationplatform.yaml
+oc apply -f https://raw.githubusercontent.com/utherp0/workshop4/master/camelfiles/camelkplatform/integrationplatform.yaml
 ----
-
-*You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.*
 
 === Create Knative Messaging Channel 
 
+Openshift Serverless uses Knative eventing, Knative eventing is a loosely couple asynchronous architecture allowing event producers to send an event to one or more event consumers. Event Consumers can be scaled to 0 when no events are folowing through the system.
+
 By default, Knative uses an in memory messaging channel. In this lab we will configure 2 of these channels to use with Camel K
+
+Options are also available to replace in memory messaging with other event sources such as the Kafka Channel. By combining Camel K and Red Hat AMQ Streams (Red Hats Kafka Implementation) on Openshift you create a powerful / reliable cloud native eventing platform for your applications.
 
 In the browser terminal window
 
@@ -197,9 +86,9 @@ In the terminal window, deploy the 3 integrations
 
 [source,shell]
 ----
-./kamel run examples/knative/feed.groovy
-./kamel run examples/knative/splitter.groovy
-./kamel run examples/knative/printer.groovy
+kamel run examples/knative/feed.groovy
+kamel run examples/knative/splitter.groovy
+kamel run examples/knative/printer.groovy
 ----
 
 Go to the developer view in the Openshift Console
@@ -258,7 +147,7 @@ In the terminal browser window, type
 
 [source,shell]
 ----
-./kamel delete feed
+kamel delete feed
 ----
 
 Go back to the topology view, you will notice that the feed integration has gone. 
@@ -273,7 +162,7 @@ To wake the Integrations up again, redeploy the 'feed' integration.
 
 [source,shell]
 ----
-./kamel run examples/knative/feed.groovy
+kamel run examples/knative/feed.groovy
 ----
 
 Go back to the topology view and you should see the 'feed' integration redeploy, and the 'spillter' and 'printer' integrations awake from their slumber!
