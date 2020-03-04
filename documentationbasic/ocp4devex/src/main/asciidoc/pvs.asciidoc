@@ -5,7 +5,7 @@
 
 If you are not already logged on go to the UI URL {webConsoleUrl} and logon as userx (x is the number provided to you) and password openshift. 
 
-Open another tab in the browser and go to the terminal URL {terminalUrl} and again logon as userx with password openshift
+If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
@@ -65,13 +65,13 @@ Click on ‘Create Persistent Volume Claim’
 
 Leave the Storage Class as ‘gp2’
 
-*Storage Classes are objects configured by the Administrator of the Cluster which allow you to request externalised persistent storage for your Applications. In this case we are using the default storage class for the Cluster which happens to be AWS storage*
+TIP: Storage Classes are objects configured by the Administrator of the Cluster which allow you to request externalised persistent storage for your Applications. In this case we are using the default storage class for the Cluster which happens to be AWS storage
 
 Set the Persistent Volume Claim Name to ‘testpvx’ where x is your user number
 
 Ensure the Access Mode is set to ‘RWO’
 
-*The Access Mode for a Persistent Volume defines how the storage is offered to the Applications. If you choose RWO, Read/Write/Once, a single piece of storage is allocated which is shared across ALL instances of the Application. If you choose RWM, Read/Write/Many, the volume will be created independently on all Nodes where the Application runs, meaning the storage will only be shared by co-resident Pods on Nodes.*
+NOTE: The Access Mode for a Persistent Volume defines how the storage is offered to the Applications. If you choose RWO, Read/Write/Once, a single piece of storage is allocated which is shared across ALL instances of the Application. If you choose RWM, Read/Write/Many, the volume will be created independently on all Nodes where the Application runs, meaning the storage will only be shared by co-resident Pods on Nodes.
 
 Set the size to 1Gi
 
@@ -81,7 +81,7 @@ Click on ‘Create’
 
 Click on Storage/Persistent Volume Claims
 
-*The status of the claim will sit at 'Pending'. This is because the Persistent Volume itself is not created until it is assigned to a Deployment Config.*
+TIP: The status of the claim will sit at 'Pending'. This is because the Persistent Volume itself is not created until it is assigned to a Deployment Config.
 
 Click on 'Workloads/Deployment Configs'
 
@@ -95,11 +95,11 @@ In the ‘Select Claim’ pulldown select the created claim (testpvx based on yo
 
 Set the Mount Path to ‘/pvtest/files’
 
-*What this will do is to export the Persistent Volume into the file space of the Containers at the mount point stated.*
+TIP: What this will do is to export the Persistent Volume into the file space of the Containers at the mount point stated.
 
 Click on ‘Save’
 
-*As we have changed the configuration of the Deployment, and the default triggers are set to redeploy if the Image changes OR the configuration of the Deployment changes, a redeployment will now occur.*
+NOTE: As we have changed the configuration of the Deployment, and the default triggers are set to redeploy if the Image changes OR the configuration of the Deployment changes, a redeployment will now occur.
 
 image::pvs-1b.png[Active Application]
 
@@ -111,18 +111,18 @@ Click on Terminal
 
 In the terminal window type:
 
-[source,shell]
+[source]
 ----
 df -h’
 ----
 
-*Note the *
+*Note the additional file system mount as shown below*
 
 image::pvs-2.png[Additional file mount]
 
 In the terminal window type:
 
-[source,shell]
+[source]
 ----
 ls -alZ /pvtest/files
 ----
@@ -153,14 +153,14 @@ Click on 'Terminal'
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 cat /pvtest/files/webfile1.txt
 ----
 
 Ensure ‘Hello World’ is displayed
 
-*The Webservice endpoint provided appends the given text to the given file.*
+TIP: The Webservice endpoint provided appends the given text to the given file.
 
 Click on 'Workloads/Pods'
 
@@ -170,24 +170,25 @@ Click on 'Terminal'
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 cat /pvtest/files/webfile1.txt
 ----
 
-*Note that this separate Pod has the SAME file with the same contents*
+NOTE: Note that this separate Pod has the SAME file with the same contents
 
 Switch back to the nodeatomic webservice browser tab
 
 Alter the end of the URL to read ‘Hello%20Again’ and press return
 
 Return to the OCP UI tab window (the terminal should still be active) and type:
-[source,shell]
+
+[source]
 ----
 cat /pvtest/files/webfile1.txt
 ----
 
-*Again note the file has been updated by another container but this container shares the same file system.*
+NOTE: Again note the file has been updated by another container but this container shares the same file system.
 
 Close the web service browser tab
 
@@ -210,7 +211,7 @@ Select the one active Pod and click on it
 Click on 'Terminal'
 
 In the terminal window type:
-[source,shell]
+[source]
 ---
 cat /pvtest/files/webfile1.txt
 ----

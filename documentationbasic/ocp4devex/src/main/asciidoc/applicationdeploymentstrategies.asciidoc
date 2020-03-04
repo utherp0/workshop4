@@ -6,24 +6,24 @@
 
 *In terms of this workshop it is important to highlight the  capabilities of containerised platforms with respect to the roll out of new versions of applications and how they get introduced to production and to end users. Terms such as blue/green deployments, black and white deployments, A/B deployments and canary deployments are used in various text books on 'DevOps' principles and some of these areas will be used in this chapter of the workshop.*
 
-*The activities in this workshop will introduce a new version of a simple application to use in two different manners.*
+The activities in this workshop will introduce a new version of a simple application to use in two different manners.
 
 ==== Workshop Content
 
-*The application to be used in this workshop is a simple NodeJS REST interface. Version 1 exists on the master branch of the GIT Repository and version 2 exists on the experimental branch.*
+TIP: The application to be used in this workshop is a simple NodeJS REST interface. Version 1 exists on the master branch of the GIT Repository and version 2 exists on the experimental branch.
 
-*To begin the creation of the application use the following commands in an command line window. :*
+To begin the creation of the application use the following commands in an command line window. :
 
 ==== Creation of version 1
 
-[source,shell]
+[source]
 ----
 oc new-project master-slaveX 
 ----
 
-*(Where X is your user number)*
+(Where X is your user number)
 
-[source,shell]
+[source]
 ----
 oc new-app --name slave-app-v1-0  https://github.com/marrober/slave-node-app.git
 
@@ -49,39 +49,39 @@ The diagram below shows the above and how they relate together.
 image::deployment-strategies-1.png[Deployment artefacts]
 ****
 
-*To identify the URL of the route execute the command shown below:*
+To identify the URL of the route execute the command shown below:
 
-[source,shell]
+[source]
 ----
 oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
 ----
 
-*This will display a formatted URL with the 'http://' part at the beginning which will be similar to :*
+This will display a formatted URL with the 'http://' part at the beginning which will be similar to :
 
 http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
 
-*To test the application use the command line window to issue a curl command to:*
+To test the application use the command line window to issue a curl command to:
 
-[source,shell]
+[source]
 ----
 curl -k <url from the above command>
 ----
 
-*The response should be as shown below (example ip address) :*
+The response should be as shown below (example ip address) :
 
 "10.131.0.114 v1.0"
 
 
 ==== Creation of version 2
 
-*The development team now wants to introduce an experimental version 2 of the application and introduce it to the users in a number of different ways. The first action is to create the new build process for the experimental version using the command below.*
+The development team now wants to introduce an experimental version 2 of the application and introduce it to the users in a number of different ways. The first action is to create the new build process for the experimental version using the command below.
 
-[source,shell]
+[source]
 ----
 oc new-app --name slave-app-v2-0 https://github.com/marrober/slave-node-app.git#experimental
 ----
 
-*Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to openshift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.*
+TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to openshift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
 
 .What got added to the project ?
 ****
@@ -99,50 +99,50 @@ The diagram below shows the above and how the relate together.
 image::deployment-strategies-2.png[Deployment artefacts]
 ****
 
-*At this point the version 2 application is operational but not accessible externally to the cluster.*
+At this point the version 2 application is operational but not accessible externally to the cluster.
 
 === Blue / Green Deployment
 
-*The benefit of creating the new version of the application alongside the old is that it is quick and easy to migrate users to a new version of the application. It also allows teams to validate that the pods are running correctly.*
+TIP: The benefit of creating the new version of the application alongside the old is that it is quick and easy to migrate users to a new version of the application. It also allows teams to validate that the pods are running correctly.
 
-*Switching the route from v1 to v2 involves patching the route to change configuration. Before executing this operation open a new command window and execute the command below to send requests to the route every second. The responses received should all include the ip address of the pod and the version (v1) of the application.*
+Switching the route from v1 to v2 involves patching the route to change configuration. Before executing this operation open a new command window and execute the command below to send requests to the route every second. The responses received should all include the ip address of the pod and the version (v1) of the application.
 
-*Get the URI of the route using the command :*
+Get the URI of the route using the command :
 
-[source,shell]
+[source]
 ----
 oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
 ----
 
-*Copy the result of the above command and past it into the shell script below:*
+Copy the result of the above command and past it into the shell script below:
 
 
-[source,shell]
+[source]
 ----
 for i in {1..1000}; do curl -k <URI> ; echo ""; sleep 1; done
 ----
 
-*A series of reports of ip address and version 1 of the application will then start to scroll up the screen. Leave this running.*
+A series of reports of ip address and version 1 of the application will then start to scroll up the screen. Leave this running.
 
-*Switch back to the original command window and execute the command below to patch the route to version 2 of the application.*
+Switch back to the original command window and execute the command below to patch the route to version 2 of the application.
 
-[source,shell]
+[source]
 ----
 oc patch route/slave-app-route -p '{"spec":{"to":{"name":"slave-app-v2-0"}}}'
 ----
 
-*Switch back to the command window with the shell script running and you should see the responses have a new ip address and now report v2 of the application. This has completed a migration from the old version of the application to the new.*
+Switch back to the command window with the shell script running and you should see the responses have a new ip address and now report v2 of the application. This has completed a migration from the old version of the application to the new.
 
-*The details of the route patched by the above command are displayed by the command:*
+The details of the route patched by the above command are displayed by the command:
 
-[source,shell]
+[source]
 ----
 oc get route/slave-app-route -o yaml
 ----
 
-*The output of the above command is shown below, and the nested information from spec -> to -> name is easy to see.*
+The output of the above command is shown below, and the nested information from spec -> to -> name is easy to see.
 
-[source,shell]
+[source]
 ----
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -179,51 +179,51 @@ status:
     wildcardPolicy: None
 ----
 
-*Before moving to the A/B deployment strategy switch back to version v1 with the command:*
+Before moving to the A/B deployment strategy switch back to version v1 with the command:
 
-[source,shell]
+[source]
 ----
 oc patch route/slave-app-route -p '{"spec":{"to":{"name":"slave-app-v1-0"}}}'
 ----
 
-*Confirm this has worked in the command window executing the shell script.*
+Confirm this has worked in the command window executing the shell script.
 
 === A/B Deployment
 
-*The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are required.*
+TIP: The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are required.
 
-*Gradually migrating traffic fromv1 to v2 involves patching the route to change configuration as shown below.*
+Gradually migrating traffic fromv1 to v2 involves patching the route to change configuration as shown below.
 
 image::deployment-strategies-3.png[Traffic routing]
 
-*To migrate 10% of traffic to version 2 execute the following command:*.
+To migrate 10% of traffic to version 2 execute the following command:
 
-[source,shell]
+[source]
 ----
 oc set route-backends slave-app-route slave-app-v1-0=90 slave-app-v2-0=10
 ----
 
-*Switch back to the command window running the shell script and after a short wait you will see the occasional report from version 2.*
+Switch back to the command window running the shell script and after a short wait you will see the occasional report from version 2.
 
-*To balance the workload between the two versions execute the following command:*
+To balance the workload between the two versions execute the following command:
 
-[source,shell]
+[source]
 ----
 oc set route-backends slave-app-route slave-app-v1-0=50 slave-app-v2-0=50
 ----
 
-*Switch back to the command window running the shell script and after a short wait you will see a more even distribution of calls between versions 1 and 2.*
+Switch back to the command window running the shell script and after a short wait you will see a more even distribution of calls between versions 1 and 2.
 
-*The details of the route patched by the above command are displayed by the command:*
+The details of the route patched by the above command are displayed by the command:
 
-[source,shell]
+[source]
 ----
 oc get route/slave-app-route -o yaml
 ----
 
-*A section of the output of the above command is included below, showing the split of traffic between versions 1 and 2.*
+A section of the output of the above command is included below, showing the split of traffic between versions 1 and 2.
 
-[source,shell]
+[source]
 ----
 spec:
   alternateBackends:
@@ -240,9 +240,9 @@ spec:
     weight: 50
 ----
 
-*When satisfied that version 2 is working as required the following command will switch all traffic to that version and will remove the references to version 1 from the route.*
+When satisfied that version 2 is working as required the following command will switch all traffic to that version and will remove the references to version 1 from the route.
 
-[source,shell]
+[source]
 ----
 oc set route-backends slave-app-route slave-app-v1-0=0 slave-app-v2-0=100
 ----

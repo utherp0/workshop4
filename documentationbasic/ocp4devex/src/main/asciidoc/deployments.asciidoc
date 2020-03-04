@@ -15,7 +15,7 @@ Select 'Workloads/Deployment Configs'
 
 image::deployment-1.png[Deployment Configs]
 
-*Observe the information provided on the Deployment Configs screen. DC indicates the Deployment Config by name, NS is the project/namespace, Labels are the OpenShift labels applied to the DC for collating and visualisation, status indicates the active Pod count for the Deployment and pod selector indicates the labels used for the Pods attributed to the Deployment Config.*
+TIP: Observe the information provided on the Deployment Configs screen. DC indicates the Deployment Config by name, NS is the project/namespace, Labels are the OpenShift labels applied to the DC for collating and visualisation, status indicates the active Pod count for the Deployment and pod selector indicates the labels used for the Pods attributed to the Deployment Config.
 
 Click on the 'nodenews' deployment-config
 
@@ -23,7 +23,7 @@ Next to the Pod icon, with the count in it which should be set to two, click on 
 
 image::deployment-2.png[Scaling the Deployment]
 
-*We have told the deployment config to run four replicas. The system now updated the replication controller, whose job is to make sure that x replicas are running healthily, and once the replication controller is updated the system will ensure that number of replicas is running*
+TIP: We have told the deployment config to run four replicas. The system now updated the replication controller, whose job is to make sure that x replicas are running healthily, and once the replication controller is updated the system will ensure that number of replicas is running
 
 Click on ‘YAML’
 
@@ -41,7 +41,7 @@ Ensure the Pod count is now two
 
 Click on 'Workloads/Config Maps'
 
-*Config Maps allow you to create groups of name/value pairs in objects that can be expressed into the Applications via the Deployment Configs and can change the file system, environment and behaviour of the Application without having to change the 'image' from whence the Application was created. This is extremely useful for dependency injection without having to rebuild the Application image*
+TIP: Config Maps allow you to create groups of name/value pairs in objects that can be expressed into the Applications via the Deployment Configs and can change the file system, environment and behaviour of the Application without having to change the 'image' from whence the Application was created. This is extremely useful for dependency injection without having to rebuild the Application image
 
 Click on ‘Create Config Map’
 
@@ -79,7 +79,7 @@ Click on 'Workloads/Pods' - if you are quick enough you will see the nodenews Po
 
 *By default when you create a Deployment Config in OpenShift, as part of an Application or as a standalone object via YAML, the Deployment Config will have two distinct triggers for automation. These make the Deployment redeploy when a: the image that the Deployment Config is based on changes in the registry or b: the defined configuration of the Deployment changes via a change to the DC object itself*
 
-*These are default behaviours but can be overridden. They are designed to make sure that the current deployment exactly matches the Images and the definition of the deployment by default.*
+TIP: These are default behaviours but can be overridden. They are designed to make sure that the current deployment exactly matches the Images and the definition of the deployment by default.
 
 Click on one of the Pods for 'nodenews'
 
@@ -91,9 +91,9 @@ In the terminal type ‘env | grep nodenewsconfig’
 
 image::deployment-5.png[Injected config map environment variables]
 
-Go back to the command line tab at {terminalUrl} and enter the following commands:
+Go back to the command line tab you created in the pre-requisites and enter the following commands:
 
-[source,shell]
+[source]
 ----
 mkdir material
 cd material
@@ -102,9 +102,9 @@ cd workshop4/attendee
 cat testfile.yaml
 ----
 
-*All objects in Kubernetes/Openshift can be expressed as yaml and this is a basic configmap for a file. What is very nice about the API and it's object oriented nature is that you can export any object that you have the RBAC rights to view and import them directly back into OpenShift, which is what we will do now with the following commands in the terminal*
+TIP: All objects in Kubernetes/Openshift can be expressed as yaml and this is a basic configmap for a file. What is very nice about the API and it's object oriented nature is that you can export any object that you have the RBAC rights to view and import them directly back into OpenShift, which is what we will do now with the following commands in the terminal
 
-[source,shell]
+[source]
 ----
 oc create -f testfile.yaml
 oc get configmaps
@@ -120,7 +120,7 @@ In order to add the config-map as a volume we need to change the container speci
 
 Find the setting for ‘imagePullPolicy’. Put the cursor to the end of the line. Hit return. Underneath enter:
 
-[source,shell]
+[source]
 ----
         volumeMounts:
           - name: workshop-testfile
@@ -133,7 +133,7 @@ Now in the ‘spec:’ portion we need to add our config-map as a volume.
 
 Find ‘restartPolicy’. Put the cursor to the end of the line and press return. Underneath enter:
 
-[source,shell]
+[source]
 ----
      volumes:
        - name: workshop-testfile
@@ -150,18 +150,18 @@ When they finish deploying click on one of the nodenews Pods. Click on 'Terminal
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 cd /workshop
 ls
 cd config
 ----
 
-*Note that we have a new file called ‘app.conf’ in this directory. This file is NOT part of the image that generated the container.*
+TIP: Note that we have a new file called ‘app.conf’ in this directory. This file is NOT part of the image that generated the container.
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 cat app.conf
 ----
@@ -170,15 +170,15 @@ cat app.conf
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 vi app.conf
 ----
 
 Press ‘i’ to insert, then type anything. Then press ESC. Then type ‘:wq’
 
-*You will not be able to save it. The file expressed into the Container from the configmap is ALWAYS readonly which ensures
-any information provided via the config map is controlled and immutable.*
+TIP: You will not be able to save it. The file expressed into the Container from the configmap is ALWAYS readonly which ensures
+any information provided via the config map is controlled and immutable.
 
 Type ‘:q!’ to quit out of the editor
 
@@ -204,7 +204,7 @@ Click ‘Create’
 
 When created click on the ‘YAML’ box in the Secrets/Secret Details overview
 
-*Note that the type is ‘Opaque’ and the data is encrypted*
+TIP: Note that the type is ‘Opaque’ and the data is encrypted
 
 Click on ‘Add Secret To Workload’
 
@@ -236,13 +236,13 @@ Once the count has gone to 4 and all the Pods are indicated as healthy (the colo
 
 The DC panel will now render the results of the deployment.
 
-*Deployments can have one of two strategies. This example uses the 'Rolling' strategy which is designed for zero downtime deployments. It works but spinning up a single copy of the new Pod, and when that Pod reports as being healthy only then is one of the old Pods removed. This ensures that at all times the required number of replicas are running healthy with no downtime for the Application itself.*
+TIP: Deployments can have one of two strategies. This example uses the 'Rolling' strategy which is designed for zero downtime deployments. It works but spinning up a single copy of the new Pod, and when that Pod reports as being healthy only then is one of the old Pods removed. This ensures that at all times the required number of replicas are running healthy with no downtime for the Application itself.
 
 Click on 'Actions/Edit Deployment Config'
 
 Scroll the editor down to the ‘spec:’ tag as shown below
 
-[source,shell]
+[source]
 ----
 spec:
  strategy:
@@ -252,7 +252,7 @@ spec:
 
 Change the type: tag of the strategy to Recreate as shown below
 
-[source,shell]
+[source]
 ----
 spec:
  strategy:
@@ -267,6 +267,6 @@ Click on ‘Action/Start Rollout’
 
 Watch the colour of the Pod rings as the system carries out the deployment
 
-*In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application*
+TIP: In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application
 
 

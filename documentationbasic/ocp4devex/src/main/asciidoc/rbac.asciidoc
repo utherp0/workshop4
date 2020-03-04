@@ -9,7 +9,7 @@ NOTE: For the majority of this chapter the attendee will need to pair up with an
 
 If you are not already logged on go to the UI URL {webConsoleUrl} and logon as 'userx' (x is the number provided to you) and password openshift. 
 
-Open another tab in the browser and go to the terminal URL {terminalUrl} and again logon as userx with password openshift
+If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
@@ -29,7 +29,7 @@ Once the project has been created, click on 'User Management/Service Accounts'
 
 image::rbac-1.png[List of Service Accounts]
 
-*Service Accounts are effectively virtual users - even though you have logged on when you do anything within the namespace, such as a build or a deployment, the namespace uses a virtual user, with appropriate permissions, to do the actual tasks internally, like pushing a built image to the registry, or pulling an image to start a Container.*
+TIP: Service Accounts are effectively virtual users - even though you have logged on when you do anything within the namespace, such as a build or a deployment, the namespace uses a virtual user, with appropriate permissions, to do the actual tasks internally, like pushing a built image to the registry, or pulling an image to start a Container.
 
 *Each project gets a Service Account by default, named default or to give it its full name system:serviceaccount:rbactestx:default (where x is your number). There are also Service Accounts for doing the appropriate actions, such as Builder and Deployer*
 
@@ -67,13 +67,13 @@ Click on User Management/Role Bindings
 
 image::rbac-2.png[Admin Role]
 
-*Note that we have one Role Binding shown at the moment, which is for Admin and applies to a kind of 'user' and a subject name of 'userx'. This is the binding of your user to the administration role within the project.*
+TIP: Note that we have one Role Binding shown at the moment, which is for Admin and applies to a kind of 'user' and a subject name of 'userx'. This is the binding of your user to the administration role within the project.
 
 Click on the 'System Role Bindings'
 
 image::rbac-3.png[System Role Bindings]
 
-*Note that with the addition of System Role Bindings to the screen we can now see the three Service Accounts also created. Deployer is part of the system:deployers binding, builder is part of the system:image-builders binding and the group of users under system:serviceaccounts:rbactestx (where x is your number) have the system:image-pullers binding.*
+TIP: Note that with the addition of System Role Bindings to the screen we can now see the three Service Accounts also created. Deployer is part of the system:deployers binding, builder is part of the system:image-builders binding and the group of users under system:serviceaccounts:rbactestx (where x is your number) have the system:image-pullers binding.
 
 Click on the (CR) admin Role Ref
 
@@ -157,7 +157,7 @@ Select the partner project (rbactestPARTNERUSER)
 
 In the Project overview pane click on Role Bindings
 
-*You now do not have the appropriate access rights to interact with the role bindings as you only have View access to the target project,*
+NOTE: You now do not have the appropriate access rights to interact with the role bindings as you only have View access to the target project
 
 Click on 'Workloads/Deployment Config'
 
@@ -165,7 +165,7 @@ Click on the rbactest (DC)
 
 Try and scale down the Pod to one pod
 
-*View access allows you to see the state of objects but NOT to change them.*
+NOTE: View access allows you to see the state of objects but NOT to change them.
 
 Click on 'Home/Projects'
 
@@ -173,7 +173,7 @@ In the triple dot menu next to the rbactestPARTNERUSER select ‘Delete Project�
 
 Type ‘rbactestPARTNERUSER’ in the message box and press ‘Delete’
 
-*Note that you cannot delete the other persons project.*
+NOTE: Note that you cannot delete the other persons project.
 
 Hit Cancel
 
