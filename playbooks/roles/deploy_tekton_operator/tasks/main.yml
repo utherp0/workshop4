@@ -1,0 +1,7 @@
+---
+# file: main.yml
+
+# Deploy community pipeline operator
+- name: Deploy Tekton Operator
+  shell: oc apply -f {{ role_path }}/files/pipelines.yml
+  ignore_errors: no
