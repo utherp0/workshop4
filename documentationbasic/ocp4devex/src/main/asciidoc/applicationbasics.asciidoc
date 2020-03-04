@@ -390,7 +390,7 @@ Change to Developer mode and then select Topology if the Topology page isn’t a
 
 Hold down the shift button, click and hold on the forumstaticassets icon, and pull it out of the application grouping graphic. Release the hold on the forumstaticassets icon.
 
-*The UI will now promnpt you if you wish to remove the application component. Select Remove. This component is now separated from the application group*
+*The UI will now prompt you if you wish to remove the application component. Select Remove. This component is now separated from the application group*
 
 Now hold down the shift button again, click and hold on the free floating forumstaticassets icon, and drag back over the boundary displayed for the nodenews-app application group. Release the hold and the application should be re-grouped.
 
