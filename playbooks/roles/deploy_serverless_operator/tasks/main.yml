@@ -19,8 +19,8 @@
 - name: Create Knative serving namespace
   shell: oc apply -f {{ role_path }}/files/knativenamespace.yaml
 
-- name: Wait
-- pause: 
+- name: pause
+  pause: 
     minutes: "2"
 
 # Create the Knative serving namespace and KnativeServing CRD
