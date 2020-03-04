@@ -12,7 +12,7 @@ When logged on you will be presented with a screen listing the projects, of whic
 
 Hit 'Create Project'
 
-For 'Name' enter advterminalx, where x is your unique number
+For 'Name' enter terminalx, where x is your unique number
 
 'Display Name' and 'Description' are optional labels
 
@@ -32,7 +32,7 @@ In the topology page click on the 'Show URL' icon as shown below
 
 image::prereq-1.png[Selecting the Show URL]
 
-This will open another tab with a command line in it - this is your terminal for the duration of the advanced workshop
+This will open another tab with a command line in it - this is your terminal for the duration of the basic workshop
 
 Switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command' as shown below
 
@@ -52,7 +52,7 @@ Press 'y' to use insecure connections
 
 The terminal should now be logged on - to check it try
 
-[source,shell]
+[source]
 ----
 oc whoami
 oc version
