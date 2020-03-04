@@ -2,7 +2,7 @@
 
 == Introduction
 
-This advanced worjshop is designed to introduce the attendee to the additional and exciting developers features above and beyond the basic functionality offered by OpenShift.
+This advanced workshop is designed to introduce the attendee to the additional and exciting developers features above and beyond the basic functionality offered by OpenShift.
 
 This includes an introduction to the ODO command line for developers, an introduction to Tekton, the native Kubernetes pipeline functionality, an introduction to the concepts and implementation of serverless functionality via Knative, Camel-K and eventing.
 
