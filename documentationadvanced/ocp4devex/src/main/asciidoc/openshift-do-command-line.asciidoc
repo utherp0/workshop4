@@ -179,30 +179,38 @@ Now make a small change to the comment in the source code of the slave.js file t
 response.send('Hello - this is the simple slave REST interface' + versionIdentifier);
 ----
 
-*Change to :*
+Change the response to the following
+
 [source]
 ----
 response.send('Hello - MODIFIED and pushed with ODO' + versionIdentifier);
 ----
-*Push the change to OpenShift:*
+
+Now use odo to push the changed source to OpenShift
 
 odo push
 
-*The code still needed to be pushed to the component, but the final stage of building the component is much faster. Refresh the browser window showing the application output and you will see your code change. The edit - push - test cycle is as simple as that.*
+The code still needed to be pushed to the component, but the final stage of building the component is much faster. Refresh the browser window showing the application output and you will see your code change. The edit - push - test cycle is as simple as that
 
 === odo watch
 
-*The odo process also has a 'watch' facility that allows you to force odo to constantly watch for source code changes and push them immediately. If you are using the terminal in a container open a second window so that you have two terminal windows. If you are using your local laptop simply open another terminal window. Ensure that the new terminal window is in the same directory as the first terminal window. Enter the command below to make odo watch for source code changes:*
+The odo process also has a 'watch' facility that allows you to force odo to constantly watch for source code changes and push them immediately. Open another instance of the terminal application by pointing a new tab in the browser to the route to the terminal application. 
 
+In the new terminal tab enter
+
+[source]
+----
+cd workshop4/attendee/slave
 odo watch
+----
 
-*The command window should report : 'Waiting for something to change in <current-working-directory>'*
+The command window should report : 'Waiting for something to change in <current-working-directory>'
 
-*Switch back to your other terminal window and make another change to the source code, similar to the change above. After saving the edit switch to the terminal window in which you typed 'odo watch' and observe that a new push of the code to OpenShift has taken place.*
+Switch back to your other terminal window and make another change to the source code, similar to the change above. After saving the edit switch to the terminal window in which you typed 'odo watch' and observe that a new push of the code to OpenShift has taken place
 
-*The window with the watch command running will report:*
+The window with the watch command running will report:
 
-[source,shell]
+[source]
 ----
 File <path-to-source>/slave.js changed
 Pushing files...
@@ -211,9 +219,9 @@ Pushing files...
  ✓  Building component [4s]
 ----
 
-*Refresh the browser widow showing the application output and you will see your code change.*
+Refresh the browser widow showing the application output and you will see your code change
 
-*odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop.*
+odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
 
 
 

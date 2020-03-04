@@ -1,6 +1,10 @@
-FROM quay.io/ilawson/oconline
+FROM fedora
 
 USER root
+
+ENV GOPATH=/go
+
+RUN  mkdir /go && chmod 755 /go && yum install -y git golang-bin && go get github.com/yudai/gotty && yum clean all && mkdir /workspace && chmod 777 workspace
 
 RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz && \
 tar -C /tmp -xf /tmp/oc.tar.gz --no-same-owner && \
@@ -14,7 +18,11 @@ mv /tmp/tkn /usr/local/bin && \
 chmod +x /usr/local/bin/tkn && \
 rm /tmp/*
 
+<<<<<<< HEAD
 RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-M4/camel-k-client-1.0.0-M4-linux-64bit.tar.gz && \
+=======
+RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-client-1.0.0-RC2-linux-64bit.tar.gz && \
+>>>>>>> 45273b3f81462c6367b61a4c97564d0f4a7249ec
 tar -C /tmp -xf /tmp/kamel.tar.gz --no-same-owner && \
 mv /tmp/kamel /usr/local/bin && \
 chmod +x /usr/local/bin/kamel && \
@@ -23,6 +31,7 @@ rm /tmp/*
 RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 && \
 chmod +x /usr/local/bin/odo
 
+<<<<<<< HEAD
 RUN dnf -y install podman container-selinux --enablerepo updates-testing
 
 run chmod a+w /tmp
@@ -30,3 +39,25 @@ run chmod a+w /tmp
 run useradd student
 
 USER student
+=======
+RUN curl -sL -o /tmp/kamelexamples.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-examples-1.0.0-RC2.tar.gz && \
+mkdir /tmp/examples && \
+tar -C /tmp/examples -xf /tmp/kamelexamples.tar.gz --no-same-owner && \
+mv /tmp/examples /workspace && \
+rm /tmp/*
+
+RUN dnf -y install podman container-selinux --enablerepo updates-testing
+
+run chmod a+w /tmp
+
+run useradd student
+
+WORKDIR /workspace
+
+EXPOSE 8080
+
+USER student
+
+ENTRYPOINT ["/go/bin/gotty"]
+CMD ["-w","bash"]
+>>>>>>> 45273b3f81462c6367b61a4c97564d0f4a7249ec

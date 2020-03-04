@@ -20,7 +20,7 @@ Once the project has been created (you will be given a dashboard) change the mod
 
 On the Topology page it will state 'No workloads found' - Click on 'Container Image'
 
-In 'Image Name' enter 'quay.io/marrober/devex-terminal-4'
+In 'Image Name' enter 'quay.io/ilawson/devex4'
 
 Click on the search icon to the right of the text box
 

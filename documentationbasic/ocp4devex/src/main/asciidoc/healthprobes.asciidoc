@@ -154,7 +154,7 @@ oc set probe dc/node-app-slave --liveness --initial-delay-seconds=30 --failure-t
 
 *The command line response should be as shown below.*
 
-[source,shell]
+[source]
 ----
 deploymentconfig.apps.openshift.io/node-app-slave probes updated
 ----
@@ -165,7 +165,7 @@ oc describe dc/node-app-slave
 
 *The output of this command will include the following section that highlights the new liveness probe*
 
-[source,shell]
+[source]
 ----
 Pod Template:
   Labels:	app=node-app-slave
@@ -184,12 +184,14 @@ Pod Template:
 
 *Alternatively to view the probe in a different format use the command below:*
 
-
+[source]
+----
 oc get dc/node-app-slave -o yaml
+----
 
 *Part of the output will show:*
 
-[source,shell]
+[source]
 ----
 livenessProbe:
     failureThreshold: 1
@@ -262,28 +264,36 @@ oc set probe dc/node-app-slave --readiness --initial-delay-seconds=30 --failure-
 
 *The command line response should be as shown below*
 
-[source,shell]
+[source]
 ----
 deploymentconfig.apps.openshift.io/node-app-slave probes updated
 ----
 
 *Review the probe created using the commands above:*
 
+[source]
+----
 oc describe dc/node-app-slave
+----
 
 and
 
+[source]
+----
 oc get dc/node-app-slave -o yaml
+----
 
 *View the state of the pod within the endpoints using the command below:*
 
-
+[source]
+----
 oc get ep/node-app-slave -o yaml
+----
 
 
 *The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
 
-[source,shell]
+[source]
 ----
 apiVersion: v1
 kind: Endpoints
@@ -321,7 +331,7 @@ subsets:
 ----
 
 The lines of interest above are:
-[source,shell]
+[source]
 ----
 subsets:
 - addresses:
@@ -354,13 +364,14 @@ image::healthprobes-5.png[Pod events showing activation of the readiness probe]
 
 View the state of the pod within the endpoints using the command below:
 
-
+[source]
+----
 oc get ep/node-app-slave -o yaml
-
+----
 
 *The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
 
-[source,shell]
+[source]
 ----
 subsets:
 - notReadyAddresses:
@@ -381,14 +392,14 @@ In the OpenShift Console choose Adminstrator View, then Workloads/Pods. Click on
 
 Within the Pod Terminal enter the command :
 
-[source,shell]
+[source]
 ----
 curl -k localhost:8080/restore
 ----
 
 *You should see a response similar to that shown below (with a different IP address):*
 
-[source,shell]
+[source]
 ----
 "10.128.2.146 restore switch activated"sh-4.2$
 ----
@@ -397,14 +408,14 @@ Now go back to the Terminal tab where you enter 'oc' commands
 
 View the state of the pod within the endpoints using the command below:
 
-[source,shell]
+[source]
 ----
 oc get ep/node-app-slave -o yaml
 ----
 
 *You should see that the line of interest, previously shown above, has changed back to that shown below:*
 
-[source,shell]
+[source]
 ----
 subsets:
 - addresses:

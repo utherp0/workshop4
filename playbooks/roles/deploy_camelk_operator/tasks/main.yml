@@ -1,0 +1,11 @@
+---
+# file: main.yml
+
+# Deploy Camel K operator - currently using community operator
+- name: Deploy Camel K Operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/camelkoperator.yaml"

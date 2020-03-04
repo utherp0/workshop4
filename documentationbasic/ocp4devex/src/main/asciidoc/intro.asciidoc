@@ -38,6 +38,7 @@ Red Hat UK DSA Team:
 * Phil Prosser
 * Mark Roberts
 * ''Uther'' Lawson
+* Jonny Browning
 
-Original asciidoc project for DevEx3.x by Phillip Kruger, Red Hat CEMEA
+Original asciidoc documentation for DevEx3.x by Phillip Kruger, Red Hat CEMEA
 

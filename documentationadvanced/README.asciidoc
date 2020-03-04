@@ -8,17 +8,10 @@ Run the following mvn command from the documentationadvanced directory:
 
 mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'
 
-=== NOTE - the follow pre-requisites must be done *before* allowing attendees to use the course in self-paced mode
+=== NOTE - the follow pre-requisites must be done *before* allowing attendees to use the course
 
-There are a number of operators that need to be installed in the system for the various courses. In order to install these you must be logged on as a clutser-admin enabled user and apply the following steps:
+Installing the required Operators for the advanced workshop
 
-1: Installing the Pipeline Operator
+For this you will need to have access to ansible (version 2.9.x)
+Full instructions are provided at https://raw.githubusercontent.com/utherp0/workshop4/master/playbooks/readme.txt
 
-Go to Operators/OperatorHub
-In the search box type 'pipeline'
-Click on the 'OpenShift Pipelines Operator'
-Acknowledge the Community Warning
-Hit 'Install'
-Ensure the 'All Namespaces on the Cluster' option is selected
-Hit 'Subscribe'
-Once the deployment has completed the Pipeline operator is installed correctly

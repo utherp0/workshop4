@@ -11,7 +11,7 @@ If you are not already logged on go to the UI URL at {webConsoleUrl} and logon a
 
 *In this section we will create a couple of simple applications and show how they are represented via the Service and load-balancing of Pods within the SDN itself.*
 
-Open another tab in the browser and go to the terminal URL {terminalUrl} and again logon as 'userx' with password openshift
+If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
@@ -77,7 +77,7 @@ Click on 'Networking/Services'
 
 image::sdn-2.png[Example Services]
 
-*The Services UI shows the services currently available in the Project. Note that there is a Service per application, so in this case there are two Services, application1 and application2. The Location is a singular IP address for each Service within the SDN - more on this later.*
+TIP: The Services UI shows the services currently available in the Project. Note that there is a Service per application, so in this case there are two Services, application1 and application2. The Location is a singular IP address for each Service within the SDN - more on this later.
 
 Click on 'Workloads/Deployment Configs'
 
@@ -99,7 +99,7 @@ Click on 'Networking/Services'
 
 Click on the application1 service
 
-*Note that the IP address for the Service has NOT changed. Scaling the Application has no impact on the singular IP address for the Service, which in actuality acts as a load-balancer across ALL of the IP addresses for the Pods of that Application.*
+TIP: Note that the IP address for the Service has NOT changed. Scaling the Application has no impact on the singular IP address for the Service, which in actuality acts as a load-balancer across ALL of the IP addresses for the Pods of that Application.
 
 === Using the shorthand Service name directly
 
@@ -110,40 +110,40 @@ Click on the first running Pod for application1 (the name will be application1-1
 Click on Terminal
 
 In the Terminal window type:
-[source,shell]
+[source]
 ----
 curl http://localhost:8080
 ----
 
-*You will see the webpage for the Application as a return from the curl statement. The Container sees itself as localhost. Also note that because we are calling from within the Container we use the port address - if you were using the Routes their would be a Route for every Service, with no port address.*
+TIP: You will see the webpage for the Application as a return from the curl statement. The Container sees itself as localhost. Also note that because we are calling from within the Container we use the port address - if you were using the Routes their would be a Route for every Service, with no port address.
 
 In the Terminal window type:
 
-[source,shell]
+[source]
 ----
 curl http://application1:8080
 ----
 
-*This is where it starts to get interesting. The Service 'name' itself is exported into the network namespace of the Container so it can refer to it as a short name. The SDN translates the service name into the service IP - in reality this Container could be getting a webpage back from any of the Application Pods that satisfy this Service.*
+TIP: This is where it starts to get interesting. The Service 'name' itself is exported into the network namespace of the Container so it can refer to it as a short name. The SDN translates the service name into the service IP - in reality this Container could be getting a webpage back from any of the Application Pods that satisfy this Service.
 
 === Using the Fully Qualified Domain Name for accessing Services
 
 In the Terminal window type (and replace x with your number):
 
-[source,shell]
+[source]
 ----
 curl http://application1.networktestx.svc.cluster.local:8080
 ----
 
-*And this is the fully qualified version of the Service. by including the namespace/project name we can reach, effectively, any service on the SDN assuming the SDN has been configured to allow that. In this case we are just targeting our own Service from the application Container, now we will try the other application in the namespace.* 
+TIP: And this is the fully qualified version of the Service. by including the namespace/project name we can reach, effectively, any service on the SDN assuming the SDN has been configured to allow that. In this case we are just targeting our own Service from the application Container, now we will try the other application in the namespace.*
 
 In the Terminal window hit the up arrow to get the last command, edit the name and change application1 to application2, hit return at the end of the statement
 
-*You should a webpage. This is the output of the other application. This long format makes it easy to refer to other applications without having to leave and come back into the SDN (via a Route).*
+TIP: You should get the contents of a webpage. This is the output of the other application. This long format makes it easy to refer to other applications without having to leave and come back into the SDN (via a Route).
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 curl http://application2:8080
 ----
@@ -154,12 +154,12 @@ Ask the person sat next to you what their project name is and make a note of it
 
 In the terminal type:
 
-[source,shell]
+[source]
 ----
 curl http://application1.(the project name from the person next to you).svc.cluster.local:8080
 ----
 
-*OpenShift Container Platform can be installed with two different modes of SDN. The first is subnet, which exposes all Services in all Namespace/Projects to each other. This instance has a subnet SDN which is why you should be able to call other peoples Services directly from your own via the internal FQDN address.*
+TIP: OpenShift Container Platform can be installed with two different modes of SDN. The first is subnet, which exposes all Services in all Namespace/Projects to each other. This instance has a subnet SDN which is why you should be able to call other peoples Services directly from your own via the internal FQDN address.
 
 === Controlling Access through Network Policies
 
@@ -183,7 +183,7 @@ Click on ‘Create Network Policy’
 
 Enter the following - remember to change YOURNUMBERHERE to your user number
 
-[source,shell]
+[source]
 ----
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -207,7 +207,7 @@ Repeat the ‘curl’ command listed above for the person sat next to you, i.e. 
 
 The call will eventually fail - feel free to hit Ctrl-C to interrupt
 
-*The creation of a Network Policy that prohibits ingress to the Application Service has stopped access to the Service from external namespaces AND internal Services.*
+TIP: The creation of a Network Policy that prohibits ingress to the Application Service has stopped access to the Service from external namespaces AND internal Services.
 
 Click on 'Workloads/Pods'
 
@@ -217,14 +217,14 @@ Click on Terminal
 
 Type:
 
-[source,shell]
+[source]
 ----
 curl http://application1:8080
 ----
 
 The call will eventually fail
 
-*This shows that the Service is prohibited even from Services in its own namespace/project. This application of Network Policy allows for fine-grain control of traffic egress/ingress at the Service level. The other installation mode for SDN for OpenShift 4 is with Network Policies enabled, with default Network Policies providing a fully multitenanted environment.*
+TIP: This shows that the Service is prohibited even from Services in its own namespace/project. This application of Network Policy allows for fine-grain control of traffic egress/ingress at the Service level. The other installation mode for SDN for OpenShift 4 is with Network Policies enabled, with default Network Policies providing a fully multitenanted environment.
 
 Click on 'Projects'
 
