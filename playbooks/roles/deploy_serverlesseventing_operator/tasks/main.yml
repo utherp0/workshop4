@@ -3,5 +3,10 @@
 
 # Deploy Knative Eventing - currently using community operator
 - name: Deploy Openshift Serverless Eventing Operator
-  shell: oc apply -f {{ role_path }}/files/serverlesseventingoperator.yaml
-  ignore_errors: no
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/serverlesseventingoperator.yaml"
+

@@ -4,20 +4,21 @@
 # Deploy the Openshift Serverless Opeartor
 
 - name: Deploy Openshift Serverless Operator
-  shell: oc apply -f {{ role_path }}/files/serverlessoperator.yaml
-  ignore_errors: no
-
-# Wait for the operator to be deployed before moving on to creating the Knative serving namespace and crd
-#- name: Is the Knative serving Operator deployed?
-#  shell: oc get subscription serverless-operator -n openshift-operators -o jsonpath="{.status.catalogHealth[0].healthy}"
-#  register: serverless
-#  until: serverless.stdout.find("true") != -1
-#  retries: 150
-#  delay: 15
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/serverlessoperator.yaml"
 
 # Create the Knative serving namespace and KnativeServing CRD
 - name: Create Knative serving namespace
-  shell: oc apply -f {{ role_path }}/files/knativenamespace.yaml
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/knativenamespace.yaml"
 
 - name: pause
   pause: 
@@ -25,9 +26,14 @@
 
 # Create the Knative serving namespace and KnativeServing CRD
 - name: Create Knative serving CRD
-  shell: oc apply -f {{ role_path }}/files/serving.yaml
-  retries: 20
-  delay: 5
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/serving.yaml"
+    wait: yes
+
 
 # Wait for Knative serving to be ready before continuing
 - name: Is Knative servering deployed?
