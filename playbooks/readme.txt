@@ -10,7 +10,7 @@ Once you have provisioned your RHPDS Openshift cluster,
 
 you can now update the "all" file with your values. This file is found at {Clone_Location}/workshop4/playbooks/group_vars
 
-It needs the Openshift URL and a login token
+It needs the Openshift API URL and a login token
 
 To capture this, go to the Openshift console and choose "Copy Login Command"
 
