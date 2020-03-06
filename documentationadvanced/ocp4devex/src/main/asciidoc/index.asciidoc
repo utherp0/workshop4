@@ -7,5 +7,6 @@ include::openshift-do-command-line.asciidoc[]
 include::openshift-pipelines-tekton.asciidoc[]
 include::camelk.asciidoc[]
 include::camelkocpserverlesseventing.asciidoc[]
+include::camelkocpserverlessservice.asciidoc[]
 
 
