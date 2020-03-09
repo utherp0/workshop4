@@ -35,15 +35,15 @@ rm /tmp/*
 
 RUN dnf -y install podman container-selinux --enablerepo updates-testing
 
-run chmod a+w /tmp
-
-run useradd student
+RUN dnf -y install java-1.8.0-openjdk java-11-openjdk wget
 
 WORKDIR /workspace
 
 EXPOSE 8080
 
-USER student
+USER 1001
+
+ENV HOME=/workspace
 
 ENTRYPOINT ["/go/bin/gotty"]
 CMD ["-w","bash"]

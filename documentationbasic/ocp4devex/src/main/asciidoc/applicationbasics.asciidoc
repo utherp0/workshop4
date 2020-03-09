@@ -1,5 +1,7 @@
 == Application Basics
 
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
 === Introduction
 
 This chapter will introduce the attendee to the mechanics of creating and manipulating Applications using OpenShift Container Platform. It will introduce the two distinct contexts of the User Interface, the Administrator and Developer views, and guide the attendee through creating some Applications.
