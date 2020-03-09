@@ -212,7 +212,7 @@ oc {command}
 
 For the duration of the course you will be using a provided Application hosted within OpenShift itself that you created as part of the pre-requisites. Whenever the instructions tell you to use the terminal use the tab you setup. If you haven't completed the pre-requisites please complete them before proceeding
 
-*For the sakes of simplicity we advise you use the Terminal application procreated - the following instructions for installation are completely optional*
+*For the sakes of simplicity we advise you use the Terminal application described in the prerequisite section - the following instructions for installation are completely optional*
 
 If you want to optionally install the oc client or use the terminal applications plus additional command line tools, such as ODO and tkn, you have two options; either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
 
@@ -228,43 +228,7 @@ If you wish to install the command line tools locally then you may also need to 
 
 ==== Option 2: Use a pre-configured docker image on OpenShift
 
-This option installs and runs a docker image inside OpenShift that already has oc (and other command line tools) installed and configured. To install this image, do the following:
-
-Login to the OCP system through the UI. (userX / openshift)
-Ensure that you are in the Developer mode of the user interface by selecting Developer in the top left corner menu. Select the project drop down menu and select Create Project.
-
-Create a new project:
-
-Name: oconline-userX
-
-Display Name: OC Terminal
-
-You will then see a Topology view that allows you to create new workloads from a variety of sources as shown below:
-
-image::applicationbasics-6.png[Topology view]
-
-Select container image and paste into the image name :
-
-[source]
-----
-quay.io/ilawson/devex4
-----
-
-Press the search button on the end of the line to force the application to examine the repository image.
-
-For the Application name enter : DevEx-Terminal
-
-For the Name enter : devex-terminal
-
-Ensure the box is ticked for 'Create a route to the application'
-
-Click create.
-
-Wait for the pod to spin up and show a dark blue ring on the topology view.
-
-Click on the pod and on then on the resources tab on the right hand side click on the route. This will launch the terminal in a new browser window. 
-
-Keep this terminal window open for the remainder of the workshop for all of your command line interaction.
+This option installs and runs a docker image inside OpenShift that already has oc (and other command line tools) installed and configured. To install this image, follow the instructions in the prerequisites section.
 
 [[setup-login]]
 === Using your terminal (both options)
