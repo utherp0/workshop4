@@ -1,5 +1,7 @@
 == Understanding Deployments and Configuration
 
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
 === Introduction
 
 This chapter will introduce the attendee to concepts of deployments and configuration injection using OpenShift Container Platform. 

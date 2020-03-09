@@ -1,5 +1,7 @@
 == OpenShift DO
 
+Author: Mark Roberts (feedback to mark.roberts@redhat.com)
+
 === Introduction
 
 .An overview of odo

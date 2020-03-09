@@ -60,6 +60,17 @@ oc version
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
 
+Finally, for use in the examples we will require some source material from the git repo for this workshop. Now type the following in the terminal"
+
+[source]
+----
+cd /workspace
+git clone https://github.com/utherp0/workshop4
+----
+
+This command will clone all the required files for the workshop
+
+
 
 
 

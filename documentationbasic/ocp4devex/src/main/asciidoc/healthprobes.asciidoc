@@ -2,6 +2,8 @@
 
 == Pod Health Probes
 
+Author: Mark Roberts (feedback to mark.roberts@redhat.com)
+
 === Introduction
 
 Liveness and Readiness probes are Kubernetes capabilities that enable teams to make their containerised applications more reliable and robust. However, if used inappropriately they can result in none of the intended benefits, and can actually make a microservice based application unstable. 

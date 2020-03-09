@@ -1,5 +1,7 @@
 == Application Deployment Configurations and DevOps Approaches
 
+Author: Mark Roberts (feedback to mark.roberts@redhat.com)
+
 === Introduction
 
 *DevOps is a much overloaded term that is used to describe a variety of concepts in the creation of modern applications. In a simple definition DevOps is concerned with the interface between development practices used for the creative elements of software engineering and the procedural rigour of operationally running applications in production. Clearly these concepts have different objectives so it is important for teams (whether tasked with development or operations) to have a good understanding of the concepts, objectives and concerns of their counterparts on the other side of the fence.*
