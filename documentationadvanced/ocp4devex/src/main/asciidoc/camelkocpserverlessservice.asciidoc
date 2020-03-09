@@ -1,5 +1,7 @@
 == Camel K and Openshift Serverless Serving
 
+Author: Phil Prosser (feedback to pprosser@redhat.com)
+
 === Introduction
 
 Openshift Serverless, based on Knative is the serverless technology that was introduced in Openshift 4.2. Openshift Serverless enables Pods running on Openshift to be scaled to 0 therefore taking zero processing power. Only when called, Openshift Serverless will scale the Pod up on demand before processing the request. Openshift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
