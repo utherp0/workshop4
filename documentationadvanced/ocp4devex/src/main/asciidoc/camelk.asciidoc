@@ -1,5 +1,7 @@
 == Camel K on Openshift
 
+Author: Phil Prosser (feedback to pprosser@redhat.com)
+
 === Introduction
 
 Apache Camel K is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures.

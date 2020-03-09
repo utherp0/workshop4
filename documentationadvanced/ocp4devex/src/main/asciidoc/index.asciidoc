@@ -4,8 +4,8 @@
 include::intro.asciidoc[]
 include::prereq.asciidoc[]
 include::openshift-do-command-line.asciidoc[]
-include::openshift-pipelines-tekton.asciidoc[]
 include::camelk.asciidoc[]
+include::openshift-pipelines-tekton.asciidoc[]
 include::camelkocpserverlesseventing.asciidoc[]
 include::camelkocpserverlessservice.asciidoc[]
 

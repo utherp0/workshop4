@@ -29,16 +29,9 @@ oc new-project pipelines-userX
 
 ==== Download pipeline assets
 
-TIP: The pipeline assets are located in a GIT repository. Using your terminal window download the assets using the command below.
+TIP: As part of the pre-requisites you should have cloned the required git repo - if you haven't please go back to the pre-requisites and execute the command listed at the end
 
-The provided terminal application as described in the pre-requisites will default to a home directory of /workspace - it is assumed that all following instructions are executed in that directory
-
-[source]
-----
-git clone https://github.com/utherp0/workshop4
-----
-
-Now cd into the appropriate directory for the examples as follows
+Check the required assets for the workshop are available in your terminal image using:
 
 [source]
 ----
