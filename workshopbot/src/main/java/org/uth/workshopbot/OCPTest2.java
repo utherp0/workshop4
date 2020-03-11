@@ -38,7 +38,7 @@ public class OCPTest2
 			if(_client == null ) _client = new DefaultKubernetesClient();
 			String namespace = _client.getNamespace();
 	
-			output.append( "Namespace: " + namespace + " in " + ( System.currentTimeMillis() - start) + "ms elapsed\n");
+			output.append( "Namespace: " + namespace + " in " + ( System.currentTimeMillis() - start) + "ms elapsed<br/>");
 	
 			PodList pods = _client.pods().list();
 	
