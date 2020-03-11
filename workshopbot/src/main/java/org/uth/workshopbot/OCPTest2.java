@@ -38,7 +38,7 @@ public class OCPTest2
 			if(_client == null ) _client = new DefaultKubernetesClient();
 			String namespace = _client.getNamespace();
 	
-			output.append( "Namespace: " + namespace + " in " + ( System.currentTimeMillis() - start) + "ms elapsed<br/>");
+			output.append( "Namespace: " + namespace + " in " + ( System.currentTimeMillis() - start) + "ms elapsed<br/><br/>");
 	
 			PodList pods = _client.pods().list();
 	
@@ -63,15 +63,15 @@ public class OCPTest2
 					output.append( "&nbsp;&nbsp;<b>[SPEC]</b><br/>");
 					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;" + pod.getSpec().getNodeName() + "<br/>");
 
-
-				  Map<String,String> labels = pod.getMetadata().getLabels();
+					Map<String,String> labels = pod.getMetadata().getLabels();
+					output.append( "&nbsp;&nbsp;<b>[LABELS (" + labels.size() + ")]</b><br/>");
 
 				  for( String label : labels.keySet()) 
-				  {   
-					  //System.out.println( label + ":" + labels.get( label )) ;
+				  {
+						output.append( "&nbsp;&nbsp;&nbsp;&nbsp;<b>" + label + "</b>: " + labels.get(label) + "<br/>"); 
 					}
 
-					output.append( "<br/><br/>");
+					output.append( "<br/>");
 				}
 			}
 	
