@@ -49,19 +49,19 @@ public class OCPTest2
 
 				if( "Running".equals(phase))
 				{
-					output.append( "Found Pod " + pod.getMetadata().getName() + "<br/>");
-					output.append( "  [STATUS]<br/>");
+					output.append( "<b><i>Found Pod " + pod.getMetadata().getName() + "</b></i><br/>");
+					output.append( "&nbsp;&nbsp;<b>[STATUS]</b><br/>");
 				  //output.append( (pod.getMetadata().getGenerateName() == null ) ? "" : "  Generate Name: " + pod.getMetadata().getGenerateName() + "\n");
-				  output.append( "    Phase: " + pod.getStatus().getPhase() + "<br/>");
-					output.append( "    Pod SDN IP: " + pod.getStatus().getPodIP() + "<br/>");
-					output.append( "    Pod Host IP: " + pod.getStatus().getHostIP() + "<br/>");
-					output.append( "    Start Time: " + pod.getStatus().getStartTime() + "<br/>");
+				  output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Phase: " + pod.getStatus().getPhase() + "<br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Pod SDN IP: " + pod.getStatus().getPodIP() + "<br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Pod Host IP: " + pod.getStatus().getHostIP() + "<br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Start Time: " + pod.getStatus().getStartTime() + "<br/>");
 
-          output.append( "  [METADATA]<br/>");
-					output.append( "    Self Link: " + pod.getMetadata().getSelfLink() + "<br/>");
-					output.append( "    Pod Name/Namespace: " + pod.getMetadata().getName() + "/" + pod.getMetadata().getNamespace() + "<br/>");
-					output.append( "  [SPEC]<br/>");
-					output.append( "    " + pod.getSpec().getNodeName() + "<br/>");
+          output.append( "&nbsp;&nbsp;<b>[METADATA]</b><br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Self Link: " + pod.getMetadata().getSelfLink() + "<br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;Pod Name/Namespace: " + pod.getMetadata().getName() + "/" + pod.getMetadata().getNamespace() + "<br/>");
+					output.append( "&nbsp;&nbsp;<b>[SPEC]</b><br/>");
+					output.append( "&nbsp;&nbsp;&nbsp;&nbsp;" + pod.getSpec().getNodeName() + "<br/>");
 
 
 				  Map<String,String> labels = pod.getMetadata().getLabels();
@@ -70,6 +70,8 @@ public class OCPTest2
 				  {   
 					  //System.out.println( label + ":" + labels.get( label )) ;
 					}
+
+					output.append( "<br/><br/>");
 				}
 			}
 	
