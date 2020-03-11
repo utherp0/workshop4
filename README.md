@@ -14,6 +14,7 @@ mvn clean package -DfacilitatorName='YOUR NAME' -DfacilitatorEmail='YOUR EMAIL' 
 It is worth creating short URLs for the following URLs to be provided to the attendees:
 
 1: The Console URL (the console login point for the attendees)
+
 2: The API Endpoint URL (the URL used to make direct calls, primarily for the Tekton chapter)
 
 For the advanced course there are some Operator pre-requisites that are installed using an Ansible playbook - please check the documentation and the playbooks directory of the repo for details
