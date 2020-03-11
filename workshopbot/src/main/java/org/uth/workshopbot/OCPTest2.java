@@ -3,16 +3,29 @@ package org.uth.workshopbot;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import java.util.*;
 
 @RestController
 public class OCPTest2
 {
-	private static KubernetesClient _client = null;
+	private static DefaultKubernetesClient _client = null;
 	
+	private boolean login()
+	{
+		String clusterURL = System.getenv("CLUSTER");
+		String openshiftUser = System.getenv("OCUSER");
+		String openshiftPassword = System.getenv("OSPASS");
+
+		if( clusterURL == null || openshiftUser == null || openshiftPassword == null ) return false;
+
+		return false;
+	}
+
 	@RequestMapping("/podnames")
 	public String getNames()
 	{
@@ -36,19 +49,19 @@ public class OCPTest2
 
 				if( "Running".equals(phase))
 				{
-					output.append( "Found Pod " + pod.getMetadata().getName() + "\n");
-					output.append( "  [STATUS]\n");
+					output.append( "Found Pod " + pod.getMetadata().getName() + "<br/>");
+					output.append( "  [STATUS]<br/>");
 				  //output.append( (pod.getMetadata().getGenerateName() == null ) ? "" : "  Generate Name: " + pod.getMetadata().getGenerateName() + "\n");
-				  output.append( "    Phase: " + pod.getStatus().getPhase() + "\n");
-					output.append( "    Pod SDN IP: " + pod.getStatus().getPodIP() + "\n");
-					output.append( "    Pod Host IP: " + pod.getStatus().getHostIP() + "\n");
-					output.append( "    Start Time: " + pod.getStatus().getStartTime() + "\n");
+				  output.append( "    Phase: " + pod.getStatus().getPhase() + "<br/>");
+					output.append( "    Pod SDN IP: " + pod.getStatus().getPodIP() + "<br/>");
+					output.append( "    Pod Host IP: " + pod.getStatus().getHostIP() + "<br/>");
+					output.append( "    Start Time: " + pod.getStatus().getStartTime() + "<br/>");
 
-          output.append( "  [METADATA]\n");
-					output.append( "    Self Link: " + pod.getMetadata().getSelfLink() + "\n");
-					output.append( "    Pod Name/Namespace: " + pod.getMetadata().getName() + "/" + pod.getMetadata().getNamespace() + "\n");
-					output.append( "  [SPEC]\n");
-					output.append( "    " + pod.getSpec().getNodeName() + "\n");
+          output.append( "  [METADATA]<br/>");
+					output.append( "    Self Link: " + pod.getMetadata().getSelfLink() + "<br/>");
+					output.append( "    Pod Name/Namespace: " + pod.getMetadata().getName() + "/" + pod.getMetadata().getNamespace() + "<br/>");
+					output.append( "  [SPEC]<br/>");
+					output.append( "    " + pod.getSpec().getNodeName() + "<br/>");
 
 
 				  Map<String,String> labels = pod.getMetadata().getLabels();
@@ -102,7 +115,4 @@ public class OCPTest2
       return "Failed due to " + exc.toString();
 		}
 	}
-
-	//@RequestMapping("/pods")
-	//public 
 }
