@@ -37,6 +37,8 @@ RUN dnf -y install podman container-selinux --enablerepo updates-testing
 
 RUN dnf -y install java-1.8.0-openjdk java-11-openjdk wget
 
+RUN cd /workspace && git clone https://github.com/utherp0/workshop4
+
 WORKDIR /workspace
 
 EXPOSE 8080
