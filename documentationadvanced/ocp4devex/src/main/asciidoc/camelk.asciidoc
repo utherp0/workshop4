@@ -14,14 +14,17 @@ We are going to use a new project to create our Camel K integrations
 
 TIP: This workshop requires you to be logged on to both the OpenShift console and the terminal as described in the pre-requisites. If you do not have both tabs logged in please follow the instructions before continuing
 
-=== Create a new project
+=== Check the project is ready to use
 
-In the browser based terminal window, create a new project called 'camelk-userx' where 'x' is your allocated user number 
+In the browser based terminal window, check you are still logged on and using the correct project by typing:
 
 [source]
 ----
-oc new-project camelk-userx
+oc whoami
+oc project
 ----
+
+TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
 
 === Camel K and the Operator Lifecycle Manager
 
@@ -84,7 +87,7 @@ To see what is going on go to the console UI in the Browser, make sure you are s
 
 Click on 'Advanced/Project Details'
 
-Scroll down to the 'Activity' pane - this shows the events and actions currently occuring within the project. It will look similar to this:
+If your screen is wide enough the Activity pane will appear on the right hand side. If not, scroll down to the 'Activity' pane - this shows the events and actions currently occuring within the project. It will look similar to this:
 
 image::camelk-2a.png[Deploying Camel K activity]
 
@@ -94,7 +97,7 @@ Once the deployment is complete, you will see 'Simple' deployed on the topology 
 
 Click on 'Simple' (this is your integration), and you can see what’s going on.
 
-Once the pod has a dark blue ring around it, it is running, as per the screenshot below
+Once the pod has a dark blue ring around it, it is running, as per the screenshot below. The devex4 application is your terminal application and can be ignored for the duration of this chapter
 
 image::camelk-3.png[Running Integration]
 
@@ -151,7 +154,7 @@ Change the text to the following by pressing [ESC] then I to insert:
 'Hello Camel K from ${routeId}. Added some more text'
 ----
 
-To save the change now hit [ESC]:wq
+To save the change now hit [ESC]:wq[RETURN]
 
 Now, you need to deploy this integration to Openshift again to test by typing:
 
@@ -163,6 +166,8 @@ kamel run simple.groovy
 If you are quick enough (you need to be really quick) switch back to the OpenShift console and hit 'Topology', you’ll see the integration doing a re-deployment
 
 Look at the log file again (as above) to make sure the change has been deployed
+
+image::camelk-4a.png[New output]
 
 === Deploy Camel K in Developer mode
 
@@ -197,11 +202,11 @@ You will see the deployment phases logged on the screen, followed by the log out
 
 image::camelk-5.png[Developer Mode]
 
-NOTE: For the next exercise, you will need 2 terminal windows. Go to the OpenShift Console, which should be on the Developer view. Change the project being viewed using the pulldown located in the top left of the 'Topology' window to the advterminalxx project you created as part of the pre-requisites. Click on the URL icon at the top right of the 'Devex4' application as you did to originally open the terminal. This will open another Terminal for you to use.
+NOTE: For the next exercise, you will need 2 terminal windows. Go to the OpenShift Console, which should be on the Developer view. Click on Topology if the Topology window is not currently in focus. Click on the URL icon at the top right of the 'Devex4' application as you did to originally open the terminal. This will open another Terminal for you to use.
 
 TIP: In the first terminal tab, which will be the one furthest to the right, you will notice that the terminal window is outputting the log of the active and running integration
 
-In the new terminal now type:
+In the *new* terminal now type:
 
 [source]
 ----
@@ -218,9 +223,11 @@ You should see that the changes have been automatically applied to the running i
 
 Go back to the browser terminal that’s outputting the log, press ‘ctrl c’
 
-Look at the Topology view in the Openshift console(or oc get integrations) 
+Look at the Topology view in the Openshift console(or 'oc get integrations' in the terminal) 
 
 The integration should have been deleted and no Pods should now be running, just like a developer would see by pressing 'ctrl c' on a Java application running on their laptop
+
+Close down one of the terminal window tabs so you only have one terminal and the OpenShift console
 
 === Optional labs
 
@@ -244,14 +251,6 @@ Click on the http link
 You will get an error as the integration will only respond to /hello. Append ‘/hello’ to the URI
 Now you should see a response
 
-Once you are completed with the tests, perform a cleanup by typing the following:
-
-[source]
-----
-oc delete project camelk-userX
-----
-
-Where X is your assigned user number
 
 
 
