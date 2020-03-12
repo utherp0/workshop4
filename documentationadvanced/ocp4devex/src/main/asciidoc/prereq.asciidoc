@@ -12,7 +12,9 @@ When logged on you will be presented with a screen listing the projects, of whic
 
 Hit 'Create Project'
 
-For 'Name' enter advterminalx, where x is your unique number
+For 'Name' enter sandboxx, where x is your unique number
+
+For the duration of the advanced workshop you will be working in this project
 
 'Display Name' and 'Description' are optional labels
 
@@ -52,7 +54,7 @@ Press 'y' to use insecure connections
 
 The terminal should now be logged on - to check it try
 
-[source,shell]
+[source]
 ----
 oc whoami
 oc version
@@ -60,15 +62,16 @@ oc version
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
 
-Finally, for use in the examples we will require some source material from the git repo for this workshop. Now type the following in the terminal"
+Finally, for use in the examples we will require some source material from the git repo for this workshop. To check that this is already provided type the following in the terminal:
 
 [source]
 ----
-cd /workspace
-git clone https://github.com/utherp0/workshop4
+cd /workspace/workshop4
+ls -alR
 ----
 
-This command will clone all the required files for the workshop
+These files are the source of the Workshop and all the required local material for the course.
+
 
 
 
