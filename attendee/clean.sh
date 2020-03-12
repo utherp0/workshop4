@@ -30,4 +30,9 @@ do
   oc delete is $is;
 done
 
-
+for secret in $(oc get secrets -o jsonpath='{.items[*].metadata.name}');
+do 
+  if [[ $secret == *"webhook"* ]]; then 
+    oc delete secret $secret; 
+  fi; 
+done
