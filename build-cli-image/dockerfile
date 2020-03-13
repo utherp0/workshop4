@@ -6,7 +6,7 @@ ENV GOPATH=/go
 
 RUN  mkdir /go && chmod 755 /go && yum install -y git golang-bin && go get github.com/yudai/gotty && yum clean all && mkdir /workspace && chmod 777 workspace
 
-RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz && \
+RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && \
 tar -C /tmp -xf /tmp/oc.tar.gz --no-same-owner && \
 mv /tmp/oc /usr/local/bin && \
 chmod +x /usr/local/bin/oc && \
@@ -36,8 +36,6 @@ rm /tmp/*
 RUN dnf -y install podman container-selinux --enablerepo updates-testing
 
 RUN dnf -y install java-1.8.0-openjdk java-11-openjdk wget
-
-RUN cd && cd /workspace && git clone https://github.com/utherp0/workshop4
 
 WORKDIR /workspace
 

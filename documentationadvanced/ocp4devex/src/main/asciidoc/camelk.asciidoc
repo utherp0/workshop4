@@ -198,7 +198,7 @@ To deploy the integration in developer mode, type:
 kamel run simple.groovy --dev
 ----
 
-You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on. The output should look similer to the screenshot below
+You will see the deployment phases logged on the screen, followed by the log outputting automatically from the integration pod, useful for a developer to see what’s going on. The output should look similar to the screenshot below
 
 image::camelk-5.png[Developer Mode]
 
@@ -225,7 +225,7 @@ Go back to the browser terminal that’s outputting the log, press ‘ctrl c’
 
 Look at the Topology view in the Openshift console(or 'oc get integrations' in the terminal) 
 
-The integration should have been deleted and no Pods should now be running, just like a developer would see by pressing 'ctrl c' on a Java application running on their laptop
+The integration should have been deleted and no Pods should now be running (other than the Terminal pod), just like a developer would see by pressing 'ctrl c' on a Java application running on their laptop
 
 Close down one of the terminal window tabs so you only have one terminal and the OpenShift console
 

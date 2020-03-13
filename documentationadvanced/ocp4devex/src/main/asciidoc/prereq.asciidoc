@@ -62,11 +62,12 @@ oc version
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
 
-Finally, for use in the examples we will require some source material from the git repo for this workshop. To check that this is already provided type the following in the terminal:
+Finally, for use in the examples we will require some source material from the git repo for this workshop. To set this up type the following:
 
 [source]
 ----
-cd /workspace/workshop4
+cd /workspace
+git clone https://github.com/utherp0/workshop4
 ls -alR
 ----
 
