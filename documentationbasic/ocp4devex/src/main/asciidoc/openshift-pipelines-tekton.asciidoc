@@ -1,0 +1,349 @@
+== OpenShift Pipelines - Tekton
+
+=== Introduction
+
+*For many years teams have created automation pipelines to build, unit test, analyse and deploy applications in a variety of tool-chains. Some such tool-chains (Jenkins for one) pre-date the popularisation of containers and are now being questioned for their fit for the delivery of cloud native applications. While we are at pains not to criticise Jenkins (we are big users and fans) there is scope to look at alternative approaches for cloud native applications.*
+
+*OpenShift Pipelines are based on the Tekton open source project and they provide a Kubernetes style, resource based approach to the construction of pipelines. Tasks are defined as small units of operations (typically 10 to 15 lines of YAML) and such tasks are grouped together into taskruns or pipelines for execution*.
+
+*A new command line exists for the execution of Tekton commands and a graphical user interface can be added to the cluster to provide a simple way to run tasks and to observe running or completed tasks.*
+
+The Tekton project can be found here : https://tekton.dev/
+
+Further documentation on the specifics of Tekton can be found on the github site here : https://github.com/tektoncd/pipeline
+
+=== Create a project
+
+*Create a project to use for the OpenShift pipeline examples called pipelines-userX replacing X with your user number in the following command:*
+
+oc new-project pipelines-userX
+
+=== Tasks
+
+==== Download pipeline assets
+
+*The pipeline assets are located in a GIT repository. Using your terminal window download the assets using the command below.*
+
+If you are using the terminal in a pod ensure that the current directory is /workspace. If you are using your local machine select an appropriate location to which you have write access.
+
+git clone https://github.com/utherp0/workshop4.git
+
+cd workshop4/attendee/tekton/
+
+ls -al
+
+You should now see a list of yaml files that are used during the remainder of this chapter.
+
+==== Simple task creation and execution
+
+*In the simplest format a task can be executed by a taskrun object. The digram below shows a simple taskrun calling a single task.*
+
+image::pipelines-1.png[Simple pipeline with a task and taskrun]
+
+.Tekton command line
+****
+A new command line utility is used to manage the Tekton command line. The commands cover the various different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks and conditions. 
+
+The Tekton command line is downloaded from here : https://github.com/tektoncd/cli 
+
+If you are using the terminal within a container (option 2) from the installation details in the Application Basics chapter then you already have the tkn command line available to you. If you have chosen to install the command line utilities locally on your laptop then you will need to install tkn using the download location above.
+
+To use the command simply type 'tkn' and you will see help regarding the objects and to get help on a specific object use 'tkn <object> --help'.
+****
+
+*To execute the above pipeline use the following commands to create the pipeline objects. Note that when creating the taskrun objects the associated task(s) will run immediately.*
+
+oc create -f task-1.yaml 
+
+oc create -f taskrun-1.yaml 
+
+tkn taskrun ls
+
+*The response from the last command will display a line similar to the following:*
+
+[source,shell]
+----
+NAME          STARTED           DURATION      STATUS
+task-run-1    9 seconds ago     ---           Running(Pending) 
+----
+
+*Repeat the final command a few times until you see it change to the following:*
+
+[source,shell]
+----
+NAME          STARTED           DURATION      STATUS
+task-run-1    3 minuites ago    21 seconds    Succeeded 
+----
+
+*The result of running the task can then be viewed by executing the following command:*
+
+tkn taskrun logs task-run-1
+
+[source,shell]
+----
+[echo-statement-1] This is my first task in Tekton
+
+[echo-statement-2] ------------------------------------------------------------
+[echo-statement-2]   - This is a multi-line comment
+[echo-statement-2]   - This is useful as a separator but each line has
+[echo-statement-2]   - the title repeated next to it using different colours
+[echo-statement-2]   - which helps with the identification of different tasks.
+[echo-statement-2]  ------------------------------------------------------------
+[echo-statement-2] 
+----
+
+*Note that the command response above uses different colours for each block of command result titles in the [ ] brackets. This helps to differential between the response for each step.*
+
+=== Pipelines
+
+*Pipelines are used to manage the execution of a series of tasks within a pipeline. The example pipeline below is used to execute the Tekton tasks : task-1, task-2 and task-3. Remember that each Tekton task can have multiple steps within it.*
+
+[source,shell]
+----
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline-1
+spec:
+  tasks:
+  - name: task-1
+    taskRef:
+      name: task-1
+  - name: task-2
+    taskref:
+      name: task-2
+  - name: task-3
+    taskref:
+      name: task-3
+----
+
+*Before executing this pipeline create the required additional resources with the commands :*
+
+oc create -f task-2.yaml 
+
+oc create -f task-3.yaml 
+
+oc create -f pipeline-1.yaml
+
+*Execute the pipeline with the following Tekton task*.
+
+tkn pipeline start pipeline-1
+
+*The output of running this command will be something similar to that which is shown below:*
+
+[source,shell]
+----
+Pipelinerun started: pipeline-1-run-ffxsk
+Showing logs...
+[task-2 : what-directory] /workspace
+
+[task-2 : describe-command] ------------------------------------------------------------
+[task-2 : describe-command]   - Openshift oc command line example 
+[task-2 : describe-command]  ------------------------------------------------------------
+[task-2 : describe-command] 
+
+[task-2 : oc-version] Client Version: unknown
+[task-2 : oc-version] Kubernetes Version: v1.14.6+76aeb0c
+
+[task-3 : echo-statement-3] echo - statement 3
+[task-1 : echo-statement-1] This is my first task in Tekton
+
+
+[task-3 : echo-statement-4] echo - statement 4
+
+[task-1 : echo-statement-2] ------------------------------------------------------------
+[task-1 : echo-statement-2]   - This is a multi-line comment
+[task-1 : echo-statement-2]   - This is useful as a separator but each line has
+[task-1 : echo-statement-2]   - the title repeated next to it using different colours
+[task-1 : echo-statement-2]   - which helps with the identification of different tasks.
+[task-1 : echo-statement-2]  ------------------------------------------------------------
+----
+
+*There may be an issue in the order of the execution above. The order of the pipeline expected is different to the order observed:*
+
+[source,shell]
+----
+   Expected               Actual
+task 1 - step 1       task 2 - step 1
+task 1 - step 2       task 2 - step 2
+task 2 - step 1       task 2 - step 3
+task 2 - step 2       task 3 - step 1
+task 2 - step 3       task 1 - step 1
+task 3 - step 1       task 3 - step 2
+task 3 - step 2       task 1 - step 2
+----
+
+*In some pipelines the order of execution may not matter but if it does the order can be managed by the addition of the 'runAfter' directive to a specific task as shown in the update to the pipeline-1 pipeline shown below:*
+
+[source,shell]
+----
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline-1
+spec:
+  tasks:
+  - name: task-1
+    taskRef:
+      name: task-1
+  - name: task-2
+    taskref:
+      name: task-2
+    runAfter: 
+    - task-1
+  - name: task-3
+    taskref:
+      name: task-3
+    runAfter:
+    - task-2
+----
+
+Make the above changes to the pipeline-1.yaml file and then remove the pipeline definition and recreate it before re-running it with the commands :
+
+oc delete -f pipeline-1.yaml
+
+oc create -f pipeline-1.yaml
+
+tkn pipeline start pipeline-1
+
+*This time the execution will follow the intended order.*
+
+=== Viewing pipelines through the Web UI
+
+*Pipelines and pipeline runs are visible through the OpenShift web user interface.*
+
+Ensure that you are on the 'Developer' view of the OpenShift web user interface as shown below and select the project created above from the drop down list.
+
+image::pipelines-2.png[Developer view of OpenShift WEB UI]
+
+Select the pipelines tab on the left hand side of the screen.
+
+You will see the pipeline recently created and it will show a green bar to the right indicating the previous successful execution of the pipeline, as shown below. Note that the green bar will display dark blue sections for running tasks, light blue sections for pending tasks, green for completed and red for failed.
+
+image::pipelines-3.png[Pipeline view showing a completed pipeline run]
+
+From the three dot menu on the right hand side it is possible to start a run of the pipeline. Do this now and watch as the screen changes to show the details of the pipeline run as shown below:
+
+image::pipelines-4.png[Pipelinerun in progress]
+
+Each block can be clicked on to show the details of the steps within the task. Experiment with the different screens to look at the details of the running or completed tasks.
+
+=== Task inputs
+
+*There will be scenarios where it is necessary to provide specific parameters to a pipeline process and the underlying tasks that the pipeline call.*
+
+*There are two mechanisms for getting specific values into tasks :*
+
+* parameters - used to provide specific values to tasks at runtime. If a parameter is declared it must either have a default value defined within the task or it must have a value supplied from a calling taskrun or pipeline run.
+
+* pipeline resources - a reference to a defined resource object that can be accessed by a Tekton pipeline. If a resource is referenced by a task then the resource must exist unless it has been defined as an optional resource in the task definition.
+
+.Pipeline Resource Types
+****
+
+The following pipeline resource types exist :
+
+* Git Resource - The git resource identifies a git repository, that contains the source code to be built by the pipeline. The resource can point to a specific branch or commit and can extract content from a specific directory.
+
+* Pull Request - Can be used as an input resource to identify specific meta data about a pull request. if used as an output a pull request can be updated with changes made during the pipeline process.
+
+* Image - An image to be created as part of the pipeline process.
+
+* Cluster Resource - A different cluster to the cluster on which the pipeline is running. This can be used to deploy content to an alternative cluster as part of a deployment pipeline process.
+
+* Storage Resource - Blob storage that contains either an object or directory. 
+
+* Cloud Event Resource - A cloud event that is sent to a target URI upon completion of a TaskRun.
+
+Further details on the options for all of the above resources is included here : https://github.com/tektoncd/pipeline/blob/master/docs/resources.md
+
+****
+
+==== Task input example
+
+*The task defined in task-4.yaml uses both parameters and pipeline resources to get information into the task. This allows a generic task to be written with specific values supplied to it from the taskrun. The Taskrun object acts as a 'value provider' giving specific values for parameters and referencing specific pipeline resources. The following diagram shows the relationship between the three specific objects.*
+
+image::pipelines-5.png[Task and resource relationship]
+
+*As shown above the task has place-holders for two parameters. The first parameter has a value defined within the taskrun. The second parameter has a default value so it is not essential to provide a value for it in the taskrun. Both parameters are referenced from the steps of the task using the notation $(inputs.params.<parameter-name>).*
+
+*The task also defines a resource object called git-repo-slave of type git. Within the taskrun an input resource object is defined with the same name (git-repo-slave) referring to a pipeline resource object called git-repo-slave-resource. A pipeline resource object is created from the yaml file git-resources.yaml which makes a reference to the actual git repository.*
+
+*To create the resource object execute the following command :*
+
+oc create -f git-resources.yaml
+
+*To view the resources in the project use the command:*
+
+tkn resources list
+
+*The response will be :*
+
+[source,shell]
+----
+NAME                      TYPE   DETAILS
+git-repo-slave-resource   git    url: https://github.com/marrober/slave-node-app.git
+----
+
+*The use of pipeline resource objects for git repositories and created images (as output resources) helps teams to create generic build, test and deploy pipelines that can be reused across multiple projects where the projects simply define the custom pipeline resource objects that are specific to their project or environment.*
+
+=== Workspaces and Volumes
+
+*Workspaces allow you to organise the content used by tasks and the assets that are produced by tasks. This can be useful to add structure to the content during large complex pipelines. Workspaces are storage structures within the pod that runs the containers of the pipeline and workspaces are scoped at the task level. Separate steps within a task can see the same workspace. Volumes are similar to workspaces except for the fact that they are backed by persistent volumes. This ensures that content written to the volume is accessible by steps from multiple tasks, allowing for a greater separation of steps into different tasks. For example a generic build task could be used to create an executable, writing the deliverable to a volume. A separate testing task could then be invoked by a pipeline to perform tests against the newly created deliverable. Accessing the file via a volume will work for the two separate tasks.*
+
+*Task 5 has steps for creating files in the workspace and in a volume, followed by steps to display the files in the workspace and the volume which work fine. Task 6 only has tasks for attempting to display the content of the workspace and the volume. Since the workspace in task 6 is a different workspace to that used in task 5 there is no content to display. The volume however shows the file written in the step in task 5. Tasks 5 and 6 are orchestrated by the pipeline called pipeline-5.*
+
+Create the persistent volume claim to use in this exercise with the command :
+
+oc create -f persistentvolumeclaim.yaml
+
+Create tasks 5 and 6 :
+
+oc create -f task-5.yaml
+
+oc create -f task-6.yaml
+
+Create the pipeline task :
+
+oc create -f pipeline-5.yaml 
+
+*The persistent volume will show that it is in an pending state after creation as no resource has attempted to consume it. After the task has been executed look again at the persistent volume and it will show that it is bound.*
+
+oc get pvc
+
+*Before executing the task*
+
+[source,shell]
+----
+NAME                    STATUS        VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+tekton-task-cache-pvc   Pending                                                                            gp2            4s
+----
+
+*After executing the task*
+
+[source,shell]
+----
+NAME                    STATUS        VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+tekton-task-cache-pvc   Bound         pvc-1d894a93-2646-11ea-9f45-0a9970779e5c   1Gi        RWO            gp2            2m2s
+----
+
+
+Execute the pipeline :
+
+tkn pipeline start pipeline-5
+
+The results (including the colour of the output) is shown below:
+
+image::pipelines-6.png[Workspace and volume example output]
+
+*As shown above in task 5 the creation of the file in the workspace and in the volume functions as required and the files are present. When task 6 attempts to display the files there is an empty workspace, but the volume does show the file created in task 5*
+
+
+
+
+
+
+
+
+
+
