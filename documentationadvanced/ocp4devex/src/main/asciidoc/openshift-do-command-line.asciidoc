@@ -211,10 +211,14 @@ Refresh the browser widow showing the application output and you will see your c
 
 odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
 
+Finally, lets clean up the project by typing
 
+[source]
+----
+odo delete node-app-slave
+----
 
-
-
+This will delete the application from the project
 
 
 
