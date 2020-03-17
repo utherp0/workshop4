@@ -38,6 +38,23 @@ oc apply -f integrationplatform.yaml
 
 This will either create the integration platform or, if it is still active, indicate it is unchanged
 
+now type
+
+[source]
+----
+oc get integrationplatform
+----
+
+The output should look similar to below
+
+[source]
+----
+NAME      PHASE
+camel-k   Ready
+----
+
+Once the "Phase" says "Ready", you can continue
+
 === Create Knative Messaging Channel 
 
 Openshift Serverless uses Knative eventing, Knative eventing is a loosely couple asynchronous architecture allowing event producers to send an event to one or more event consumers. Event Consumers can be scaled to 0 when no events are folowing through the system.
@@ -76,7 +93,7 @@ Now that we have deployed 2 message channels, we will deploy 3 Camel K Integrati
 
 The flow looks like:
 
-feed -> message channel -> spilter -> words channel -> printer
+image::knative-eventing.png[align="center"]
 
 ****
 
@@ -106,6 +123,8 @@ Now go to the developer view in the OpenShift Console
 Now that all 3 of the Integrations are deployed, the topology view should look like the screenshot below
 
 image::camekknative-5.png[Integrations running]
+
+TIP: The Knative service is represented by the square box. You should see 2 of these in the topology view. On the Openshift red logo in the middle of the service you will see the Knative "K" logo. You definiately know that you have a Knative service now. You will also notice an artefact called "KSVC", this is the Knative Service defined to Openshift. There is also an artefact called "REV", this is the Knative revision that is current running. Revisions can be used to implement a Canary Release strategy. The diagram shows that 100% of the traffic is routed to the revision shown on the topology view. If you click on one of the "KSVC" on the topology view you will see an option to set the traffic distribution
 
 Each of the integrations is producing log information. 
 
