@@ -55,6 +55,23 @@ cd /workspace/workshop4/camelfiles/camelkplatform/
 oc apply -f integrationplatform.yaml
 ----
 
+now type
+
+[source]
+----
+oc get integrationplatform
+----
+
+The output should look similar to below
+
+[source]
+----
+NAME      PHASE
+camel-k   Ready
+----
+
+Once the "Phase" says "Ready", you can continue
+
 You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.
 
 Now enter the following commands:
@@ -229,27 +246,25 @@ The integration should have been deleted and no Pods should now be running (othe
 
 Close down one of the terminal window tabs so you only have one terminal and the OpenShift console
 
-=== Optional labs
+If you followed the lab, the Integration should be gone, however, lets make sure
 
-Feel free to take a look at some of the other examples
+clean up the project
 
-TIP: Instructions on how to run the integrations are in the integration source code
-E.g. kamel run --name=rest-with-restlet --dependency=camel-rest --dependency=camel-restlet examples/RestWithRestlet.java
+In the terminal window, type
 
-The example above demonstrates Camel K deploying a Java based Camel Route that exposes a Restful service via an Openshift route - the Camel K operator does all the hard work for you
+[source]
+----
+kamel get
+----
 
-NOTE: some of the examples might take a little longer to deploy as the operator will need to download more dependencies
+If there is no Integration runninng then proceed to the next lab of your choice
 
-To test the rest api, you need to know what the OpenShift Route is
+If an Integration is running, then please delete it by typing
 
-In the Developer UI, go back to the Topology view, and click on “rest-with-restlet” application
-
-Click on resources, and you will see the http route at the bottom of the page
-
-Click on the http link
-
-You will get an error as the integration will only respond to /hello. Append ‘/hello’ to the URI
-Now you should see a response
+[source]
+----
+kamel delete simple
+----
 
 
 
