@@ -1,6 +1,6 @@
 == Application Deployment Configurations and DevOps Approaches
 
-Author: Mark Roberts (feedback to mark.roberts@redhat.com)
+Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
 
@@ -194,7 +194,7 @@ Confirm this has worked in the command window executing the shell script.
 
 TIP: The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are required.
 
-Gradually migrating traffic fromv1 to v2 involves patching the route to change configuration as shown below.
+Gradually migrating traffic from v1 to v2 involves patching the route to change configuration as shown below.
 
 image::deployment-strategies-3.png[Traffic routing]
 

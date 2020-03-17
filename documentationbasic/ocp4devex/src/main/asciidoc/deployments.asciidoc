@@ -279,3 +279,5 @@ In the triple dot menu next to your own project (sandboxX) select ‘Delete Proj
 Type ‘sandboxX’ (where X is your user number) such that the Delete button turns red and is active.
 
 Press Delete to remove the project.
+
+

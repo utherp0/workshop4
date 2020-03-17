@@ -2,7 +2,7 @@
 
 == Pod Health Probes
 
-Author: Mark Roberts (feedback to mark.roberts@redhat.com)
+Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
 

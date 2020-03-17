@@ -141,7 +141,7 @@ Click on 'Create Application'
 
 Leave Image Version as 2.4
 
-Set the git repo to ‘https://github.com/utherp0/forumstaticassets’
+Enter the following for the Git repo for the application - https://github.com/utherp0/forumstaticassets[https://github.com/utherp0/forumstaticassets]
 
 Make sure the Application is ‘nodenews-app’
 
@@ -176,7 +176,7 @@ Click 'Create Application'
 
 Leave at Builder Image Version 10
 
-Set the git repo to ‘https://github.com/utherp0/ocpnode’
+Enter the following for the Git repo for the application - https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode]
 
 In the ‘Application’ pulldown select ‘Create Application‘
 
@@ -342,15 +342,13 @@ Select the 'sandboxx' project in the project list
 
 Note the metrics for the project
 
-Click on 'Workloads' and then select Pods.
+Click on 'Workloads' and then select Pods to see the list of pods for the project as shown in the image below.
 
-In the headers for the Pods panel you will see a number of selectable points describing the types of Pods.
+image::applicationbasics-7.png[Command Line Tools]
 
-Click on 'Running' to toggle them off
+It is possible to filter groups of pods that are displayed based on the headings of Running, Pending, Terminating etc. The classifications in dark blue are currently being displayed and those in grey are not being displayed. Click on the 'Completed' heading to switch on the display of completed pods (there should be five). Click on 'Running' to toggle the display of running pods off. Click on the appropriate headings again to switch off the display of completed pods and to switch back on the display of running pods.
 
-Click on 'Completed' to toggle them on
-
-*Note that all the builds and deployments you have done, for the deployments that have a DeploymentConfig, have completed Pods. All of the actions are executed in separate Pods which is one of the key features that makes OpenShift so scaleable*
+*Note that all the builds and deployments you have done, for the deployments that have a DeploymentConfig, have completed Pods. All of the actions are executed in separate Pods which is one of the key features that makes OpenShift so scalable*
 
 Change to Developer mode and then select Topology if the Topology page isn’t already shown
 
