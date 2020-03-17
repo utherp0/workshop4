@@ -169,5 +169,14 @@ Go back to the topology view and you should see the 'feed' integration redeploy,
 
 This shows the potential for effective serverless behaviour by the down-scaling of unused applications, combined with the ease of Camel-K integrations.
 
+To clean up before the next chapter run the following commands in the terminal:
+
+[source]
+----
+kamel delete feed
+kamel delete splitter
+kamel delete printer
+----
+
 
 
