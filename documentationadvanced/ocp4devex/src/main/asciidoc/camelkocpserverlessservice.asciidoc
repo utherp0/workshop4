@@ -22,16 +22,9 @@ At the time of writing, Serving is in technology preview, and Eventing is in Dev
 Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
 ****
 
-=== Create a new project
+=== Creating the pre-requisites for the chapter
 
-In the browser based terminal window, create a new project called 'knative-userx' where 'x' is your allocated user number (if you have already done the Eventing lab then this project will already exist)
-
-[source]
-----
-oc new-project knative-userx
-----
-
-Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'. Again, if you have done the Eventing Lab this will be active already.
+Before we can create an integration, we need to check that the camel-k integration added in a previous chapter is still active
 
 In the terminal window, type
 
@@ -40,6 +33,8 @@ In the terminal window, type
 cd /workspace/workshop4/camelfiles/camelkplatform
 oc apply -f integrationplatform.yaml
 ----
+
+This will either create the integration platform or, if it is still active, indicate it is unchanged
 
 === Deploy a Restful Integration using Camel K and an OpenAPI definition 
 
@@ -66,9 +61,7 @@ kamel run --name greetings --dependency=camel-rest --dependency camel-undertow -
 
 Go to the developer view in the Openshift Console
 
-Make sure you have chosen the project 'knative-userX' where X is your assigned user number
-
-NOTE: If this is the first time you've deployed a Camel K integration, it will take a few minutes to download the dependancies 
+NOTE: If this is the first time you've deployed a Camel K integration, it will take a few minutes to download the dependencies 
 
 Once, the Integration is deployed, the topology view should look like the screnshot below
 
