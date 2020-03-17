@@ -55,6 +55,23 @@ cd /workspace/workshop4/camelfiles/camelkplatform/
 oc apply -f integrationplatform.yaml
 ----
 
+now type
+
+[source]
+----
+oc get integrationplatform
+----
+
+The output should look similar to below
+
+[source]
+----
+NAME      PHASE
+camel-k   Ready
+----
+
+Once the "Phase" says "Ready", you can continue
+
 You should now have all the pieces you need to start creating and deploying lightweight Camel Integrations to Openshift.
 
 Now enter the following commands:
