@@ -15,6 +15,18 @@ At the time of writing, Serving is in technology preview, and Eventing is in Dev
 "Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at serving, and how easy it is to integrate with Camel K.
 ****
 
+=== Check the project is ready to use
+
+In the browser based terminal window, check you are still logged on and using the correct project by typing:
+
+[source]
+----
+oc whoami
+oc project
+----
+
+TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
+
 === Openshift Serverless and the Operator Lifecycle Manager
 
 .Openshift Serverless and the Operator Lifecycle Manager
@@ -36,11 +48,28 @@ oc apply -f integrationplatform.yaml
 
 This will either create the integration platform or, if it is still active, indicate it is unchanged
 
+now type
+
+[source]
+----
+oc get integrationplatform
+----
+
+The output should look similar to below
+
+[source]
+----
+NAME      PHASE
+camel-k   Ready
+----
+
+Once the "Phase" says "Ready", you can continue
+
 === Deploy a Restful Integration using Camel K and an OpenAPI definition 
 
 .Introduction to the integrations that we will use
 ****
-This integration is a simple hello world integration. The Restful API interface is defined by the OpenAPI json document called greeting-api.json. An Apache Camel Route can implement this interface without the need for code. Using a "from" action called "direct" the integration enables the Camel Route to listen/respond to the operation id defined in the OpenAPI document.
+This integration is a simple hello world Restful integration. The Restful API interface is defined by the OpenAPI json document called greeting-api.json. This is demonstrating top down API design with Apache Camel. An Apache Camel Route can implement this interface without the need for code. Using a "from" action called "direct" the integration enables the Camel Route to listen/respond to the operation id defined in the OpenAPI document.
 
 Feel free to have a look at both of the files to understand whats going on.
 
@@ -116,13 +145,24 @@ In the terminal window type (make sure you substitute the URL you see from runni
 curl -m 60 URLFROMABOVE/camel/greetings/YOURNAMEHERE
 ----
 
-After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing. 
+After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing.
+
+At the time of writing, the inital start up time issue is known to engineering and is documented in the Red Hat documentation. A fix for this will be coming in a future release. Please remember that Knative serving is still in Tech Preview
 
 image::camekknativeserving-7.png[Knative serving started]
 
 Knative has automatically scaled the service to one pod, and processed the curl request.
 
 TIP: Options are available in Knative to determine how to scale based on concurrent calls or cpu useage. Options are also available to determine maximum number or pods, and also the inactivity time before a pod scales its self down - by default, all the way back down to zero.
+
+Deploying Integration Services with Knative can't get easier than that!
+
+To clean up before the next chapter run the following commands in the terminal:
+
+[source]
+----
+kamel delete greetings
+----
 
 ////
 === Knative Revisions

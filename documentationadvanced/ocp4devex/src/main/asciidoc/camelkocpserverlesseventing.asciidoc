@@ -15,6 +15,18 @@ At the time of writing, Serving is in technology preview, and Eventing is in Dev
 "Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at eventing, and how easy it is to integration with Camel K.
 ****
 
+=== Check the project is ready to use
+
+In the browser based terminal window, check you are still logged on and using the correct project by typing:
+
+[source]
+----
+oc whoami
+oc project
+----
+
+TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
+
 Whilst Openshift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into Openshift Serverless.
 
 === Openshift Serverless and the Operator Lifecycle Manager
