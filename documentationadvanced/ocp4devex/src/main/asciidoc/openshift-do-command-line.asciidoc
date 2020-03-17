@@ -188,7 +188,7 @@ In the new terminal tab enter
 
 [source]
 ----
-cd /workspaces/workshop4/attendee/slave
+cd /workspace/workshop4/attendee/slave
 odo watch
 ----
 
