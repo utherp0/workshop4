@@ -6,7 +6,7 @@ The advanced module covers the extra technical components of OCP4 including Tekt
 
 Run the following mvn command from the documentationadvanced directory:
 
-mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'
+mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]'
 
 === NOTE - the follow pre-requisites must be done *before* allowing attendees to use the course
 

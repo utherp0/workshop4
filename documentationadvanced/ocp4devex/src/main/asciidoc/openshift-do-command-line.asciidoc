@@ -84,7 +84,7 @@ oc whoami
 odo project list
 ----
 
-This should result in your user name being displayed followed by the advterminal project being shown by the result to the odo command
+This should result in your user name being displayed followed by the sandboxX project being shown by the result to the odo command
 
 *If you do need to login to odo outside of this workshop use the 'odo login' command with appropriate parameters*
 
@@ -97,27 +97,13 @@ To see which version of odo you are using enter the command:
 odo version
 ----
 
-==== Create a project to work in
+==== Examining source assets
 
-Enter the follow command in the terminal, replacing x with your unique user number
-
-[source]
-----
-oc new-project odox
-oc project
-----
-
-Ensure you are working in the odox project
-
-==== Download source assets
-
-The pipeline assets are located in a GIT repository. Using your terminal window download the assets using the commands below
+The pipeline assets are located in a GIT repository that has been preinstalled in the terminal. Using your terminal window check the assets using the commands below
 
 [source]
 ----
-git clone https://github.com/utherp0/workshop4
-
-cd workshop4/attendee/slave
+cd /workspace/workshop4/attendee/slave
 
 ls -al
 ----
@@ -202,7 +188,7 @@ In the new terminal tab enter
 
 [source]
 ----
-cd workshop4/attendee/slave
+cd /workspace/workshop4/attendee/slave
 odo watch
 ----
 
@@ -225,10 +211,14 @@ Refresh the browser widow showing the application output and you will see your c
 
 odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
 
+Finally, lets clean up the project by typing
 
+[source]
+----
+odo delete node-app-slave
+----
 
-
-
+This will delete the application from the project
 
 
 

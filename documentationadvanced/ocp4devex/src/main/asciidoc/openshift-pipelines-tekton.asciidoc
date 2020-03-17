@@ -16,26 +16,17 @@ The Tekton project can be found here : https://tekton.dev/
 
 Further documentation on the specifics of Tekton can be found on the github site here : https://github.com/tektoncd/pipeline
 
-=== Create a project
-
-Create a project to use for the OpenShift pipeline examples called pipelines-userX replacing X with your user number in the following command:
-
-[source]
-----
-oc new-project pipelines-userX
-----
-
 === Tasks
 
 ==== Download pipeline assets
 
-TIP: As part of the pre-requisites you should have cloned the required git repo - if you haven't please go back to the pre-requisites and execute the command listed at the end
+TIP: As part of the pre-requisites you should have cloned the required git repo and created the base project for all the chapters - if you haven't please go back to the pre-requisites and follow the instructions
 
 Check the required assets for the workshop are available in your terminal image using:
 
 [source]
 ----
-cd workshop4/attendee/tekton/
+cd /workspace/workshop4/attendee/tekton/
 ls -al
 ----
 
@@ -77,7 +68,7 @@ NAME          STARTED           DURATION      STATUS
 task-run-1    9 seconds ago     ---           Running(Pending) 
 ----
 
-Repeat the final command a few times until you see it change to the following:
+Repeat the final command a few times until you see it change to be similar to the following:
 
 [source]
 ----
@@ -158,8 +149,9 @@ Once the pipeline is indicated to have finished, go back to the terminal and ent
 
 [source]
 ----
-tkn pipelinerun logs pipeline-1-run-kx95g -f -n advterminal95
+tkn pipelinerun logs pipeline-1-run-kx95g -f
 ----
+Note that the -n parameter is optional, it states the namespace to look in for the pipelinerun and we are running in a single namespace
 
 Enter the command as provided by the tkn command and the response should look something like this:
 
@@ -404,14 +396,9 @@ You can click on the pipeline-run (labelled pipeline-5-run-XXXXX) and examine th
 
 image::pipelines-9.png[Task details]
 
-When you are satisfied that the pipeline has executed as expected, perform the check on the pvc in the terminal window and then clean-up the project using:
+When you are satisfied that the pipeline has executed as expected, perform the check on the pvc in the terminal window
 
-[source]
-----
-oc delete project pipelines-userX
-----
 
-Where X is your assigned user number
 
 
 

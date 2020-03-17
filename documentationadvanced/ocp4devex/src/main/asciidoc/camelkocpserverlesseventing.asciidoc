@@ -24,16 +24,9 @@ Whilst Openshift Serverless has it's own cli (kn), the purpose of this lab is to
 Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
 ****
 
-=== Create a new project
+=== Creating the pre-requisites for the chapter
 
-In the browser based terminal window, create a new project called 'knative-userx' where 'x' is your allocated user number (if you have already done the serving lab then this project will already exist)
-
-[source]
-----
-oc new-project knative-userx
-----
-
-Before we can create an integration, we need to add a Camel K 'IntegrationPlatform'.
+Before we can create an integration, we need to check that the camel-k integration added in a previous chapter is still active
 
 In the terminal window, type
 
@@ -42,6 +35,8 @@ In the terminal window, type
 cd /workspace/workshop4/camelfiles/camelkplatform
 oc apply -f integrationplatform.yaml
 ----
+
+This will either create the integration platform or, if it is still active, indicate it is unchanged
 
 === Create Knative Messaging Channel 
 
@@ -96,13 +91,13 @@ kamel run printer.groovy
 
 First go to the Administrator view in the OpenShift console - at the top left make sure the view is set to Administrator
 
-Go to Workloads/Pods, make sure the project is set to knative-userX where X is your user number
+Go to Workloads/Pods. As you are using a single namespace for the workshop this should display the active Pods in sandboxX, where X is your user number
 
 Watch as the integrations are created using builder and deployment containers. This may take a little while. 
 
 image::camekknative-11.png[Containers building]
 
-Once it has finished deploying the integrations you will have three Pods active as shown similar to the screenshot below
+Once it has finished deploying the integrations you will have three Pods active as shown similar to the screenshot below (ignore the devex Pod, this is your terminal Pod)
 
 image::camekknative-12.png[Containers Complete]
 
@@ -173,6 +168,15 @@ kamel run feed.groovy
 Go back to the topology view and you should see the 'feed' integration redeploy, and the 'spillter' and 'printer' integrations awake from their slumber.
 
 This shows the potential for effective serverless behaviour by the down-scaling of unused applications, combined with the ease of Camel-K integrations.
+
+To clean up before the next chapter run the following commands in the terminal:
+
+[source]
+----
+kamel delete feed
+kamel delete splitter
+kamel delete printer
+----
 
 
 
