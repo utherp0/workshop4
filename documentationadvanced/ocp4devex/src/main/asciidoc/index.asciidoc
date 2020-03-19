@@ -8,5 +8,6 @@ include::camelk.asciidoc[]
 include::openshift-pipelines-tekton.asciidoc[]
 include::camelkocpserverlesseventing.asciidoc[]
 include::camelkocpserverlessservice.asciidoc[]
+include::openshift-and-quay-repository.asciidoc[]
 
 

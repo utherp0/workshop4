@@ -1,0 +1,293 @@
+== OpenShift and the Quay Image Repository
+
+Author: Mark Roberts (feedback to mroberts@redhat.com)
+
+=== Introduction
+
+During the development process a number of container images will be produced. The source-2-image capability described in the basic workshop creates images catalogued under an image stream within a project. Other container images may be created using command line functions such as docker or buildah (both using docker files potentially) or images may be downloaded from the Red Hat Container Catalogue https://catalog.redhat.com/software/containers/explore [here],or other vendor supplied images may be used. From a variety of sources and through a variety of mechanisms images will be created that form the microservices of an application. Such images need to be managed through a lifecycle as they progress from Development to QA and finally to production in a process described in the diagram below.
+
+image::quay-1.png[Image management process through the route to live]
+
+The image below shows on OpenShift project and the various artefacts that are created. The image stream object is shown here within the context of the builder process that creates it and the running pod that consumes it.
+
+image::quay-2.png[Openshift project and the creation of the image stream]
+
+.The structure of Quay
+****
+The Quay image repository uses a number of specific objects to manage the structure, security an maintenance of images. 
+
+. Organisation - An organisation maps neatly to a project within OpenShift and is a structural container for a number of repositories.
+. Repository - A repository maps neatly to an image stream within OpenShift (or any other single source of images). A repository may contain multiple tagged versions of a single image. 
+
+The organisation may have the following characteristics:
+
+    . Default permissions to be applied to any new repositories created within the organisation.
+    . Teams that control access to the organisation and its repositories.
+    . Robot accounts for automated access to the repositories from scripted or command line processes.
+****
+
+.The objectives of this chapter are:
+. To understand the Quay user interface and the objects created within Quay
+. To create a process for pushing images from the OpenShift image repository to the Quay repository
+. To pull images from Quay to a new project in OpenShift to simulate the use of the images in a QA cluster
+
+=== Using the Quay workshop cluster
+
+In order to use the Quay instance for the workshop you need to request that an id is created for you by the workshop administrators. This will take very little time and will result in the creation of the following:
+
+. An organisation will be created in Quay using the same name as the OpenShift project used in this section, for example master-slave-user20.
+. A Quay user matching the OpenShift username and password.
+. The Quay user will have read/write access to the organisation, but you will have to create access to the specific repositories as part of the steps to follow.
+
+=== Creating the OpenShift Project
+
+In order to interact with Quay each user requires an OpenShift project containing images. While the administrator is creating your Quay content use the commands below to quickly create the OpenShift project and the required content:
+
+[source]
+----
+oc new-project master-slave-user20
+
+oc new-app --name node-app-slave  https://github.com/marrober/slave-node-app.git
+
+oc new-app --name node-app-master  https://github.com/marrober/master-node-app.git
+
+oc expose service node-app-master --name="master-app-route"
+----
+
+The above above commands will create image streams for the master and the slave which can be viewed using the command below.
+
+[source]
+----
+oc get is
+----
+
+This will display image streams similar to that which is shown in the table below:
+
+[cols="20,~,10,15"]
+[grid=none]
+[frame=none]
+|===
+
+|NAME|              IMAGE REPOSITORY|                                                              TAGS|     UPDATED
+|node-app-master|   default-route-openshift-<reduced>.com/master-slave-userX/node-app-master|      latest|   22 hours ago
+|node-app-slave|    default-route-openshift-<reduced>.com/master-slave-userX/node-app-slave|       latest|   22 hours ago
+|===
+
+The image repository field will show the route to use to get access to the container images within the container image repository. Now that you have some images to manage it is necessary to create the repositories in Quay.
+
+=== Creating the Quay image repositories
+
+When the workshop administrator tells you that they have created your user and organisation in Quay you may login at the provided Quay URL. The username and password for Quay will be the same as those used for OpenShift.
+
+_The example screen shots below show a user ID of user23, but obviously yours may be different._
+
+When you have logged into Quay you will see the web user interface similar to that shown below.
+
+image::quay-3.png[Quay web user interface]
+
+You see two namespaces within Quay for the storage of repositories. The namespace identified by your user name can hold repositories outside the scope of an organization. The organization can hold repositories with the added benefits provided by the organization which are :
+
+. Default permissions set on the organization that apply to new repositories created within it.
+. The use of teams and users to manage the allocation of permissions to the organisation and the repositories created within it.
+
+.Quay permissions
+****
+
+The diagram below shows the permission structure for an organization.
+
+image::quay-4.png[Quay organization permissions]
+
+. Teams contain users and robot (automation) users who have permissions on specific repositories.
+. Teams can have a role of creator - Create new repositories which will inherit the organisation default permissions), Admin - perform all actions including delete or member.
+. Member permissions are allocated on a per repository basis and can include none - no access, read - can pull images, write - can pull and push images, admin - can pull, push and perform admin functions such as delete and manage permissions.
+****
+
+=== Managing the Quay organization and repositories
+
+Select the Quay organisation called master-slave-userXX. 
+
+This will show a largely blank screen with options down the left hand side.
+
+Click on the '+ Create New Repository' link at the top right of the screen.
+
+Since the names of the repositories need to match the names of the image streams in OpenShift refer back to the command line window and the names of the image streams from the 'oc get is' commands used above.
+
+Enter the name of one of the image streams for the repository, select public for access and then click on 'Create Public Repository'.
+
+Click the browser back button to go back to the repository creation screen and repeat the repository creation process for the second image stream.
+
+Press the left facing arrow on the top left of the screen to go back to the list of repositories.
+
+Select the master-slave-userXX organization and you should see the details of the organization as shown below.
+
+image::quay-5.png[Quay organization details]
+
+==== Granting permissions to repositories
+
+Select the Teams and Membership tab on the left hand side of the screen (2nd icon down). Here you can create new teams and manage the users and permissions of existing teams.
+
+Create a new team called 'development' (only lower case letters and numbers are allowed).
+
+You will then be prompted to add permissions for the two existing repositories. Select 'Write' permission for both repositories.
+
+When the permissions have been added for the development team you will see the summary for teams and memberships as shown below.
+
+image::quay-6.png[Quay teams and memberships]
+
+At this point the development team has no members so click on the link stating '0 members' and add userXX to the team, by typing the user name into the 'add user' field on the right hand side. Press the left pointing arrow at the top left corner to return to the organization and you should see that the development team has 1 member and 2 repositories.
+
+==== Creating a robot account
+
+Click on the next tab down from the teams and memberships tab on the left hand side of the screen to select Robot accounts. Create a new robot account called userXX_automation (where XX is you user number). You may optionally add a description if you want to.
+
+Grant write permission to the robot account on both repositories and then click 'close'.
+
+Click on the cog on the right hand side of the robot account name and select 'view credentials'.
+
+You will see a list of many different types of credentials that you can generate such as token, Kubernetes secret, rkt configuration, Docker login,Docker configuration and Mesos credentials. For the access required in the workshop copy the username and token from the Robot Token tab and store them in a local editor or notepad ready to use later. Once they are copied close the dialog box.
+
+Back on the organisation screen take a look at the options for creating default permissions (the next tab down on the left). It is possible to create default permissions to be applied to new repositories for specific uses, teams and robot users as appropriate.
+
+==== Summary of Quay UI work
+
+The organization, repositories, users, robot users and permissions are all now in place within Quay for the images to be pulled from OpenShift and pushed to Quay.
+
+.Image management tools
+****
+
+A number of tools exist for the management of images, three of which are described below.
+
+[cols=".^20h,~"]
+[grid=none]
+[frame=none]
+|===
+a| image::buildah.png[] |   Buildah is an image building open source project that can either use Buildah specific commands to build an image or it can simply use an existing docker file. One major advantage of Buildah for some users is that it does not require a docker process to be constantly running on the workstation as root. In the workshop Buildah will be used to get images from /to OpenShift and from / to Quay.
+a| image::podman.png[] |   Podman overlaps somewhat with Buildah but its main focus is with regard to the running and interaction with container images. 
+a| image::skopeo.png[] |   Skopeo can be used to copy container images from one image repository to another. It can also be used to convert images between formats. It is possible to perform many of the actions in this workshop with Skopeo but by using Buildah it is possible to see what is being created in an intermediate local repository which may add some value for users.
+|===
+****
+
+=== Pulling OpenShift images and pushing to Quay
+
+Buildah will be used to pull images to a local repository, re-tag the images for the location on Quay and then push the images to Quay.
+
+==== Login to the OpenShift registry using Buildah
+
+In order to perform these operations it is necessary to login to the OpenShift image repository using the Buildah command even though you may already be logged into the OpenShift cluster using the oc command. The URL for the OpenShift repository is the address in the image repository table up to and including .com.
+
+To get just the image repository URL use the command : 
+
+[source]
+----
+oc get is -o jsonpath={.items[0].status.publicDockerImageRepository} | cut -d'/' -f1
+----
+
+This will return a string similar to :
+
+default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com
+
+The Buildah login command takes the form :
+
+buildah login --username <username> --password <token> repository-URL
+
+The token for the login command will be generates from the command :
+
+[source]
+----
+oc whoami -t
+----
+
+Combined together the Buildah login command (for the example repository-URL, and where XX is replaced by your user number) becomes :
+
+[source]
+----
+buildah login --username userXX --password $(oc whoami -t) default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com
+----
+
+You should get a response of "Login Succeeded!"
+
+==== Login to Quay using Buildah
+
+It is also necessary to login to the Quay image repository using the Buildah command. The URL for the Quay repository is the address in the browser window for Quay up to and including .com and excluding the https:// part.
+
+The username and password are those which were generated and noted earlier on for the Quay robot user.
+
+The Quay login command will be similar to :
+
+[source]
+----
+buildah login --username master-slave-user23+user23_automation --password 6A6ODEQT39ID52S9HZ4IRCBO3EK4O5KNAGZ2HWKSOQQUMU9QSKMBBPYNO6A3ED0O quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com
+----
+
+You should get a response of "Login Succeeded!"
+
+_You are now logged into both OpenShift and Quay with buildah and you are ready to pull and push images._
+
+==== Examine the local buildah repository
+
+Use the command below to view the local buildah image repository. You should see that it contains no images.
+
+[source]
+----
+buildah images
+----
+
+Use the command below to list the images and their location within the OpenShift image repository :
+
+[source]
+----
+oc get is -o jsonpath='{range.items[*]}{.metadata.name}{" "}{.status.publicDockerImageRepository}{"\n"}'
+----
+
+This command will generate a list of all image streams and the registry location to use in the pull command. To pull the image use the full docker image repository name in the command below :
+
+[source]
+----
+buildah pull docker://<full-image-path>
+----
+
+for example 
+
+[source]
+----
+buildah pull docker://default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master
+----
+
+The command will show the progress of pulling image layers and will complete with a message similar to that which is shown below :
+
+[source]
+----
+Getting image source signatures
+Copying blob 455ea8ab0621 done
+Copying blob 6a4fa4bc2d06 done
+Copying blob bb13d92caffa done
+Copying blob 2dd72bf14df1 done
+Copying blob ff52b8e1303b done
+Copying blob 84e620d0abe5 done
+Copying config abc6f7ad19 done
+Writing manifest to image destination
+Storing signatures
+abc6f7ad19646ed135d9b76946ccce2ae9b4c796a66472f34d853df009dbd18e
+----
+
+View the local image repository with the command :
+
+[source]
+----
+buildah images
+----
+
+The result will be similar to that which is shown below:
+
+[cols="40,10,20,20,10"]
+[grid=none]
+[frame=none]
+|===
+|REPOSITORY |TAG      |IMAGE ID       |CREATED       |SIZE
+|default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master   |latest   |abc6f7ad1964   |6 hours ago   |547 MB
+|===
+
+
+
+
+
