@@ -35,7 +35,7 @@ The organisation may have the following characteristics:
 
 In order to use the Quay instance for the workshop you need to request that an id is created for you by the workshop administrators. This will take very little time and will result in the creation of the following:
 
-. An organisation will be created in Quay using the same name as the OpenShift project used in this section, for example master-slave-user20.
+. An organisation will be created in Quay using the same name as the OpenShift project used in this section, for example master-slave-user23.
 . A Quay user matching the OpenShift username and password.
 . The Quay user will have read/write access to the organisation, but you will have to create access to the specific repositories as part of the steps to follow.
 
@@ -45,7 +45,7 @@ In order to interact with Quay each user requires an OpenShift project containin
 
 [source]
 ----
-oc new-project master-slave-user20
+oc new-project master-slave-user23
 
 oc new-app --name node-app-slave  https://github.com/marrober/slave-node-app.git
 
@@ -169,11 +169,11 @@ a| image::skopeo.png[] |   Skopeo can be used to copy container images from one 
 
 === Pulling OpenShift images and pushing to Quay
 
-Buildah will be used to pull images to a local repository, re-tag the images for the location on Quay and then push the images to Quay.
+Buildah will be used to pull images to a local repository, re-tag the images for the location on Quay and then push the images to Quay. 
 
 ==== Login to the OpenShift registry using Buildah
 
-In order to perform these operations it is necessary to login to the OpenShift image repository using the Buildah command even though you may already be logged into the OpenShift cluster using the oc command. The URL for the OpenShift repository is the address in the image repository table up to and including .com.
+In order to pull the images it is necessary to login to the OpenShift image repository using the Buildah command even though you may already be logged into the OpenShift cluster using the oc command. The URL for the OpenShift repository is the address in the image repository table up to and including .com.
 
 To get just the image repository URL use the command : 
 
@@ -208,7 +208,7 @@ You should get a response of "Login Succeeded!"
 
 ==== Login to Quay using Buildah
 
-It is also necessary to login to the Quay image repository using the Buildah command. The URL for the Quay repository is the address in the browser window for Quay up to and including .com and excluding the https:// part.
+It is also necessary to login to the Quay image repository using the Buildah command so that images can be pushed to Quay. The URL for the Quay repository is the address in the browser window for Quay up to and including .com and excluding the https:// part.
 
 The username and password are those which were generated and noted earlier on for the Quay robot user.
 
@@ -287,7 +287,125 @@ The result will be similar to that which is shown below:
 |default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master   |latest   |abc6f7ad1964   |6 hours ago   |547 MB
 |===
 
+An image now exists in a local repository - either on your laptop or within the terminal container depending on where you ran the command.
 
+Repeat the process to pull the image for the slave too. Notice this time that some of the layers are skipped as those layers already exist within the local repository.
+
+==== Tagging images for the Quay repository
+
+In order to push images to Quay they must have a repository identifier and tag attached to them. This is done using the Buildah tag command. The Buildah tag command takes the format :
+
+[source]
+----
+buildah tag <existing-repository-location>:<tag> <new-repository-location>:<tag>
+----
+
+The actual tag names used for the existing location need to match what is in the repository, while the new tag can be whatever is appropriate such as an incremental number, 'latest' or some other useful identifier. To reduce the amount of command line copy and paste operations when creating the existing repository location and tag the command below can be used :
+
+[source]
+----
+oc get is -o jsonpath='{range.items[*]}{.metadata.name}{" "}{.status.publicDockerImageRepository}{":"}{.status.tags[0].tag}{"\n"}'
+----
+
+The new repository location is the Quay URL address, organization and repository name the easiest way to get this is to go to the Quay web user interface, select 'Repositories' on the top menu and then select the master repository within the master-slave organization. This will show a screen similar to that which is shown below:
+
+image::quay-7.png[Quay repository details]
+
+Copy the URL after the docker pull command that begins with quay. It will look similar to the below: 
+
+quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master
+
+Create the Builah tag command from the information collected above such that it looks similar to the below:
+
+[source]
+----
+buildah tag default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master:latest quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1
+----
+
+Note that the tag used in the command for the destination tag is 1.
+
+Execute the command and then use the command below to list the images :
+
+[source]
+----
+buildah images
+----
+
+Repeat the similar command for the slave image.
+
+==== Push the images to Quay
+
+Push the images to Quay using the commands of the format :
+
+[source]
+----
+buildah push <new-repository-location>:<tag>
+----
+
+for example :
+
+[source]
+----
+buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1
+buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-slave:1
+----
+
+Switch to the Quay web user interface. If you are still displaying the repository information page where the image pull / push URL was copied from then refresh the browse window and then select the 'tags' view (2nd option down on the repository menu). This will show the tags view similar to that which is shown below.
+
+image::quay-8.png[Quay repository tags view]
+
+The tags view shows information on the image tag and the buttons on the right of each line allow the user to select different mechanisms for extracting and manipulating the image.
+
+=== Using the images in a QA environment
+
+Referring to the document at the top of this section the image may now be pulled to different clusters such as a QA cluster, pre-production cluster and production cluster. Specific users will have the appropriate role based permissions to pull the images into those clusters to control the necessary separation of responsibilities within an organization. For this exercise you will create a new project with the same name as the existing project but with -a on the end of the name to simulate the deployment to QA. 
+
+The original commands used to create the images at the start of this section used the source-2-image capability and pulled the source code. The process from this point forward has no interaction with the application source code and pulls the immutable images into each successive cluster (simulated in the case of the workshop), with environment specific information being injected into the running containers using config maps. This use of immutable images is one significant advantage of containers and hence is another reason for the use of a secure image repository.
+
+==== Creating the OpenShift Project for QA
+
+In order to interact with Quay each user requires an OpenShift project containing images. While the administrator is creating your Quay content use the commands below to quickly create the OpenShift project and the required content:
+
+[source]
+----
+oc new-project master-slave-userXX-qa
+
+oc new-app --docker-image=<master image URL & tag that was pushed above> --name=node-app-master
+oc new-app --docker-image=<master image URL & tag that was pushed above> --name=node-app-slave
+oc expose service node-app-master --name="master-app-route"
+----
+
+_where XX is your user ID_
+
+For example:
+
+[source]
+----
+oc new-app --docker-image=quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1 --name=node-app-master
+oc new-app --docker-image=quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-slave:1 --name=node-app-slave
+oc expose service node-app-master --name="master-app-route"
+----
+
+To test the application get the route with the command:
+
+[source]
+----
+oc get route -o jsonpath='{.items[0].spec.host}{"/ip\n"}'
+----
+
+Then issue the following curl command :
+
+[source]
+----
+curl -k <url from the above command>
+----
+
+The response should be the ip address of the master node and the slave node similar to that which is shown below:
+
+[source]
+----
+"master ip address 10.131.0.174    ----> slave ip address 10.128.2.157 v1.0"
+----
 
 
 
