@@ -9,3 +9,10 @@ documentation/ocp4devex/.project
 .vscode/settings.json
 .vscode/spellright.dict
 attendee/slave/.odo/
+documentationbasic/.project
+documentationbasic/.settings/org.eclipse.core.resources.prefs
+documentationbasic/.settings/org.eclipse.m2e.core.prefs
+documentationbasic/ocp4devex/.project
+documentationbasic/ocp4devex/.settings/org.eclipse.core.resources.prefs
+documentationbasic/ocp4devex/.settings/org.eclipse.m2e.core.prefs
+
