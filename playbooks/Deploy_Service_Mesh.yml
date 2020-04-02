@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+
+  roles:
+    - login_ocp
+    - deploy_servicemesh_operator
