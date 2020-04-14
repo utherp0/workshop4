@@ -39,7 +39,7 @@ RUN dnf -y install buildah container-selinux --enablerepo updates-testing
 
 RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
 
-RUN dnf -y install java-1.8.0-openjdk java-11-openjdk wget
+RUN dnf -y install java-1.8.0-openjdk java-11-openjdk java-1.8.0-openjdk-devel wget
 
 RUN dnf -y install bash-completion
 

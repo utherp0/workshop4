@@ -30,7 +30,6 @@ OpenShift is an Enterprise strength, secure implementation of the Kubernetes con
 * https://en.wikipedia.org/wiki/OpenShift[https://en.wikipedia.org/wiki/OpenShift]
 * https://www.openshift.com/products/container-platform[https://www.openshift.com/products/container-platform]
 * {webConsoleUrl} (the Web Console URL for the Workshop)
-* {terminalUrl} (The Web Terminal URL for the workshop)
 
 ==== Contributors
 Red Hat UK DSA Team:
