@@ -55,7 +55,7 @@ oc new-app --name node-app-master  https://github.com/marrober/master-node-app.g
 oc expose service node-app-master --name="master-app-route"
 ----
 
-_where XX is you user number_
+_where XX is your user number_
 
 The above commands will create image streams for the master and the slave which can be viewed using the command below.
 
