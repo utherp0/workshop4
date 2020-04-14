@@ -1,0 +1,11 @@
+---
+# file: main.yml
+#
+# Deploy Jaeger operator
+- name: Deploy Jaeger operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/jaeger.yaml"    
