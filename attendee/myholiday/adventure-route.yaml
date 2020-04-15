@@ -2,13 +2,12 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   labels:
-    app: adventure
+    app: adventure-holiday
   name: adventure-route
-  namespace: myholiday
 spec:
-  host: slave-app-route-master-slave.apps.cluster-c2d5.c2d5.example.opentlc.com
-  path: "/ip"
+  host: URL
+  path: "/adventure"
   to:
     kind: Service
-    name: slave-app-v1-0
+    name: adventure-holiday
     weight: 100
