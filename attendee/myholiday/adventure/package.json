@@ -1,0 +1,13 @@
+{
+  "name": "adventure-holiday-application",
+  "version": "1.0.0",
+  "description": "The adventure holiday booking site",
+  "main": "./adventure.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./adventure.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
