@@ -3,4 +3,7 @@
 
   roles:
     - login_ocp
+    - deploy_elasticsearch_operator
+    - deploy_kiali_operator
+    - deploy_jaeger_operator
     - deploy_servicemesh_operator
