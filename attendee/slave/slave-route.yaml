@@ -1,0 +1,36 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  creationTimestamp: "2020-04-14T14:04:31Z"
+  labels:
+    app: slave-app-v1-0
+  name: slave-app-route
+  namespace: master-slave
+  resourceVersion: "103307"
+  selfLink: /apis/route.openshift.io/v1/namespaces/master-slave/routes/slave-app-route
+  uid: 94324e1e-360c-4468-9ad4-0836e4ac6510
+spec:
+  alternateBackends:
+  - kind: Service
+    name: slave-app-v2-0
+    weight: 10
+  host: slave-app-route-master-slave.apps.cluster-c2d5.c2d5.example.opentlc.com
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: slave-app-v1-0
+    weight: 90
+  wildcardPolicy: None
+status:
+  ingress:
+  - conditions:
+    - lastTransitionTime: "2020-04-14T14:04:31Z"
+      status: "True"
+      type: Admitted
+    host: slave-app-route-master-slave.apps.cluster-c2d5.c2d5.example.opentlc.com
+    routerCanonicalHostname: apps.cluster-c2d5.c2d5.example.opentlc.com
+    routerName: default
+    wildcardPolicy: None

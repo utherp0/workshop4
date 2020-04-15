@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: slave-app-v2-0
+  name: slave-app-route-v2
+  namespace: master-slave
+spec:
+  host: slave-app-route-master-slave.apps.cluster-c2d5.c2d5.example.opentlc.com
+  path: "/"
+  to:
+    kind: Service
+    name: slave-app-v2-0
+    weight: 100
