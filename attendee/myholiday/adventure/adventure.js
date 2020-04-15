@@ -11,7 +11,7 @@ var path = "/" + holidayType;
 
 app.get(path, (request, response) => {
   console.log("holiday " + holidayType + " url hit .... ");
-  response.send('This is the " + holidayType + " holiday application ' + versionIdentifier);
+  response.send("This is the " + holidayType + " holiday application " + versionIdentifier);
 
 });
 
@@ -19,4 +19,4 @@ console.log( ip.address() );
 console.log(holidayType + " holiday - " + versionIdentifier);
 
 // set the server to listen on the designated port
-app.listen(port, () => console.log("Listening on port  + ${port}"));
+app.listen(port, () => console.log(`Listening on port  + ${port}`));
