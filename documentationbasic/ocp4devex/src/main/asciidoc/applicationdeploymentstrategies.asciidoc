@@ -255,8 +255,146 @@ Many organisations want to use a common URL for their web sites so that it is ea
 
 image::deployment-strategies-4.png[URL based routing]
 
+In this example you will create an application that mirrors that shown above and you will use a single URL for access to the four different elements of the application. 
 
+==== Creating the applications
 
+This example uses a common code base to create the specific applications for the above four holiday types. To create the four applications in a single project use the steps below substituting your student number for 'X' so that you get a separate project to other users in the workshop.
+
+[source]
+----
+oc new-project myholidayX
+oc new-app https://github.com/marrober/workshop4.git --context-dir=attendee/myholiday \
+--name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break 
+oc new-app https://github.com/marrober/workshop4.git --context-dir=attendee/myholiday \
+--name=package-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=package
+oc new-app https://github.com/marrober/workshop4.git --context-dir=attendee/myholiday \
+--name=cruise-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=cruise
+oc new-app https://github.com/marrober/workshop4.git --context-dir=attendee/myholiday \
+--name=adventure-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=adventure
+----
+
+Switch to the web user interface and select the project that you have just created. Then select the topology view from the left hand side developer menu and watch the applications build and deploy. Progress of the build phase can also be tracked using the command :
+
+[source]
+----
+oc get build
+----
+
+When all of the builds are complete the applications will take a few seconds to deploy and then will be ready. 
+
+At this stage the applications have services but they do not have any routes exposing them outside the cluster. Ordinarily users would create a route for each application which would result in a different URL for each. In this activity a common URL is required for all four. 
+
+To identify the cluster specific element of the hostname to use for the route, create a temporary route using the command below. The second command is used to get the hostname for the route.
+
+[source]
+----
+ oc expose service/adventure-holiday
+ oc get route adventure-holiday -o jsonpath='{.spec.host}'
+----
+
+ This will result in a new route being created and the hostname will be displayed similar to :
+
+[source]
+----
+adventure-holiday-myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com
+----
+
+The element of the path that we need for the new common hostname is from the .apps part forward, and a new part will be created to replace 'adventure-holiday-myholiday2' based on the project name. A shell script is used to configure the four route creation yaml files which are downloaded from the workshop git repository. If you have not already done so clone the git repository using the command below and then switch directory and examine one of the yaml files.
+
+[source]
+----
+git clone https://github.com/utherp0/workshop4.git
+cd attendee/myholiday
+cat adventure-route.yaml
+----
+
+The YAML file is shown below :
+
+[source]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: adventure-holiday
+  name: adventure-route
+spec:
+  host: URL
+  path: "/adventure"
+  to:
+    kind: Service
+    name: adventure-holiday
+    weight: 100
+----
+
+The host 'URL' will be replaced by the configure-routes.sh shell script. The path shows /adventure, and a similar path exists in the cruise, package and short-break files to point to their specific paths.
+
+Execute the shell script 'configure-routes.sh' and then take another look at adventure-route.yaml which will be similar to that which is shown below.
+
+[source]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: adventure-holiday
+  name: adventure-route
+spec:
+  host: myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com
+  path: "/adventure"
+  to:
+    kind: Service
+    name: adventure-holiday
+    weight: 100
+----
+
+The host path is now made up of the common element from the project name and the common cluster specific path.
+
+Delete the temporary route used to generate the hostname with the command below.
+
+[source]
+----
+oc delete route/adventure-holiday
+----
+
+Execute the following commands to create the four routes.
+
+[source]
+----
+oc create -f adventure-route.yaml
+oc create -f cruise-route.yaml  
+oc create -f package-route.yaml  
+oc create -f short-break-route.yaml
+----
+
+Examine the new routes using the command :
+
+[source]
+----
+oc get routes
+----
+
+An example of the important information from the above command is shown below.
+
+[source]
+----
+NAME                  HOST/PORT                                               PATH           SERVICES
+adventure-route       myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /adventure     adventure-holiday
+cruise-route          myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /cruise        cruise-holiday
+package-route         myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /package       package-holiday
+short-holiday-route   myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /short-break   short-holiday
+----
+
+Test the routes (copy and paste from your result of the 'oc get routes' command) by accessing the four different holiday types from the common url with the curl commands below. The text responses will show that the correct application is responding to each request.
+
+[source]
+----
+curl myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com/adventure
+curl myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com/cruise
+curl myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com/package
+curl myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com/short-break
+----
 
 ==== Cleaning up
 
@@ -264,5 +402,6 @@ From the OpenShift browser window click on 'Advanced' and then 'Projects' on the
 
 In the triple dot menu next to your own project (master-slaveX) select ‘Delete Project’
 Type ‘master-slaveX’ (where X is your user number) such that the Delete button turns red and is active.
-
 Press Delete to remove the project.
+
+Repeat the above process for the myholidayX project too.
