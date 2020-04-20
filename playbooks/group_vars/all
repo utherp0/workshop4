@@ -3,10 +3,10 @@
 # OCP login details
 # Please provide the URL for your RHPDS Openshift. 
 # Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
-ocp_url:
+ocp_url: https://api.cluster-ff39.ff39.example.opentlc.com:6443
 
 # Please provide an Openshift login token.
 # Either type on the command line "oc whoami -t" to get a token or
 # use the Openshift Console to get one. 
 
-ocp_login_token:
+ocp_login_token: 5IiMRpHEQFEMid3F3ynikSxO2j6nXArBntd8XtocWOE

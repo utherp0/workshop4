@@ -10,3 +10,11 @@
     state: present
     src: "{{ role_path }}/files/serverlesseventingoperator.yaml"
 
+# Deploy Knative Eventing Kafka operator - currently using community operator
+- name: Deploy Openshift Serverless Kafka Operator Eventing Operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/serverlesseventingkafkaoperator.yaml"
