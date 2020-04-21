@@ -284,7 +284,7 @@ Go back to the topology view, you will notice that the feed integration has gone
 
 image::camekknative-13.png[No Feed]
 
-Show some patience now, keep lookng at the topology view, we are waiting (and hoping!) that the integrations scale down to zero.
+Show some patience now, keep looking at the topology view, we are waiting (and hoping!) that the integrations scale down to zero.
 
 You will know when this starts as the rings around the circles will change from the normal blue to a very dark blue, before going white. Once they are white, the integrations are scaled to zero just like the screenshot below
 
@@ -350,7 +350,7 @@ No resources found in sandboxX namespace.
 
 ==== Install a Kafka Broker using AMQ Streams
 
-NOTE: AMQ Streams using an Operator to perform all of the administration tasks on Openshift. The operator is already installed for you and makes available a number of new Custom Resource Definitions (CRD). These are Kafka, KafkaBridge, KafkaConnect, KafkaConnectS2I, KafkaConnector, KafkaMirrorMaker, KafkaMirrorMaker2, KafkaTopic, and KafkaUser. As you an see, the AMQ Streams operater has a rich set of functionality. All of the configuration work can be performed throught the operator without detailed know of Kafka Installations. You will see in the next step how easy it is to create an Kafka cluster including the Kafka Brokers, and Zookeeper clusters with one simple YAML file.
+NOTE: AMQ Streams using an Operator to perform all of the administration tasks on Openshift. The operator is already installed for you and makes available a number of new Custom Resource Definitions (CRD). These are Kafka, KafkaBridge, KafkaConnect, KafkaConnectS2I, KafkaConnector, KafkaMirrorMaker, KafkaMirrorMaker2, KafkaTopic, and KafkaUser. As you an see, the AMQ Streams operater has a rich set of functionality. All of the configuration work can be performed throught the operator without detailed knowledge of Kafka Installations. You will see in the next step how easy it is to create an Kafka cluster including the Kafka Brokers, and Zookeeper clusters with one simple YAML file.
 
 Once the operators are installed, the CRD's become available for you to use through the developer view in the Openshift console.
 
@@ -614,7 +614,7 @@ OK, so the above output suggests that the channel is ready and working.
 
 Lets make sure that a topic has been created in Kafka for us.
 
-If you recall, the AMQ streams operator has a number of different CRD's, therefore the creeation of the Knative Channel, should have created a KafkaTopic CRD. Lets check to make sure that's the case.
+If you recall, the AMQ streams operator has a number of different CRD's, therefore the creation of the Knative Channel, should have created a KafkaTopic CRD. Lets check to make sure that's the case.
 
 Type 
 
@@ -775,7 +775,7 @@ Before it does the ".split", add a new line and insert
 
 [source]
 ----
-/.unmarshal().base64()
+.unmarshal().base64()
 ----
 
 The line above with transform from Base64 to a Java byte array. 
@@ -799,7 +799,7 @@ Type
 kamel run --dependency=camel-base64 splitter.groovy
 ----
 
-You will notice that the Camel Base64 dependency has been added, this enables Camel K to download the dependancy and package it into the run
+You will notice that the Camel Base64 dependency has been added, this enables Camel K to download the dependancy and package it into the runtime
 
 Check the pods log again, you should be able to read the text again
 
@@ -816,4 +816,26 @@ In the terminal window, type :-
 oc exec -it my-cluster-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic knative-messaging-kafka.sandboxX.messages --from-beginning
 ----
 
-There you go, all the messaging sent using Knative eventing channels available in a Kafka topic. This means that all the events flying around the event driven network can also be made available to many other tools supported by Kafka. This could be big data systems, AI systems, mirroring events to different Kafka Clusters and many more thinks. Of course, the biggest benefit is that the events are now persisted, partitioned for scale, and replicated using classic Kafka functionality. 
+There you go, all the messaging sent using Knative eventing channels available in a Kafka topic. This means that all the events flying around the event driven network can also be made available to many other tools supported by Kafka. This could be big data systems, AI systems, mirroring events to different Kafka Clusters and many more things. Of course, the biggest benefit is that the events are now persisted, partitioned for scale, and replicated using classic Kafka functionality. 
+
+Please clean up before moving on:-
+
+Delete Kafka channels and Kafka cluster
+
+[source]
+----
+oc delete kafkachannel messages words
+oc delete kafka mycluster
+----
+
+Delete Camel K Integrations
+[source]
+----
+kamel delete feed splitter printer
+----
+
+Delete Knative Eventing
+[source]
+----
+oc delete KnativeEventingKafka knative-eventing-kafka
+----
