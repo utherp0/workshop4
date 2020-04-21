@@ -1,0 +1,7 @@
+apiVersion: messaging.knative.dev/v1alpha1
+kind: KafkaChannel
+metadata:
+  name: messages
+spec:
+  numPartitions: 1
+  replicationFactor: 1

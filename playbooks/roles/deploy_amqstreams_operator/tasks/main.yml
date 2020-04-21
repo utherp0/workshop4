@@ -1,0 +1,17 @@
+---
+# file: main.yml
+
+# Deploy AMQ Streams Operator
+#- name: Deploy AMQ Streams Operator
+#  k8s:
+#    api_key: "{{ ocp_login_token }}"
+#    host: "{{ ocp_url }}"
+#    validate_certs: no
+#    state: present
+#    src: "{{ role_path }}/files/amqstreamsoperator.yaml"
+
+# Using oc via shell as k8s modile is causing error on the mac from some reason
+
+# Wait for Knative serving to be ready before continuing
+- name: Deploy AMQ Streams Operator
+  shell: oc apply -f {{ role_path }}/files/amqstreamsoperator.yaml -n openshift-operators

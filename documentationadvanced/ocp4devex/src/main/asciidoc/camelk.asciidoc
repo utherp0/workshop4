@@ -89,7 +89,7 @@ You should see an output similar to the one shown below:
 
 image::camelk-2.png[Camel K file list]
 
-=== Deploy a Camel K Interation
+=== Deploy a Camel K Integration
 
 Firstly, let’s start by deploying a simple integration, type
 
