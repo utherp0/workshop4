@@ -1,4 +1,4 @@
-== Camel K and Openshift Serverless Eventing
+== Camel K and OpenShift Serverless Eventing
 
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 
@@ -6,11 +6,11 @@ Author: Phil Prosser (feedback to pprosser@redhat.com)
 
 .OpenShift Serverless
 ****
-Openshift Serverless, based on Knative is the serverless technology that was introduced in Openshift 4.2. Openshift Serverless enables Pods running on Openshift to be scaled to 0 therefore taking zero processing power. Only when called, Openshift Serverless will scale the Pod up on demand before processing the request. Openshift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
+OpenShift Serverless, based on Knative is the serverless technology that was introduced in OpenShift 4.2. OpenShift Serverless enables Pods running on OpenShift to be scaled to 0 therefore taking zero processing power. Only when called, OpenShift Serverless will scale the Pod up on demand before processing the request. OpenShift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
 
-Openshift Serverless supports "Serving" and "Eventing"
+OpenShift Serverless supports "Serving" and "Eventing"
 
-At the time of writing, Serving is in technology preview, and Eventing is in Developer Preview
+At the time of writing, Serving is in Technology Preview, and Eventing is in Developer Preview
 
 "Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. 
 
@@ -31,13 +31,13 @@ oc project
 
 TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
 
-Whilst Openshift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into Openshift Serverless and how easy this is to use. 
+Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
 
-=== Openshift Serverless and the Operator Lifecycle Manager
+=== OpenShift Serverless and the Operator Lifecycle Manager
 
-.Openshift Serverless and the Operator Lifecycle Manager
+.OpenShift Serverless and the Operator Lifecycle Manager
 ****
-Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
+OpenShift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to OpenShift via "OLM". Once created, the new CRDs will extend the OpenShift data model allowing OpenShift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
 ****
 
 === Creating the pre-requisites for the chapter
@@ -73,11 +73,11 @@ Once the "Phase" says "Ready", you can continue
 
 === Create Knative Messaging Channel 
 
-Openshift Serverless uses Knative eventing, Knative eventing is a loosely couple asynchronous architecture allowing event producers to send an event to one or more event consumers. Event Consumers can be scaled to 0 when no events are folowing through the system.
+OpenShift Serverless uses Knative eventing. Knative eventing is a loosely coupled asynchronous architecture allowing event producers to send an event to one or more event consumers. Event Consumers can be scaled to zero when no events are following through the system.
 
-By default, Knative uses an in memory messaging channel. In this lab we will configure 2 of these channels to use with Camel K
+By default, Knative uses an in-memory messaging channel. In this lab we will configure two of these channels to use with Camel K
 
-Options are also available to replace in memory messaging with other event sources such as the Kafka Channel. By combining Camel K and Red Hat AMQ Streams (Red Hats Kafka Implementation) on Openshift you create a powerful / reliable cloud native eventing platform for your applications.
+Options are also available to replace in-memory messaging with other event sources such as the Kafka Channel. By combining Camel K and Red Hat AMQ Streams (Red Hat's Kafka Implementation) on OpenShift you create a powerful and reliable cloud native eventing platform for your applications.
 
 In the browser terminal window type the following:
 
@@ -140,7 +140,7 @@ Now that all 3 of the Integrations are deployed, the topology view should look l
 
 image::camekknative-5.png[Integrations running]
 
-TIP: The Knative service is represented by the square box. You should see 2 of these in the topology view. On the Openshift red logo in the middle of the service you will see the Knative "K" logo. You definiately know that you have a Knative service now. You will also notice an artefact called "KSVC", this is the Knative Service defined to Openshift. There is also an artefact called "REV", this is the Knative revision that is current running. Revisions can be used to implement a Canary Release strategy. The diagram shows that 100% of the traffic is routed to the revision shown on the topology view. If you click on one of the "KSVC" on the topology view you will see an option to set the traffic distribution
+TIP: The Knative service is represented by the square box. You should see 2 of these in the topology view. On the OpenShift red logo in the middle of the service you will see the Knative "K" logo. You definitely know that you have a Knative service now. You will also notice an artefact called "KSVC", this is the Knative Service defined to OpenShift. There is also an artefact called "REV", this is the Knative revision that is current running. Revisions can be used to implement a Canary Release strategy. The diagram shows that 100% of the traffic is routed to the revision shown on the topology view. If you click on one of the "KSVC" on the topology view you will see an option to set the traffic distribution
 
 Each of the integrations is producing log information. 
 
@@ -267,7 +267,7 @@ Use the skills you've learned to view the output of the container logs to check 
 
 Make sure you are in the developer view of the console, looking at the Topology view before continuing
 
-The 2 Integrations "hooked" into Knative Eventing are the 'spilter' and 'printer' integrations (you can visually see this on the topology view). 
+The 2 Integrations "hooked" into Knative Eventing are the 'splitter' and 'printer' integrations (you can visually see this on the topology view). 
 
 Let's see if the promise of scale to zero works.
 
@@ -297,7 +297,7 @@ To wake the Integrations up again, redeploy the 'feed' integration.
 kamel run feed.groovy
 ----
 
-Go back to the topology view and you should see the 'feed' integration redeploy, and the 'spillter' and 'printer' integrations awake from their slumber.
+Go back to the topology view and you should see the 'feed' integration redeploy, and the 'splitter' and 'printer' integrations awake from their slumber.
 
 This shows the potential for effective serverless behaviour by the down-scaling of unused applications, combined with the ease of Camel-K integrations.
 
@@ -310,23 +310,23 @@ kamel delete splitter
 kamel delete printer
 ----
 
-=== Replace Knative in memory messaging with AMQ Streams (Kafka)
+=== Replace Knative in-memory messaging with AMQ Streams (Kafka)
 
 .Introduction
 ****
 
-You may have noticed that the default Knative event channel is in memory. This means that there is the potential for message loss in the solution, and also the potential for some subcribers to miss messages.
+You may have noticed that the default Knative event channel is in-memory. This means that there is the potential for message loss in the solution, and also the potential for some subscribers to miss messages.
 
 Most applications need some form of persistent messaging, avoiding message loss in the event of something going wrong. A popular choice in the microservice world for publish and subsribe eventing is Apache Kafka. In addition to the InMemoryChannel used in the first part of this lab, Knative also has a channel type called KafkaChannel. As the name suggests, this allows Knative Eventing to use a Kafka Topic as the persistent store for the messages ensuring the reliable delivery to all subscribers. 
 
-So, we can use Kafka as a persistent store, but how do we get a Kafka Cluster installed on Openshift?
+So, we can use Kafka as a persistent store, but how do we get a Kafka Cluster installed on OpenShift?
 
-Red Hat has an operator based Enterprise Kafka distribution called AMQ Streams. AMQ Streams is based on the opensource project Strimzi (https://strimzi.io). At the time of writing, Strimzi is a sandbox project within CNCF.
+Red Hat has an operator based Enterprise Kafka distribution called AMQ Streams. AMQ Streams is based on the open source project Strimzi (https://strimzi.io). At the time of writing, Strimzi is a sandbox project within CNCF.
 
-Using Kafka behind Knative eventing means that developers also get access to the full Kafka eco-system. Change Data capture could be used to publish messages that are consumed by Knative eventing clients. Kafka clients such as the streaming api could be used to read messages published by Knative based services. All Kafka API's and services could be used as part of the solution. 
+Using Kafka behind Knative eventing means that developers also get access to the full Kafka eco-system. Change Data capture could be used to publish messages that are consumed by Knative eventing clients. Kafka clients such as the streaming API could be used to read messages published by Knative based services. All Kafka API's and services could be used as part of the solution. 
 ****
 
-Before you can continue, you need to delete the in memory channels created earlier in the lab. 
+Before you can continue, you need to delete the in-memory channels created earlier in the lab. 
 
 [source]
 ----
@@ -350,11 +350,11 @@ No resources found in sandboxX namespace.
 
 ==== Install a Kafka Broker using AMQ Streams
 
-NOTE: AMQ Streams using an Operator to perform all of the administration tasks on Openshift. The operator is already installed for you and makes available a number of new Custom Resource Definitions (CRD). These are Kafka, KafkaBridge, KafkaConnect, KafkaConnectS2I, KafkaConnector, KafkaMirrorMaker, KafkaMirrorMaker2, KafkaTopic, and KafkaUser. As you an see, the AMQ Streams operater has a rich set of functionality. All of the configuration work can be performed throught the operator without detailed knowledge of Kafka Installations. You will see in the next step how easy it is to create an Kafka cluster including the Kafka Brokers, and Zookeeper clusters with one simple YAML file.
+NOTE: AMQ Streams using an Operator to perform all of the administration tasks on OpenShift. The operator is already installed for you and makes available a number of new Custom Resource Definitions (CRD). These are Kafka, KafkaBridge, KafkaConnect, KafkaConnectS2I, KafkaConnector, KafkaMirrorMaker, KafkaMirrorMaker2, KafkaTopic, and KafkaUser. As you can see, the AMQ Streams operater has a rich set of functionality. All of the configuration work can be performed throught the operator without detailed knowledge of Kafka Installations. You will see in the next step how easy it is to create an Kafka cluster, including the Kafka Brokers and Zookeeper clusters, with one simple YAML file.
 
-Once the operators are installed, the CRD's become available for you to use through the developer view in the Openshift console.
+Once the operators are installed, the CRDs become available for you to use through the developer view in the OpenShift console.
 
-In the Openshift console, make sure you in developer view looking at your sandboxxX project.
+In the OpenShift console, make sure you in developer view looking at your sandboxX project.
 
 This should look similar to the screenshot below 
 
@@ -384,17 +384,20 @@ You will now be presented with a sample Kafka yaml file that looks similar to th
 
 image::camekknative-17.png[Sample Kafka yaml]
 
-Due to the number of workshop attendees and the size of the Openshift cluster we need to make the Kafka deployment smaller by reducing the number of Kafka Brokers in the cluster to 1, and the number of zookeeper instances to 1. 
+Due to the number of workshop attendees and the size of the OpenShift cluster we need to make the Kafka deployment smaller by reducing the number of Kafka Brokers in the cluster to 1, and the number of zookeeper instances to 1. 
 
 To do this, change 
 
-spec.kafka.replicas = 1
+[source]
+----
+spec.kafka.replicas: 1
+----
 
 and
 
 [source]
 ----
-spec.zookeeper.replicas = 1
+spec.zookeeper.replicas: 1
 ----
 
 Because the kafka brokers are now set to one replica, you have to modify the configuration elements below
@@ -440,7 +443,7 @@ spec:
     userOperator: {}
 ----
 
-'Press' create.
+Press 'Create'.
 
 You will be presented with a screen that looks similar to the screenshot below. (This is looking at the AMQ Streams operator)
 
@@ -463,11 +466,11 @@ image::camekknative-20.png[AMQ Streams Topology View]
 
 ==== Install Knative Kafka Eventing
 
-Note:  Knative Kafka is operator based, the operator has been install previously for you so the installation should be straight forward
+Note:  Knative Kafka is operator based, the operator has been installed previously for you so the installation should be straight forward
 
 The CRD for Knative Kafka is called "KnativeEventingKafka", you need to add a CRD to your namespace to integrate Knative eventing with Kafka. 
 
-Fistly,
+Firstly,
 
 You need to find the bootstrap server of your Kafka Cluster.
 
@@ -478,7 +481,7 @@ To do this, go to the terminal window and type
 oc get services 
 ----
 
-You will see a list of services similat to the list below
+You will see a list of services similar to the list below
 
 [source]
 ----
@@ -523,7 +526,7 @@ spec:
 
 Once you have changed the bootstrapserver, save the file
 
-You can now store the CRD into Openshift by typing the following :-
+You can now store the CRD into OpenShift by typing the following :-
 
 [source]
 ----
@@ -606,15 +609,15 @@ If everything worked as expected, you should see the output similar to below
 
 [source]
 ----
-NAME                                         PARTITIONS   REPLICATION FACTOR
-knative-messaging-kafka.sandbox30.messages   1            1
+NAME       READY   REASON   URL                                                     AGE
+messages   True             http://messages-kn-channel.sandbox30.svc.cluster.local   47s
 ----
 
 OK, so the above output suggests that the channel is ready and working.
 
 Lets make sure that a topic has been created in Kafka for us.
 
-If you recall, the AMQ streams operator has a number of different CRD's, therefore the creation of the Knative Channel, should have created a KafkaTopic CRD. Lets check to make sure that's the case.
+If you recall, the AMQ streams operator has a number of different CRDs, therefore the creation of the Knative Channel should have created a KafkaTopic CRD. Let's check to make sure that's the case.
 
 Type 
 
@@ -631,9 +634,9 @@ NAME                                         PARTITIONS   REPLICATION FACTOR
 knative-messaging-kafka.sandbox30.messages   1            1
 ----
 
-This goes to show that the Kafka Topic has succesfully been create with the number of partitions and replication factor that was asked for when creating the channel.
+This goes to show that the Kafka Topic has successfully been created with the number of partitions and replication factor that was asked for when creating the channel.
 
-and finally, if you are more comfortable using the Kafka CLI, then you still have access to this within the Kafka statefulset. 
+If you are more comfortable using the Kafka CLI, then you still have access to this within the Kafka statefulset. 
 
 Assuming you did not change the name of your Kafka Cluster then the stateful set should be called "my-cluster-kafka-0"
 
@@ -656,7 +659,7 @@ knative-messaging-kafka.sandbox30.messages
 
 It confirms that there is a topic called knative-messaging-kafka.sandbox30.messages defined to the cluster. 
 
-and finally, you can check how the topic is laid out in the cluster  (Not so exciting as there is only one broker)
+And finally, you can check how the topic is laid out in the cluster (Not so exciting as there is only one broker)
 
 Type
 
@@ -673,7 +676,7 @@ Topic: knative-messaging-kafka.sandbox30.messages       PartitionCount: 1       
         Topic: knative-messaging-kafka.sandbox30.messages       Partition: 0    Leader: 0       Replicas: 0     Isr: 0
 ----
 
-This shows that 1 partition has been created. ISR is zero because the replication factor is 1. The partition is not being replicated. This is not recommended for production. This is purely to limit the resources on our Openshift Cluser. 
+This shows that 1 partition has been created. ISR is zero because the replication factor is 1. The partition is not being replicated. This is not recommended for production. This is purely to limit the resources on our OpenShift cluster. 
 
 Lets deploy the second channel called 'words' again, this time based on a Kafka Channel
 
@@ -710,7 +713,7 @@ We are now going to re-run exactly the same integrations that we used earlier in
 
 image::knative-eventing.png[align="center"]
 
-Make sure you are in the "Topology view" within the Openshift console so you can see things deploy and run. 
+Make sure you are in the "Topology view" within the OpenShift console so you can see things deploy and run. 
 
 [source]
 ----
@@ -736,7 +739,7 @@ kamel run splitter.groovy
 
 Take a look at the log file for the splitter Integration, you will notice something a bit weird
 
-The spitter is outputting the message like this :-
+The splitter is outputting the message like this :-
 
 [source]
 ----
@@ -752,13 +755,13 @@ The spitter is outputting the message like this :-
 
 The Kafka client used has serialized the messages into Base64... not so helpful for this little example.
 
-We can fix this by making a small change to the 'spiltter.groovy' integration. This will allow the integration to transform the Base64 back to normal ascii text
+We can fix this by making a small change to the 'splitter.groovy' integration. This will allow the integration to transform the Base64 back to normal ascii text
 
 Type
 
 [source]
 ----
-vi spiltter.groovy 
+vi splitter.groovy 
 ----
 
 The integration will look like 
@@ -799,7 +802,7 @@ Type
 kamel run --dependency=camel-base64 splitter.groovy
 ----
 
-You will notice that the Camel Base64 dependency has been added, this enables Camel K to download the dependancy and package it into the runtime
+You will notice that the Camel Base64 dependency has been added, this enables Camel K to download the dependency and package it into the runtime
 
 Check the pods log again, you should be able to read the text again
 
@@ -825,7 +828,7 @@ Delete Kafka channels and Kafka cluster
 [source]
 ----
 oc delete kafkachannel messages words
-oc delete kafka mycluster
+oc delete kafka my-cluster
 ----
 
 Delete Camel K Integrations
