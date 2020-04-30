@@ -10,8 +10,6 @@ Users of Camel K can instantly run integration code written in Camel DSL on thei
 
 The purpose of this lab is to show you how easy it is to build, deploy, and delete Camel K integations using very simple examples. It is not the goal of this lab to demonstrate the integration capabilities of Camel K.
 
-We are going to use a new project to create our Camel K integrations
-
 TIP: This workshop requires you to be logged on to both the OpenShift console and the terminal as described in the pre-requisites. If you do not have both tabs logged in please follow the instructions before continuing
 
 === Check the project is ready to use
@@ -190,7 +188,7 @@ image::camelk-4a.png[New output]
 
 While the process of redeploying is simple, it isn’t very developer friendly. The 'kamel' cli has a developer friendly “hot deploy” mode that makes this experience much better
 
-First Delete the integration. 
+First delete the integration. 
 
 There are 2 ways you can do this in the Terminal Browser window (your choice). Either use the “kamel” cli:
 
@@ -246,9 +244,7 @@ The integration should have been deleted and no Pods should now be running (othe
 
 Close down one of the terminal window tabs so you only have one terminal and the OpenShift console
 
-If you followed the lab, the Integration should be gone, however, lets make sure
-
-clean up the project
+If you followed the lab, the Integration should be gone, however, lets make sure we clean up the project.
 
 In the terminal window, type
 

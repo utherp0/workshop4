@@ -1,4 +1,4 @@
-== Camel K and Openshift Serverless Serving
+== Camel K and OpenShift Serverless Serving
 
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 
@@ -6,11 +6,11 @@ Author: Phil Prosser (feedback to pprosser@redhat.com)
 
 .OpenShift Serverless
 ****
-Openshift Serverless, based on Knative is the serverless technology that was introduced in Openshift 4.2. Openshift Serverless enables Pods running on Openshift to be scaled to 0 therefore taking zero processing power. Only when called, Openshift Serverless will scale the Pod up on demand before processing the request. Openshift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
+OpenShift Serverless, based on Knative is the serverless technology that was introduced in OpenShift 4.2. OpenShift Serverless enables Pods running on OpenShift to be scaled to 0 therefore taking zero processing power. Only when called, OpenShift Serverless will scale the Pod up on demand before processing the request. OpenShift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
 
-Openshift Serverless supports "Serving" and "Eventing"
+OpenShift Serverless supports "Serving" and "Eventing"
 
-At the time of writing, Serving is in technology preview, and Eventing is in Developer Preview
+At the time of writing, Serving is in Technology Preview, and Eventing is in Developer Preview
 
 "Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at serving, and how easy it is to integrate with Camel K.
 ****
@@ -27,11 +27,11 @@ oc project
 
 TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
 
-=== Openshift Serverless and the Operator Lifecycle Manager
+=== OpenShift Serverless and the Operator Lifecycle Manager
 
-.Openshift Serverless and the Operator Lifecycle Manager
+.OpenShift Serverless and the Operator Lifecycle Manager
 ****
-Openshift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to Openshift via "OLM". Once created, the new CRDs will extend the Openshift data model allowing Openshift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
+OpenShift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to OpenShift via "OLM". Once created, the new CRDs will extend the OpenShift data model allowing OpenShift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
 ****
 
 === Creating the pre-requisites for the chapter
@@ -88,7 +88,7 @@ cd /workspace/examples
 kamel run --name greetings --dependency=camel-rest --dependency camel-undertow --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
 ----
 
-Go to the developer view in the Openshift Console
+Go to the developer view in the OpenShift Console
 
 NOTE: If this is the first time you've deployed a Camel K integration, it will take a few minutes to download the dependencies 
 
@@ -96,25 +96,25 @@ Once, the Integration is deployed, the topology view should look like the screns
 
 image::camekknativeserving-1.png[Integrations running]
 
-Camel K has detected that Openshift Serverless is installed and automatically deployed the integration as a Knative serving (because it's API based) service.
+Camel K has detected that OpenShift Serverless is installed and automatically deployed the integration as a Knative serving (because it's API based) service.
 
 At the time of writing, there is no easy way to view the pod log files of a knative service in the console, so in the Developer view click on Advanced/Project Details and select Workloads. The interface should look like:
 
 image::camekknativeserving-2.png[Viewing overview of running Integration]
 
-For the greetings integration, you should see a '1 or 1 pods' on the right hand side. 'Click' on it.
+For the greetings integration, you should see a '1 or 1 pods' on the right hand side. Click on it.
 
 You should see a screen similar to the one below
 
 image::camekknativeserving-3.png[Running Pod]
 
-'Click' on the row name e.g. greetings-xxxxxxxxxxxx
+Click on the row name e.g. greetings-xxxxxxxxxxxx
 
 This should show you a screen similar to the one below
 
 image::camekknativeserving-4.png[Pod Details]
 
-'Click' on 'Logs' to view the log for the pod. It should look something like the one below
+Click on 'Logs' to view the log for the pod. It should look something like the one below
 
 image::camekknativeserving-5.png[Pod Details]
 
@@ -122,7 +122,7 @@ image::camekknativeserving-5.png[Pod Details]
 
 Following the steps above, you might find that the pod you are looking for is not there. That's because Knative Serving has scaled the pod back to zero.
 
-With the Openshift console switch to developer view, vewing the toplogy. Your screen might look like the one below. If it doesn't, wait for up to 30 seconds and it scale down to zero. By default, Knative scales down an inactive pod after 30 seconds.  
+With the OpenShift console switch to developer view, viewing the toplogy. Your screen might look like the one below. If it doesn't, wait for up to 30 seconds and it scale down to zero. By default, Knative scales down an inactive pod after 30 seconds.  
 
 image::camekknativeserving-6.png[Knative serving]
 
@@ -167,7 +167,7 @@ kamel delete greetings
 ////
 === Knative Revisions
 
-Knative Revisions are for all Knative service deployed on OpenShift, not just Camel K. Knative revisions are a point in time snapshot of the code and configuration for each modification made to a service deployed on Openshift. Revisions enable progressive rollout and rollback of chanages by rerouting traffic between service names and revision instances. 
+Knative Revisions are for all Knative service deployed on OpenShift, not just Camel K. Knative revisions are a point in time snapshot of the code and configuration for each modification made to a service deployed on OpenShift. Revisions enable progressive rollout and rollback of chanages by rerouting traffic between service names and revision instances. 
 
 This is powerful as it means the Knative route can be configured to balance traffic between different version of the revision ensuring a low risk release of new versions into production e.g. New revision is created, and we'll start by only giving it 10% of the traffic whilst the old version takes the main load. Gradually, the percentage can be moved to 100% before retiring the old version of the service. 
 
@@ -228,7 +228,7 @@ Now select Serverless/Services
 
 TIP: You will see one Knative Service. Rather than just going big bang to the new revision, you want to direct 50% of the traffic to the orginal revision, and 50% of the traffic to the new revision. To achieve this, we need to modify the routing rules in the Knative Service.
 
-Fortunately, in the Openshift consoles developer view, there is a really easy way to achieve this
+Fortunately, in the OpenShift consoles developer view, there is a really easy way to achieve this
 
 Switch back to the developer view, looking at the topology. 
 
