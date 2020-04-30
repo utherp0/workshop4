@@ -4,7 +4,7 @@ Author: Phil Prosser (feedback to pprosser@redhat.com)
 
 === Introduction
 
-Apache Camel is based on a booked called link:https://www.enterpriseintegrationpatterns.com[Enterprise Integration Patterns] that was written by Gregor Hohpe and Bobby Woolf. The purpose of the book was to describe all of the patterns required to successfully implement enterprise applications. Apache Camel is an implementation of the Enterprise Integration Patterns. These patterns are express in Camel Routes using a link:https://https://en.wikipedia.org/wiki/Domain-specific_language[Domain Specific Language] (DSL)
+Apache Camel is based on a booked called link:https://www.enterpriseintegrationpatterns.com[Enterprise Integration Patterns] that was written by Gregor Hohpe and Bobby Woolf. The purpose of the book was to describe all of the patterns required to successfully implement enterprise integrations. Apache Camel is an implementation of the Enterprise Integration Patterns. These patterns are express in Camel Routes using a link:https://https://en.wikipedia.org/wiki/Domain-specific_language[Domain Specific Language] (DSL)
 
 Apache Camel K is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures.
 
