@@ -98,6 +98,8 @@ image::camekknativeserving-1.png[Integrations running]
 
 Camel K has detected that OpenShift Serverless is installed and automatically deployed the integration as a Knative serving (because it's API based) service.
 
+TIP:: The next set of instructions will only be possible if Knative Serving hasn't already scaled the pod back to zero. If you do not see any running pods then please move on to the section title "Knative in action"  
+
 At the time of writing, there is no easy way to view the pod log files of a knative service in the console, so in the Developer view click on Advanced/Project Details and select Workloads. The interface should look like:
 
 image::camekknativeserving-2.png[Viewing overview of running Integration]
