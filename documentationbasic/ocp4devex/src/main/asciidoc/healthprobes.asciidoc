@@ -36,7 +36,7 @@ Name - ‘probesX’ where X is your assigned user number
 
 Display Name - 'Probes'
 
-Desciption - 'Liveness and readiness probes'
+Description - 'Liveness and readiness probes'
 
 as shown in the image below:
 
@@ -79,7 +79,7 @@ In a separate browser tab go to https://github.com/marrober/slave-node-app.git
 
 Close the github tab
 
-Back at the OCP4.2 user interface complete the following information in the section titmed 'General'.
+Back at the OCP4.2 user interface complete the following information in the section titled 'General'.
 
 For the Application drop down menu select 'Create Application'.
 
@@ -89,7 +89,9 @@ For the Name field enter 'node-app-slave'
 
 *The application name field is used to group together multiple items under a single grouping within the topology view. The name field is used to identify the specific containerised application.*
 
-Ensure the ‘Create a route to the application’ checkbox is checked.
+In the Resources section ensure that you select 'Deployment Config'
+
+In the Advanced Options section ensure the ‘Create a route to the application’ checkbox is checked.
 
 Click Create
 

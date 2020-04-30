@@ -293,7 +293,7 @@ To identify the cluster specific element of the hostname to use for the route, c
  oc get route adventure-holiday -o jsonpath='{.spec.host}'
 ----
 
- This will result in a new route being created and the hostname will be displayed similar to :
+This will result in a new route being created and the hostname will be displayed similar to :
 
 [source]
 ----

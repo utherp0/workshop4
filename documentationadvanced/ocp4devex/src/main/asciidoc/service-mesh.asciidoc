@@ -1,0 +1,65 @@
+:hide-uri-scheme:
+== OpenShift Service Mesh
+
+Author: Mark Roberts (feedback to mroberts@redhat.com)
+
+=== Introduction
+
+
+
+
+==== The Istio ingress gateway
+
+All traffic entering the cluster, for all applications managed by the service mesh, uses the same istio ingress gateway. The gateway URL can be found from the istio-ingressgateway resource within the istio-system namespace.
+
+The command below will show the hostname to be used for all interaction with applications managed by the service mesh:
+
+[source]
+----
+oc get route istio-ingressgateway -n istio-system -o jsonpath='{.spec.host}{"\n"}'
+----
+
+Save the gateway URL as an environment variable to be re-used in further commands by executing :
+
+[source]
+----
+export SM_GATEWAY=$(oc get route istio-ingressgateway -n istio-system -o jsonpath='{"http://"}{.spec.host}')
+echo $SM_GATEWAY
+----
+
+
+
+
+
+==== View the istio related resources
+
+The oc command 'oc get all' is often used to generate a list of all resources within a project. This is fine for listing the deployment configurations, services, replicasets and pods but it does not list the resources used to manage the service mesh. To view the istio related resources use the command below :
+
+[source]
+----
+oc get istio-io
+----
+
+
+
+
+
+
+[source]
+----
+
+
+
+----
+
+
+
+
+Modify the deployment configuration such that the istio proxy sidecar is injected into the pod :
+
+[source]
+----
+oc patch dc/wilma --patch \
+'{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}
+}}}}'
+----
