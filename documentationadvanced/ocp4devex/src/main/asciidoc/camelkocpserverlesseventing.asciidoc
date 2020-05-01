@@ -810,7 +810,7 @@ If you look at the printer Integration log, you will notice that it has exactly 
 
 See if you can fix the problem for this integration by following the same steps above. The name of the file is printer.groovy
 
-==== Accessing the Kafa Topics directly 
+==== Accessing the Kafka Topics directly 
 
 In the terminal window, type :-
 
