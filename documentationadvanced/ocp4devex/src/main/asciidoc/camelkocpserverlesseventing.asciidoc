@@ -737,6 +737,12 @@ Now run the Splitter Integration
 kamel run splitter.groovy
 ----
 
+Now run the Printer Integration
+[source]
+----
+kamel run printer.groovy
+----
+
 Take a look at the log file for the splitter Integration, you will notice something a bit weird
 
 The splitter is outputting the message like this :-
