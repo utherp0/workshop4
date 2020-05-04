@@ -55,6 +55,8 @@ Add “  env1: test”
 
 Add “  env2: test”
 
+Make sure there is a space between the ':' and the data itself, otherwise it is invalid YAML and the editor will not allow you to save it.
+
 The YAML should look similar to the screenshot below, with your project name instead of sandbox99 and the name you have entered rather than CHANGETHIS.
 
 image::deployment-4.png[Example Config Map YAML]
