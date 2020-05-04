@@ -616,7 +616,7 @@ data:
 
 [source]
 ----
-oc apply -f config.kafka.yaml
+oc apply -f config-kafka.yaml
 ----
 
 Create the "messages" Knative Eventing channel backed by Kafka as a persistent store. Please edit the messages.yaml file and change the namespace to your own
@@ -731,7 +731,7 @@ Create the "words" Knative Eventing channel backed by Kafka as a persistent stor
 
 [source]
 ----
-vi messages.yaml
+vi words.yaml
 ----
 
 Create the KafkaChannel on Openshift
