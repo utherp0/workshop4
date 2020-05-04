@@ -40,11 +40,9 @@ image::pipelines-1.png[Simple pipeline with a task and taskrun]
 
 .Tekton command line
 ****
-A new command line utility is used to manage the Tekton command line. The commands cover the various different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks and conditions
+A new command line utility is used to manage the Tekton command line. The commands cover the various different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks and conditions.
 
-The Tekton command line is downloaded from here : https://github.com/tektoncd/cli 
-
-The pre-installed terminal application created in the pre-requisites already has the command line installed
+The Tekton command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/tektoncd/cli 
 
 To use the command simply type 'tkn' and you will see help regarding the objects and to get help on a specific object use 'tkn <object> --help'
 ****
@@ -54,9 +52,7 @@ To execute the above pipeline use the following commands to create the pipeline 
 [source]
 ----
 oc create -f task-1.yaml 
-
 oc create -f taskrun-1.yaml 
-
 tkn taskrun ls
 ----
 
@@ -128,9 +124,7 @@ Before executing this pipeline create the required additional resources with the
 [source]
 ----
 oc create -f task-2.yaml 
-
 oc create -f task-3.yaml 
-
 oc create -f pipeline-1.yaml
 ----
 
@@ -238,9 +232,7 @@ Now replace the existing pipeline using the following commands:
 [source]
 ----
 oc delete pipeline pipeline-1
-
 oc create -f pipeline-1.yaml
-
 tkn pipeline start pipeline-1
 ----
 
@@ -345,7 +337,6 @@ Create tasks 5 and 6:
 [source]
 ----
 oc create -f task-5.yaml
-
 oc create -f task-6.yaml
 ----
 
@@ -356,7 +347,7 @@ Create the pipeline task:
 oc create -f pipeline-5.yaml 
 ----
 
-TIP: The persistent volume will show that it is in an pending state after creation as no resource has attempted to consume it. After the task has been executed look again at the persistent volume and it will show that it is bound.
+TIP: The persistent volume will show that it is in a pending state after creation as no resource has attempted to consume it. After the task has been executed look again at the persistent volume and it will show that it is bound.
 
 To see the state of the pvc enter the following:
 
@@ -396,7 +387,40 @@ You can click on the pipeline-run (labelled pipeline-5-run-XXXXX) and examine th
 
 image::pipelines-9.png[Task details]
 
-When you are satisfied that the pipeline has executed as expected, perform the check on the pvc in the terminal window
+To examine the pipeline run in the terminal window use the command :
+
+[source]
+----
+tkn pipelinerun logs pipeline-5-run-XXXXX | grep -v level
+----
+
+Replace the XXXX with the information reported on screen after the execution of the tkn pipeline start command. The grep command is used to remove the erroneous logging reports.
+
+The output will be similar to that that is shown below. Within task 5 the first step creates a file called /workspace/message. The second step displays the file name and the content of the file within the workspace. The third step creates a file in the persistent volume and the fourth step displays the file name and the content of the file within the volume. 
+
+Within task 6 the first step displays the contents of the workspace. Note that this is empty because the workspace is unique to the task. The second step of task 6 shows the content of the persistent volume which is the same a that which was reported for step 5. This shows that workspaces can be used for sharing data between steps in the same task and volumes should be used for sharing data between steps within different tasks.
+
+[task-5 : create-a-file-in-workspace] /workspace/message
+
+[task-5 : view-workspace-content] message
+[task-5 : view-workspace-content] This is a file in the workspace
+
+[task-5 : create-a-file-in-volume] /var/run/message
+
+[task-5 : view-volume-content] lost+found
+[task-5 : view-volume-content] message
+[task-5 : view-volume-content] secrets
+[task-5 : view-volume-content] This is a file in the volume
+
+[task-6 : view-workspace-content] view workspace content
+[task-6 : view-workspace-content] total 0
+[task-6 : view-workspace-content] drwxrwsrwx. 2 root 1000800000  6 May  1 14:17 .
+[task-6 : view-workspace-content] drwxr-xr-x. 1 root root       37 May  1 14:17 ..
+
+[task-6 : view-volume-content] lost+found
+[task-6 : view-volume-content] message
+[task-6 : view-volume-content] secrets
+[task-6 : view-volume-content] This is a file in the volume
 
 
 
