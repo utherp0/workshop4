@@ -4,7 +4,7 @@ metadata:
   name: serverless-operator
   namespace: openshift-operators
 spec:
-  channel: techpreview
+  channel: '4.3'
   name: serverless-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
