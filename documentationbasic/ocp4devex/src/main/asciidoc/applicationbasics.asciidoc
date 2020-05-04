@@ -127,9 +127,7 @@ integrated registry.*
 
 === Adding additional Applications
 
-Click on 'Topology'
-
-Click 'Add'
+Click 'Add+'
 
 Click 'From Catalog'
 
@@ -205,54 +203,7 @@ The CLI is ideal in situations where you are:
 * Scripting OpenShift Enterprise operations.
 * Restricted by bandwidth resources and cannot use the web console.
 
-The CLI is available using the oc command:
-
-[source]
-----
-oc {command}
-----
-
-For the duration of the course you will be using a provided Application hosted within OpenShift itself that you created as part of the pre-requisites. Whenever the instructions tell you to use the terminal use the tab you setup. If you haven't completed the pre-requisites please complete them before proceeding
-
-*For the sakes of simplicity we advise you use the Terminal application described in the prerequisite section - the following instructions for installation are completely optional*
-
-If you want to optionally install the oc client or use the terminal applications plus additional command line tools, such as ODO and tkn, you have two options; either install `oc` on your localhost or use a docker image in OpenShift. The image option is pre-built and running already and is easier if you have a locked-down laptop and are unable to download and install additional applications.
-
-==== Option 1: Installing the CLI on localhost
-
-The easiest way to download the CLI is by accessing the Command Line Tools page on the web console from the question mark on the top right corner [ (?)-> Command Line Tools ]
-
-image::applicationbasics-5.png[Command Line Tools]
-
-From this page you can download the oc and odo command line tools.
-
-If you wish to install the command line tools locally then you may also need to download and command line tools for OpenShift Pipelines (Tekton) and Kamel. Instructions on this is at the start of each chapter.
-
-==== Option 2: Use a pre-configured docker image on OpenShift
-
-This option installs and runs a docker image inside OpenShift that already has oc (and other command line tools) installed and configured. To install this image, follow the instructions in the prerequisites section.
-
-[[setup-login]]
-=== Using your terminal (both options)
-
-If this document refers to _your terminal_ it will either be on your localhost or the containerised terminal depending on your option above.
-
-(Login options for the installed OC command line tool only).
-
-* In the Web Console, select the top right pulldown, choose btn:[Copy Login Command]
-* This will require you to login again using your credentials (to prove who you are) and will then display a web page with 'Display Token' on it. Select this link and copy the full line that begins with `oc login --token`
-* Paste this command into your terminal where you have access to run the `oc` command. Note that `oc` must be added to your PATH.
-
-The response to executing the login command should look similar to that shown below :
-
-[source]
-----
-Logged into "https://api.cluster-london-a6e1.london-a6e1.example.opentlc.com:6443" as "user1" using the token provided.
-
-You don't have any projects. You can try to create a new project, by running
-
-    oc new-project <projectname>
-----
+As part of the pre-requisites for the workshop we created and started a terminal app. Go to that tab now (if you have closed it go back to the pre-reqs and follow the instructions for opening it).
 
 Make sure `oc` is working, type:
 
@@ -266,15 +217,11 @@ NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/containe
 
 To explore the command line further execute the following commands and observe the results.
 
+NOTE: Change the X at the end of sandbox to your user number
+
 [source]
 ----
 oc projects
-----
-
-User should have access to one project, explain the ability to access multiple projects
-
-[source]
-----
 oc project sandboxX
 ----
 
@@ -342,7 +289,7 @@ Select the 'sandboxx' project in the project list
 
 Note the metrics for the project
 
-Click on 'Workloads' and then select Pods to see the list of pods for the project as shown in the image below.
+Click on 'Workloads' on the left menu (not the project overview) and then select Pods to see the list of pods for the project as shown in the image below.
 
 image::applicationbasics-7.png[Command Line Tools]
 
