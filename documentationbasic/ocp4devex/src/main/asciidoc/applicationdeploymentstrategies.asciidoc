@@ -305,7 +305,7 @@ The element of the path that we need for the new common hostname is from the .ap
 [source]
 ----
 git clone https://github.com/utherp0/workshop4.git
-cd workshop4/attendee/myholiday
+cd attendee/myholiday
 cat adventure-route.yaml
 ----
 
