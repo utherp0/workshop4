@@ -889,8 +889,8 @@ Delete Camel K Integrations
 kamel delete feed splitter printer
 ----
 
-Delete Knative Eventing
+Delete Knative Eventing Kafka dispatcher
 [source]
 ----
-oc delete KnativeEventingKafka knative-eventing-kafka
+oc delete deployment kafka-ch-dispatcher
 ----
