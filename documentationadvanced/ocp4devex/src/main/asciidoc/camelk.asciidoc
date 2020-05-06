@@ -255,7 +255,7 @@ In the terminal window, type
 kamel get
 ----
 
-If there is no Integration runninng then proceed to the next lab of your choice
+If there is no Integration running then proceed to the next lab of your choice
 
 If an Integration is running, then please delete it by typing
 
