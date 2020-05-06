@@ -27,10 +27,6 @@ export SM_GATEWAY=$(oc get route istio-ingressgateway -n istio-system -o jsonpat
 echo $SM_GATEWAY
 ----
 
-
-
-
-
 ==== View the istio related resources
 
 The oc command 'oc get all' is often used to generate a list of all resources within a project. This is fine for listing the deployment configurations, services, replicasets and pods but it does not list the resources used to manage the service mesh. To view the istio related resources use the command below :
@@ -39,6 +35,41 @@ The oc command 'oc get all' is often used to generate a list of all resources wi
 ----
 oc get istio-io
 ----
+
+==== Create a new project for the service mesh activity
+
+[source]
+----
+oc new-project service-mesh-X 
+----
+
+(Where X is your user number)
+
+Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods. If you have not downloaded the project assets from GitHub already during the workshop, then download them now by executing the following command in the OpenShift terminal window : 
+
+[source]
+----
+cd /workspace
+git clone https://github.com/utherp0/workshop4.git
+cd workshop4/attendee/service-mesh
+----
+
+To add the current project as a service mesh member within the control plane called 'istio-system' execute the command :
+
+[source]
+----
+oc create -f servicemeshmember.yaml
+----
+
+
+
+=== Phase 1
+
+The micro-service based application that you are about to create is very simple and uses a rest interface that can be asked to call another downstream version of itself. This can continue for as many application instances we need to illustrate the features of the service mesh. 
+
+
+
+
 
 
 
