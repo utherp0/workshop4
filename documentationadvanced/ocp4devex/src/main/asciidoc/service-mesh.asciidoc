@@ -24,7 +24,9 @@ Save the gateway URL as an environment variable to be re-used in further command
 [source]
 ----
 export SM_GATEWAY=$(oc get route istio-ingressgateway -n istio-system -o jsonpath='{"http://"}{.spec.host}')
-echo $SM_GATEWAY
+echo $SM_GATEWAY 
+
+IS THIS NEEDED ???
 ----
 
 ==== Create a new project for the service mesh activity
@@ -61,7 +63,7 @@ To create the first application instance do the following :
 [source]
 ----
 cd phase1
-oc create -f layer1.yaml
+oc create -f layer1.yaml --save-config
 ----
 
 Switch to the web user interface and select the developer view for your current project. Select the topology view and you will see the application start to be created. Click on the centre of the blue circle for the application and you should see the fly out menu on the right with details of the service and the running pod. Select the pod and scroll down the details of the pod until you see a section titled 'Containers'. This should show two containers as indicated below which are the layers application container and the Istio sidecar container.
@@ -136,6 +138,24 @@ NAME                                         AGE
 gateway.networking.istio.io/layer1-gateway   63s
 ----
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 === Service mesh visualisation with Kiali
 
 Red Hat Service mesh includes a component called Kiali which provides a visualisation of the components of the mesh to assist in monitoring and managing the communication processes within a micro-service based application. To find the URL for the Kiali web application enter the command :
@@ -189,15 +209,15 @@ Change directory to phase 2 and create the new application for layer 2 with the 
 [source]
 ----
 cd ../phase2
-oc create -f layer2.yaml
-oc expose service/layer2
+oc create -f layer2.yaml --save-config
 ----
 
-Create the additional gateway and virtual service for the component with the commands:
+You will see that two deployments are created for the two different versions of layer2, with two pods for each application.
+
+Create the additional virtual service for the component with the commands:
 
 [source]
 ----
-oc create -f gateway-layer2.yaml
 oc create -f virtual-service-layer2.yaml
 ----
 
@@ -208,18 +228,30 @@ Reconfigure layer1 to send messages to layer2 using the command:
 oc apply -f layer1.yaml
 ----
 
-Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-XX project selected and you are viewing the Topology view. You should see the 'layers' application grouping with layer1-v1 and layer2-v1 grouped together within the application group.
+Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-XX project selected and you are viewing the Topology view. You should see the 'layers' application grouping with layer1-v1 and layer2 (with versions v1 and v2) grouped together within the application group. Click on layer1-v1 and you will see on the fly-out window on the right hand side that it has one pod. This pod contains the running application container and the istio sidecar container too. If you select one of the layer 2 applications you will see that it has 2 replica pods as directed by the layer2.yaml deployment file.
 
-In the OpenShift terminal window restart the for loop to start sending http requests to layer1. You should now see that layer1 is sending requests on to layer 2 and you should see the IP address of the nodes on which those two layers are running as shown below :
+In the OpenShift terminal window restart the for loop to start sending http requests to layer1. You should now see that layer1 is sending requests on to layer 2 and you should see the IP address of the nodes on which those two layers are running as shown below. This also shows the distribution of traffic to the different versions of layer2. 
 
 [source]
 ----
-"layer1 (v1) [10.130.2.240] ----> layer2 (v1) [10.130.2.237]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v1) [10.130.3.146]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v2) [10.130.3.147]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v1) [10.131.1.184]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v2) [10.128.3.12]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v1) [10.130.3.146]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v2) [10.130.3.147]"
+"layer1 (v1) [10.128.3.13] ----> layer2 (v1) [10.131.1.184]"
 ----
+
+In most micro-service based applications messages will not conveniently display application versions or IP addresses as in this example application. Consequently Kiali visualisation is very important to show what actually happens in the 'real world'.
 
 Switch to the Kiali browser view and wait until the traffic starts to appear. You may see some extraneous traffic going to nodes that are not in the current project namespaces. These are genuine messages being send to the Istio system to provide the monitoring capabilty. To hide the unwanted nodes use a filter in the 'Hide' text field at the top of the graph and use a filter of "namespace!=service-mesh-XX". Replace XX with your user number and do not include quote characters.
 
-==== Creation of multi-versioned applications in the communication chain
+The Kiali graph view (shown below) is currently displaying the communication into layer 1 and then from layer 1 to layer 2. Layer 2 has a virtual service which is governing the conditions under which layer 2 will get any network traffic such as protocol filtering, path filtering etc. In the absence of a destination rule to govern the flow of traffic a (roughly) 50% - 50% split of traffic is seen between version 1 and version 2 of layer 2.
+
+image::service-mesh-07.png[Kiali distribution of traffic to layer 2]
+
+==== Creation of further multi-versioned applications in the communication chain
 
 The next phase of building the service mesh is to introduce a multi-versioned application and service. 
 
@@ -229,14 +261,13 @@ Change directory to phase 3 and create the new application for layer 3 with the 
 ----
 cd ../phase3
 oc create -f layer3.yaml
-oc expose service/layer3
 ----
 
 You will see that four deployments are created for the four different versions of layer3. 
 
 Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-XX project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has six micro-services within it. This is shown below:
 
-image::service-mesh-07.png[OpenShift topology view of micro-services]
+image::service-mesh-08.png[OpenShift topology view of micro-services]
 
 Under more common circumstances of a development project then names will often be cryptic and it will be hard to gain any understanding of the communication logic, sequence or hierarchy of an overall application. This is when the Kiali visualisation view becomes extremely useful. 
 
@@ -255,6 +286,13 @@ spec:
   hosts:
   - layer3
   http:
+  - match:
+    - uri:
+        exact: /call-layers
+    - uri:
+        exact: /get-info        
+    - uri:
+        exact: /
   - route:
     - destination:
         host: layer3
@@ -294,6 +332,7 @@ spec:
 ----
 
 The destination rule defines to where the different subsets will direct traffic. Subset v1 directs traffic to the pod with the label v1 and subset v2 directs traffic to the pod with the label v2 etc.
+****
 
 The command below will display all pods and the labels defined on them:
 
@@ -302,25 +341,35 @@ The command below will display all pods and the labels defined on them:
 oc get pods -o jsonpath='{range.items[*]}{.metadata.name}{"  "}{.metadata.labels.version}{"\n"}'
 ----
 
-
 The result of the above command will be similar to that shown below:
 
 [source]
 ----
-layer1-v1-5cdbdc64bc-xgxdj  v1
-layer2-v1-747594d6d9-9z6rg  v1
-layer3-v1-85db7f87c6-bv5c5  v1
-layer3-v2-5649897bbf-mcl8v  v2
-layer3-v3-769cfb5446-fslwl  v3
-layer3-v4-858765c8c9-c2w7f  v4
+layer1-v1-5cdbdc64bc-hbm77  v1
+layer2-v1-747594d6d9-rd586  v1
+layer2-v1-747594d6d9-wlrhr  v1
+layer2-v2-7f8b4674cc-vbvt9  v2
+layer2-v2-7f8b4674cc-zs9lk  v2
+layer3-v1-85db7f87c6-rdz8c  v1
+layer3-v2-5649897bbf-6f99m  v2
+layer3-v3-769cfb5446-jcs4v  v3
+layer3-v4-858765c8c9-m5lzf  v4
 ----
 
-Destination rules and virtual services must go hand in hand and there cannot be more destinations than virtual services. 
-****
+The above shows that there is 1 version for layer1, 2 versions for layer 2 that are replicated pods (two instances) and 4 versions for layer 3.
+
+Destination rules require a virtual services and there cannot be more destinations than virtual services. For this reason when a destination rule is used the virtual service is either created at the same time or the virtual service already exists. 
 
 [source]
 ----
 oc create -f destination-rule-virtual-service-layer3.yaml
+----
+
+In the previous test it was seen that there was a 50% - 50% distribution of traffic to layer 2. The command below will introduce a destination rule and add a distribution clause to the virtual service for layer 2 to distribute the traffic  80% to 20% in favour of version 1.
+
+[source]
+----
+oc apply -f destination-rule-virtual-service-layer2.yaml
 ----
 
 Reconfigure layer2 to send messages to layer3 using the command:
@@ -365,7 +414,8 @@ Of the above 25 calls, 10 are for v1 (40%), 8 are for v2 (32%) and 7 are for v3 
 
 Switch to the Kiali browser view and wait until the traffic starts to appear. Onthe second to left drop down option menu at the top of the Kiali screen select the option "Requests percentage". This will show the breakdown of traffic similar to that which is shown below:
 
-image::service-mesh-08.png[OpenShift topology view of micro-services]
+image::service-mesh-09.png[OpenShift topology view of micro-services]
+
 
 
 

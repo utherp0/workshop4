@@ -4,9 +4,7 @@ metadata:
   name: layer2
 spec:
   hosts:
-  - layer2-layers.apps.cluster-c2d5.c2d5.example.opentlc.com
-  gateways:
-  - layer2-gateway
+  - layer2
   http:
   - match:
     - uri:
