@@ -63,7 +63,7 @@ image::deployment-4.png[Example Config Map YAML]
 
 Press 'Create'
 
-Go back to the command line tab at {terminalUrl}[{terminalUrl}]
+Go back to the command line tab
 
 Type ‘oc get configmaps’
 
