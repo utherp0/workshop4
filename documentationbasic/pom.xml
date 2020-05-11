@@ -114,7 +114,6 @@
                         <email>${facilitatorEmail}</email>
                         <authorTitle>${facilitatorTitle}</authorTitle>
                         <webConsoleUrl>${webConsoleUrl}</webConsoleUrl>
-                        <terminalUrl>${terminalUrl}</terminalUrl>
                         <orgname>Red Hat</orgname>
                         
                     </attributes>
