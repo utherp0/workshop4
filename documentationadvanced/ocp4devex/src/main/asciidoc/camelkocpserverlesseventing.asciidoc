@@ -317,7 +317,7 @@ kamel delete printer
 
 You may have noticed that the default Knative event channel is in-memory. This means that there is the potential for message loss in the solution, and also the potential for some subscribers to miss messages.
 
-Most applications need some form of persistent messaging, avoiding message loss in the event of something going wrong. A popular choice in the microservice world for publish and subsribe eventing is Apache Kafka. In addition to the InMemoryChannel used in the first part of this lab, Knative also has a channel type called KafkaChannel. As the name suggests, this allows Knative Eventing to use a Kafka Topic as the persistent store for the messages ensuring the reliable delivery to all subscribers. 
+Most applications need some form of persistent messaging, avoiding message loss in the event of something going wrong. A popular choice in the microservice world for publish and subscribe eventing is Apache Kafka. In addition to the InMemoryChannel used in the first part of this lab, Knative also has a channel type called KafkaChannel. As the name suggests, this allows Knative Eventing to use a Kafka Topic as the persistent store for the messages ensuring the reliable delivery to all subscribers. 
 
 So, we can use Kafka as a persistent store, but how do we get a Kafka Cluster installed on OpenShift?
 
