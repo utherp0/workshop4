@@ -1,5 +1,0 @@
-Add the mesh-user role to the user who wants to do the service mesh chapter :
-
-oc policy add-role-to-user -n istio-system --role-namespace istio-system mesh-user userXX
-oc adm policy add-role-to-user view userXX -n istio-system
-
