@@ -1,0 +1,164 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: layer3
+    version: v1
+    app.kubernetes.io/part-of: layers
+    app.openshift.io/runtime: nodejs
+  name: layer3-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: layer3
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: layer3
+        version: v1
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - env:
+        image: quay.io/marrober/layers:latest
+        imagePullPolicy: Always
+        name: layer3
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+          - name: THIS_LAYER_NAME
+            value: layer3-v1
+          - name: VERSION_ID
+            value: v1
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: layer3
+    version: v2
+    app.kubernetes.io/part-of: layers
+    app.openshift.io/runtime: nodejs
+  name: layer3-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: layer3
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: layer3
+        version: v2
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - env:
+        image: quay.io/marrober/layers:latest
+        imagePullPolicy: Always
+        name: layer3
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+          - name: THIS_LAYER_NAME
+            value: layer3-v2
+          - name: VERSION_ID
+            value: v2
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: layer3
+    version: v3
+    app.kubernetes.io/part-of: layers
+    app.openshift.io/runtime: nodejs
+  name: layer3-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: layer3
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: layer3
+        version: v3
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - env:
+        image: quay.io/marrober/layers:latest
+        imagePullPolicy: Always
+        name: layer3
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+          - name: THIS_LAYER_NAME
+            value: layer3-v3
+          - name: VERSION_ID
+            value: v3
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: layer3
+    version: v4
+    app.kubernetes.io/part-of: layers
+    app.openshift.io/runtime: nodejs
+  name: layer3-v4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: layer3
+      version: v4
+  template:
+    metadata:
+      labels:
+        app: layer3
+        version: v4
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - env:
+        image: quay.io/marrober/layers:latest
+        imagePullPolicy: Always
+        name: layer3
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+          - name: THIS_LAYER_NAME
+            value: layer3-v4
+          - name: VERSION_ID
+            value: v4
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: layer3
+  labels:
+    app: layer3    
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: layer3
