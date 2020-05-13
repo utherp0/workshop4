@@ -6,4 +6,4 @@ The basic module covers the core aspects of OCP4
 
 Run the following mvn command from the documentationbasic directory:
 
-mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]' -DterminalUrl='[ADD OCP TERMINAL WORKSHOP URL]'
+mvn clean package -DfacilitatorName='[YOUR NAME]' -DfacilitatorEmail='[YOUR EMAIL]' -DfacilitatorTitle='[YOUR TITLE]' -DwebConsoleUrl='[ADD OCP CONSOLE URL]'

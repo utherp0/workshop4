@@ -38,7 +38,6 @@
         <license>Apache License v 2.0</license>
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
         <revisiondate>${maven.build.timestamp}</revisiondate>
-        <revremark>Draft</revremark>
     </properties>
 
     <licenses>
@@ -114,7 +113,6 @@
                         <email>${facilitatorEmail}</email>
                         <authorTitle>${facilitatorTitle}</authorTitle>
                         <webConsoleUrl>${webConsoleUrl}</webConsoleUrl>
-                        <terminalUrl>${terminalUrl}</terminalUrl>
                         <orgname>Red Hat</orgname>
                         
                     </attributes>

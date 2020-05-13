@@ -116,7 +116,7 @@ Get the URI of the route using the command :
 oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
 ----
 
-Copy the result of the above command and past it into the shell script below:
+Copy the result of the above command and paste it into the shell script below:
 
 
 [source]
