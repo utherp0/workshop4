@@ -28,7 +28,7 @@ image::odo-2.png[odo in the development cycle - detail]
 === Installing
 
 
-The odo command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/openshift/odo.
+The odo command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/openshift/odo[https://github.com/openshift/odo, window="_blank"].
 
 *If you haven't already please follow the instructions in the pre-req chapter which explains the creation and setting up of the terminal application. For this chapter you will be using that application which has the odo command pre-installed for you*
 
