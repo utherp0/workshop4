@@ -7,7 +7,7 @@
 
 NOTE: For the majority of this chapter the attendee will need to pair up with another. If the numbers are odd the presenter should fill the gap of the missing attendee - pair the attendees up before the chapter starts and get them to exchange numbers - remember the numbers as MYUSER and PARTNERUSER
 
-If you are not already logged on go to the UI URL {webConsoleUrl} and logon as 'userx' (x is the number provided to you) and password openshift. 
+If you are not already logged on go to the UI URL {webConsoleUrl}[{webConsoleUrl}, window="_blank"] and logon as 'userx' (x is the number provided to you) and password openshift. 
 
 If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
