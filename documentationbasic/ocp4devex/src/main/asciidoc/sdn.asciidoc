@@ -5,7 +5,7 @@
 
 This chapter provides a developer-centric view of the fundamentals and capabilities of the SDN (Software Defined Network) that is used within OpenShift for Application connectivity.
 
-If you are not already logged on go to the UI URL at {webConsoleUrl} and logon as 'userx' (x is the number provided to you) and password openshift. 
+If you are not already logged on go to the UI URL at {webConsoleUrl}[{webConsoleUrl}, window="_blank"] and logon as 'userx' (x is the number provided to you) and password openshift. 
 
 === The basics of Service Addressing
 

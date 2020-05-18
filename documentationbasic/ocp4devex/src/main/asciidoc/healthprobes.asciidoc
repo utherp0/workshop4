@@ -71,9 +71,9 @@ Click on ‘Create Application’
 
 Select the default offering for the Builder Image Version
 
-For the GIT repository use : https://github.com/marrober/slave-node-app.git
+For the GIT repository use : https://github.com/marrober/slave-node-app.git[https://github.com/marrober/slave-node-app.git, window="_blank"]
 
-In a separate browser tab go to https://github.com/marrober/slave-node-app.git
+In a separate browser tab go to https://github.com/marrober/slave-node-app.git[https://github.com/marrober/slave-node-app.git, window="_blank"]
 
 *You can see that the GIT repository at this location only has a small number of files specific to the application. There is no content specific to how the application should be built or deployed into a container.*
 

@@ -4,7 +4,7 @@
 
 *The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used whenever possible*
 
-Open the browser and navigate to the console url {webConsoleUrl}
+Open the browser and navigate to the console url {webConsoleUrl}[{webConsoleUrl}, window="_blank"]
 
 Logon using the user provided by the course administrator (userx where x is a unique number for your session)
 
