@@ -1,4 +1,4 @@
-== OpenShift DO
+== OpenShift DO [INNOVATION]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 

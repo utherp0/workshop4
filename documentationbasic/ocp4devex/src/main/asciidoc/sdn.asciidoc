@@ -1,5 +1,5 @@
 
-== Understanding the Software Defined Network within OpenShift
+== Understanding the Software Defined Network [ESSENTIALS]
 
 === Introduction
 

@@ -1,6 +1,6 @@
 [[healthprobes]]
 
-== Pod Health Probes
+== Pod Health Probes [ESSENTIALS]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 

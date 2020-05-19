@@ -1,4 +1,4 @@
-== Camel K and OpenShift Serverless Eventing
+== Camel K and OpenShift Serverless Eventing [INNOVATION]
 
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 

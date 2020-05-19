@@ -1,5 +1,5 @@
 
-== The RBAC model for Developers
+== The RBAC model for Developers [ESSENTIALS]
 
 === Introduction
 

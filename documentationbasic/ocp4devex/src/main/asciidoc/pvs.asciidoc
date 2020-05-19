@@ -1,5 +1,5 @@
 
-== Understanding Persistent Volumes
+== Understanding Persistent Volumes [ESSENTIALS]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 

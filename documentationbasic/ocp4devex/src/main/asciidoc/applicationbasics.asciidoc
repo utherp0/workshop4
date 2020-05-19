@@ -1,4 +1,4 @@
-== Application Basics
+== Application Basics [ESSENTIALS]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
