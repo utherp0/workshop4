@@ -1,0 +1,86 @@
+== Introduction to 'oc' [ESSENTIALS]
+
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
+=== Introduction
+
+This lab introduces the command line interface to OpenShift, 'oc', and the concepts of the interactions you can have with the OpenShift system through it.
+
+TIP: The attendee will be using the terminal application created in the pre-requisites step (for command line exercises). It is strongly suggested the attendee uses Chrome or Firefox. All of this lab is done with the terminal.
+
+=== A quick overview of 'oc'
+
+OpenShift is built around Kubernetes, which is a fantastically complex and elegant orchestration system for containers. It works by maintaining a state vision of the entire system, which is a set of what are called 'objects'.
+
+An 'object' has a type - i.e. Service, Pod, User, Namesapce and the like. This type tells Kubernetes how and what it can do with the object; in fact Kubernetes has a number of processes called 'controllers' whose only job is to create, monitor and maintain these 'objects'. 
+
+In order for a user to interact with the system, be it OpenShift or Kubernetes, an API is provided that allows you to create, manipulate and remove these objects. But it's very complicated, because of the nature of the systems. 
+
+So, for Kubernetes, there was a command line utility created called 'kubectl'. OpenShift's own command line, 'oc', derives from this utility but adds the extra features, and access to the additional objects that OpenShift offers above and beyond Kubernetes.
+
+What we will be doing in this lab is using the oc client to work with OpenShift from a developers perspective. OpenShift provides a number of ways that you can interact with it; for example the Developer UI, the Administration UI, odo. But oc is the most powerful because it exposes the entire set of objects through the RESTful API provided.
+
+You will find that, once you understand the nature of the underlying objects and the way you can interact with them, that 'oc' is a fantastic tool for developers wanting to use OpenShift to orchestrate their applications.
+
+=== Creating a Project/Namespace
+
+Let's start by going to the terminal window as defined in the pre-requisites. To make sure we are working in the correct context type the following:
+
+[source]
+----
+oc whoami
+oc version
+----
+
+image::ocintro1.png[Correct response from oc]
+
+The oc client works using something called a 'context'. This is a valid login to a target OpenShift system. If the commands do not return the successful output (see above for a similar output) then please repeat the login steps listed in the pre-requisites.
+
+What we are going to do is create a Project to work in. This is equivalent, but not the same as, the Kubernetes 'namespace'. Type the following (remembering to replace the 'x' in the name with your user number):
+
+[source]
+----
+oc new-project octestx
+----
+
+image::ocintro2.png[Correct response from oc new-project]
+
+What we have done is create a context within our user's object space on the OpenShift Cluster. As creators we have admin access and rights to this space - we can create and delete objects, that we have the rights to create, as much as we like here.
+
+Now type:
+
+[source]
+----
+oc projects
+oc get projects
+----
+
+image::ocintro3.png[Correct response from projects commands]
+
+The 'oc projects' is an opinionated command - because we work with Projects so much there is a shortcut for them. The second command is the standard way of getting any object that you have the rights to via the oc command.
+
+Now type:
+
+[source]
+----
+oc api-resources
+----
+
+This command goes to the OpenShift Cluster and gets a list of the all the object types/resources you can see. There are a lot of them. Try this command:
+
+[source]
+----
+oc explain pods
+----
+
+This command will show an explanation of that API object type, namely 'Pods'. Now the cool bit - type the following:
+
+[source]
+----
+oc explain pods --recursive
+----
+
+image::ocintro4.png[Full definition of Pod]
+
+Every object can be described using JSON or YAML - this command returns, from the Server, the exact definition of that object. This is incredibly useful when we get to editing the objects via oc.
+
