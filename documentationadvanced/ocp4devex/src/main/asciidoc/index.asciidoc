@@ -1,4 +1,4 @@
-= OpenShift 4.3 DevEx Advanced Workshop
+= OpenShift 4.3 DevEx Innovation Workshop
 {author} <{email}>
 
 include::intro.asciidoc[]

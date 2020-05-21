@@ -1,4 +1,4 @@
-== Application Deployment Configurations and DevOps Approaches
+== Application Deployment Configurations and DevOps Approaches [ESSENTIALS]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
@@ -60,7 +60,7 @@ oc get route slave-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
 
 This will display a formatted URL with the 'http://' part at the beginning which will be similar to :
 
-http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
+\http://slave-app-route-master-slave.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
 
 To test the application use the command line window to issue a curl command to:
 
@@ -330,7 +330,14 @@ spec:
 
 The host 'URL' will be replaced by the configure-routes.sh shell script. The path shows /adventure, and a similar path exists in the cruise, package and short-break files to point to their specific paths.
 
-Execute the shell script 'configure-routes.sh' and then take another look at adventure-route.yaml which will be similar to that which is shown below.
+Execute the shell script 'configure-routes.sh' with this command:
+
+[source]
+----
+./configure-routes.sh
+----
+
+Now take another look at adventure-route.yaml, which will be similar to that which is shown below.
 
 [source]
 ----

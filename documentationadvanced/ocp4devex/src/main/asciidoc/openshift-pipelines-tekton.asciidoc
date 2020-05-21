@@ -1,4 +1,4 @@
-== OpenShift Pipelines - Tekton
+== OpenShift Pipelines - Tekton [INNOVATION]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
@@ -12,9 +12,9 @@ OpenShift Pipelines are based on the Tekton open source project and they provide
 A new command line exists for the execution of Tekton commands and a graphical user interface can be added to the cluster to provide a simple way to run tasks and to observe running or completed tasks.
 ****
 
-The Tekton project can be found here : https://tekton.dev/
+The Tekton project can be found here : https://tekton.dev/[https://tekton.dev/, window="_blank"]
 
-Further documentation on the specifics of Tekton can be found on the github site here : https://github.com/tektoncd/pipeline
+Further documentation on the specifics of Tekton can be found on the github site here : https://github.com/tektoncd/pipeline[https://github.com/tektoncd/pipeline, window="_blank"]
 
 === Tasks
 
@@ -42,7 +42,7 @@ image::pipelines-1.png[Simple pipeline with a task and taskrun]
 ****
 A new command line utility is used to manage the Tekton command line. The commands cover the various different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks and conditions.
 
-The Tekton command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/tektoncd/cli 
+The Tekton command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/tektoncd/cli[https://github.com/tektoncd/cli, window="_blank"] 
 
 To use the command simply type 'tkn' and you will see help regarding the objects and to get help on a specific object use 'tkn <object> --help'
 ****
@@ -277,7 +277,7 @@ The following pipeline resource types exist :
 
 * Cloud Event Resource - A cloud event that is sent to a target URI upon completion of a TaskRun.
 
-Further details on the options for all of the above resources is included here : https://github.com/tektoncd/pipeline/blob/master/docs/resources.md
+Further details on the options for all of the above resources is included here : https://github.com/tektoncd/pipeline/blob/master/docs/resources.md[https://github.com/tektoncd/pipeline/blob/master/docs/resources.md, window="_blank"]
 
 ****
 

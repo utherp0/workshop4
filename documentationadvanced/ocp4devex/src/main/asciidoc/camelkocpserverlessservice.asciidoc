@@ -1,4 +1,4 @@
-== Camel K and OpenShift Serverless Serving
+== Camel K and OpenShift Serverless Serving [INNOVATION]
 
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 

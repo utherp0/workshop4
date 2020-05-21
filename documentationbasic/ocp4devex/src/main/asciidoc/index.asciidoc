@@ -1,8 +1,9 @@
-= OpenShift 4.3 DevEx Basics Workshop
+= OpenShift 4.3 DevEx Essentials Workshop
 {author} <{email}>
 
 include::intro.asciidoc[]
 include::prereq.asciidoc[]
+include::introductiontooc.asciidoc[]
 include::applicationbasics.asciidoc[]
 include::deployments.asciidoc[]
 include::applicationdeploymentstrategies.asciidoc[]

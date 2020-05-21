@@ -1,4 +1,4 @@
-== Camel K and OpenShift Serverless Eventing
+== Camel K and OpenShift Serverless Eventing [INNOVATION]
 
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 
@@ -321,7 +321,7 @@ Most applications need some form of persistent messaging, avoiding message loss 
 
 So, we can use Kafka as a persistent store, but how do we get a Kafka Cluster installed on OpenShift?
 
-Red Hat has an operator based Enterprise Kafka distribution called AMQ Streams. AMQ Streams is based on the open source project Strimzi (https://strimzi.io). At the time of writing, Strimzi is a sandbox project within CNCF.
+Red Hat has an operator based Enterprise Kafka distribution called AMQ Streams. AMQ Streams is based on the open source project Strimzi (https://strimzi.io[https://strimzi.io, window="_blank"]). At the time of writing, Strimzi is a sandbox project within CNCF.
 
 Using Kafka behind Knative eventing means that developers also get access to the full Kafka eco-system. Change Data capture could be used to publish messages that are consumed by Knative eventing clients. Kafka clients such as the streaming API could be used to read messages published by Knative based services. All Kafka API's and services could be used as part of the solution. 
 ****

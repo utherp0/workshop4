@@ -1,11 +1,11 @@
 
-== Understanding Persistent Volumes
+== Understanding Persistent Volumes [ESSENTIALS]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
 === Introduction
 
-If you are not already logged on go to the UI URL {webConsoleUrl} and logon as userx (x is the number provided to you) and password openshift. 
+If you are not already logged on go to the UI URL {webConsoleUrl}[{webConsoleUrl}, window="_blank"] and logon as userx (x is the number provided to you) and password openshift. 
 
 If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 

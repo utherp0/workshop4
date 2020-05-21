@@ -1,4 +1,4 @@
-== Application Basics
+== Application Basics [ESSENTIALS]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
@@ -10,7 +10,7 @@ TIP: The attendee will be using a browser for interacting with both the OpenShif
 
 === Starting up - logging on and creating a project
 
-Log on to cluster at {webConsoleUrl}[{webConsoleUrl}] as 'userx', where x is the number assigned to you by the course administrator, password 'openshift'
+Log on to cluster at {webConsoleUrl}[{webConsoleUrl}, window="_blank"] as 'userx', where x is the number assigned to you by the course administrator, password 'openshift'
 
 Ensure you are on the Administrator View - at the top left of the UI is a selection box which describes the current view selected.
 
@@ -75,9 +75,9 @@ Change the Builder Image Version to 8
 *The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
 versions.*
 
-Enter the following for the Git repo for the application - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews]
+Enter the following for the Git repo for the application - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews, window="_blank"]
 
-In a separate browser tab go to https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews]
+In a separate browser tab go to https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews, window="_blank"]
 
 *If you visit the URL you will see there is no OpenShift specific code in the repository at all.*
 
@@ -139,7 +139,7 @@ Click on 'Create Application'
 
 Leave Image Version as 2.4
 
-Enter the following for the Git repo for the application - https://github.com/utherp0/forumstaticassets[https://github.com/utherp0/forumstaticassets]
+Enter the following for the Git repo for the application - https://github.com/utherp0/forumstaticassets[https://github.com/utherp0/forumstaticassets, window="_blank"]
 
 Make sure the Application is ‘nodenews-app’
 
@@ -174,7 +174,7 @@ Click 'Create Application'
 
 Leave at Builder Image Version 10
 
-Enter the following for the Git repo for the application - https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode]
+Enter the following for the Git repo for the application - https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode, window="_blank"]
 
 In the ‘Application’ pulldown select ‘Create Application‘
 
@@ -213,7 +213,7 @@ oc whoami
 oc version
 ----
 
-NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html]
+NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html, window="_blank"]
 
 To explore the command line further execute the following commands and observe the results.
 

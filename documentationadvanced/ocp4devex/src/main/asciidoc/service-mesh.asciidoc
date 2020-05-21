@@ -1,5 +1,5 @@
 :hide-uri-scheme:
-== OpenShift Service Mesh
+== OpenShift Service Mesh [INNOVATION]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
@@ -12,7 +12,7 @@ Red Hat OpenShift Service mesh is comprised of a number of separate open source 
 
 ==== Istio
 
-Istio is an implementation of the service-mesh and this component is responsible for the overall management of communication traffic between the elements of the application. The service mesh provides the manageable and measurable interaction between different services and enables teams to introduce new functionality and services in a controlled manner. One of the major benefits of the service-mesh is the fact that functionality such as Load balancing, resilience, security and observation is delivered by the mesh and not by the application. Application developers can focus in the value of their application and not how to add the resilience etc. to the application. In the earlier chapter on 'Application deployment strategies' users created a mechanism for blue/green deployments and A/B deployments to spread the load across different versions of services. These capabilities are extended further with Istio in terms of the basis for the rules that are used for traffic management. For a more detailed introduction to Istio please take a look at the free O'Reilly book 'Introducing Istio Service Mesh for Microservices' which can be downloaded from https://developers.redhat.com/books/introducing-istio-service-mesh-microservices/[here]. 
+Istio is an implementation of the service-mesh and this component is responsible for the overall management of communication traffic between the elements of the application. The service mesh provides the manageable and measurable interaction between different services and enables teams to introduce new functionality and services in a controlled manner. One of the major benefits of the service-mesh is the fact that functionality such as Load balancing, resilience, security and observation is delivered by the mesh and not by the application. Application developers can focus in the value of their application and not how to add the resilience etc. to the application. In the earlier chapter on 'Application deployment strategies' users created a mechanism for blue/green deployments and A/B deployments to spread the load across different versions of services. These capabilities are extended further with Istio in terms of the basis for the rules that are used for traffic management. For a more detailed introduction to Istio please take a look at the free O'Reilly book 'Introducing Istio Service Mesh for Microservices' which can be downloaded from https://developers.redhat.com/books/introducing-istio-service-mesh-microservices/[here, window="_blank"]. 
 
 ==== Kiali 
 
