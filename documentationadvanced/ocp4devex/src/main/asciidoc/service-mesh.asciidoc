@@ -402,6 +402,184 @@ Switch to the Kiali browser view and wait until the traffic starts to appear. On
 
 image::service-mesh-09.png[OpenShift topology view of micro-services]
 
+=== Phase 4 - Service timout
+
+The service mesh has a capability to manage traffic flow in a number of different ways. This includes a circuit breaker function to remove applications from participation in communication and a timeout function to control the abandonment of communication with a service, to name just two. In this phase a timeout will be introduced to control the traffic flow such that version A of the application layer will force a timeout after 1.5 second and version B will force a timeout after 1 seconds. 
+
+Change directory to phase 3 and create the new applications for layers 2A and 2B with the following commands:
+
+[source]
+----
+cd ../phase4
+oc create -f layer2-A.yaml --save-config
+oc create -f layer2-B.yaml --save-config
+----
+
+Create the virtual service and destination rule for each of the new applications. The destination rule and virtual service for application 2A is shown below :
+
+[source]
+----
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: layer2-a
+spec:
+  host: layer2-a
+  subsets:
+  - name: inst-1
+    labels:
+      instance: instance1
+  - name: inst-2
+    labels:
+      instance: instance2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: layer2-a
+spec:
+  hosts:
+  - layer2-a
+  http:
+  - match:
+    - uri:
+        prefix: /call-layers
+    - uri:
+        exact: /get-info        
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: layer2-a
+        port:
+          number: 8080
+        subset: inst-1
+      weight: 80
+    - destination:
+        host: layer2-a
+        port:
+          number: 8080
+        subset: inst-2
+      weight: 20
+    timeout: 1.500s
+----
+
+The virtual service shows a traffic distribution of 80 % to inst-1 and 20% to inst-2. The final statement shows the timout that applies to the entire route of 1.5 seconds. 
+
+A similar configuration applies to the virtual service and destination rules for application 2-B with a distribution of 30% to 70% and a timout of 1 second. 
+
+Create the virtual services and destination rules with the commands :
+
+[source]
+----
+oc create -f destination-rule-virtual-service-layer2-A.yaml --save-config
+oc create -f destination-rule-virtual-service-layer2-B.yaml --save-config
+----
+
+Modify layer 1 application so that it sends traffic to applications 2A and 2B.
+
+[source]
+----
+oc apply -f layer1.yaml
+----
+
+In the OpenShift terminal window recall the foor loop that sends messages to the applications and execute it again.
+
+You should now see that layer1 is sending requests on to layer 2a (instances 1 and 2) and to layer 2b (instances 1 and 2) Take a look at the graph in Kiali and you will also see a distribution of workload across layer 2 in the percentages defined in the virtual service.
+
+[source]
+----
+layer1 (v1) [10.128.2.62] ----> layer2-a (instance-2) [10.128.2.60]
+layer1 (v1) [10.128.2.62] ----> layer2-a (instance-1) [10.128.2.59]
+layer1 (v1) [10.128.2.62] ----> layer2-a (instance-1) [10.128.2.59]
+layer1 (v1) [10.128.2.62] ----> layer2-b (instance-1) [10.128.2.61]
+layer1 (v1) [10.128.2.62] ----> layer2-b (instance-2) [10.131.0.86]
+layer1 (v1) [10.128.2.62] ----> layer2-a (instance-2) [10.128.2.60]
+layer1 (v1) [10.128.2.62] ----> layer2-a (instance-2) [10.128.2.60]
+----
+
+==== Introducing application delay
+
+To show the impact of the timeout function a different rest endpoint is used. Reconfigure the ROUTE environment variable to use the alternative endpoint with the command :
+
+[source]
+----
+export ROUTE=$(oc get route -o jsonpath='{.items[0].spec.host}{"/call-layers-sleep"}')
+----
+
+Call the applications with a delay of 900ms. This should result in no interuption to service. Execute the following shell command to make 100 calls.
+
+[source]
+----
+for i in {1..100}; do curl $ROUTE:900; echo "";done
+----
+
+This will result in a display similar to that which is shown below. Instances 1 and 2 of layers 2a and 2b are responding.
+
+[source]
+----
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-1) [10.128.2.61] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-2) [10.131.0.86] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-1) [10.128.2.61] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-2) [10.131.0.86] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (900 ms)
+layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-2) [10.131.0.86] sleep (900 ms)
+----
+
+Increase the delay to 1100 ms using the command :
+
+[source]
+----
+for i in {1..100}; do curl $ROUTE:1100; echo "";done
+----
+
+This will result in a display similar to that which is shown below. Instances 1 and 2 of layers 2a are responding, while the delayed response from instances 1 and 2 of layer 2b are being timed out.
+
+[source]
+----
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (1100 ms)
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (1100 ms)
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-2) [10.128.2.60] sleep (1100 ms)
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-2) [10.128.2.60] sleep (1100 ms)
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (1100 ms)
+----
+
+Increase the delay to 1600 ms using the command :
+
+[source]
+----
+for i in {1..100}; do curl $ROUTE:1600; echo "";done
+----
+
+This will result in a display similar to that which is shown below in which all calls are being timed out. 
+
+[source]
+----
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
+layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
+----
+
+While the for loop is running and in another terminal window, edit one of the virtual services and change the delay to 2500 ms. Re-apply the virtual service with either command :
+
+[source]
+----
+oc apply -f destination-rule-virtual-service-layer2-A.yaml
+oc apply -f destination-rule-virtual-service-layer2-B.yaml
+----
+
+Observe that traffice starts to be allowed through to that application only.
+
+Take a look at the traffice flow in the graph view of Kiali and you should see a display similar to that which is shown below (once Kiali has had the opportunity to catch up).
+
+image::service-mesh-10.png[Traffic distribution with errors]
+
+The above image shows red to indicate the communication that is being rejected by the timeout. 
+
 === Cleaning up
 
 To tidy up the cluster now that the chapter is complete please use the command
