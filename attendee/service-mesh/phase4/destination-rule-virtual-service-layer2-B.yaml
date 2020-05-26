@@ -40,4 +40,4 @@ spec:
           number: 8080
         subset: inst-2
       weight: 70
-    timeout: 2.500s
+    timeout: 1.000s

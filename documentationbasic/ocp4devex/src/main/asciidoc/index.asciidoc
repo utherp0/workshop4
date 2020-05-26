@@ -3,7 +3,6 @@
 
 include::intro.asciidoc[]
 include::prereq.asciidoc[]
-include::introductiontooc.asciidoc[]
 include::applicationbasics.asciidoc[]
 include::deployments.asciidoc[]
 include::applicationdeploymentstrategies.asciidoc[]
