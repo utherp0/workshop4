@@ -19,3 +19,157 @@ It is worth creating short URLs for the following URLs to be provided to the att
 
 For the advanced course there are some Operator pre-requisites that are installed using an Ansible playbook - please check the documentation and the playbooks directory of the repo for details
 
+When running a remote session it is highly advised to have two additional applications running on the Cluster for communications with the attendees. These are as follows, with instructions on how to set them up:
+
+1: Etherpad
+
+Log on as a Cluster Admin
+
+Create a project using 'oc new-project etherpad'
+
+oc new-app mysql-persistent --param MYSQL_USER=ether --param MYSQL_PASSWORD=ether --param MYSQL_DATABASE=ether --param VOLUME_CAPACITY=4Gi --param MYSQL_VERSION=5.7
+
+Wait until the MySQL pod is running (watch for the deployment to finish)
+
+oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-etherpad/master/etherpad-template.yaml -p DB_USER=ether -p DB_PASS=ether -p DB_DBID=ether -p DB_PORT=3306 -p DB_HOST=mysql -p ADMIN_PASSWORD=secret
+
+Once the etherpad Pod is running, switch back to the UI - go to the project etherpad, Networking/Routes
+
+Click on the Route
+
+Click on 'New Pad'
+
+Remove all text from the Pad
+
+Copy and paste the text below into the pad:
+
+-------------------------- (not this line)
+Welcome to OpenShift DevEx Labs
+
+Please choose an untaken username from below and type your name next to it to claim it. Once you have a username you can use the labs.
+
+The labs are reachable at INSERTCLUSTERURL
+
+Documentation for the labs is at INSERTDOCSHERE (add an extra line for the Innovation docs if needed)
+
+Also please join the Rocketchat at INSERTROCKETCHATURL - you will have to create an account. Once there join the #support channel where you can raise any issues or problems with the labs.
+
+user1
+user2
+user3
+user4
+user5
+user6
+user7
+user8
+user9
+user10
+user11
+user12
+user13
+user14
+user15
+user16
+user17
+user18
+user19
+user20
+user21
+user22
+user23
+user24
+user25
+user26
+user27
+user28
+user29
+user30
+
+[Red Hat]
+user80
+user81
+user82
+user83
+user84
+
+--------------------- (not this line)
+
+Change the cluster URL in the Pad to the Cluster URL you are running on.
+
+2: Rocketchat
+
+Log onto the Cluster as a Cluster Admin user
+
+In the Administration view go to 'Projects'
+
+Hit Create Project and create a project called 'chat'
+
+Click on 'Operators/OperatorHub'
+
+In the search box type 'rocket'
+
+Click on the Rocketchat Operator
+
+Click 'Install'
+
+In Installation Mode chamge the target to 'A specific namespace on the cluster'
+
+Select 'chat' in the project pulldown
+
+Hit 'Subscribe'
+
+Once the Operator status changes to 'Succeeded' click on the Rocketchat Operator
+
+In the Operator Overview click on the subheading 'Rocketchat'
+
+Click on 'Create Rocketchat'
+
+Leave the YAML as is and hit 'Create'
+
+Switch back to the topology view of the Developer viewpoint
+
+Wait until all the Pods report blue and running (three of them)
+
+Click on the URL icon (top right) of the Quick Start Pod
+
+When Rocketchat renders create an admin user of your choice
+
+Enter organisation information of your choice
+
+On step 3 set the Server name to 'devex' and the type to 'Community'
+
+On step 4 choose 'Keep standalone'
+
+You will now get a Rocketchat with the channel #general
+
+Select the icon for 'Create New' and create a channel called #support - set it to public, not private
+
+Add some text for the welcome to the #general and #support
+
+Copy the URL for the Route (minus the subdirectories) and go back to the Etherpad and paste it in there
+
+3: Create a Short URL for the landing page on Etherpad
+
+Go back to the UI for the Cluster (as Cluster Admin)
+
+In Projects choose etherpad
+
+Go to Networking/Routes
+
+Hit 'Create Route'
+
+Set the name to secureetherpad
+
+Set the service to 'etherpad' (not MySQL)
+
+Set the target port to 9001
+
+Click the 'Secure Route'
+
+Set TLS Termination to 'Edge'
+
+Scroll down and hit create
+
+Copy the 'Location' field (with the https://whatever)
+
+In the short URL generator of your choice use this to get a short URL - this is the landing page for the attendees.
