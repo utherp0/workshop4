@@ -135,7 +135,7 @@ Execute the pipeline with the following Tekton task
 tkn pipeline start pipeline-1
 ----
 
-Once run switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the right hand side labelled 'Pipelines'. Select this option and the screen should look like this:
+Once run switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
 
 image::pipelines-7.png[Example Pipelines UI]
 

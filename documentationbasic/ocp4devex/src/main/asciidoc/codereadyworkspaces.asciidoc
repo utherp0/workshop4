@@ -1,0 +1,37 @@
+== CodeReady Workspaces [ESSENTIALS]
+
+Author: Mark Roberts (feedback to mroberts@redhat.com)
+
+=== Introduction
+
+This workshop module will introduce you to the development model of using a browser and a containerised development environment known as CodeReady Workspaces.
+
+CodeReady workspaces are a novel way of delivering a complete development environment to a developer in a consistent and repeatable manner. The configuration of the environment and the work that is done within it are stored within the workspace providing a high level of security. The workspace allows developers to switch from (say) working at an office on a desktop computer to working from home without having to copy assets from client to client to maintain a consistent working experience.
+
+Workspaces may be created from a defintion file that allows team leaders to create shared configuration files that ensure that the team has a consistent set of plugins, configuration settings and access to project source code. 
+
+Workspaces may be shared between different developers. This allows a user in one location who has a development issue to get help from a co-worker who can interact with the first users environment. This is particularly significant with the prevalence of working from home from early 2020.
+
+The CodeReady Workspaces operator has already been added to the cluster and everything is ready for you to use. 
+
+=== Logging into CodeReady Workspaces
+
+The CodeReady workspaces environment is considered to be a separate entity to the normal 
+
+
+Find the URL for the CodeReady Workspaces using the following command :
+
+[source]
+----
+oc get checluster --output jsonpath='{.items[0].status.cheURL}{"\n"}'
+----
+
+The above command will display a URL which you should copy and paste into a web browser tab.
+
+If an authorization access page is displayed press the button labelled 'Allow selected permissions' and you will then see a user registration page similar to that which is shwn below.
+
+image::codeready-workspaces-01.png[CodeReady Workspaces account information]
+
+Enter your userXX identifier for the user name, where XX is your user number and enter an email address, first and last names and hit submit. Your personal details will be stored in the cluster until the cluster is deleted in a few days time. You can make up an email address and user name if you wish but ensure the user name matches your cluster user name.
+
+

@@ -7,6 +7,11 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 During the development process a number of container images will be produced. The source-2-image capability described in the basic workshop creates images catalogued under an image stream within a project. Other container images may be created using command line functions such as docker or buildah (both using docker files potentially) or images may be downloaded from the Red Hat Container Catalogue https://catalog.redhat.com/software/containers/explore[here, window="_blank"], or other vendor supplied images may be used. From a variety of sources and through a variety of mechanisms images will be created that form the microservices of an application. Such images need to be managed through a lifecycle as they progress from Development to QA and finally to production in a process described in the diagram below. The purpose of Red Hat Quay is to provide a repository for the secure and structured storage of images that may be accessed by multiple users from multiple clusters. Quay also provides an image vulnerability scanning capability to identify issues with images stored within it.
 
+.Note on the workshop
+****
+At the present time there is an issue with the Red Hat demonstration Quay instance so if you wish to do this chapter please create an account on quay.io and use that URL instead of a URL supplied by the workshop leaders. Also the terminal that we use for the workshops cannot be used for the Buildah commands so you will need to install Buildah locally to complete this section. We apologize for this issue at this time and we are working to overcome these challenges as quickly as we can.
+****
+
 image::quay-1.png[Image management process through the route to live]
 
 The image below shows an OpenShift project and the various artefacts that are created. The image stream object is shown here within the context of the builder process that creates it and the running pod that consumes it.
