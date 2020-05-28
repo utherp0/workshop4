@@ -99,3 +99,158 @@ The oc command will cause OpenShift to create all the contents it needs for an A
 
 image:ocintro5.png[Result of new-app]
 
+*Note the Resources Created part of the output - from a single command to create an App it has created the core required components.*
+
+Now type the follow, as suggested by the output:
+
+[source]
+----
+oc status
+----
+
+image::ocintro6.png[oc status output]
+
+The system is performing a build, defined by the buildconfig that has been created using the chosen technology deduced by OpenShift from the repo. When the build finishes it will deploy the application - the deployment is shown as the 'dc', which is the deployment config object. This is waiting on the image to be created by the build. It also creates a Service, which is the internal endpoint for the application.
+
+If you wait a little (feel free to repeat the 'oc status' command) the build will complete and the application will be deployed. You can check for when it deploys by typing:
+
+[source]
+----
+oc get pods
+----
+
+Once deployed the output should look like this:
+
+image::ocintro7.png[working pods]
+
+You will notice there are three Pods - two have completed and one is running. This is because those actions of building an Application into an Image and then deploying the Application are executed as Pods themselves.
+
+Now, for the sake of the lab, we will create a second application. Type:
+
+[source]
+----
+oc new-app https://github.com/utherp0/nodenews
+----
+
+Again use the 'oc get pods' and 'oc status' to watch the build of the second application. When it completes it will look like this:
+
+image::ocintro8.png[working pods for app2]
+
+=== Using oc for manipulating existing objects
+
+Now we will show the power of the oc command. First, type the following:
+
+[source]
+----
+oc get pods | grep Running
+----
+
+This will list the Pods running, i.e. the applications. We will now scale the 'meow2' application to three Pods and the 'nodenews' application to two Pods. Type the following:
+
+[source]
+----
+oc scale dc/meow2 --replicas=3
+oc scale dc/nodenews --replicas=2
+----
+
+Once the commands come back successfully type:
+
+[source]
+----
+oc get pods | grep Running
+----
+
+image::ocintro9.png[all the pods for the two apps]
+
+We are now going to look at the composition of a single 'object', in this case a pod. Using the output of the command above, pick one of the three Running meow2 Pods. You will need the name, which will be meow2-1-xxxxx, where xxxxx are random characters. Using the five characters from your chosen Pod type the following:
+
+[source]
+----
+oc get pod meow2-1-[PUT YOUR CHOSEN POD'S CHARACTERS HERE]
+----
+
+That will give you a simple overview of the object, in this case the Pod. Now type this:
+
+[source]
+----
+oc get pod meow2-1-[PUT YOUR CHOSEN POD'S CHARACTERS HERE] -o json
+----
+
+You will get a huge amount of information. What this command has done is returned the entire object in JSON. Now type this:
+
+[source]
+----
+oc get pod meow2-1-[PUT YOUR CHOSEN POD'S CHARACTERS HERE] -o yaml
+----
+
+Now you will see the entire object listed in YAML. This is the complete object from OpenShift/Kubernetes, so as well as seeing the definition, which is all the components under 'spec:', you will also see the metadata for the object, listed under 'metadata:' and the current status of the object, listed under 'status:'.
+
+=== Using jsonpath to extract specific object values
+
+And this is where the oc command becomes incredibly powerful. Type the following:
+
+[source]
+----
+oc get dc -o jsonpath='{.items[*].metadata.name}'
+----
+
+We can use the output of an object in json through a jsonpath filter and access *any* component of the object. Here's a more useful example - type the following:
+
+[source]
+----
+for pod in $(oc get pods -o jsonpath='{.items[*].metadata.name}'); \
+do echo $pod; \
+echo "  "$(oc get pod $pod -o jsonpath='{.status.phase}'); \
+done
+----
+
+image::ocintro10.png[manual pod listing]
+
+What we will do now is to scale down *all* of the applications to a single Pod using the oc command - this may seem a little pithy but imagine if you had operations to run over hundreds or thousands of objects. This approach makes it very easy to automate tasks. Type the following:
+
+[source]
+----
+for dc in $(oc get dc -o jsonpath='{.items[*].metadata.name}'); \
+do oc scale dc/$dc --replicas=1; \
+done
+
+oc get pods | grep Running
+----
+
+This command will scale *all* of the deployment configs to one copy.
+
+The oc command gives access to *all* the objects available for the logged on User. In the case of a standard user, such as the one we are using for this lab, this will be the objects created in the namespace. In the case of what is called a 'Cluster Admin' user this is effectively all the objects in the entire system. 
+
+=== Cleanup the lab
+
+We will finally use the oc command to clean the project. Type the following, replacing the x with your user number (i.e. octest84):
+
+[source]
+----
+oc delete project octestx
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
