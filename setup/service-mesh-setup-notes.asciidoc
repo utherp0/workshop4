@@ -1,4 +1,9 @@
-=== Installing Red Hat OpenShift Service Mesh to a cluster
+
+WARNING
+
+Ensure that all oerators for Knative, serverless and Kamel are installed before installing service mesh.
+
+== Installing Red Hat OpenShift Service Mesh to a cluster
 
 As a cluster administrator :
 
@@ -43,6 +48,8 @@ The response will show as "full-install 9/9 InstallSuccessful" when the installa
 
 Since the configuration for users only adds roles to the users there is little overhead in enabling the servish mesh capability for all users. Use the shell script below to add the mesh user role and the view role to all users.
 
-for i in {1..99}; do oc policy add-role-to-user -n istio-system --role-namespace istio-system mesh-user user$i; oc adm policy add-role-to-user view user$i -n istio-system; done
+for i in {1..99}; do oc login --username user$i --password openshift; done
 
+oc login --username opentlc-mgr --password ***REMOVED***
 
+for i in {1..99}; do oc add-role-to-user -n istio-system --role-namespace istio-system mesh-user user$i; done

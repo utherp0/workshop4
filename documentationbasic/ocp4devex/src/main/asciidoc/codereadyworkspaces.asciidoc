@@ -23,7 +23,7 @@ Find the URL for the CodeReady Workspaces using the following command :
 
 [source]
 ----
-oc get checluster --output jsonpath='{.items[0].status.cheURL}{"\n"}'
+echo "codeready-codeready."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 ----
 
 The above command will display a URL which you should copy and paste into a web browser tab.
@@ -32,6 +32,12 @@ If an authorization access page is displayed press the button labelled 'Allow se
 
 image::codeready-workspaces-01.png[CodeReady Workspaces account information]
 
-Enter your userXX identifier for the user name, where XX is your user number and enter an email address, first and last names and hit submit. Your personal details will be stored in the cluster until the cluster is deleted in a few days time. You can make up an email address and user name if you wish but ensure the user name matches your cluster user name.
+Enter your userXX identifier for the user name, where XX is your user number and enter an email address, first and last names and hit submit.
+
+At this point in time you have access to CodeReady Workspaces but you do not yet have a workspace.
+
+=== Creating your first workspace
+
+
 
 

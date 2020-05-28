@@ -12,6 +12,6 @@ Create the Quay content
 
 1. Login to quay as quayadmin user.
 2. Create a new Quay organisation of the same name as the OpenShift project. The name of this project should be : master-slave-userXX, where XX is the user ID number.
-3. Create a new Quay user matching the users name in OpenShift and set the password to openshift. The username should be of the format userXX, where XX is a unique number. An email address is required for the user ID so use <user-id>@redhat.com. No emails will be sent to the address.
+3. Create a new Quay user matching the users name in OpenShift and set the password to OpenShift. The username should be of the format userXX, where XX is a unique number. An email address is required for the user ID so use <user-id>@redhat.com. No emails will be sent to the address.
 4. Add the new Quay user as a member of the owners team for the newly created organization.
 5. Provide the username, password and a shortened ULR link to the Quay repository to the user.
