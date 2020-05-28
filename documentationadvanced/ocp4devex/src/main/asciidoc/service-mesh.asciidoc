@@ -5,9 +5,9 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
 
-OpenShift is a platform that enables developers to deliver and manage extremely complex polyglot applications covering a variety of language runtimes and underlying technologies. However, OpenShift to date has not provided controls and monitoring regarding how each application component interacts with other components within an appliction or wider enterprise. This is where the Red Hat OpenShift Service Mesh adds value to the development and operations staff responsible for applications. 
+OpenShift is a platform that enables developers to deliver and manage extremely complex polyglot applications covering a variety of language runtimes and underlying technologies. However, OpenShift to date has not provided controls and monitoring regarding how each application component interacts with other components within an application or wider enterprise. This is where the Red Hat OpenShift Service Mesh adds value to the development and operations staff responsible for applications. 
 
-Red Hat OpenShift Service mesh is comprised of a number of separate open source projects that have been tested and integrated as a whole to deliver value to the OpenShift user. Each opensource project breaks down further to specific named elements, some of which are encountered and described in the following workshop chapter. 
+Red Hat OpenShift Service mesh is comprised of a number of separate open source projects that have been tested and integrated as a whole to deliver value to the OpenShift user. Each open source project breaks down further to specific named elements, some of which are encountered and described in the following workshop chapter. 
 
 
 ==== Istio
@@ -26,7 +26,7 @@ Jaeger provides a detailed distributed traffic tracing capability. This shows ac
 
 The following workshop steps will show you how to create a service mesh using a simple application. The application communication will work perfectly fine with the use of OpenShift services and routes, and the introduction of the service mesh to provide more capable communication management will have no implications on the application code.
 
-The application is called layers and it is a very simple Node JS REST interface that recieves request either from an external curl command or from another version of itself. The application uses a number of environment variables that are set within the deployment yaml files. If the application instance has an environment variable called NEXT_LAYER_NAME then it will send a message to that layer. This continues down the layers of communication until an application instance is reached that does not have the environment variable. With each response the application returns its name, version identifier and IP address.
+The application is called layers and it is a very simple Node JS REST interface that receives request either from an external curl command or from another version of itself. The application uses a number of environment variables that are set within the deployment yaml files. If the application instance has an environment variable called NEXT_LAYER_NAME then it will send a message to that layer. This continues down the layers of communication until an application instance is reached that does not have the environment variable. With each response the application returns its name, version identifier and IP address.
 
 ==== Create a new project for the service mesh activity
 
@@ -139,14 +139,14 @@ gateway.networking.istio.io/layer1-gateway   63s
 
 === Service mesh visualisation with Kiali
 
-Red Hat Service mesh includes a component called Kiali which provides a visualisation of the components of the mesh to assist in monitoring and managing the communication processes within a micro-service based application. To find the URL for the Kiali web application enter the command :
+Red Hat Service mesh includes a component called Kiali which provides a visualization of the components of the mesh to assist in monitoring and managing the communication processes within a micro-service based application. To find the URL for the Kiali web application enter the command :
 
 [source]
 ----
-oc get route -n istio-system -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.host}{"\n"}'
+echo "kiali-istio-system."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 ----
 
-This command will list all of the system services routes for service mesh. Copy the URL for Kiali and paste it into a new browser window.
+This command will create the URL for the Kiali system in use within the cluster. Open this URL in a new browser tab.
 
 Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials and then select the blue '1 application' link in the box labelled with your service-mesh-XX project.
 
@@ -228,9 +228,9 @@ In the OpenShift terminal window restart the for loop to start sending http requ
 "layer1 (v1) [10.128.3.13] ----> layer2 (v1) [10.131.1.184]"
 ----
 
-In most micro-service based applications messages will not conveniently display application versions or IP addresses as in this example application. Consequently Kiali visualisation is very important to show what actually happens in the 'real world'.
+In most micro-service based applications messages will not conveniently display application versions or IP addresses as in this example application. Consequently Kiali visualization is very important to show what actually happens in the 'real world'.
 
-Switch to the Kiali browser view and select the graph view. Wait until the traffic starts to appear. You may see some extraneous traffic going to nodes that are not in the current project namespaces. These are genuine messages being send to the Istio system to provide the monitoring capabilty. To hide the unwanted nodes use a filter in the 'Hide' text field at the top of the graph and use a filter of "namespace!=service-mesh-XX". Replace XX with your user number and do not include quote characters.
+Switch to the Kiali browser view and select the graph view. Wait until the traffic starts to appear. You may see some extraneous traffic going to nodes that are not in the current project namespaces. These are genuine messages being send to the Istio system to provide the monitoring capability. To hide the unwanted nodes use a filter in the 'Hide' text field at the top of the graph and use a filter of "namespace!=service-mesh-XX". Replace XX with your user number and do not include quote characters.
 
 The Kiali graph view (shown below) is currently displaying the communication into layer 1 and then from layer 1 to layer 2. Layer 2 has a virtual service which is governing the conditions under which layer 2 will get any network traffic such as protocol filtering, path filtering etc. In the absence of a destination rule to govern the flow of traffic a (roughly) 50% - 50% split of traffic is seen between version 1 and version 2 of layer 2. Select "Request percentage" in the second dropdown menu to see the distribution to version 1 and version 2 of layer2. Restart the for loop to send traffic in the terminal window if necessary.
 
@@ -254,7 +254,7 @@ Switch to the OpenShift browser window and ensure that you are using the develop
 
 image::service-mesh-08.png[OpenShift topology view of micro-services]
 
-Under more common circumstances of a development project then names will often be cryptic and it will be hard to gain any understanding of the communication logic, sequence or hierarchy of an overall application. This is when the Kiali visualisation view becomes extremely useful. 
+Under more common circumstances of a development project then names will often be cryptic and it will be hard to gain any understanding of the communication logic, sequence or hierarchy of an overall application. This is when the Kiali visualization view becomes extremely useful. 
 
 To tie the service mesh together for the different versions of layer3 a virtual service and a destination rule will be used. 
 
@@ -365,7 +365,7 @@ Reconfigure layer2 to send messages to layer3 using the command:
 oc apply -f layer2.yaml
 ----
 
-In the OpenShift terminal window recall the foor loop that sends messages to the applications and change the total number of messages to 200 and the sleep value from .2 to .5. This will give more time to explore the traffic in Kiali. Execute the command when the changes have been made. You should now see that layer1 is sending requests on to layer 2 which is sending requests on to layer 3 and you should see the IP address of the nodes on which those two layers are running as shown below. You will also see a distribution of workload across layer 3 v1, v2 and v3 in the percentages defined in the virtual service.
+In the OpenShift terminal window recall the for loop that sends messages to the applications and change the total number of messages to 200 and the sleep value from .2 to .5. This will give more time to explore the traffic in Kiali. Execute the command when the changes have been made. You should now see that layer1 is sending requests on to layer 2 which is sending requests on to layer 3 and you should see the IP address of the nodes on which those two layers are running as shown below. You will also see a distribution of workload across layer 3 v1, v2 and v3 in the percentages defined in the virtual service.
 
 [source]
 ----
@@ -398,11 +398,11 @@ In the OpenShift terminal window recall the foor loop that sends messages to the
 
 Of the above 25 calls, 10 are for v1 (40%), 8 are for v2 (32%) and 7 are for v3 (28%). The distribution percentages become more accurate the more messages are sent. When more calls are made the distribution gets closer to the desired values. 
 
-Switch to the Kiali browser view and wait until the traffic starts to appear. Onthe second to left drop down option menu at the top of the Kiali screen select the option "Requests percentage". This will show the breakdown of traffic similar to that which is shown below:
+Switch to the Kiali browser view and wait until the traffic starts to appear. On the second to left drop down option menu at the top of the Kiali screen select the option "Requests percentage". This will show the breakdown of traffic similar to that which is shown below:
 
 image::service-mesh-09.png[OpenShift topology view of micro-services]
 
-=== Phase 4 - Service timout
+=== Phase 4 - Service timeout
 
 The service mesh has a capability to manage traffic flow in a number of different ways. This includes a circuit breaker function to remove applications from participation in communication and a timeout function to control the abandonment of communication with a service, to name just two. In this phase a timeout will be introduced to control the traffic flow such that version A of the application layer will force a timeout after 1.5 second and version B will force a timeout after 1 seconds. 
 
@@ -464,9 +464,9 @@ spec:
     timeout: 1.500s
 ----
 
-The virtual service shows a traffic distribution of 80 % to inst-1 and 20% to inst-2. The final statement shows the timout that applies to the entire route of 1.5 seconds. 
+The virtual service shows a traffic distribution of 80 % to inst-1 and 20% to inst-2. The final statement shows the timeout that applies to the entire route of 1.5 seconds. 
 
-A similar configuration applies to the virtual service and destination rules for application 2-B with a distribution of 30% to 70% and a timout of 1 second. 
+A similar configuration applies to the virtual service and destination rules for application 2-B with a distribution of 30% to 70% and a timeout of 1 second. 
 
 Create the virtual services and destination rules with the commands :
 
@@ -483,7 +483,7 @@ Modify layer 1 application so that it sends traffic to applications 2A and 2B.
 oc apply -f layer1.yaml
 ----
 
-In the OpenShift terminal window recall the foor loop that sends messages to the applications and execute it again.
+In the OpenShift terminal window recall the for loop that sends messages to the applications and execute it again.
 
 You should now see that layer1 is sending requests on to layer 2a (instances 1 and 2) and to layer 2b (instances 1 and 2) Take a look at the graph in Kiali and you will also see a distribution of workload across layer 2 in the percentages defined in the virtual service.
 
@@ -507,7 +507,7 @@ To show the impact of the timeout function a different rest endpoint is used. Re
 export ROUTE=$(oc get route -o jsonpath='{.items[0].spec.host}{"/call-layers-sleep"}')
 ----
 
-Call the applications with a delay of 900ms. This should result in no interuption to service. Execute the following shell command to make 100 calls.
+Call the applications with a delay of 900ms. This should result in no interruption to service. Execute the following shell command to make 100 calls.
 
 [source]
 ----
@@ -564,17 +564,26 @@ layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
 layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> upstream request timeout
 ----
 
-While the for loop is running and in another terminal window, edit one of the virtual services and change the delay to 2500 ms. Re-apply the virtual service with either command :
+While the for loop is running make a change to the timeout of one of the virtual services to increase the delay to 2500 ms. This can be done in two different ways. 
+
+1. Make a change to one the virtual service files using the vi editor and then re-apply the virtual service using the following :
 
 [source]
 ----
+vi destination-rule-virtual-service-layer2-A.yaml
 oc apply -f destination-rule-virtual-service-layer2-A.yaml
+
+or
+
+vi destination-rule-virtual-service-layer2-B.yaml
 oc apply -f destination-rule-virtual-service-layer2-B.yaml
 ----
 
-Observe that traffice starts to be allowed through to that application only.
+Alternatively use the Kiali browser window, switch to the istio-config section on the left hand side and select the virtual service for either layer2-A or layer2-A. Edit the yaml within the window to alter the timeout value and save the changes. One of the good things about using this editor is the immediate validation of the yaml code.
 
-Take a look at the traffice flow in the graph view of Kiali and you should see a display similar to that which is shown below (once Kiali has had the opportunity to catch up).
+Observe that traffic starts to be allowed through to that application only.
+
+Take a look at the traffic flow in the graph view of Kiali and you should see a display similar to that which is shown below (once Kiali has had the opportunity to catch up).
 
 image::service-mesh-10.png[Traffic distribution with errors]
 
