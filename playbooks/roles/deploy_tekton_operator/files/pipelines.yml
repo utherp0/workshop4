@@ -4,7 +4,7 @@ metadata:
   name: pipelines
   namespace: openshift-operators
 spec:
-  channel: dev-preview
-  name: openshift-pipelines-operator 
-  source: community-operators
+  channel: ocp-4.4
+  name: openshift-pipelines-operator-rh 
+  source: redhat-operators
   sourceNamespace: openshift-marketplace
