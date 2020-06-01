@@ -3,7 +3,15 @@ Developer Experience Workshops for OCP4.3
 
 This repo contains all the collateral and material for running the DevEx Workshops for OCP4.3
 
-To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).
+Link to a single sheet (double sided) document that describes the DevEx workshop and can be used as a flyer at events is available at the following URL:
+
+https://docs.google.com/document/d/1gNINFJ599AqQM19082ac2n7VrIMrSURwXFLiDTIoB54/edit?usp=sharing
+
+Link to DevEx promotional slides for use with sellers and customers is available at the following URL:
+
+https://docs.google.com/presentation/d/1Pq0vo95mGE9ZFppdLr44nVf7S-5-hqTzC0qFpo2HpG8/edit?usp=sharing
+
+**To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).**
 
 The workshop has been split into two components, a 'basics' and an 'advanced' module. These are built separately as documents and can be given independently - the course takes about 6-8 hours to do them both depending on attendee level.
 
@@ -27,11 +35,11 @@ Log on as a Cluster Admin
 
 Create a project using 'oc new-project etherpad'
 
-oc new-app mysql-persistent --param MYSQL_USER=ether --param MYSQL_PASSWORD=ether --param MYSQL_DATABASE=ether --param VOLUME_CAPACITY=4Gi --param MYSQL_VERSION=5.7
+oc new-app --template=postgresql-persistent --param POSTGRESQL_USER=ether --param POSTGRESQL_PASSWORD=ether --param POSTGRESQL_DATABASE=etherpad --param POSTGRESQL_VERSION=10 --param VOLUME_CAPACITY=10Gi --labels=app=etherpad_db
 
-Wait until the MySQL pod is running (watch for the deployment to finish)
+Wait until the PostGres pod is running (watch for the deployment to finish)
 
-oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-etherpad/master/etherpad-template.yaml -p DB_USER=ether -p DB_PASS=ether -p DB_DBID=ether -p DB_PORT=3306 -p DB_HOST=mysql -p ADMIN_PASSWORD=secret
+oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-etherpad/master/etherpad-template.yaml -p DB_TYPE=postgres -p DB_HOST=postgresql -p DB_PORT=5432 -p DB_DATABASE=etherpad -p DB_USER=ether -p DB_PASS=ether -p ETHERPAD_IMAGE=quay.io/wkulhanek/etherpad:1.8.4 -p ADMIN_PASSWORD=secret
 
 Once the etherpad Pod is running, switch back to the UI - go to the project etherpad, Networking/Routes
 
@@ -43,7 +51,7 @@ Remove all text from the Pad
 
 Copy and paste the text below into the pad:
 
--------------------------- (not this line)
+-------------------------- (not this line)  
 Welcome to OpenShift DevEx Labs
 
 Please choose an untaken username from below and type your name next to it to claim it. Once you have a username you can use the labs.
@@ -54,43 +62,43 @@ Documentation for the labs is at INSERTDOCSHERE (add an extra line for the Innov
 
 Also please join the Rocketchat at INSERTROCKETCHATURL - you will have to create an account. Once there join the #support channel where you can raise any issues or problems with the labs.
 
-user1
-user2
-user3
-user4
-user5
-user6
-user7
-user8
-user9
-user10
-user11
-user12
-user13
-user14
-user15
-user16
-user17
-user18
-user19
-user20
-user21
-user22
-user23
-user24
-user25
-user26
-user27
-user28
-user29
-user30
+user1  
+user2  
+user3  
+user4  
+user5  
+user6  
+user7  
+user8  
+user9  
+user10  
+user11  
+user12  
+user13  
+user14  
+user15  
+user16  
+user17  
+user18  
+user19  
+user20  
+user21  
+user22  
+user23  
+user24  
+user25  
+user26  
+user27  
+user28  
+user29  
+user30  
 
-[Red Hat]
-user80
-user81
-user82
-user83
-user84
+[Red Hat]  
+user80  
+user81  
+user82  
+user83  
+user84  
 
 --------------------- (not this line)
 
@@ -148,21 +156,21 @@ Add some text for the welcome to the #general and #support
 
 Copy the URL for the Route (minus the subdirectories) and go back to the Etherpad and paste it in there
 
-3: Create a Short URL for the landing page on Etherpad
+3: Create a Short URL for the landing page on Rocketchat
 
 Go back to the UI for the Cluster (as Cluster Admin)
 
-In Projects choose etherpad
+In Projects choose chat
 
 Go to Networking/Routes
 
 Hit 'Create Route'
 
-Set the name to secureetherpad
+Set the name to securechat
 
-Set the service to 'etherpad' (not MySQL)
+Set the service to 'rocketchat-quickstart-rocketchat'
 
-Set the target port to 9001
+Set the target port to 3000
 
 Click the 'Secure Route'
 
