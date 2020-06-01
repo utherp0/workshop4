@@ -20,7 +20,7 @@
     src: "{{ role_path }}/files/serverlesseventingkafkaoperator.yaml"
 
 # Create the Knative eventing namespace and Knativeeventing CRD
-- name: Create Knative serving namespace
+- name: Create Knative eventing namespace
   k8s:
     api_key: "{{ ocp_login_token }}"
     host: "{{ ocp_url }}"
