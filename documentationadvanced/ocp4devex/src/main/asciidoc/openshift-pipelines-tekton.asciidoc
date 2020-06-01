@@ -5,7 +5,7 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 === Introduction
 
 ****
-For many years teams have created automation pipelines to build, unit test, analyse and deploy applications in a variety of tool-chains. Some such tool-chains (Jenkins for one) pre-date the popularisation of containers and are now being questioned for their fit for the delivery of cloud native applications. While we are at pains not to criticise Jenkins (we are big users and fans) there is scope to look at alternative approaches for cloud native applications.*
+For many years teams have created automation pipelines to build, unit test, analyse and deploy applications in a variety of tool-chains. Some such tool-chains (Jenkins for one) pre-date the popularization of containers and are now being questioned for their fit for the delivery of cloud native applications. While we are at pains not to criticize Jenkins (we are big users and fans) there is scope to look at alternative approaches for cloud native applications.*
 
 OpenShift Pipelines are based on the Tekton open source project and they provide a Kubernetes style, resource based approach to the construction of pipelines. Tasks are defined as small units of operations (typically 10 to 15 lines of YAML) and such tasks are grouped together into taskruns or pipelines for execution.
 
@@ -79,8 +79,6 @@ The result of running the task can then be viewed by executing the following com
 tkn taskrun logs task-run-1
 ----
 
-*As of Tekton 0.8.0 there is an outstanding bug involving logging that may cause extraneous log messages to appear. Please ignore these, they are fixed at the next release of Tekton*
-
 [source]
 ----
 [echo-statement-1] This is my first task in Tekton
@@ -135,7 +133,7 @@ Execute the pipeline with the following Tekton task
 tkn pipeline start pipeline-1
 ----
 
-Once run switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
+Once you have executed the command switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
 
 image::pipelines-7.png[Example Pipelines UI]
 
@@ -148,8 +146,6 @@ tkn pipelinerun logs pipeline-1-run-kx95g -f
 Note that the -n parameter is optional, it states the namespace to look in for the pipelinerun and we are running in a single namespace
 
 Enter the command as provided by the tkn command and the response should look something like this:
-
-Again, note there is a bug with Tekton 0.8.0 that may inject extraneous log errors, please ignore these.
 
 [source]
 ----
@@ -317,7 +313,7 @@ The use of pipeline resource objects for git repositories and created images (as
 
 === Workspaces and Volumes
 
-Workspaces allow you to organise the content used by tasks and the assets that are produced by tasks. This can be useful to add structure to the content during large complex pipelines. 
+Workspaces allow you to organize the content used by tasks and the assets that are produced by tasks. This can be useful to add structure to the content during large complex pipelines. 
 
 *Workspaces* are storage structures within the pod that runs the containers of the pipeline and workspaces are scoped at the task level. Separate steps within a task can see the same workspace. 
 
@@ -391,10 +387,10 @@ To examine the pipeline run in the terminal window use the command :
 
 [source]
 ----
-tkn pipelinerun logs pipeline-5-run-XXXXX | grep -v level
+tkn pipelinerun logs pipeline-5-run-XXXXX
 ----
 
-Replace the XXXX with the information reported on screen after the execution of the tkn pipeline start command. The grep command is used to remove the erroneous logging reports.
+Replace the XXXX with the information reported on screen after the execution of the tkn pipeline start command.
 
 The output will be similar to that that is shown below. Within task 5 the first step creates a file called /workspace/message. The second step displays the file name and the content of the file within the workspace. The third step creates a file in the persistent volume and the fourth step displays the file name and the content of the file within the volume. 
 
