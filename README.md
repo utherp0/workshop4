@@ -43,7 +43,7 @@ Remove all text from the Pad
 
 Copy and paste the text below into the pad:
 
--------------------------- (not this line)
+-------------------------- (not this line)  
 Welcome to OpenShift DevEx Labs
 
 Please choose an untaken username from below and type your name next to it to claim it. Once you have a username you can use the labs.
