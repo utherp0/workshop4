@@ -3,7 +3,15 @@ Developer Experience Workshops for OCP4.3
 
 This repo contains all the collateral and material for running the DevEx Workshops for OCP4.3
 
-To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).
+Link to a single sheet (double sided) document that describes the DevEx workshop and can be used as a flyer at events is available at the following URL:
+
+https://docs.google.com/document/d/1gNINFJ599AqQM19082acfor2n7VrIMrSURwXFLiDTIoB54/edit#
+
+Link to DevEx promotional slides for use with sellers and customers is available at the following URL:
+
+https://docs.google.com/presentation/d/1Pq0vo95mGE9ZFppdLr44nVf7S-5-hqTzC0qFpo2HpG8/edit#slide=id.g3d946fe0a1_0_0
+
+**To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).**
 
 The workshop has been split into two components, a 'basics' and an 'advanced' module. These are built separately as documents and can be given independently - the course takes about 6-8 hours to do them both depending on attendee level.
 
