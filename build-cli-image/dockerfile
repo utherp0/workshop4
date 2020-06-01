@@ -43,7 +43,7 @@ RUN dnf -y install java-1.8.0-openjdk java-11-openjdk java-1.8.0-openjdk-devel w
 
 RUN dnf -y install bash-completion
 
-RUN oc completion bash >>/etc/bash_completion.d/oc_completion
+RUN oc completion bash >> /etc/bash_completion.d/oc_bash_completion
 
 WORKDIR /workspace
 
@@ -54,4 +54,4 @@ USER 1001
 ENV HOME=/workspace
 
 ENTRYPOINT ["/go/bin/gotty"]
-CMD ["-w","bash"]
+CMD ["-w","/bin/bash"]
