@@ -5,11 +5,11 @@ This repo contains all the collateral and material for running the DevEx Worksho
 
 Link to a single sheet (double sided) document that describes the DevEx workshop and can be used as a flyer at events is available at the following URL:
 
-https://docs.google.com/document/d/1gNINFJ599AqQM19082acfor2n7VrIMrSURwXFLiDTIoB54/edit#
+https://docs.google.com/document/d/1gNINFJ599AqQM19082ac2n7VrIMrSURwXFLiDTIoB54/edit?usp=sharing
 
 Link to DevEx promotional slides for use with sellers and customers is available at the following URL:
 
-https://docs.google.com/presentation/d/1Pq0vo95mGE9ZFppdLr44nVf7S-5-hqTzC0qFpo2HpG8/edit#slide=id.g3d946fe0a1_0_0
+https://docs.google.com/presentation/d/1Pq0vo95mGE9ZFppdLr44nVf7S-5-hqTzC0qFpo2HpG8/edit?usp=sharing
 
 **To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).**
 
