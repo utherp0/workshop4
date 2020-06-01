@@ -12,9 +12,7 @@ When logged on you will be presented with a screen listing the projects, of whic
 
 Hit 'Create Project'
 
-For 'Name' enter sandboxx, where x is your unique number
-
-For the duration of the advanced workshop you will be working in this project
+For 'Name' enter terminalx, where x is your unique number
 
 'Display Name' and 'Description' are optional labels
 
@@ -34,7 +32,7 @@ In the topology page click on the 'Show URL' icon as shown below
 
 image::prereq-1.png[Selecting the Show URL]
 
-This will open another tab with a command line in it - this is your terminal for the duration of the advanced workshop
+This will open another tab with a command line in it - this is your terminal for the duration of the basic workshop
 
 Switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command' as shown below
 
@@ -61,19 +59,6 @@ oc version
 ----
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
-
-Finally, for use in the examples we will require some source material from the git repo for this workshop. To set this up type the following:
-
-[source]
-----
-cd /workspace
-git clone https://github.com/utherp0/workshop4
-ls -alR
-----
-
-These files are the source of the Workshop and all the required local material for the course.
-
-
 
 
 
