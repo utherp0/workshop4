@@ -5,6 +5,6 @@ metadata:
   namespace: openshift-operators
 spec:
   channel: stable
-  name: kiali-operator
+  name: kiali-ossm
   source: redhat-operators
   sourceNamespace: openshift-marketplace
