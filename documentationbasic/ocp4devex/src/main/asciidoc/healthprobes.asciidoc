@@ -119,8 +119,6 @@ The colour scheme of the pods is important and conveys information about the pod
 * Succeeded - Green
 * Terminating - Black
 * Unknown - Purple
-
-
 ****
 
 When the build has completed the right hand side panel will shown something similar to the image below. Note that the route will be different to that which is shown below. 
