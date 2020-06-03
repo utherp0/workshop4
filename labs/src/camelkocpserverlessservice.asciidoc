@@ -1,0 +1,351 @@
+== Camel K and OpenShift Serverless Serving [INNOVATION]
+
+Author: Phil Prosser (feedback to pprosser@redhat.com)
+
+=== Introduction
+
+.OpenShift Serverless
+****
+OpenShift Serverless, based on Knative is the serverless technology that was introduced in OpenShift 4.2. OpenShift Serverless enables Pods running on OpenShift to be scaled to 0 therefore taking zero processing power. Only when called, OpenShift Serverless will scale the Pod up on demand before processing the request. OpenShift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
+
+OpenShift Serverless supports "Serving" and "Eventing"
+
+At the time of writing, Eventing is in Tech Preview
+
+"Serving" enables request/response workloads, and Eventing enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at serving, and how easy it is to integrate with Camel K.
+****
+
+=== Check the project is ready to use
+
+In the browser based terminal window, check you are still logged on and using the correct project by typing:
+
+[source]
+----
+oc whoami
+oc project
+----
+
+TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
+
+=== OpenShift Serverless and the Operator Lifecycle Manager
+
+.OpenShift Serverless and the Operator Lifecycle Manager
+****
+OpenShift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to OpenShift via "OLM". Once created, the new CRDs will extend the OpenShift data model allowing OpenShift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
+****
+
+=== Creating the pre-requisites for the chapter
+
+Before we can create an integration, we need to check that the camel-k integration added in a previous chapter is still active
+
+In the terminal window, type
+
+[source]
+----
+cd /workspace/workshop4/camelfiles/camelkplatform
+oc apply -f integrationplatform.yaml
+----
+
+This will either create the integration platform or, if it is still active, indicate it is unchanged
+
+now type
+
+[source]
+----
+oc get integrationplatform
+----
+
+The output should look similar to below
+
+[source]
+----
+NAME      PHASE
+camel-k   Ready
+----
+
+Once the "Phase" says "Ready", you can continue
+
+=== Deploy a Restful Integration using Camel K and an OpenAPI definition 
+
+.Introduction to the integrations that we will use
+****
+This integration is a simple hello world Restful integration. The Restful API interface is defined by the OpenAPI json document called greeting-api.json. This is demonstrating top down API design with Apache Camel. An Apache Camel Route can implement this interface without the need for code. Using a "from" action called "direct" the integration enables the Camel Route to listen/respond to the operation id defined in the OpenAPI document.
+
+Feel free to have a look at both of the files to understand whats going on.
+
+In the terminal window, the files are located in the directory /workspace/examples
+
+OpenAPi definition: greetings-api.json
+Camel K integration: greetings.groovy
+
+****
+
+In the terminal window, deploy the integration
+
+[source]
+----
+cd /workspace/examples
+kamel run --name greetings --dependency=camel-rest --dependency camel-undertow --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
+----
+
+Go to the developer view in the OpenShift Console
+
+NOTE: If this is the first time you've deployed a Camel K integration, it will take a few minutes to download the dependencies 
+
+Once, the Integration is deployed, the topology view should look like the screnshot below
+
+image::camekknativeserving-1.png[Integrations running]
+
+Camel K has detected that OpenShift Serverless is installed and automatically deployed the integration as a Knative serving (because it's API based) service.
+
+TIP:: The next set of instructions will only be possible if Knative Serving hasn't already scaled the pod back to zero. If you do not see any running pods then please move on to the section title "Knative in action"  
+
+At the time of writing, there is no easy way to view the pod log files of a knative service in the console, so in the Developer view click on Advanced/Project Details and select Workloads. The interface should look like:
+
+image::camekknativeserving-2.png[Viewing overview of running Integration]
+
+For the greetings integration, you should see a '1 or 1 pods' on the right hand side. Click on it.
+
+You should see a screen similar to the one below
+
+image::camekknativeserving-3.png[Running Pod]
+
+Click on the row name e.g. greetings-xxxxxxxxxxxx
+
+This should show you a screen similar to the one below
+
+image::camekknativeserving-4.png[Pod Details]
+
+Click on 'Logs' to view the log for the pod. It should look something like the one below
+
+image::camekknativeserving-5.png[Pod Details]
+
+=== Knative in action
+
+Following the steps above, you might find that the pod you are looking for is not there. That's because Knative Serving has scaled the pod back to zero.
+
+With the OpenShift console switch to developer view, viewing the toplogy. Your screen might look like the one below. If it doesn't, wait for up to 30 seconds and it scale down to zero. By default, Knative scales down an inactive pod after 30 seconds.  
+
+image::camekknativeserving-6.png[Knative serving]
+
+Next we are going to make a call to the greetings API. To do this, you need to find out the name of http route.
+To do this, in the terminal window, type in the following command
+
+[source]
+----
+oc get service.serving.knative.dev
+----
+
+You should see something similar to the picture below
+
+image::camekknativeserving-8.png[Knative serving]
+
+In the terminal window type (make sure you substitute the URL you see from running the command above). Note we are adding the /camel/greetings/YOURNAMEHERE bit to the URL
+
+[source]
+----
+curl -m 60 URLFROMABOVE/camel/greetings/YOURNAMEHERE
+----
+
+After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing.
+
+At the time of writing, the inital start up time issue is known to engineering and is documented in the Red Hat documentation. A fix for this will be coming in a future release. Please remember that Knative serving is still in Tech Preview
+
+image::camekknativeserving-7.png[Knative serving started]
+
+Knative has automatically scaled the service to one pod, and processed the curl request.
+
+TIP: Options are available in Knative to determine how to scale based on concurrent calls or cpu useage. Options are also available to determine maximum number or pods, and also the inactivity time before a pod scales its self down - by default, all the way back down to zero.
+
+Deploying Integration Services with Knative can't get easier than that!
+
+To clean up before the next chapter run the following commands in the terminal:
+
+[source]
+----
+kamel delete greetings
+----
+
+////
+=== Knative Revisions
+
+Knative Revisions are for all Knative service deployed on OpenShift, not just Camel K. Knative revisions are a point in time snapshot of the code and configuration for each modification made to a service deployed on OpenShift. Revisions enable progressive rollout and rollback of chanages by rerouting traffic between service names and revision instances. 
+
+This is powerful as it means the Knative route can be configured to balance traffic between different version of the revision ensuring a low risk release of new versions into production e.g. New revision is created, and we'll start by only giving it 10% of the traffic whilst the old version takes the main load. Gradually, the percentage can be moved to 100% before retiring the old version of the service. 
+
+This part of the lab will demonstrate doing this will the OpenShift Developer console, and also the Knative cli
+
+==== Using the console
+
+To demonstrate multiple revisions, you need to make a small change to the Camel K integration.
+
+In the terminal window
+
+[source]
+----
+vi greetings.groovy
+----
+
+You will see the following line:
+
+[source]
+----
+*.simple('Hello from ${headers.name}')*
+----
+
+This is the message returned to the caller with the query parameter "name" appended; change the line to (or something similar) by pressing [ESC] then I
+
+[source]
+----
+*.simple('Hello from ${headers.name} from the newer revision')*
+----
+
+Save it by pressing [ESC] then :wq[RETURN]
+
+Now deploy this version of the integraton API using:
+
+[source]
+----
+kamel run --name greetings --dependency=camel-rest --dependency camel-undertow --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
+----
+
+By running the integration again, you will automatically create a new revision of the integration
+
+Test the integration again (don't forget to replace the URL as before)
+
+[source]
+----
+curl -m 60 URLFROMABOVE/camel/greetings/YOURNAMEHERE
+----
+
+You should see the new response message returned
+
+For information, in the console, if you switch to Administrator view you can see the deployed revisions.
+
+In the OpenShift Console select the Administrator View using the top level selector, then Serverless/Revisions
+
+image::camekknativeserving-9.png[Knative serving revisions]
+
+Now select Serverless/Services
+
+TIP: You will see one Knative Service. Rather than just going big bang to the new revision, you want to direct 50% of the traffic to the orginal revision, and 50% of the traffic to the new revision. To achieve this, we need to modify the routing rules in the Knative Service.
+
+Fortunately, in the OpenShift consoles developer view, there is a really easy way to achieve this
+
+Switch back to the developer view, looking at the topology. 
+
+It probably looks similar to the one below (without the arrow). 
+
+image::camekknativeserving-10.png[Topology view]
+
+Click on *KSVC greetings*
+
+This should open a panel on the right hand side that shows both revisions with 100% traffic distribution going to the first revision in the list. As per the screenshot below
+
+image::camekknativeserving-11.png[Revision view]
+
+Click on *Set Traffic Distribution*
+Click on *Add Revision*
+
+Select the other revision from the selection box as per the screenshot below
+
+image::camekknativeserving-12.png[Revision Routing split]
+
+Now, change the routing percentage split between the 2 revisions and add a tag to each revision. 
+
+The tag is used by the Knative service to perform the routing.
+
+Your configuration should look similar to the screenshot below
+
+image::camekknativeserving-13.png[Change Routing split]
+
+==== Using the Knative cli
+
+To demonstrate multiple revisions, you need to make a small change to the Camel K integration.
+
+In the terminal window
+
+[source]
+----
+vi greetings.groovy
+----
+
+You will see the following line :-
+
+*.simple('Hello from ${headers.name}')*
+
+This is the message returned to the caller with the query parameter "name" appended
+
+change the line to (or something similar)
+
+*.simple('Hello from ${headers.name} from the newer revision')*
+
+Now deploy the new version of the integraton API
+
+[source]
+----
+kamel run --name greetings --dependency=camel-rest --dependency camel-undertow --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
+----
+
+Keep looking at the *revision list* to see when the new revision is ready. Once ready = 'True' split the traffic.
+
+Lets tag the current version as stable, get the name of the revision running by typing the following in the terminal window
+
+[source]
+----
+kn revision list
+----
+
+In the terminal below, replace *greetings-8j7cb* with what you see on your screen
+
+[source,shell]
+----
+kn service update greetings --tag greetings-8j7cb=stable
+----
+
+Test the integration again (don't forget to replace the URL as before)
+
+[source,shell]
+----
+curl -m 60 http://Substitute with your URL from about/camel/greetings/YourName
+----
+
+You should see the new response message returned
+
+For information, in the console, if you switch to Administrator view you can see the deployed revisions.
+
+Administrator View --> Serverless --> Revisions
+
+image::camekknativeserving-9.png[Knative serving revisions]
+
+If you look at 
+
+Administrator View --> Serverless --> Services
+
+You will see one Knative Service. Rather than just going big bang to the new revision, you want to direct 50% of the traffic to the orginal revision, and 50% of the traffic to the new revision. To achieve this, we need to modify the routing rules in the Knative Service.
+
+Now, update the service to route 50% of the traffic to the latest version, and 50% to the stable version
+
+[soure,shell]
+----
+kn service update greetings --traffic stable=50,@latest=50
+----
+
+Check that the service has been updated correctly
+
+[soure,shell]
+----
+kn service describe greetings
+----
+
+You should be able to see the split between each revision.
+
+Also, if you look at the topology view in the console. The routing should be visible there as well.
+
+Test the service by using curl to hit the endpoint again
+
+curl -m 60 http://Substitute with your URL from about/camel/greetings/YourName
+
+Repeat this a few times, you should see the result alternative between the revisions
+
+////
