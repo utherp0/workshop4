@@ -1,6 +1,8 @@
 package org.uth.workshop4.docbuilder;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,13 +24,13 @@ public class DocBuilder
   private static String _documentTitle = null;
   private static LinkedList<String> _labs = null;
 
-  private final static String[] BASEINDEX = 
-    { "= {topTitle}",
+  private final static String[] BASEINDEX = new String[]
+    {"= {topTitle}",
       "{author} <{email}>",
       " ",
       "include::intro.asciidoc[]",
       "include::prereq.asciidoc[]"
-    }
+    };
 
   public static void main( String[] args )
   {
@@ -66,25 +68,20 @@ public class DocBuilder
         System.exit(1);
       }
 
+      // Generate the dynamic index document
+      if( !DocBuilder.generateDocumentIndex(workingDirectory))
+      {
+        System.exit(1);
+      }
 
+      // Generate the documentation
+      if( !DocBuilder.generateDocumentation(workingDirectory, outputDirectory))
+      {
+        System.exit(1);
+      }
 
-      // Test
-      DocBuilder.log( "Test BUILD START" );
-      String[] processDefinition = new String[] { "mvn",
-                                                  "clean",
-                                                  "package",
-                                                  "-DdocumentTitle='" + _documentTitle + "'",
-                                                  "-DfacilitatorName='" + _facilitorName + "'",
-                                                  "-DfacilitatorEmail='" + _email + "'",
-                                                  "-DfacilitatorTitle='" + _title + "'",
-                                                  "-DwebConsoleUrl='" + _clusterURL + "'",
-                                                  "-f",
-                                                  workingDirectory + File.separator + "pom.xml"};
-
-      process = runtime.exec(processDefinition);
-      response = process.waitFor();
-      DocBuilder.log( "Test BUILD STOP " + response );
-
+      // Teardown the scaffold
+      DocBuilder.cleanup(workingDirectory);
     }
     catch( Exception exc )
     {
@@ -189,16 +186,20 @@ public class DocBuilder
     return true;
   }
 
-  private static void copy( Path source, Path destination )
+  private static boolean copy( Path source, Path destination )
   {
     try
     {
       Files.copy( source, destination, StandardCopyOption.REPLACE_EXISTING);
       DocBuilder.log( "  Copied " + source );
+
+      return true;
     }
     catch( Exception exc )
     {
       DocBuilder.log( "  Failed to copy " + source + " to " + destination );
+
+      return false;
     }
   }
 
@@ -214,6 +215,7 @@ public class DocBuilder
     }
     catch( Exception exc )
     {
+      DocBuilder.log( "  Images copy failed due to " + exc.toString() );
       return false;
     }
   }
@@ -338,7 +340,7 @@ public class DocBuilder
       }
 
       // Lab existence check
-      if !( DocBuilder.validateLabs( workingDirectory ))
+      if( !DocBuilder.validateLabs( workingDirectory ))
       {
         scanner.close();
         return false;
@@ -377,13 +379,123 @@ public class DocBuilder
     return true;
   }
 
-  private static boolean generateDocumentIndex( String manifestFile )
+  private static boolean generateDocumentIndex( String workingDirectory )
   {
-    return true;
+    String indexFile = workingDirectory + File.separator + "ocp4devex" + File.separator + "src" + File.separator + "main" + File.separator + "asciidoc" + File.separator + "index.asciidoc";
+
+    try
+    {
+      File index = new File( indexFile );
+
+      if( index.createNewFile() )
+      {
+        BufferedWriter output = new BufferedWriter( new FileWriter( index ));
+
+        // Push the static content first
+        for( String component : DocBuilder.BASEINDEX )
+        {
+          output.write(component);
+          output.newLine();
+        }
+
+        // Now the manifest extracted labs
+        for( String lab : _labs )
+        {
+          output.write( "include::" + lab + ".asciidoc[]" );
+          output.newLine();
+        }
+
+        output.close();
+
+        return true;
+      }
+      else
+      {
+        DocBuilder.log( "  Index file already exists" );
+        return false;
+      }
+    }
+    catch( Exception exc )
+    {
+      DocBuilder.log( "  Unable to create index file due to " + exc.toString() );
+      return false;
+    }
   }
 
   private static boolean generateDocumentation( String workingDirectory, String outputDirectory )
   {
+    DocBuilder.log( "  Performing documentation build" );
+
+    String[] processDefinition = new String[] { "mvn",
+    "clean",
+    "package",
+    "-DdocumentTitle='" + _documentTitle + "'",
+    "-DfacilitatorName='" + _facilitorName + "'",
+    "-DfacilitatorEmail='" + _email + "'",
+    "-DfacilitatorTitle='" + _title + "'",
+    "-DwebConsoleUrl='" + _clusterURL + "'",
+    "-f",
+    workingDirectory + File.separator + "pom.xml"};
+
+    int response = 99;
+    try
+    {
+      Runtime runtime = Runtime.getRuntime();
+      Process process = runtime.exec(processDefinition);
+      response = process.waitFor();
+    }
+    catch( Exception exc )
+    {
+      DocBuilder.log( "  Failed to run external process due to " + exc.toString() );
+      return false; 
+    }
+
+    if( response == 0 )
+    {
+      DocBuilder.log( "  Completed documentation build" );
+
+      // Deliver generated documents
+      String outputGenerated = workingDirectory + File.separator + "ocp4devex" + File.separator + "target" + File.separator + "generated-docs";
+
+      // Assumption is target directory exists - we need to deliver the html and pdf there, create an image directory and copy all the images to it
+
+      // Create the images directory in the target
+      if( !( DocBuilder.mkdir( outputDirectory + File.separator + "images" )))
+      {
+        DocBuilder.log( "  Unable to create directory " + outputDirectory + File.separator + "images" );
+        return false;
+      }
+
+      // Copy html
+      String source = outputGenerated + File.separator + "ocp4devex.html";
+      String target = outputDirectory + File.separator + "docs.html";
+      
+      if( !DocBuilder.copy( Paths.get(source), Paths.get(target)))
+      {
+        return false;
+      }
+
+      // Copy PDF
+      source = outputGenerated + File.separator + "ocp4devex.pdf";
+      target = outputDirectory + File.separator + "docs.pdf";
+
+      if( !DocBuilder.copy( Paths.get(source), Paths.get(target)))
+      {
+        return false;
+      }
+
+      // Copy the images
+      if( !DocBuilder.dirCopy( outputGenerated + File.separator + "images", outputDirectory + File.separator + "images" ))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      DocBuilder.log( "  Documentation build failed" );
+      return false;
+    }
+
     return true;
   }
 

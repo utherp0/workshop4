@@ -9,12 +9,12 @@ applicationbasics
 applicationdeploymentstrategies
 camelk
 camelkocpserverlesseventing
-camlekocpserverlessservice
+camelkocpserverlessservice
 deployments
 healthprobes
-openshiftandquayrepository
-openshiftdocommandline
-openshiftpipelinestekton
+quay
+odo
+tekton
 pvs
 rbac
 sdn
