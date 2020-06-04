@@ -1,0 +1,22 @@
+Facilitator: Example Facilitator
+Email: example@facilitator.com
+Title: Mr.
+ClusterURL: https://example.manifest.com
+DocumentTitle: Full DevEx Workshop
+----
+introductiontooc
+applicationbasics
+applicationdeploymentstrategies
+camelk
+camelkocpserverlesseventing
+camlekocpserverlessservice
+deployments
+healthprobes
+openshiftandquayrepository
+openshiftdocommandline
+openshiftpipelinestekton
+pvs
+rbac
+sdn
+servicemesh
+----
