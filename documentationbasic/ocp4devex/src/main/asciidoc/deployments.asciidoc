@@ -275,7 +275,7 @@ TIP: In the case of a Recreate strategy the system ensures that NO copies of the
 
 ==== Cleaning up
 
-From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
+From the OpenShift browser window, click on 'Home' and then 'Projects' on the left hand side menu.
 
 In the triple dot menu next to your own project (sandboxX) select ‘Delete Project’
 Type ‘sandboxX’ (where X is your user number) such that the Delete button turns red and is active.
