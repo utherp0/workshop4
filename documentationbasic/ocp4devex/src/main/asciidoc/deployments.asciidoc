@@ -271,11 +271,11 @@ Click on ‘Action/Start Rollout’
 
 Watch the colour of the Pod rings as the system carries out the deployment
 
-TIP: In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, irregardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application
+TIP: In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, regardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application
 
 ==== Cleaning up
 
-From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
+From the OpenShift browser window, click on 'Home' and then 'Projects' on the left hand side menu.
 
 In the triple dot menu next to your own project (sandboxX) select ‘Delete Project’
 Type ‘sandboxX’ (where X is your user number) such that the Delete button turns red and is active.
