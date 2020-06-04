@@ -7,10 +7,28 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class DocBuilder
 {
   private final static String DATEFORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+
+  // Static components for simplicity
+  private static String _facilitorName = null;
+  private static String _email = null;
+  private static String _title = null;
+  private static String _clusterURL = null;
+  private static String _documentTitle = null;
+  private static LinkedList<String> _labs = null;
+
+  private final static String[] BASEINDEX = 
+    { "= {topTitle}",
+      "{author} <{email}>",
+      " ",
+      "include::intro.asciidoc[]",
+      "include::prereq.asciidoc[]"
+    }
 
   public static void main( String[] args )
   {
@@ -36,20 +54,30 @@ public class DocBuilder
 
       DocBuilder.log( "  Preparing Scaffold" );
 
-      if( !scaffold( workingDirectory, gitCloneDirectory )) 
+      // Scaffold the source for the doc build
+      if( !DocBuilder.scaffold( workingDirectory, gitCloneDirectory )) 
       {
         System.exit(1);
       }
+
+      // Process the manifest file
+      if( !DocBuilder.processManifest(contentManifestFile, workingDirectory))
+      {
+        System.exit(1);
+      }
+
+
 
       // Test
       DocBuilder.log( "Test BUILD START" );
       String[] processDefinition = new String[] { "mvn",
                                                   "clean",
                                                   "package",
-                                                  "-DfacilitatorName='DSA Team'",
-                                                  "-DfacilitatorEmail='ilawson@redhat.com'",
-                                                  "-DfacilitatorTitle='DSA Team'",
-                                                  "-DwebConsoleUrl='https://console-openshift-console.apps.cluster-nomura-9cd9.nomura-9cd9.example.opentlc.com/'",
+                                                  "-DdocumentTitle='" + _documentTitle + "'",
+                                                  "-DfacilitatorName='" + _facilitorName + "'",
+                                                  "-DfacilitatorEmail='" + _email + "'",
+                                                  "-DfacilitatorTitle='" + _title + "'",
+                                                  "-DwebConsoleUrl='" + _clusterURL + "'",
                                                   "-f",
                                                   workingDirectory + File.separator + "pom.xml"};
 
@@ -188,6 +216,165 @@ public class DocBuilder
     {
       return false;
     }
+  }
+
+  private static boolean processManifest( String manifestFile, String workingDirectory )
+  {
+    try
+    {
+      File manifest = new File( manifestFile );
+      Scanner scanner = new Scanner( manifest );
+
+      String data = null;
+
+      // First, the environment for the document
+      // 1: Facilitator Name
+      data = scanner.nextLine();
+
+      String[] components = data.split( ":" );
+
+      if( "Facilitator".equals( components[0]))
+      {
+        _facilitorName = components[1];
+      }
+      else
+      {
+        DocBuilder.log( "  Manifest format invalid, missing Facilitator as first component" );
+        scanner.close();
+        return false;
+      }
+
+      // 2: Facilitator Email
+      data = scanner.nextLine();
+
+      components = data.split( ":" );
+
+      if( "Email".equals( components[0]))
+      {
+        _email = components[1];
+      }
+      else
+      {
+        DocBuilder.log( "  Manifest format invalid, missing Email as second component" );
+        scanner.close();
+        return false;
+      }
+
+      // 3: Facilitator Title
+      data = scanner.nextLine();
+
+      components = data.split( ":" );
+
+      if( "Title".equals( components[0]))
+      {
+        _title = components[1];
+      }
+      else
+      {
+        DocBuilder.log( "  Manifest format invalid, missing Title as third component" );
+        scanner.close();
+        return false;
+      }
+
+      // 4: Cluster URL 
+      data = scanner.nextLine();
+
+      components = data.split( ":" );
+
+      if( "ClusterURL".equals( components[0]))
+      {
+        _clusterURL = components[1];
+      }
+      else
+      {
+        DocBuilder.log( "  Manifest format invalid, missing ClusterURL as fourth component" );
+        scanner.close();
+        return false;
+      }
+
+      // 5: Document Title
+      data = scanner.nextLine();
+
+      components = data.split( ":" );
+
+      if( "DocumentTitle".equals( components[0]))
+      {
+        _documentTitle = components[1];
+      }
+      else
+      {
+        DocBuilder.log( " Manifest format invalid, missing Document Title as fifth component");
+        scanner.close();
+        return false;
+      }
+
+      // Break line
+      data = scanner.nextLine();
+
+      if( !( "----" ).equals( data ) )
+      {
+        DocBuilder.log( " Manifest format invalid, missing divider after metadata before lab list" );
+        scanner.close();
+        return false;
+      }
+
+      // Build Lab Queue
+      data = scanner.nextLine();
+
+      while( data != null && !( "----".equals( data )) )
+      {
+        if( _labs == null ) _labs = new LinkedList<String>();
+
+        _labs.add( data );
+         data = scanner.nextLine();
+      }
+
+      // Post lab load check
+      if( _labs == null || _labs.size() == 0 )
+      {
+        DocBuilder.log( "  No labs loaded from manifest, please check manifest file " + manifestFile );
+        scanner.close();
+        return false;
+      }
+
+      // Lab existence check
+      if !( DocBuilder.validateLabs( workingDirectory ))
+      {
+        scanner.close();
+        return false;
+      }
+
+      scanner.close();
+    }
+    catch( Exception exc )
+    {
+      DocBuilder.log( "  Exception occurred whilst reading manifest file " + manifestFile );
+      return false;
+    }
+    return true;
+  }
+
+  private static boolean validateLabs( String workingDirectory )
+  {
+    String baseDir = workingDirectory + File.separator + "ocp4devex" + File.separator + "src" + File.separator + "main" + File.separator + "asciidoc" + File.separator;
+
+    for( String lab : _labs )
+    {
+      String compositeFile = baseDir + lab + ".asciidoc";
+      File testFile = new File( compositeFile );
+
+      if( testFile.exists())
+      {
+        DocBuilder.log( "  Lab verified - " + lab );
+      }
+      else
+      {
+        DocBuilder.log( "  Missing lab file - " + lab + ".asciidoc" );
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private static boolean generateDocumentIndex( String manifestFile )
