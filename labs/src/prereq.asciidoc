@@ -4,15 +4,19 @@
 
 *The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used whenever possible*
 
+TIP: For a number of the labs you will be interacting with the OpenShift cluster using a number of different command line tools. In order to avoid you having to install them on your own machine we have taken advantage of the nature of OpenShift and produced a Container that does it all for you, and provides a terminal experience in the browser. In this section you will create that application; this terminal is used throughout the workshop.
+
+NOTE: If you leave the Terminal window open for a long time without using it it will disconnect. To reconnect simply refresh the page.
+
 Open the browser and navigate to the console url {webConsoleUrl}[{webConsoleUrl}, window="_blank"]
 
-Logon using the user provided by the course administrator (userx where x is a unique number for your session)
+Logon using the user provided by the course administrator (user*x* where *x* is a unique number for your session)
 
 When logged on you will be presented with a screen listing the projects, of which there are currently none
 
 Hit 'Create Project'
 
-For 'Name' enter terminalx, where x is your unique number
+For 'Name' enter terminal*x*, where *x* is the same unique number from your UserID (user*X*)
 
 'Display Name' and 'Description' are optional labels
 
@@ -28,9 +32,9 @@ Leave everything else as default and scroll down to the bottom of the page. Hit 
 
 Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
 
-In the topology page click on the 'Show URL' icon as shown below
+In the topology page click on the 'Open URL' icon as shown below
 
-image::prereq-1.png[Selecting the Show URL]
+image::prereq-1.png[Selecting the Open URL]
 
 This will open another tab with a command line in it - this is your terminal for the duration of the basic workshop
 

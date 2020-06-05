@@ -49,11 +49,6 @@ public class DocBuilder
 
     try
     {
-      // Local instances of runtime variables
-      Process process = null;
-      Runtime runtime = Runtime.getRuntime();
-      int response = 0;
-
       DocBuilder.log( "  Preparing Scaffold" );
 
       // Scaffold the source for the doc build
@@ -305,6 +300,7 @@ public class DocBuilder
       if( "DocumentTitle".equals( components[0]))
       {
         _documentTitle = components[1].trim();
+        System.out.println( "DEBUG: " + _documentTitle );
       }
       else
       {
@@ -434,10 +430,10 @@ public class DocBuilder
     String[] processDefinition = new String[] { "mvn",
     "clean",
     "package",
-    "-DdocumentTitle='" + _documentTitle + "'",
-    "-DfacilitatorName='" + _facilitorName + "'",
-    "-DfacilitatorEmail='" + _email + "'",
-    "-DfacilitatorTitle='" + _title + "'",
+    "-DdocumentTitle=" + _documentTitle,
+    "-DfacilitatorName=" + _facilitorName,
+    "-DfacilitatorEmail=" + _email,
+    "-DfacilitatorTitle=" + _title,
     "-DwebConsoleUrl=" + _clusterURL,
     "-f",
     workingDirectory + File.separator + "pom.xml"};
