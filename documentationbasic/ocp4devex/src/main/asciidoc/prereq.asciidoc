@@ -6,6 +6,8 @@
 
 TIP: For a number of the labs you will be interacting with the OpenShift cluster using a number of different command line tools. In order to avoid you having to install them on your own machine we have taken advantage of the nature of OpenShift and produced a Container that does it all for you, and provides a terminal experience in the browser. In this section you will create that application; this terminal is used throughout the workshop.
 
+NOTE: If you leave the Terminal window open for a long time without using it it will disconnect. To reconnect simply refresh the page.
+
 Open the browser and navigate to the console url {webConsoleUrl}[{webConsoleUrl}, window="_blank"]
 
 Logon using the user provided by the course administrator (userx where x is a unique number for your session)
