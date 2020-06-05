@@ -288,6 +288,7 @@ public class DocBuilder
       if( "ClusterURL".equals( components[0]))
       {
         _clusterURL = "https://" + components[1].trim();
+        System.out.println( "DEBUG: " + _clusterURL );
       }
       else
       {
