@@ -2,10 +2,6 @@
 
 == Introduction
 
-This Innovation workshop is designed to introduce the attendee to the additional and exciting developers features above and beyond the basic functionality offered by OpenShift.
-
-This includes an introduction to the ODO command line for developers, an introduction to Tekton, the native Kubernetes pipeline functionality, an introduction to the concepts and implementation of serverless functionality via Knative, Camel-K and eventing.
-
 === Attendee details
 
 [cols="<.>a,<.>a"]
@@ -19,6 +15,8 @@ This includes an introduction to the ODO command line for developers, an introdu
 
 
 |===
+
+This workshop is designed to introduce Developers to *OpenShift 4* and explain the usage and technologies around it from a developer perspective.
 
 ==== What is Openshift
 

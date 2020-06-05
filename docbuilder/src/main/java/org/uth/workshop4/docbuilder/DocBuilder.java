@@ -191,7 +191,7 @@ public class DocBuilder
     try
     {
       Files.copy( source, destination, StandardCopyOption.REPLACE_EXISTING);
-      DocBuilder.log( "  Copied " + source );
+      //DocBuilder.log( "  Copied " + source );
 
       return true;
     }
@@ -222,6 +222,8 @@ public class DocBuilder
 
   private static boolean processManifest( String manifestFile, String workingDirectory )
   {
+    DocBuilder.log( "Processing manifest file " + manifestFile );
+
     try
     {
       File manifest = new File( manifestFile );
@@ -237,7 +239,7 @@ public class DocBuilder
 
       if( "Facilitator".equals( components[0]))
       {
-        _facilitorName = components[1];
+        _facilitorName = components[1].trim();
       }
       else
       {
@@ -253,7 +255,7 @@ public class DocBuilder
 
       if( "Email".equals( components[0]))
       {
-        _email = components[1];
+        _email = components[1].trim();
       }
       else
       {
@@ -269,7 +271,7 @@ public class DocBuilder
 
       if( "Title".equals( components[0]))
       {
-        _title = components[1];
+        _title = components[1].trim();
       }
       else
       {
@@ -285,7 +287,7 @@ public class DocBuilder
 
       if( "ClusterURL".equals( components[0]))
       {
-        _clusterURL = components[1];
+        _clusterURL = "https://" + components[1].trim();
       }
       else
       {
@@ -301,7 +303,7 @@ public class DocBuilder
 
       if( "DocumentTitle".equals( components[0]))
       {
-        _documentTitle = components[1];
+        _documentTitle = components[1].trim();
       }
       else
       {
@@ -381,6 +383,8 @@ public class DocBuilder
 
   private static boolean generateDocumentIndex( String workingDirectory )
   {
+    DocBuilder.log( "Generating Dynamic Index file" );
+
     String indexFile = workingDirectory + File.separator + "ocp4devex" + File.separator + "src" + File.separator + "main" + File.separator + "asciidoc" + File.separator + "index.asciidoc";
 
     try
@@ -424,7 +428,7 @@ public class DocBuilder
 
   private static boolean generateDocumentation( String workingDirectory, String outputDirectory )
   {
-    DocBuilder.log( "  Performing documentation build" );
+    DocBuilder.log( "Building Documentation" );
 
     String[] processDefinition = new String[] { "mvn",
     "clean",
@@ -433,7 +437,7 @@ public class DocBuilder
     "-DfacilitatorName='" + _facilitorName + "'",
     "-DfacilitatorEmail='" + _email + "'",
     "-DfacilitatorTitle='" + _title + "'",
-    "-DwebConsoleUrl='" + _clusterURL + "'",
+    "-DwebConsoleUrl=" + _clusterURL,
     "-f",
     workingDirectory + File.separator + "pom.xml"};
 
@@ -501,7 +505,7 @@ public class DocBuilder
 
   private static void cleanup( String workingDirectory )
   {
-
+    DocBuilder.log( "Tearing down scaffold" );
   }
 
   private static void log( String message )
