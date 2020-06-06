@@ -5,6 +5,8 @@ This repo contains all the collateral and material for running the DevEx Worksho
 
 This workshop consists of standalone labs that introduce developer concepts to users in a nice, easy and informative way. These labs can be grouped together using a manifest file and used to generate a customer/technology specific workshop guide using the DocBuilder app provided in the app (source and release).
 
+We also provide a Dockerfile (images/terminal) and hosted image (quay.io/ilawson/devex4) for running a terminal window in a browser, which allows the entire course (cli's such as oc, tkn, kn) to be run from a browser with no installation on attendees machine.
+
 Each lab is a completely standalone interactive experience that aims to express OpenShift concepts directly for developers. 
 
 Currently we have labs for the following, but the open nature of this project is that we hope to have labs for *everything* OpenShift developer focused going forward:
