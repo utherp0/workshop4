@@ -1,5 +1,0 @@
----
-#file: main.yml
-# Login to Openshift using oc client - I can't get the openshift_raw module to authenticate
-- name: login to Openshift at the specified URL
-  shell: oc login {{ocp_url}} --token={{ocp_login_token}} --insecure-skip-tls-verify

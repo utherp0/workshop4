@@ -1,9 +1,0 @@
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: git-repo-slave-resource
-spec:
-  type: git
-  params:
-  - name: url
-    value: https://github.com/marrober/slave-node-app.git
