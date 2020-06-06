@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: layer2-a
+spec:
+  host: layer2-a
+  subsets:
+  - name: inst-1
+    labels:
+      instance: instance1
+  - name: inst-2
+    labels:
+      instance: instance2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: layer2-a
+spec:
+  hosts:
+  - layer2-a
+  http:
+  - match:
+    - uri:
+        prefix: /call-layers
+    - uri:
+        exact: /get-info        
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: layer2-a
+        port:
+          number: 8080
+        subset: inst-1
+      weight: 80
+    - destination:
+        host: layer2-a
+        port:
+          number: 8080
+        subset: inst-2
+      weight: 20
+    timeout: 1.500s

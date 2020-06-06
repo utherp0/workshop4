@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>Node Atomic basic operations Index Page</title>
+  <script src="scripts/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="styles/ui.css"/>
+
+  <script>
+    function dataFill()
+    {
+      $.ajax({url: "envs", success: function( result ) {
+        $("#requestStatus").html(result);
+      }});
+    }
+
+    function loadData()
+    {
+      getURL();
+      getTerminal();
+    }
+
+    function getURL()
+    {
+      $.ajax({url: "geturl", success: function( result ) {
+        $("#outputURL").html(result);
+      }});
+    }
+
+    function getTerminal()
+    {
+      $.ajax({url: "getterminal", success: function( result ) {
+        $("#outputTerminal").html(result);
+      }});
+    }
+    
+
+    function jsonCall()
+    {
+      $.ajax({url:"nasa", success: function(result) {
+        $("#jsonoutput").html(result);
+      }});
+    }
+
+    function reveal( targetName )
+    {
+      target = document.getElementById(targetName);
+
+      target.style.display = ( target.style.display == "block" ? "none" : "block" );
+
+      buttonLabel = document.getElementById("hider").value;
+      document.getElementById("hider").value = ( document.getElementById("hider").value == "Reveal" ? "Hide" : "Reveal");
+    }
+
+  </script>
+
+</head>
+
+<body>
+<div width="100%" align="right"><img src="/images/redhat.png" width="200px"/></div>
+<div align="center">
+<h1>Openshift NodeAtomic Example WebServices App</h1><br/>
+<b class="outputLarge">Reference Docs: </b><span class="outputLarge">http://docs.openshift.com</span><br/><br/>
+</div>
+
+</body>
+</html>
