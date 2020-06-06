@@ -29,6 +29,8 @@ To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish
 This is a dynamic version of the Workshop and allows creators to define and setup workshops with any combination of the labs provided. This is done using the
 DocBuilder application provided in source and release format (see releases for the latest build).
 
+High level design document for the DocBuilder including details on how to use it is available at https://docs.google.com/document/d/1AgcLZ5BDKxNt8eYZ_cqanPHzmubescMjCeQUdtunAcw/edit?ts=5ed63004
+
 To build the documentation for the workshop you need to do the following:
 
 1: Create an output directory for the documentation - this will be used to deliver the HTML, Images and PDF for the workshop  
