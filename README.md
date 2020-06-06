@@ -3,7 +3,24 @@ Developer Experience Workshops for OCP4.x
 
 This repo contains all the collateral and material for running the DevEx Workshops for OCP4.x
 
-This workshop consists of standalone labs that introduce developer concepts to users in a nice, easy and informative way. 
+This workshop consists of standalone labs that introduce developer concepts to users in a nice, easy and informative way. These labs can be grouped together using a manifest file and used to generate a customer/technology specific workshop guide using the DocBuilder app provided in the app (source and release).
+
+Each lab is a completely standalone interactive experience that aims to express OpenShift concepts directly for developers. 
+
+Currently we have labs for the following, but the open nature of this project is that we hope to have labs for *everything* OpenShift developer focused going forward:
+
+Introduction to 'oc' and the object model  
+Introduction to Application basics in OpenShift  
+Introduction to Deployments and Builds in OpenShift  
+Introduction to DevOps Approaches  
+Introduction to the Software Defined Network from a dev perspective  
+Introduction to the OpenShift RBAC model from a dev perspective  
+Introduction to Persistent Volumes  
+Camel-k on OpenShift  
+Serverless Eventing with Camel-k on OpenShift  
+Pipelines with Tekton on OpenShift  
+Service Mesh on OpenShift  
+Quay, Buildah and Podman  
 
 To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).
 
