@@ -11,3 +11,33 @@ Overview (textual overview detailing the lab, be as verbose as you like)
 
 ---------------------------------------------------------------------------------------
 
+"introductiontooc"
+4.3
+This lab introduces the attendee to the oc command line and the object model/theory that underpins OpenShift and Kubernetes
+
+"applicationbasics"
+4.3
+This lab introduces attendees to the concepts of Pods, Applications, builds and the OpenShift Developer UI
+
+"deployments"
+4.3
+This lab introduces attendees to the concepts of application deployment, config maps, secrets and all things to do with orchestrating applications using OpenShift
+
+"applicationdeploymentstrategies"
+4.3
+This lab introduces attendees to the manipulation of routes, services and blue/green style deployments
+
+"sdn"
+4.3
+This lab explains the basics of the SDN within OpenShift from the perspective of developers, including the internal DNS service based resolution
+
+"rbac"
+4.3
+This lab explains the concepts of the RBAC at the namespace level for users - note this lab requires a partner for exchanging rights with
+
+"pvs"
+4.3
+This lab explains the concepts of Persistent Volumes to the attendee and shows the survivability of data across complete Pod loss
+
+
+
