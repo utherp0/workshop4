@@ -55,43 +55,43 @@ Documentation for the labs is at INSERTDOCSHERE (add an extra line for the Innov
 
 Also please join the Rocketchat at INSERTROCKETCHATURL - you will have to create an account. Once there join the #support channel where you can raise any issues or problems with the labs.
 
-user1
-user2
-user3
-user4
-user5
-user6
-user7
-user8
-user9
-user10
-user11
-user12
-user13
-user14
-user15
-user16
-user17
-user18
-user19
-user20
-user21
-user22
-user23
-user24
-user25
-user26
-user27
-user28
-user29
-user30
-
-[Red Hat]
-user80
-user81
-user82
-user83
-user84
+user1  
+user2  
+user3  
+user4  
+user5  
+user6  
+user7  
+user8  
+user9  
+user10  
+user11  
+user12  
+user13  
+user14  
+user15  
+user16  
+user17  
+user18  
+user19  
+user20  
+user21  
+user22  
+user23  
+user24  
+user25  
+user26  
+user27  
+user28  
+user29  
+user30  
+  
+[Red Hat]  
+user80  
+user81  
+user82  
+user83  
+user84  
 
 --------------------- (not this line)
 
