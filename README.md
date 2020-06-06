@@ -1,4 +1,4 @@
-# workshop4
+# Red Hat UKI DSA DevEx (Developer Experience) OpenShift Workshop4
 Developer Experience Workshops for OCP4.x
 
 This repo contains all the collateral and material for running the DevEx Workshops for OCP4.x
