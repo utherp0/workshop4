@@ -29,11 +29,11 @@ DocBuilder application provided in source and release format (see releases for t
 
 To build the documentation for the workshop you need to do the following:
 
-1: Create an output directory for the documentation - this will be used to deliver the HTML, Images and PDF for the workshop
-2: Produce a manifest. This manifest defines the workshop. Examples are provided in the labs/manifest directory. The manifest contains configuration information for the course, including Facilitor name, email and title, Cluster URL (the root console address for the OpenShift Cluster) and the title required for the documentation
-3: If running this yourself you need Maven, the Asciidoc Maven libraries and JAVA (8+) installed on your machine
-4: Run the release DocBuilder using - "java -jar releases/(which version you want).jar" - the DocBuilder will then tell you what parameters you need to provide. These are workingDirectory (will be created, scaffolded and torn down), manifestFile (it is suggested you copy one of the provided manifests and edit it), gitCloneDirectory (the root directory where you have cloned this repo), outputDirectory (needs to exist in advance)
-5: Distribute the documentation appropriately
+1: Create an output directory for the documentation - this will be used to deliver the HTML, Images and PDF for the workshop  
+2: Produce a manifest. This manifest defines the workshop. Examples are provided in the labs/manifest directory. The manifest contains configuration information for the course, including Facilitor name, email and title, Cluster URL (the root console address for the OpenShift Cluster) and the title required for the documentation  
+3: If running this yourself you need Maven, the Asciidoc Maven libraries and JAVA (8+) installed on your machine  
+4: Run the release DocBuilder using - "java -jar releases/(which version you want).jar" - the DocBuilder will then tell you what parameters you need to provide. These are workingDirectory (will be created, scaffolded and torn down), manifestFile (it is suggested you copy one of the provided manifests and edit it), gitCloneDirectory (the root directory where you have cloned this repo), outputDirectory (needs to exist in advance)  
+5: Distribute the documentation appropriately  
 
 ------------------------------------------------------------
 
