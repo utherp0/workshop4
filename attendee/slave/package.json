@@ -1,0 +1,18 @@
+{
+  "name": "slave-node-application",
+  "version": "1.0.0",
+  "description": "The slave appliction for a micro-service communication example",
+  "main": "./slave.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./slave.js"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "minimist": "1.2.5",
+    "express": "^4.17.1",
+    "ip": "^1.1.5",
+    "json-log": "^3.0.1",
+    "uuid": "^7.0.2"
+  }
+}

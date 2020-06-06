@@ -1,0 +1,31 @@
+{
+  "name": "nodeatomic",
+  "version": "0.0.1",
+  "description": "Simple atomic endpoints for node tests",
+  "main": "server.js",
+  "dependencies": {
+    "ejs": "*",
+    "express": "*",
+    "got": "*",
+    "ip": "^1.1.5",
+    "fs": "*",
+    "os": "*"
+  },
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/utherp0/workshop4/nodeatomic"
+  },
+  "author": "Ian 'Uther' Lawson",
+  "license": "",
+  "bugs": {
+    "url": "http://github.com/utherp0/workshop4/issues"
+  },
+  "homepage": "http://github.com/utherp0/workshop4"
+}

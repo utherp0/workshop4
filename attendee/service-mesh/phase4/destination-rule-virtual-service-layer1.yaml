@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: layer1
+spec:
+  host: layer1
+  subsets:
+  - name: v1
+    labels:
+      version: v1  
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: layers
+spec:
+  hosts:
+  - layer1-layers.apps.cluster-c2d5.c2d5.example.opentlc.com
+  gateways:
+  - layer1-gateway
+  http:
+  - match:
+    - uri:
+        exact: /call-layers
+    - uri:
+        exact: /get-info        
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: layer1 
+        port:
+          number: 8080  

@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.uth.workshop4</groupId>
+  <artifactId>docbuilder</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+
+  <name>DevEx Dynamic Labs Documentation Builder</name>
+
+  <dependencies>    
+    <!-- Dependencies used by project -->
+  </dependencies>
+
+  <build>
+    <finalName>docbuilder</finalName>
+    <plugins>
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>        
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.6.1</version>
+      <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+      </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.1</version>
+
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.uth.workshop4.docbuilder.DocBuilder</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>    
+      </plugin>
+    </plugins>
+  </build>
+</project>

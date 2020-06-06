@@ -1,0 +1,55 @@
+
+WARNING
+
+Ensure that all oerators for Knative, serverless and Kamel are installed before installing service mesh.
+
+== Installing Red Hat OpenShift Service Mesh to a cluster
+
+As a cluster administrator :
+
+* Install the Elasticsearch operator taking all default options but ensure that the update channel matches the version of the cluster in use.
+
+* Install the Red Hat OpenShift Jaeger operator taking all default options.
+
+* Install the Red Hat OpenShift Kiali operator taking all default options.
+
+* Install the Red Hat OpenShift Service Mesh operator taking all default options.
+
+==== Deploying the control plane
+
+Login to the command line interface as the cluster admin user.
+
+Wait for the operators to complete installation. 
+
+Create a new project with the command :
+
+[source]
+----
+oc new-project istio-system
+----
+
+Create the istio control plane with the command below. Note that the required yaml file is in the setup directory.
+
+[source]
+----
+oc create -n istio-system -f istio-installation.yaml
+----
+
+Check the progress of the above command by periodically executing the command.
+
+[source]
+----
+oc get smcp -n istio-system
+----
+
+The response will show as "full-install 9/9 InstallSuccessful" when the installation is completed.
+
+=== Configure user ID's for service mesh
+
+Since the configuration for users only adds roles to the users there is little overhead in enabling the servish mesh capability for all users. Use the shell script below to add the mesh user role and the view role to all users.
+
+for i in {1..99}; do oc login --username user$i --password openshift; done
+
+oc login --username opentlc-mgr --password r3dh4t1!
+
+for i in {1..99}; do oc add-role-to-user -n istio-system --role-namespace istio-system mesh-user user$i; done

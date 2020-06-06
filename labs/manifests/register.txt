@@ -1,0 +1,13 @@
+Lab Register
+------------
+
+When adding/committing a lab to the labs/src please add it here so it can be referenced in the manifest.
+
+Format is:
+(line separated from other entries)
+Identifier (the filename without the .asciidoc, i.e. quay)
+Version tested against (OCP version required, for screenshot compliance, i.e. 4.3)
+Overview (textual overview detailing the lab, be as verbose as you like)
+
+---------------------------------------------------------------------------------------
+

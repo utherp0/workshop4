@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-3
+spec:
+  steps:
+    - name: echo-statement-3
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: ["echo - statement 3"]
+    - name: echo-statement-4
+      image: quay.io/openshift/origin-cli:latest
+      command: ["echo"]
+      args: ["echo - statement 4"]

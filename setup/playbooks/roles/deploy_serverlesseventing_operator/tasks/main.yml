@@ -1,0 +1,85 @@
+---
+# file: main.yml
+
+# Deploy Knative Eventing - currently using community operator
+#- name: Deploy Openshift Serverless Eventing Operator
+#  k8s:
+#    api_key: "{{ ocp_login_token }}"
+#    host: "{{ ocp_url }}"
+#    validate_certs: no
+#    state: present
+#    src: "{{ role_path }}/files/serverlesseventingoperator.yaml"
+
+# Deploy Knative Eventing Kafka operator - currently using community operator
+- name: Deploy Openshift Serverless Kafka Operator Eventing Operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/serverlesseventingkafkaoperator.yaml"
+
+# Create the Knative eventing namespace and Knativeeventing CRD
+- name: Create Knative serving namespace
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/knativeeventingnamespace.yaml"
+
+- name: pause
+  pause: 
+    minutes: "1"
+
+# Create the Knative Eventing CRD
+- name: Create Knative Eventing CRD
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/eventing.yaml"
+    wait: yes
+
+# Wait for Knative Eventing to be ready before continuing
+- name: Is Knative Eventing deployed?
+  shell: oc get knativeeventing.operator.knative.dev/knative-eventing -n knative-eventing -o jsonpath="{.status.conditions[1].status}"
+  register: knative
+  until: knative.stdout.find("True") != -1
+  retries: 400
+  delay: 5
+
+# Create Kafka Eventing configmap
+- name: Create Knative Kafka Eventing Configmap
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/config-kafka.yaml"
+    wait: yes
+
+# Create Kafka Cluster
+- name: Create  Kafka Cluster
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/kafkacluster.yaml"
+    wait: yes
+
+- name: pause
+  pause: 
+    minutes: "2"
+
+# Create Kafka Eventing 
+- name: Create Knative Kafka Eventing CRD
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/knativekafka.yaml"
+    wait: yes

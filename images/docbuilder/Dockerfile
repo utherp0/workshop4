@@ -1,0 +1,59 @@
+FROM fedora
+
+USER root
+
+ENV GOPATH=/go
+
+RUN  mkdir /go && chmod 755 /go && yum install -y git golang-bin && go get github.com/yudai/gotty && yum clean all && mkdir /workspace && chmod 777 workspace
+
+RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && \
+tar -C /tmp -xf /tmp/oc.tar.gz --no-same-owner && \
+mv /tmp/oc /usr/local/bin && \
+chmod +x /usr/local/bin/oc && \
+rm /tmp/*
+
+RUN curl -sL -o /tmp/tkn.tar.gz https://github.com/tektoncd/cli/releases/download/v0.9.0/tkn_0.9.0_Linux_x86_64.tar.gz && \
+tar -C /tmp -xf /tmp/tkn.tar.gz --no-same-owner && \
+mv /tmp/tkn /usr/local/bin && \
+chmod +x /usr/local/bin/tkn && \
+rm /tmp/*
+
+RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-client-1.0.0-RC2-linux-64bit.tar.gz && \
+tar -C /tmp -xf /tmp/kamel.tar.gz --no-same-owner && \
+mv /tmp/kamel /usr/local/bin && \
+chmod +x /usr/local/bin/kamel && \
+rm /tmp/*
+
+RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 && \
+chmod +x /usr/local/bin/odo
+
+RUN curl -sL -o /tmp/kamelexamples.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-examples-1.0.0-RC2.tar.gz && \
+mkdir /tmp/examples && \
+tar -C /tmp/examples -xf /tmp/kamelexamples.tar.gz --no-same-owner && \
+mv /tmp/examples /workspace && \
+rm /tmp/*
+
+RUN dnf -y install podman container-selinux --enablerepo updates-testing
+
+RUN dnf -y install buildah container-selinux --enablerepo updates-testing
+
+RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
+
+RUN dnf -y install java-1.8.0-openjdk java-11-openjdk java-1.8.0-openjdk-devel wget
+
+RUN dnf -y install bash-completion
+
+RUN oc completion bash >>/etc/bash_completion.d/oc_completion
+
+RUN cd /workspace && git clone https://github.com/utherp0/workshop4
+
+WORKDIR /workspace
+
+EXPOSE 8080
+
+USER 1001
+
+ENV HOME=/workspace
+
+ENTRYPOINT ["/go/bin/gotty"]
+CMD ["-w","bash"]

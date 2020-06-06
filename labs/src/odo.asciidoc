@@ -1,0 +1,233 @@
+== OpenShift DO [INNOVATION]
+
+Author: Mark Roberts (feedback to mroberts@redhat.com)
+
+=== Introduction
+
+.An overview of odo
+****
+The OpenShift command line interface 'oc' is a general purpose interface with a vast set of commands for both development and administrative purposes. The odo command is a more developer centric command line interface for users who simply want to build, deploy and run applications on OpenShift. There is definitely a place for both tools within the kitbag of an OpenShift user, and for fast iterations of edit - run - edit - run the odo interface is perfect.
+
+The approach described in the application basics chapter used a GIT repository as the source of the content to be built and deployed. This is a excellent approach when multiple users are working together in a complex application performing frequent integration of source code in GIT and validating their combined efforts as the project progresses. Avoiding such frequent integration activity will make the code of each developer diverge storing up integration headaches in the future.
+
+The ability of the OpenShift 'Source-2-image' capability to identify the code within the GIT repository (from the options of Node.js, Java, Ruby, Perl, PHP, and Python), select a builder image, build the code and deliver a new container with the running application is a huge efficiency advantage for teams. However there are scenarios in which a single developer simply wants to get their code running as quickly as possible and which is where odo can be advantageous.
+
+The principle of the odo command is that it can very quickly create a new project and use a 'GIT like' syntax to enable a developer to push the code into OpenShift. The receiving OpenShift cluster will then decide how to build the code, perform the build and deliver a running container. When the developer wants to make changes they simply push their code and the build and deploy operations are repeated. The first push process may take around a minute, but after that each iteration will take only a few seconds.
+
+The diagram below shows how the odo command can fit into a development cycle. The outline diagram shows that the odo command is appropriate for single developers working with a degree of isolation, the team development involves multiple developers integrating their code through a GIT repository and the final phase involves the use of multiple clusters for the deployment of applications through to production.
+****
+
+image::odo-1.png[odo in the development cycle]
+
+****
+In more detail the diagram below shows how odo and oc / source-2-image work together to create a scaled development experience. In the single user phase the odo command is used to push the application code to a container in OpenShift. In the light blue box the source code is pushed to OpenShift in which the language specific builder image is used to create a new image containing the built code. This  image is started to create a running container. When the developer needs to share the code with the work of others GIT is used as a vehicle for integration and to remove any code conflicts.  This is the medium blue box in which the code is pushed to GIT and the OpenShift source-2-image capability is used to build a new running container. In the final phase shown in the darker blue box, the built container image can then be pushed to the Quay image repository to be stored securely ready for deployment to further environments such as pre-production and production.
+****
+
+image::odo-2.png[odo in the development cycle - detail]
+ 
+=== Installing
+
+
+The odo command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/openshift/odo[https://github.com/openshift/odo, window="_blank"].
+
+*If you haven't already please follow the instructions in the pre-req chapter which explains the creation and setting up of the terminal application. For this chapter you will be using that application which has the odo command pre-installed for you*
+
+Switch to the terminal application tab of the browser as described in the pre-req chapter
+
+*To use the command simply type 'odo' and you will see help regarding the objects and to get help on a specific object use 'odo <object> --help'.*
+
+=== odo command set
+
+*The odo command has the following subcommands :*
+
+Commands:
+
+  app         Perform application operations (delete, describe, list)
+  catalog     Catalog related operations (describe, list, search)
+  component   Manage components (create, delete, describe, link, list, log, push, unlink, update, watch)
+  config      Change or view configuration (set, unset, view)
+  debug       Debug commands (port-forward)
+  preference  Modifies preference settings (set, unset, view)
+  project     Perform project operations (create, delete, get, list, set)
+  service     Perform service catalog operations (create, delete, list)
+  storage     Perform storage operations (create, delete, list)
+  url         Expose component to the outside world (create, delete, list)
+
+Utility Commands:
+
+  login       Login to cluster
+  logout      Log out of the current OpenShift session
+  utils       Utilities for terminal commands and modifying odo configurations (terminal)
+  version     Print the client version information
+
+Component Shortcuts:
+
+  create      Create a new component 
+  delete      Delete component 
+  describe    Describe component 
+  link        Link component to a service or component 
+  list        List all components in the current application 
+  log         Retrieve the log for the given component 
+  push        Push source code to a component 
+  unlink      Unlink component to a service or component 
+  update      Update the source code path of a component 
+  watch       Watch for changes, update component on change 
+
+*The most common are used within this workshop but feel free to experiment with any of the above commands.*
+
+=== Logging in
+
+*At this point if you are using the terminal as explained in the pre-req chapter you will already be logged into the system. This can be checked by typing the following:*
+
+[source]
+----
+oc whoami
+odo project list
+----
+
+This should result in your user name being displayed followed by the sandboxX project being shown by the result to the odo command
+
+*If you do need to login to odo outside of this workshop use the 'odo login' command with appropriate parameters*
+
+TIP: The odo command will evolve over time and it performs a check to see if you have the latest version each time it is used. If there is an update available you will be given a prompt to update from a given URL
+
+To see which version of odo you are using enter the command:
+
+[source]
+----
+odo version
+----
+
+==== Examining source assets
+
+The pipeline assets are located in a GIT repository that has been preinstalled in the terminal. Using your terminal window check the assets using the commands below
+
+[source]
+----
+cd /workspace/workshop4/attendee/slave
+
+ls -al
+----
+
+You will see that the directory only has the source file slave.js and the package file called package.json.
+
+=== Create, push source & run cycle
+
+Create a new project using the odo command replacing X with your user number below
+
+[source]
+----
+odo create nodejs node-app-slave
+----
+
+TIP:The syntax of the above command is 'odo create <component-type> <component-name> --project <project-for-the-component>'
+
+The result of running this command is simply the creation of a .odo directory containing a config.yaml file. The file contains the desired state for the application in OpenShift and is only committed to OpenShift and acted upon by OpenShift when the user issues the command 'odo push'. Examine the config.yaml file with the command below
+
+[source]
+---
+cat .odo/config.yaml
+---
+
+Create a route for the application by using the command below
+
+[source]
+----
+odo url create node-app-slave
+----
+
+Examine the contents of the .odo/config.yaml file again and you will see that new content has been added
+
+[source]
+----
+cat .odo/config.yaml
+----
+
+Now push the configuration to OpenShift by using the command below
+
+[source]
+----
+odo push
+----
+
+The output from the above command is shown below
+
+image::odo-3.png[odo in the development cycle - detail]
+
+Wait for the response "Changes successfully pushed to component"
+
+The application has started up and will be running at the URL indicated in the output above. Copy the URL from your command window and paste it into a new browser tab. You should see an output similar to that shown below.
+
+Note - within the terminal window to copy text you should highlight the text, right click and select copy. To paste to the terminal window use ctrl-shift-v.
+
+[source]
+----
+Hello - this is the simple slave REST interface v1.0
+----
+
+Now make a small change to the comment in the source code of the slave.js file to change the line shown below
+
+[source]
+----
+response.send('Hello - this is the simple slave REST interface' + versionIdentifier);
+----
+
+Change the response to the following
+
+[source]
+----
+response.send('Hello - MODIFIED and pushed with ODO' + versionIdentifier);
+----
+
+Now use odo to push the changed source to OpenShift
+
+odo push
+
+The code still needed to be pushed to the component, but the final stage of building the component is much faster. Refresh the browser window showing the application output and you will see your code change. The edit - push - test cycle is as simple as that
+
+=== odo watch
+
+The odo process also has a 'watch' facility that allows you to force odo to constantly watch for source code changes and push them immediately. Open another instance of the terminal application by pointing a new tab in the browser to the route to the terminal application. 
+
+In the new terminal tab enter
+
+[source]
+----
+cd /workspace/workshop4/attendee/slave
+odo watch
+----
+
+The command window should report : 'Waiting for something to change in <current-working-directory>'
+
+Switch back to your other terminal window and make another change to the source code, similar to the change above. After saving the edit switch to the terminal window in which you typed 'odo watch' and observe that a new push of the code to OpenShift has taken place
+
+The window with the watch command running will report:
+
+[source]
+----
+File <path-to-source>/slave.js changed
+Pushing files...
+ ✓  Waiting for component to start [73ms]
+ ✓  Syncing files to the component [11s]
+ ✓  Building component [4s]
+----
+
+Refresh the browser window showing the application output and you will see your code change
+
+odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
+
+Finally, let's clean up the project by typing
+
+[source]
+----
+odo delete node-app-slave
+----
+
+This will delete the application from the project
+
+
+
+
+
+
+

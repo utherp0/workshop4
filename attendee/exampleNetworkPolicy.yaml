@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+ name: example
+ namespace: networktestYOURNUMBERHERE
+spec:
+ podSelector:
+   matchLabels:
+     app: application1
+ ingress: []

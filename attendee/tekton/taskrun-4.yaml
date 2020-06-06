@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: task-run-4
+spec:
+  taskRef:
+    name: task-4
+  inputs:
+    params:
+      - name: parameter1
+        value: "This is a value for parameter 1"
+    resources:
+      - name: git-repo-slave
+        resourceRef:
+          name: git-repo-slave-resource
