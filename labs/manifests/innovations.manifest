@@ -2,20 +2,11 @@ Facilitator: UKI DSA Team
 Email: uther@redhat.com
 Title: Domain Solution Architect Team
 ClusterURL: example.manifest.com
-DocumentTitle: Full DevEx Workshop
+DocumentTitle: OpenShift Innovation Workshop
 ----
-introductiontooc
-applicationbasics
-deployments
-applicationdeploymentstrategies
-sdn
-rbac
-pvs
-healthprobes
 camelk
 camelkocpserverlesseventing
 camelkocpserverlessservice
-odo
 tekton
 servicemesh
 quay

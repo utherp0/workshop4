@@ -2,7 +2,7 @@ Facilitator: UKI DSA Team
 Email: uther@redhat.com
 Title: Domain Solution Architect Team
 ClusterURL: example.manifest.com
-DocumentTitle: Full DevEx Workshop
+DocumentTitle: Developer Introduction Workshop
 ----
 introductiontooc
 applicationbasics
@@ -12,11 +12,4 @@ sdn
 rbac
 pvs
 healthprobes
-camelk
-camelkocpserverlesseventing
-camelkocpserverlessservice
-odo
-tekton
-servicemesh
-quay
 ----
