@@ -45,9 +45,9 @@ RUN dnf -y install bash-completion
 
 RUN oc completion bash >>/etc/bash_completion.d/oc_completion
 
-RUN cd /workspace && git clone https://github.com/utherp0/workshop4
+#RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
-RUN chmod -R 766 /workspace/workshop4
+#RUN chmod -R 766 /workspace/workshop4
 
 WORKDIR /workspace
 
