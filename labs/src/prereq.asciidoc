@@ -64,14 +64,6 @@ oc version
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
 
-One last command is needed to clone the material needed for the workshop in a writeable way for the attendee. Enter the following commands:
-
-[source]
-----
-cd /workspace
-git clone https://github.com/utherp0/workshop4
-----
-
 
 
 
