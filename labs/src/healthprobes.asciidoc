@@ -141,13 +141,19 @@ Click on the arrow on the top right corner of the Pod, or click on the route URL
 
 *Since this work will be done using the oc command line you need to switch the current oc command line to work with the new project using the command:*
 
+[source]
+----
 oc project probesX
+----
 
 (Where X is the number that you used when you created the project)
 
 *To create the probe use the OC command line interface to execute the following command.*
 
+[source]
+----
 oc set probe dc/node-app-slave --liveness --initial-delay-seconds=30 --failure-threshold=1 --period-seconds=10 --get-url=http://:8080/health
+----
 
 *The above probe will create a new liveness probe with the characteristics:*
 
@@ -165,7 +171,10 @@ deploymentconfig.apps.openshift.io/node-app-slave probes updated
 
 *Review the liveness probe information by executing the command:*
 
+[source]
+----
 oc describe dc/node-app-slave
+----
 
 *The output of this command will include the following section that highlights the new liveness probe*
 
@@ -248,15 +257,19 @@ Switch to the application tab and put /health on the end of the url and hit retu
 
 *In order to experiment with the readiness probe it is necessary to switch off the liveness probe. This can either be done by changing the deployment configuration YAML definition using the web interface or by executing the following command line:*
 
-
+[source]
+----
 oc set probe dc/node-app-slave --liveness --remove
+----
 
 === Readiness Probe
 
 *To create the probe use the OC command line interface to execute the following command.*
 
-
+[source]
+----
 oc set probe dc/node-app-slave --readiness --initial-delay-seconds=30 --failure-threshold=3 --success-threshold=1  --period-seconds=5 --get-url=http://:8080/health
+----
 
 *The above command will create a new readiness probe with the characteristics:*
 
