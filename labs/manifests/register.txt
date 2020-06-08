@@ -39,5 +39,10 @@ This lab explains the concepts of the RBAC at the namespace level for users - no
 4.3
 This lab explains the concepts of Persistent Volumes to the attendee and shows the survivability of data across complete Pod loss
 
+"healthprobes"
+4.3
+This lab explains how to create and manipulate health probes on applications within OpenShift
+
+
 
 
