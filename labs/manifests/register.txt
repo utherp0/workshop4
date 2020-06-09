@@ -49,7 +49,11 @@ This lab gives an introduction to the Camel-K implementation, a lightweight inte
 
 "camelkocpserverlesseventing"
 4.3
-This lab introduces attendees to the technologies around the Knative eventing stack, using examples in camel-K
+This lab introduces attendees to the technologies around the Knative eventing stack, using examples in Camel-K
+
+"camelkserverlessservice"
+4.3
+This lab introduces the concepts of request/response serverless workloads using Camel-K
 
 
 
