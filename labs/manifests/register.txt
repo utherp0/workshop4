@@ -55,6 +55,25 @@ This lab introduces attendees to the technologies around the Knative eventing st
 4.3
 This lab introduces the concepts of request/response serverless workloads using Camel-K
 
+"odo"
+4.3
+This lab introduces the attendee to the developer-centric odo command line 
+
+"tekton"
+4.3
+This lab introduces the attendee to the new Tekton Pipeline functionality offered in OpenShift
+
+"servicemesh"
+4.3
+This lab introduces the power of the Service Mesh implementation in OpenShift from a developer perspective 
+
+"quay"
+4.3 (this lab currently requires local buildah and a personal quay.io account)
+This lab introduces interactions with the Quay image repository from an OpenShift and developer perspective
+
+
+
+
 
 
 
