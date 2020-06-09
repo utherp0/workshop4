@@ -43,6 +43,10 @@ This lab explains the concepts of Persistent Volumes to the attendee and shows t
 4.3
 This lab explains how to create and manipulate health probes on applications within OpenShift
 
+"camelk"
+4.3
+This lab gives an introduction to the Camel-K implementation, a lightweight integration framework designed for serverless and microservice architectures
+
 
 
 
