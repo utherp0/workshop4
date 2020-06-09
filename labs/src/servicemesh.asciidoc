@@ -37,13 +37,11 @@ oc new-project service-mesh-X
 
 (Where X is your user number)
 
-Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods. If you have not downloaded the project assets from GitHub already during the workshop, then download them now by executing the following command in the OpenShift terminal window : 
+Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods. We will be using some preloaded assets in the Terminal window, so enter the following command to set the context: 
 
 [source]
 ----
-cd /workspace
-git clone https://github.com/utherp0/workshop4.git
-cd workshop4/attendee/service-mesh
+cd /workspace/workshop4/attendee/service-mesh
 ----
 
 To add the current project as a service mesh member within the control plane called 'istio-system' execute the command :
@@ -599,8 +597,6 @@ oc delete project service-mesh-XX
 ----
 
 _where XX is your user ID number.
-
-This will delete the projects
 
 
 
