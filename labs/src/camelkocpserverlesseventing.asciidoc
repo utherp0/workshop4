@@ -892,3 +892,7 @@ Delete Knative Eventing Kafka dispatcher
 ----
 oc delete deployment kafka-ch-dispatcher
 ----
+
+////
+
+
