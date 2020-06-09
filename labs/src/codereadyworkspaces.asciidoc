@@ -1,4 +1,4 @@
-== CodeReady Workspaces [ESSENTIALS]
+== CodeReady Workspaces [DEVTOOLS]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 

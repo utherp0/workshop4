@@ -1,4 +1,4 @@
-== Understanding Deployments and Configuration [ESSENTIALS]
+== Understanding Deployments and Configuration [INTRODUCTION]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 

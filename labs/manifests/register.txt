@@ -71,6 +71,10 @@ This lab introduces the power of the Service Mesh implementation in OpenShift fr
 4.3 (this lab currently requires local buildah and a personal quay.io account)
 This lab introduces interactions with the Quay image repository from an OpenShift and developer perspective
 
+"codereadyworkspaces"
+4.3
+This lab introduces the developers to the in-browser IDE and facilities offered via CRW on OpenShift
+
 
 
 
