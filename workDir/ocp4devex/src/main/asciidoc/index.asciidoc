@@ -1,0 +1,16 @@
+= {topTitle}
+{author} <{email}>
+ 
+include::intro.asciidoc[]
+include::prereq.asciidoc[]
+include::introductiontooc.asciidoc[]
+include::applicationbasics.asciidoc[]
+include::applicationdeploymentstrategies.asciidoc[]
+include::deployments.asciidoc[]
+include::healthprobes.asciidoc[]
+include::odo.asciidoc[]
+include::tekton.asciidoc[]
+include::pvs.asciidoc[]
+include::rbac.asciidoc[]
+include::sdn.asciidoc[]
+include::servicemesh.asciidoc[]
