@@ -1,4 +1,4 @@
-== OpenShift DO [INNOVATION]
+== OpenShift DO [DEVTOOLS]
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
