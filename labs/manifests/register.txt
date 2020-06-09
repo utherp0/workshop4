@@ -47,6 +47,11 @@ This lab explains how to create and manipulate health probes on applications wit
 4.3
 This lab gives an introduction to the Camel-K implementation, a lightweight integration framework designed for serverless and microservice architectures
 
+"camelkocpserverlesseventing"
+4.3
+This lab introduces attendees to the technologies around the Knative eventing stack, using examples in camel-K
+
+
 
 
 

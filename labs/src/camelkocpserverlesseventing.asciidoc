@@ -48,7 +48,7 @@ In the terminal window, type
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/camelkplatform
+cd /workspace/workshop4/attendee/camelfiles/camelkplatform
 oc apply -f integrationplatform.yaml
 ----
 
@@ -497,7 +497,7 @@ You are after the service name ending in "bootstrap" - make a note of it as you 
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/streams
+cd /workspace/workshop4/attendee/camelfiles/streams
 ----
 
 Create a KnativeEventing Kafka CRD
