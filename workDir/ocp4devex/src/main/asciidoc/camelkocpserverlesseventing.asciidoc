@@ -48,7 +48,7 @@ In the terminal window, type
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/camelkplatform
+cd /workspace/workshop4/attendee/camelfiles/camelkplatform
 oc apply -f integrationplatform.yaml
 ----
 
@@ -309,8 +309,8 @@ kamel delete feed
 kamel delete splitter
 kamel delete printer
 ----
-
-=== Replace Knative in-memory messaging with AMQ Streams (Kafka)
+//// 
+ === Replace Knative in-memory messaging with AMQ Streams (Kafka)
 
 .Introduction
 ****
@@ -464,7 +464,6 @@ You can also go back to the Developer view in the console. You will see the Zook
 
 image::camekknative-20.png[AMQ Streams Topology View]
 
-//// 
 ==== Install Knative Kafka Eventing
 
 Note:  Knative Kafka is operator based, the operator has been installed previously for you so the installation should be straight forward
@@ -498,7 +497,7 @@ You are after the service name ending in "bootstrap" - make a note of it as you 
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/streams
+cd /workspace/workshop4/attendee/camelfiles/streams
 ----
 
 Create a KnativeEventing Kafka CRD
@@ -580,6 +579,7 @@ Events:                    <none>
 
 Very near the bottom of the output, it should say Type = Ready. This means that you are good to go.
 
+//// 
 ////
 
 Note:: To use AMQ Streams, you will use a different channel - the new channel you are going to use is called KafkaChannel. There is also a little bug at present, when you create the channels, the actual Kafka Topics will be created in the Central Broker, rather than your own. If you want to see this then please ask the instructor. 
@@ -654,7 +654,6 @@ messages   True             http://messages-kn-channel.sandbox30.svc.cluster.loc
 
 OK, so the above output suggests that the channel is ready and working.
 
-//// 
 Lets make sure that a topic has been created in Kafka for us.
 
 If you recall, the AMQ streams operator has a number of different CRDs, therefore the creation of the Knative Channel should have created a KafkaTopic CRD. Let's check to make sure that's the case.
@@ -718,7 +717,6 @@ Topic: knative-messaging-kafka.sandbox30.messages       PartitionCount: 1       
 
 This shows that 1 partition has been created. ISR is zero because the replication factor is 1. The partition is not being replicated. This is not recommended for production. This is purely to limit the resources on our OpenShift cluster. 
 
-////
 
 Lets deploy the second channel called 'words' again, this time based on a Kafka Channel
 
@@ -861,7 +859,7 @@ Check the pods log again, you should be able to read the text again
 If you look at the printer Integration log, you will notice that it has exactly the same problem.
 
 See if you can fix the problem for this integration by following the same steps above. The name of the file is printer.groovy
-//// 
+
 ==== Accessing the Kafka Topics directly 
 
 In the terminal window, type :-
@@ -870,7 +868,7 @@ In the terminal window, type :-
 ----
 oc exec -it my-cluster-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic knative-messaging-kafka.sandboxX.messages --from-beginning
 ----
-////
+
 There you go, all the messaging sent using Knative eventing channels available in a Kafka topic. This means that all the events flying around the event driven network can also be made available to many other tools supported by Kafka. This could be big data systems, AI systems, mirroring events to different Kafka Clusters and many more things. Of course, the biggest benefit is that the events are now persisted, partitioned for scale, and replicated using classic Kafka functionality. 
 
 Please clean up before moving on:-
@@ -894,3 +892,7 @@ Delete Knative Eventing Kafka dispatcher
 ----
 oc delete deployment kafka-ch-dispatcher
 ----
+
+////
+
+

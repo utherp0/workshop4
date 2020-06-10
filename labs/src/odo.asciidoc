@@ -104,12 +104,12 @@ The pipeline assets are located in a GIT repository that has been preinstalled i
 
 [source]
 ----
-cd /workspace/workshop4/attendee/slave
+cd /workspace/workshop4/attendee/simpleRest
 
 ls -al
 ----
 
-You will see that the directory only has the source file slave.js and the package file called package.json.
+You will see that the directory only has the source file simpleRest.js and the package file called package.json.
 
 === Create, push source & run cycle
 
@@ -117,7 +117,7 @@ Create a new project using the odo command replacing X with your user number bel
 
 [source]
 ----
-odo create nodejs node-app-slave
+odo create nodejs node-app-rest-user-83
 ----
 
 TIP:The syntax of the above command is 'odo create <component-type> <component-name> --project <project-for-the-component>'
@@ -133,7 +133,7 @@ Create a route for the application by using the command below
 
 [source]
 ----
-odo url create node-app-slave
+odo url create node-app-rest
 ----
 
 Examine the contents of the .odo/config.yaml file again and you will see that new content has been added
@@ -162,14 +162,14 @@ Note - within the terminal window to copy text you should highlight the text, ri
 
 [source]
 ----
-Hello - this is the simple slave REST interface v1.0
+Hello - this is a simple REST interface v1.0
 ----
 
-Now make a small change to the comment in the source code of the slave.js file to change the line shown below
+Now make a small change to the comment in the source code of the simpleRest.js file to change the line shown below
 
 [source]
 ----
-response.send('Hello - this is the simple slave REST interface' + versionIdentifier);
+response.send('Hello - this is a simple REST interface' + versionIdentifier);
 ----
 
 Change the response to the following
@@ -193,7 +193,7 @@ In the new terminal tab enter
 
 [source]
 ----
-cd /workspace/workshop4/attendee/slave
+cd /workspace/workshop4/attendee/simpleRest
 odo watch
 ----
 
@@ -205,7 +205,7 @@ The window with the watch command running will report:
 
 [source]
 ----
-File <path-to-source>/slave.js changed
+File <path-to-source>/simpleRest.js changed
 Pushing files...
  ✓  Waiting for component to start [73ms]
  ✓  Syncing files to the component [11s]
@@ -220,7 +220,7 @@ Finally, let's clean up the project by typing
 
 [source]
 ----
-odo delete node-app-slave
+odo delete node-app-rest-user-83
 ----
 
 This will delete the application from the project

@@ -14,21 +14,21 @@ At the present time there is an issue with the Red Hat demonstration Quay instan
 
 image::quay-1.png[Image management process through the route to live]
 
-The image below shows an OpenShift project and the various artefacts that are created. The image stream object is shown here within the context of the builder process that creates it and the running pod that consumes it.
+The image below shows an OpenShift project and the various artifacts that are created. The image stream object is shown here within the context of the builder process that creates it and the running pod that consumes it.
 
 image::quay-2.png[Openshift project and the creation of the image stream]
 
 .The structure of Quay
 ****
-The Quay image repository uses a number of specific objects to manage the structure, security an maintenance of images. 
+The Quay image repository uses a number of specific objects to manage the structure, security and maintenance of images. 
 
-. Organisation - An organisation maps neatly to a project within OpenShift and is a structural container for a number of repositories.
+. Organization - An organization maps neatly to a project within OpenShift and is a structural container for a number of repositories.
 . Repository - A repository maps neatly to an image stream within OpenShift (or any other single source of images). A repository may contain multiple tagged versions of a single image. 
 
-The organisation may have the following characteristics:
+The organization may have the following characteristics:
 
-    . Default permissions to be applied to any new repositories created within the organisation.
-    . Teams that control access to the organisation and its repositories.
+    . Default permissions to be applied to any new repositories created within the organization.
+    . Teams that control access to the organization and its repositories.
     . Robot accounts for automated access to the repositories from scripted or command line processes.
 ****
 
@@ -41,9 +41,9 @@ The organisation may have the following characteristics:
 
 In order to use the Quay instance for the workshop you need to request that an id is created for you by the workshop administrators. This will take very little time and will result in the creation of the following:
 
-. An organisation will be created in Quay using the same name as the OpenShift project used in this section, for example master-slave-user23.
+. An organization will be created in Quay using the same name as the OpenShift project used in this section, for example quay-workshop-user23.
 . A Quay user matching the OpenShift username and password.
-. The Quay user will have read/write access to the organisation, but you will have to create access to the specific repositories as part of the steps to follow.
+. The Quay user will have read/write access to the organization, but you will have to create access to the specific repositories as part of the steps to follow.
 
 === Creating the OpenShift Project
 
@@ -51,18 +51,16 @@ In order to interact with Quay each user requires an OpenShift project containin
 
 [source]
 ----
-oc new-project master-slave-userXX
+oc new-project quay-workshop-userXX
 
-oc new-app --name node-app-slave  https://github.com/marrober/slave-node-app.git
+oc new-app --name node-app-rest https://github.com/marrober/simpleRest.git
 
-oc new-app --name node-app-master  https://github.com/marrober/master-node-app.git
-
-oc expose service node-app-master --name="master-app-route"
+oc expose service node-app-rest --name="node-app-rest"
 ----
 
 _where XX is your user number_
 
-The above commands will create image streams for the master and the slave which can be viewed using the command below.
+The above commands will create an image stream for the simpleRest application which can be viewed using the command below.
 
 [source]
 ----
@@ -77,15 +75,14 @@ This will display image streams similar to that which is shown in the table belo
 |===
 
 |NAME|              IMAGE REPOSITORY|                                                              TAGS|     UPDATED
-|node-app-master|   default-route-openshift-<reduced>.com/master-slave-userX/node-app-master|      latest|   22 hours ago
-|node-app-slave|    default-route-openshift-<reduced>.com/master-slave-userX/node-app-slave|       latest|   22 hours ago
+|node-app-rest|   default-route-openshift-<reduced>.com/quay-workshop-userX/node-app-rest|      latest|   22 hours ago
 |===
 
 The image repository field will show the route to use to get access to the container images within the container image repository. Now that you have some images to manage it is necessary to create the repositories in Quay.
 
-=== Creating the Quay image repositories
+=== Creating the Quay image repository
 
-When the workshop administrator tells you that they have created your user and organisation in Quay you may login at the provided Quay URL. The username and password for Quay will be the same as those used for OpenShift.
+When the workshop administrator tells you that they have created your user and organization in Quay you may login at the provided Quay URL. The username and password for Quay will be the same as those used for OpenShift.
 
 _The example screen shots below show a user ID of user23, but obviously yours may be different._
 
@@ -96,7 +93,7 @@ image::quay-3.png[Quay web user interface]
 You see two namespaces within Quay for the storage of repositories. The namespace identified by your user name can hold repositories outside the scope of an organization. The organization can hold repositories with the added benefits provided by the organization which are :
 
 . Default permissions may be set on the organization that apply to new repositories created within it.
-. The use of teams and users to manage the allocation of permissions to the organisation and the repositories created within it.
+. The use of teams and users to manage the allocation of permissions to the organization and the repositories created within it.
 
 .Quay permissions
 ****
@@ -106,13 +103,13 @@ The diagram below shows the permission structure for an organization.
 image::quay-4.png[Quay organization permissions]
 
 . Teams contain users and robot (automation) users who have permissions on specific repositories.
-. Teams can have a role of 'Creator' - Create new repositories which will inherit the organisation default permissions)or 'Admin' - perform all actions including delete, or 'member' - permission is indicated by each repository.
+. Teams can have a role of 'Creator' - Create new repositories which will inherit the organization default permissions)or 'Admin' - perform all actions including delete, or 'member' - permission is indicated by each repository.
 . Member permissions are allocated on a per repository basis and can include 'none' - no access, 'read' - can pull images, 'write' - can pull and push images, 'admin' - can pull, push and perform admin functions such as delete and manage permissions.
 ****
 
 === Managing the Quay organization and repositories
 
-Select the Quay organisation called master-slave-userXX. 
+Select the Quay organization called quay-workshop-userXX. 
 
 This will show a largely blank screen with options down the left hand side.
 
@@ -120,13 +117,11 @@ Click on the '+ Create New Repository' link at the top right of the screen.
 
 Since the names of the repositories need to match the names of the image streams in OpenShift refer back to the command line window and the names of the image streams from the 'oc get is' commands used above.
 
-Enter the name of one of the image streams for the repository, select public for access and then click on 'Create Public Repository'.
-
-Click the browser back button to go back to the repository creation screen and repeat the repository creation process for the second image stream.
+Enter the name of one of the image stream (simplerest) for the repository, select public for access and then click on 'Create Public Repository'. Note that repository names must consist of only lowercase letters and numbers.
 
 Press the left facing arrow on the top left of the screen to go back to the list of repositories.
 
-Select the master-slave-userXX organization and you should see the details of the organization as shown below.
+Select the quay-workshop-userXX organization and you should see the details of the organization as shown below.
 
 image::quay-5.png[Quay organization details]
 
@@ -154,7 +149,7 @@ Click on the cog on the right hand side of the robot account name and select 'vi
 
 You will see a list of many different types of credentials that you can generate such as token, Kubernetes secret, rkt configuration, Docker login, Docker configuration and Mesos credentials. For the access required in the workshop copy the username and token from the Robot Token tab and store them in a local editor or notepad ready to use later. Once they are copied close the dialog box.
 
-Back on the organisation screen take a look at the options for creating default permissions (the next tab down on the left). It is possible to create default permissions to be applied to new repositories for specific uses, teams and robot users as appropriate.
+Back on the organization screen take a look at the options for creating default permissions (the next tab down on the left). It is possible to create default permissions to be applied to new repositories for specific uses, teams and robot users as appropriate.
 
 ==== Summary of Quay UI work
 
@@ -230,7 +225,7 @@ The Quay login command will be similar to :
 
 [source]
 ----
-buildah login --username master-slave-user23+user23_automation --password 6A6ODEQT39ID52S9HZ4IRCBO3EK4O5KNAGZ2HWKSOQQUMU9QSKMBBPYNO6A3ED0O quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com
+buildah login --username quay-workshop-user23+user23_automation --password 6A6ODEQT39ID52S9HZ4IRCBO3EK4O5KNAGZ2HWKSOQQUMU9QSKMBBPYNO6A3ED0O quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com
 ----
 
 You should get a response of "Login Succeeded!"
@@ -246,7 +241,7 @@ Use the command below to view the local buildah image repository. You should see
 buildah images
 ----
 
-Use the command below to list the images and their location within the OpenShift image repository :
+Use the command below to list the image and the location within the OpenShift image repository :
 
 [source]
 ----
@@ -264,7 +259,7 @@ for example
 
 [source]
 ----
-buildah pull docker://default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master
+buildah pull docker://default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/quay-workshop-user23/node-app-rest
 ----
 
 The command will show the progress of pulling image layers and will complete with a message similar to that which is shown below :
@@ -298,12 +293,10 @@ The result will be similar to that which is shown below:
 [frame=none]
 |===
 |REPOSITORY |TAG      |IMAGE ID       |CREATED       |SIZE
-|default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master   |latest   |abc6f7ad1964   |6 hours ago   |547 MB
+|default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/quay-workshop-user23/node-app-rest   |latest   |abc6f7ad1964   |6 hours ago   |547 MB
 |===
 
 An image now exists in a local repository - either on your laptop or within the terminal container depending on where you ran the command.
-
-Repeat the process to pull the image for the slave too. Notice this time that some of the layers are skipped as those layers already exist within the local repository.
 
 ==== Tagging images for the Quay repository
 
@@ -321,19 +314,18 @@ The actual tag names used for the existing location need to match what is in the
 oc get is -o jsonpath='{range.items[*]}{.metadata.name}{" "}{.status.publicDockerImageRepository}{":"}{.status.tags[0].tag}{"\n"}'
 ----
 
-The new repository location is the Quay URL address, organization and repository name. The easiest way to get this is to go to the Quay web user interface, select 'Repositories' on the top menu and then select the master repository within the master-slave organization. This will show a screen similar to that which is shown below:
+The new repository location is in the format :
 
-image::quay-7.png[Quay repository details]
+<Quay URL address>/<organization>/<repository name> for example :
 
-Under the heading "Pull this container with the following Docker command:", copy the URL after the 'docker pull' text in the text field. It will look similar to the below: 
 
-quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master
+quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-workshop-user23/simplerest
 
 Create the Builah tag command from the information collected above such that it looks similar to the below:
 
 [source]
 ----
-buildah tag default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/master-slave-user23/node-app-master:latest quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1
+buildah tag default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/quay-workshop-user23/node-app-rest:latest quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-workshop-user23/simplerest:1
 ----
 
 Note that the tag used in the command for the destination tag is 1.
@@ -344,8 +336,6 @@ Execute the command and then use the command below to list the images :
 ----
 buildah images
 ----
-
-Repeat the similar command for the slave image.
 
 ==== Push the images to Quay
 
@@ -360,21 +350,21 @@ for example :
 
 [source]
 ----
-buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1
-buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-slave:1
+buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-workshop-user23/simplerest:1
+
 ----
 
-Switch to the Quay web user interface. If you are still displaying the repository information page where the image pull / push URL was copied from then refresh the browse window and then select the 'tags' view (2nd option down on the repository menu). This will show the tags view similar to that which is shown below.
+Switch to the Quay web user interface. Select the 'tags' view (2nd option down on the repository menu). This will show the tags view similar to that which is shown below.
 
 image::quay-8.png[Quay repository tags view]
 
 The tags view shows information on the image tag and the buttons on the right of each line allow the user to select different mechanisms for extracting and manipulating the image.
 
-=== Using the images in a QA environment
+=== Using the image in a QA environment
 
-Referring to the image at the top of this section the image may now be pulled to different clusters such as a QA cluster, pre-production cluster and production cluster. Specific users will have the appropriate role based permissions to pull the images into those clusters to control the necessary separation of responsibilities within an organization. For this exercise you will create a new project with the same name as the existing project but with -qa on the end of the name to simulate the deployment to QA. 
+Referring to the graphic at the top of this section the image may now be pulled to different clusters such as a QA cluster, pre-production cluster and production cluster. Specific users will have the appropriate role based permissions to pull the images into those clusters to control the necessary separation of responsibilities within an organization. For this exercise you will create a new project with the same name as the existing project but with -qa on the end of the name to simulate the deployment to QA. 
 
-The original commands used to create the images at the start of this section used the source-2-image capability and pulled the source code. The process from this point forward has no interaction with the application source code and pulls the immutable images into each successive cluster (simulated in the case of the workshop), with environment specific information being injected into the running containers using config maps. This use of immutable images is one significant advantage of containers and hence is another reason for the use of a secure image repository.
+The original commands used to create the images at the start of this section used the source-2-image capability and pulled the source code. The process from this point forward has no interaction with the application source code and pulls the immutable image into each successive cluster (simulated in the case of the workshop), with environment specific information being injected into the running containers using config maps. This use of immutable images is one significant advantage of containers and hence is another reason for the use of a secure image repository.
 
 ==== Creating the OpenShift Project for QA
 
@@ -382,11 +372,10 @@ Use the commands below to create the OpenShift project using the content from Qu
 
 [source]
 ----
-oc new-project master-slave-userXX-qa
+oc new-project quay-workshop-userXX-qa
 
-oc new-app --docker-image=<master image URL & tag that was pushed above> --name=node-app-master
-oc new-app --docker-image=<master image URL & tag that was pushed above> --name=node-app-slave
-oc expose service node-app-master --name="master-app-route"
+oc new-app --docker-image=<simpleRest image URL & tag that was pushed above> --name=node-app-rest
+oc expose service node-app-rest --name="rest-app-route"
 ----
 
 _where XX is your user ID_
@@ -395,9 +384,8 @@ For example:
 
 [source]
 ----
-oc new-app --docker-image=quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-master:1 --name=node-app-master
-oc new-app --docker-image=quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/master-slave-user23/node-app-slave:1 --name=node-app-slave
-oc expose service node-app-master --name="master-app-route"
+oc new-app --docker-image=quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-workshop-user23/simplerest:1 --name=node-app-rest
+oc expose service node-app-rest --name="rest-app-route"
 ----
 
 To test the application get the route with the command:
@@ -411,14 +399,14 @@ Then issue the following curl command :
 
 [source]
 ----
-curl -k <url from the above command>
+curl <url from the above command>
 ----
 
-The response should be the ip address of the master node and the slave node similar to that which is shown below:
+The response should be the ip address of the pod similar to that which is shown below:
 
 [source]
 ----
-"master ip address 10.131.0.174    ----> slave ip address 10.128.2.157 v1.0"
+"10.131.0.174 v1.0"
 ----
 
 === Cleaning up
@@ -427,8 +415,8 @@ Finally, lets clean up the project by typing
 
 [source]
 ----
-oc delete project master-slave-userXX
-oc delete project master-slave-userXX-qa
+oc delete project quay-workshop-userXX
+oc delete project quay-workshop-userXX-qa
 ----
 
 _where XX is your user ID_

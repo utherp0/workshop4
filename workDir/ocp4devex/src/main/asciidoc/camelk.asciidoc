@@ -51,7 +51,7 @@ In the terminal window, type
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/camelkplatform/
+cd /workspace/workshop4/attendee/camelfiles/camelkplatform/
 oc apply -f integrationplatform.yaml
 ----
 
@@ -159,6 +159,7 @@ We will now make a change to the integration
 In the browser terminal window
 [source]
 ----
+cd /workspace/examples/
 vi simple.groovy 
 ----
 
@@ -227,7 +228,7 @@ In the *new* terminal now type:
 
 [source]
 ----
-cd /workspace/examples
+cd /workspace/examples/
 ----
 
 Make another change to the text in “simple.groovy” by following the same instructions above - make sure the text outputted is different and that you save it as described above

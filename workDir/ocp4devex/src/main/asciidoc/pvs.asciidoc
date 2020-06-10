@@ -35,7 +35,7 @@ Enter the following for the Git Repo URL - ‘https://github.com/utherp0/worksho
 
 Click on ‘Show Advanced Git Options’
 
-In Context Dir put ‘/nodeatomic’
+In Context Dir put ‘/apps/nodeatomic’
 
 In Application Name put ‘nodeatomic’
 
@@ -166,7 +166,7 @@ TIP: The Webservice endpoint provided appends the given text to the given file.
 
 Click on 'Workloads/Pods'
 
-Select another Pod (*NOT* the one that matched the IP from the (*1) step
+Select another Pod (*NOT* the one that matched the IP from the (*1) step)
 
 Click on 'Terminal'
 

@@ -6,7 +6,7 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
 
-Liveness and Readiness probes are Kubernetes capabilities that enable teams to make their containerised applications more reliable and robust. However, if used inappropriately they can result in none of the intended benefits, and can actually make a microservice based application unstable. 
+Liveness and Readiness probes are Kubernetes capabilities that enable teams to make their containerized applications more reliable and robust. However, if used inappropriately they can result in none of the intended benefits, and can actually make a microservice based application unstable. 
 
 The purpose of each probe is quite simple and is described well in the OpenShift documentation here. The use of each probe is best understood by examining the action that will take place if the probe is activated. 
 
@@ -58,8 +58,8 @@ Select ‘Node.js’
 
 .Source-2-Image
 ****
-One of the most exciting features of OpenShift from a developer's perspective is the concept of S2I, or *Source-2-Image* which provides a standardised way of taking a base image, containing, for example, the framework for running a node.js application, 
-a source code repository, containing the code of the application that matches the framework provided in the base image, and constructing  and delivering a composite Application image to the Registry. Simply put this enables a developer to create source code for an application and OpenShift will convert that to a running application within a container with minimal effort. The process that you will use below is the Source-2-Image capability.
+One of the most exciting features of OpenShift from a developer's perspective is the concept of S2I, or *Source-2-Image* which provides a standardized way of taking a base image, containing, for example, the framework for running a node.js application, 
+a source code repository, containing the code of the application that matches the framework provided in the base image, and constructing and delivering a composite Application image to the Registry. Simply put this enables a developer to create source code for an application and OpenShift will convert that to a running application within a container with minimal effort. The process that you will use below is the Source-2-Image capability.
 ****
 
 Click on ‘Create Application’
@@ -71,9 +71,9 @@ Click on ‘Create Application’
 
 Select the default offering for the Builder Image Version
 
-For the GIT repository use : https://github.com/marrober/slave-node-app.git[https://github.com/marrober/slave-node-app.git, window="_blank"]
+For the GIT repository use : https://github.com/marrober/simpleRest.git[https://github.com/marrober/simpleRest.git, window="_blank"]
 
-In a separate browser tab go to https://github.com/marrober/slave-node-app.git[https://github.com/marrober/slave-node-app.git, window="_blank"]
+In a separate browser tab go to https://github.com/marrober/simpleRest.git[https://github.com/marrober/simpleRest.git, window="_blank"]
 
 *You can see that the GIT repository at this location only has a small number of files specific to the application. There is no content specific to how the application should be built or deployed into a container.*
 
@@ -81,11 +81,9 @@ Close the github tab
 
 Back at the OCP4.2 user interface complete the following information in the section titled 'General'.
 
-For the Application drop down menu select 'Create Application'.
+For the Application name enter 'rest-application'.
 
-For the Application name enter 'Slave-application'.
-
-For the Name field enter 'node-app-slave'
+For the Name field enter 'node-app-rest'
 
 *The application name field is used to group together multiple items under a single grouping within the topology view. The name field is used to identify the specific containerised application.*
 
@@ -119,8 +117,6 @@ The colour scheme of the pods is important and conveys information about the pod
 * Succeeded - Green
 * Terminating - Black
 * Unknown - Purple
-
-
 ****
 
 When the build has completed the right hand side panel will shown something similar to the image below. Note that the route will be different to that which is shown below. 
@@ -133,11 +129,11 @@ Click on the Tick at the bottom left of the Pod. Note that this display can also
 
 Click on the arrow on the top right corner of the Pod, or click on the route URL shown in the right hand side resource details window. The application window will launch in a new browser window and should display text as shown below:
 
-*+Hello - this is the simple slave REST interface v1.0+*
+*+Hello - this is a simple REST interface v1.0+*
 
 === Liveness Probe
 
-*A number of probes will be created to show the different behaviours. The first probe will be a liveness probe that will result in the restart of the pod.*
+*A number of probes will be created to show the different behaviors. The first probe will be a liveness probe that will result in the restart of the pod.*
 
 *Since this work will be done using the oc command line you need to switch the current oc command line to work with the new project using the command:*
 
@@ -152,7 +148,7 @@ oc project probesX
 
 [source]
 ----
-oc set probe dc/node-app-slave --liveness --initial-delay-seconds=30 --failure-threshold=1 --period-seconds=10 --get-url=http://:8080/health
+oc set probe dc/node-app-rest --liveness --initial-delay-seconds=30 --failure-threshold=1 --period-seconds=10 --get-url=http://:8080/health
 ----
 
 *The above probe will create a new liveness probe with the characteristics:*
@@ -166,14 +162,14 @@ oc set probe dc/node-app-slave --liveness --initial-delay-seconds=30 --failure-t
 
 [source]
 ----
-deploymentconfig.apps.openshift.io/node-app-slave probes updated
+deploymentconfig.apps.openshift.io/node-app-rest probes updated
 ----
 
 *Review the liveness probe information by executing the command:*
 
 [source]
 ----
-oc describe dc/node-app-slave
+oc describe dc/node-app-rest
 ----
 
 *The output of this command will include the following section that highlights the new liveness probe*
@@ -181,11 +177,11 @@ oc describe dc/node-app-slave
 [source]
 ----
 Pod Template:
-  Labels:	app=node-app-slave
-		    deploymentconfig=node-app-slave
+  Labels:	app=node-app-rest
+		    deploymentconfig=node-app-rest
   Containers:
-   node-app-slave:
-    Image:		image-registry.openshift-image-registry.svc:5000/probes2/node-app-slave@sha256:bf377...241
+   node-app-rest:
+    Image:		image-registry.openshift-image-registry.svc:5000/probes2/node-app-rest@sha256:bf377...241
     Port:		    8080/TCP
     Host Port:		0/TCP
     Liveness:		http-get http://:8080/health delay=30s timeout=1s period=10s #success=1 #failure=1
@@ -199,7 +195,7 @@ Pod Template:
 
 [source]
 ----
-oc get dc/node-app-slave -o yaml
+oc get dc/node-app-rest -o yaml
 ----
 
 *Part of the output will show:*
@@ -259,7 +255,7 @@ Switch to the application tab and put /health on the end of the url and hit retu
 
 [source]
 ----
-oc set probe dc/node-app-slave --liveness --remove
+oc set probe dc/node-app-rest --liveness --remove
 ----
 
 === Readiness Probe
@@ -268,7 +264,7 @@ oc set probe dc/node-app-slave --liveness --remove
 
 [source]
 ----
-oc set probe dc/node-app-slave --readiness --initial-delay-seconds=30 --failure-threshold=3 --success-threshold=1  --period-seconds=5 --get-url=http://:8080/health
+oc set probe dc/node-app-rest --readiness --initial-delay-seconds=30 --failure-threshold=3 --success-threshold=1  --period-seconds=5 --get-url=http://:8080/health
 ----
 
 *The above command will create a new readiness probe with the characteristics:*
@@ -283,28 +279,28 @@ oc set probe dc/node-app-slave --readiness --initial-delay-seconds=30 --failure-
 
 [source]
 ----
-deploymentconfig.apps.openshift.io/node-app-slave probes updated
+deploymentconfig.apps.openshift.io/node-app-rest probes updated
 ----
 
 *Review the probe created using the commands above:*
 
 [source]
 ----
-oc describe dc/node-app-slave
+oc describe dc/node-app-rest
 ----
 
 and
 
 [source]
 ----
-oc get dc/node-app-slave -o yaml
+oc get dc/node-app-rest -o yaml
 ----
 
 *View the state of the pod within the endpoints using the command below:*
 
 [source]
 ----
-oc get ep/node-app-slave -o yaml
+oc get ep/node-app-rest -o yaml
 ----
 
 
@@ -319,17 +315,17 @@ metadata:
     endpoints.kubernetes.io/last-change-trigger-time: 2019-11-26T16:04:50Z
   creationTimestamp: 2019-11-26T09:37:12Z
   labels:
-    app: node-app-slave
-    app.kubernetes.io/component: node-app-slave
-    app.kubernetes.io/instance: node-app-slave
+    app: node-app-rest
+    app.kubernetes.io/component: node-app-rest
+    app.kubernetes.io/instance: node-app-rest
     app.kubernetes.io/name: nodejs
-    app.kubernetes.io/part-of: master-slave
+    app.kubernetes.io/part-of: master-rest
     app.openshift.io/runtime: nodejs
     app.openshift.io/runtime-version: "10"
-  name: node-app-slave
+  name: node-app-rest
   namespace: probes1
   resourceVersion: "1172051"
-  selfLink: /api/v1/namespaces/probes1/endpoints/node-app-slave
+  selfLink: /api/v1/namespaces/probes1/endpoints/node-app-rest
   uid: 534139aa-1030-11ea-af1c-024039909e8a
 subsets:
 - addresses:
@@ -337,7 +333,7 @@ subsets:
     nodeName: ip-10-0-136-74.eu-central-1.compute.internal
     targetRef:
       kind: Pod
-      name: node-app-slave-5-hwj89
+      name: node-app-rest-5-hwj89
       namespace: probes1
       resourceVersion: "1172049"
       uid: ad6cc0e5-1043-11ea-af1c-024039909e8a
@@ -383,7 +379,7 @@ View the state of the pod within the endpoints using the command below:
 
 [source]
 ----
-oc get ep/node-app-slave -o yaml
+oc get ep/node-app-rest -o yaml
 ----
 
 *The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
@@ -405,7 +401,7 @@ Switch to the OpenShift browser window that was showing the pod events.
 
 *Note that you will see a large number of pod readiness probe failures while you were reading the notes.*
 
-In the OpenShift Console choose Adminstrator View, then Workloads/Pods. Click on the Pod that is active and in the Pod information page click on the Terminal option.
+In the OpenShift Console choose Administrator View, then Workloads/Pods. Click on the Pod that is active and in the Pod information page click on the Terminal option.
 
 Within the Pod Terminal enter the command :
 
@@ -427,7 +423,7 @@ View the state of the pod within the endpoints using the command below:
 
 [source]
 ----
-oc get ep/node-app-slave -o yaml
+oc get ep/node-app-rest -o yaml
 ----
 
 *You should see that the line of interest, previously shown above, has changed back to that shown below:*

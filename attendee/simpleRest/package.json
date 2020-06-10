@@ -1,11 +1,11 @@
 {
-  "name": "slave-node-application",
+  "name": "simplerest-node-application",
   "version": "1.0.0",
-  "description": "The slave appliction for a micro-service communication example",
-  "main": "./slave.js",
+  "description": "The simpleRest application for a micro-service communication example",
+  "main": "./simpleRest.js",
   "private": true,
   "scripts": {
-    "start": "node ./slave.js"
+    "start": "node ./simpleRest.js"
   },
   "dependencies": {
     "bunyan": "^1.8.12",

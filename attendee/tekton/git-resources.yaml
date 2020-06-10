@@ -1,9 +1,9 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: git-repo-slave-resource
+  name: git-repo-simple-rest-resource
 spec:
   type: git
   params:
   - name: url
-    value: https://github.com/marrober/slave-node-app.git
+    value: https://github.com/marrober/simpleRest.git

@@ -42,7 +42,7 @@ In the terminal window, type
 
 [source]
 ----
-cd /workspace/workshop4/camelfiles/camelkplatform
+cd /workspace/workshop4/attendee/camelfiles/camelkplatform
 oc apply -f integrationplatform.yaml
 ----
 
