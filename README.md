@@ -49,6 +49,8 @@ To build the documentation for the workshop you need to do the following:
 
 If you would like to contribute labs there is a guide on how to write them and what to be aware of at https://docs.google.com/document/d/1DwSFGP1SO-1MOfEck6AGDjjU4d2k8YGYmpcMtxhaEZo/edit
 
+All of the Google docs are available in PDF format in the docs/ directory of the repo for those who don't have access to the originals.
+
 ------------------------------------------------------------
 
 When running a remote session it is highly advised to have two additional applications running on the Cluster for communications with the attendees. These are as follows, with instructions on how to set them up:
