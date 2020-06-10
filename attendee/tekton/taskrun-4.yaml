@@ -10,6 +10,6 @@ spec:
       - name: parameter1
         value: "This is a value for parameter 1"
     resources:
-      - name: git-repo-slave
+      - name: git-repo-simple-rest
         resourceRef:
-          name: git-repo-slave-resource
+          name: git-repo-simple-rest-resource

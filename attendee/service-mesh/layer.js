@@ -102,7 +102,7 @@ app.get('/call-layers', (request, response) => {
         text = text.replace(/"/g,"");
         messageText += " ----> " + text;
         console.log(messageText);
-        log.info({app: 'this', phase: 'operational', id: id, counter: counter, this_ip: ip.address(), slave_ip: text}, counterMessage + " " + messageText);
+        log.info({app: 'this', phase: 'operational', id: id, counter: counter, this_ip: ip.address(), details: text}, counterMessage + " " + messageText);
         response.json(messageText);
       }
     });
@@ -124,9 +124,9 @@ console.log("Listening on port " + port);
 app.listen(port, () => log.info({app: 'this', phase: 'setup', id: id}, "Listening on port " + port));
 
 function sendNextRequest(cb) {
-  var slaveURL = "http://" + options.host + ":" + options.port + options.path;
+  var nextURL = "http://" + options.host + ":" + options.port + options.path;
 
-  var request = http.get(slaveURL, (res) => {
+  var request = http.get(nextURL, (res) => {
     let dataResponse = '';
     res.on('data', (chunk) => {
       dataResponse += chunk;

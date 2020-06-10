@@ -285,7 +285,7 @@ image::pipelines-5.png[Task and resource relationship]
 
 As shown above the task has place-holders for two parameters. The first parameter has a value defined within the taskrun. The second parameter has a default value so it is not essential to provide a value for it in the taskrun. Both parameters are referenced from the steps of the task using the notation $(inputs.params.<parameter-name>).
 
-The task also defines a resource object called git-repo-slave of type git. Within the taskrun an input resource object is defined with the same name (git-repo-slave) referring to a pipeline resource object called git-repo-slave-resource. A pipeline resource object is created from the yaml file git-resources.yaml which makes a reference to the actual git repository.
+The task also defines a resource object called git-repo-simple-rest of type git. Within the taskrun an input resource object is defined with the same name (git-repo-simple-rest) referring to a pipeline resource object called git-repo-simple-rest-resource. A pipeline resource object is created from the yaml file git-resources.yaml which makes a reference to the actual git repository.
 
 To create the resource object go back to the terminal app and execute the following command :
 
@@ -306,7 +306,7 @@ The response will be :
 [source]
 ----
 NAME                      TYPE   DETAILS
-git-repo-slave-resource   git    url: https://github.com/marrober/slave-node-app.git
+git-repo-simple-rest-resource   git    url: https://github.com/marrober/simpleRest.git
 ----
 
 The use of pipeline resource objects for git repositories and created images (as output resources) helps teams to create generic build, test and deploy pipelines that can be reused across multiple projects where the projects simply define the custom pipeline resource objects that are specific to their project or environment.

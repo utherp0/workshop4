@@ -1,4 +1,4 @@
-== Understanding Deployments and Configuration [ESSENTIALS]
+== Understanding Deployments and Configuration [INTRODUCTION]
 
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
@@ -95,16 +95,15 @@ In the terminal type ‘env | grep nodenewsconfig’
 
 image::deployment-5.png[Injected config map environment variables]
 
-Go back to the command line tab you created in the pre-requisites and enter the following commands:
+Go back to the Terminal tab you created in the pre-requisites. We are going to use some material pre-loaded into the terminal image. Type the following commands in the Terminal tab.:
 
 [source]
 ----
-mkdir material
-cd material
-git clone https://github.com/utherp0/workshop4
-cd workshop4/attendee
+cd /workspace/workshop4/attendee
 cat testfile.yaml
 ----
+
+This file is the one to be used. If it, or any of the directories, don't exist, please follow the pre-requisite instructions and recreate the Terminal application.
 
 TIP: All objects in Kubernetes/Openshift can be expressed as yaml and this is a basic configmap for a file. What is very nice about the API and it's object oriented nature is that you can export any object that you have the RBAC rights to view and import them directly back into OpenShift, which is what we will do now with the following commands in the terminal
 
