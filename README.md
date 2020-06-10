@@ -47,6 +47,10 @@ To build the documentation for the workshop you need to do the following:
 4: Run the release DocBuilder using - "java -jar releases/(which version you want).jar" - the DocBuilder will then tell you what parameters you need to provide. These are workingDirectory (will be created, scaffolded and torn down), manifestFile (it is suggested you copy one of the provided manifests and edit it), gitCloneDirectory (the root directory where you have cloned this repo), outputDirectory (needs to exist in advance)  
 5: Distribute the documentation appropriately  
 
+If you would like to contribute labs there is a guide on how to write them and what to be aware of at https://docs.google.com/document/d/1DwSFGP1SO-1MOfEck6AGDjjU4d2k8YGYmpcMtxhaEZo/edit
+
+All of the Google docs are available in PDF format in the docs/ directory of the repo for those who don't have access to the originals.
+
 ------------------------------------------------------------
 
 When running a remote session it is highly advised to have two additional applications running on the Cluster for communications with the attendees. These are as follows, with instructions on how to set them up:
