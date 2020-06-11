@@ -85,7 +85,7 @@ oc new-app --name simple-rest-app-v2-0 https://github.com/marrober/simpleRest.gi
 
 TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to OpenShift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
 
-.What got added to the project ?
+.What was added to the project ?
 ****
 
 New content was added to the project as a result of the above command specific to the experimental (v2) version of the application.
@@ -96,7 +96,7 @@ New content was added to the project as a result of the above command specific t
 * A running container in a pod
 * A service
 
-The diagram below shows the above and how the relate together.
+The diagram below shows the above and how they relate together.
 
 image::deployment-strategies-2.png[Deployment artefacts]
 ****
