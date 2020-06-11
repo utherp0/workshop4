@@ -9,7 +9,7 @@ spec:
       - name: parameter2
         default: "Default value for parameter 2"
     resources:
-    - name: git-repo-slave
+    - name: git-repo-simple-rest
       type: git
   steps:
     - name: echo-statement-1
