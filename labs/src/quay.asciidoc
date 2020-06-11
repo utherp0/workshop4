@@ -121,10 +121,6 @@ Enter the name of one of the image stream (simplerest) for the repository, selec
 
 Press the left facing arrow on the top left of the screen to go back to the list of repositories.
 
-Select the quay-workshop-userXX organization and you should see the details of the organization as shown below.
-
-image::quay-5.png[Quay organization details]
-
 ==== Granting permissions to repositories
 
 Select the Teams and Membership tab on the left hand side of the screen (2nd icon down). Here you can create new teams and manage the users and permissions of existing teams.
@@ -133,9 +129,7 @@ Create a new team called 'development' (only lower case letters and numbers are 
 
 You will then be prompted to add permissions for the two existing repositories. Select 'Write' permission for both repositories.
 
-When the permissions have been added for the development team you will see the summary for teams and memberships as shown below.
-
-image::quay-6.png[Quay teams and memberships]
+When the permissions have been added for the development team you will see the summary for teams and memberships. 
 
 At this point the development team has no members so click on the link stating '0 members' and add userXX to the team, by typing the user name into the 'add user' field on the right hand side. Press the left pointing arrow at the top left corner to return to the organization and you should see that the development team has 1 member and 2 repositories.
 
@@ -318,7 +312,6 @@ The new repository location is in the format :
 
 <Quay URL address>/<organization>/<repository name> for example :
 
-
 quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-workshop-user23/simplerest
 
 Create the Builah tag command from the information collected above such that it looks similar to the below:
@@ -354,9 +347,7 @@ buildah push quay-b2b3.apps.shared-rhpds.rhpds.openshift.opentlc.com/quay-worksh
 
 ----
 
-Switch to the Quay web user interface. Select the 'tags' view (2nd option down on the repository menu). This will show the tags view similar to that which is shown below.
-
-image::quay-8.png[Quay repository tags view]
+Switch to the Quay web user interface. Select the 'tags' view (2nd option down on the repository menu). 
 
 The tags view shows information on the image tag and the buttons on the right of each line allow the user to select different mechanisms for extracting and manipulating the image.
 

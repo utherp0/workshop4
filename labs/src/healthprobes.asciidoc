@@ -155,7 +155,7 @@ oc set probe dc/node-app-rest --liveness --initial-delay-seconds=30 --failure-th
 
 * Become active after 30 seconds
 * Initiated a reboot after 1 instance of a failure to respond
-* Probe the application every 10 seconds _Note that ordinarily a gap of 10 seconds between probes would be considered very long, but we use this time delay within the workshop to allow time for observing the behaviour of the probe._
+* Probe the application every 10 seconds _Note that ordinarily a gap of 10 seconds between probes would be considered very long, but we use this time delay within the workshop to allow time for observing the behavior of the probe._
 * Use the URL /health on the application at port 8080. Note that there is no need to specify a URL for the application.
 
 *The command line response should be as shown below.*
