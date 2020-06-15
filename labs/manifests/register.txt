@@ -75,6 +75,10 @@ This lab introduces interactions with the Quay image repository from an OpenShif
 4.3
 This lab introduces the developers to the in-browser IDE and facilities offered via CRW on OpenShift
 
+"quarkus", Ally Kouao
+4.3
+This lab introduces Quarkus - a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot - with its amazingly fast boot time and incredibly low RSS memory usage
+
 
 
 
