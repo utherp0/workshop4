@@ -20,9 +20,9 @@ Click on 'Create Project'
 
 Name - ‘sandboxX’ where x is user number
 
-Display Name, Description are labels
+The Display Name and Description components are cosmetic labels and can be left empty. Hit 'Create'
 
-When created click on 'Role Bindings'
+When the project completes creation click on the 'Role Bindings' tab
 
 *By default when you create a Project within OpenShift your user is given administration rights. This allows the user 
 to create any objects that they have rights to create and to change the security and access settings for the project 
