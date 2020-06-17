@@ -32,7 +32,7 @@ oc new-app --name simple-rest-app-v1-0  https://github.com/marrober/simpleRest.g
 oc expose service simple-rest-app-v1-0 --name="simple-rest-app-route"
 ----
 
-.What got created ?
+.What was added to the project ?
 ****
 
 It is important to understand the resources and content that are created by the above commands within OpenShift:
@@ -232,7 +232,7 @@ spec:
     weight: 50
 ----
 
-When satisfied that version 2 is working as required the following command will switch all traffic to that version and will remove the references to version 1 from the route.
+When satisfied that version 2 is working as required the following command will switch all traffic to that version.
 
 [source]
 ----
