@@ -1,0 +1,25 @@
+== Introduction to Metrics and Logging in OpenShift [INTRODUCTION]
+
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
+=== Introduction
+
+This lab intends to introduce the developer to the tools available within OpenShift for logging and debugging applications.
+
+.The OpenShift Approach to Logging and Metric
+****
+OpenShift actually provides three distinct levels of information when it comes to logging:
+
+. Events
+Events are changes to the object model within OpenShift. They relate to the objects stored as part of the state of the applications, i.e. the Pods, the Services, the Routes etc. Events are short-lived; they expire after an hour. They provide a very good indication of issues when the problem is to do with the orchestration of the application in the platform itself.  
+
+. Metrics
+Metrics are the behavioural characteristics of the Containers/Pods themselves. Not the application, but how much CPU, Memory, networking etc the Pods (that contain the application) are consuming. This provides a very good indication of how the orchestrated Pods are behaving, but not the applications within.  
+
+. Logging
+Finally the lowest level information. This is the log output from the actual application running in the Container. The nature of logging is slightly different in a Container orchestration system because you can have *many* applications running with the same name. OpenShift provides a clever mechanism for logging that identifies the application by a set of metadata that relates to the application's existence in the orchestration system as well the application's identity. This means that OpenShift can store the output of many identical applications but the applications can be examined independently.
+****
+
+TIP: The attendee will be using the terminal application created in the pre-requisites step (for command line exercises). It is strongly suggested the attendee uses Chrome or Firefox. All of this lab is done with the terminal.
+
+=== A quick overview of 'oc'

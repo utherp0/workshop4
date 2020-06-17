@@ -16,7 +16,7 @@ An 'object' has a type - i.e. Service, Pod, User, Namesapce and the like. This t
 
 In order for a user to interact with the system, be it OpenShift or Kubernetes, an API is provided that allows you to create, manipulate and remove these objects. But it's very complicated, because of the nature of the systems. 
 
-So, for Kubernetes, there was a command line utility created called 'kubectl'. OpenShift's own command line, 'oc', derives from this utility but adds the extra features, and access to the additional objects that OpenShift offers above and beyond Kubernetes.
+So, for Kubernetes, there is a command line utility created called 'kubectl'. OpenShift's own command line, 'oc', derives from this utility but adds the extra features, and access to the additional objects that OpenShift offers above and beyond Kubernetes.
 
 What we will be doing in this lab is using the oc client to work with OpenShift from a developers perspective. OpenShift provides a number of ways that you can interact with it; for example the Developer UI, the Administration UI, odo. But oc is the most powerful because it exposes the entire set of objects through the RESTful API provided.
 
