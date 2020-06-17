@@ -76,6 +76,27 @@ app.get('/fileappend', function (req,res)
   });
 });
 
+app.get( '/log', function( req,res ) {
+  // Dual function - with no params loop 20 times outputting to console, with param output the param
+  var input = req.query.message;
+
+  if( input == null )
+  {
+    for( loop = 0; loop < 20; loop++ )
+    {
+      console.log( "User requested log messages, count " + loop );
+    }
+
+    res.send( "<b>Logged 20 messages....</b>" );
+    return;
+  }
+
+  // At this point we have a log message
+  console.log( input );
+  res.send( "Logged <b>" + input + "</b>" );
+  return;
+});
+
 app.get( '/envs', function (req,res) {
   res.send( getEnvs() );
 });
