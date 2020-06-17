@@ -309,6 +309,22 @@ NAME                      TYPE   DETAILS
 git-repo-simple-rest-resource   git    url: https://github.com/marrober/simpleRest.git
 ----
 
+To execute task 4 and view the output execute the following commands :
+
+[source]
+----
+oc create -f task-4.yaml 
+oc create -f taskrun-4.yaml 
+tkn taskrun ls
+----
+
+Repeat the final command a few times until task-run-4 has a status of Succeeded. When the task has completed execute the command below to see the output results.
+
+[source]
+----
+tkn taskrun logs task-run-4
+----
+
 The use of pipeline resource objects for git repositories and created images (as output resources) helps teams to create generic build, test and deploy pipelines that can be reused across multiple projects where the projects simply define the custom pipeline resource objects that are specific to their project or environment.
 
 === Workspaces and Volumes
