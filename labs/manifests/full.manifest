@@ -12,6 +12,7 @@ sdn
 rbac
 pvs
 healthprobes
+serverlessserving
 camelk
 camelkocpserverlesseventing
 camelkocpserverlessservice
