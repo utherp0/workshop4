@@ -27,6 +27,9 @@ rm /tmp/*
 RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 && \
 chmod +x /usr/local/bin/odo
 
+RUN curl -sL -o /usr/local/bin/kn https://storage.googleapis.com/knative-nightly/client/latest/kn-linux-amd64 && \
+chmod +x /usr/local/bin/kn
+
 RUN curl -sL -o /tmp/kamelexamples.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-examples-1.0.0-RC2.tar.gz && \
 mkdir /tmp/examples && \
 tar -C /tmp/examples -xf /tmp/kamelexamples.tar.gz --no-same-owner && \
