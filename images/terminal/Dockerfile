@@ -46,6 +46,8 @@ RUN dnf -y install java-1.8.0-openjdk java-11-openjdk java-1.8.0-openjdk-devel w
 
 RUN dnf -y install bash-completion
 
+RUN dnf -y install siege
+
 RUN oc completion bash >>/etc/bash_completion.d/oc_completion
 
 RUN cd /workspace && git clone https://github.com/utherp0/workshop4
