@@ -4,6 +4,7 @@ Title: Domain Solution Architect Team
 ClusterURL: example.manifest.com
 DocumentTitle: OpenShift Innovation Workshop
 ----
+serverlessserving
 camelk
 camelkocpserverlesseventing
 camelkocpserverlessservice
