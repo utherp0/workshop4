@@ -79,7 +79,9 @@ This lab introduces the developers to the in-browser IDE and facilities offered 
 4.3
 This lab introduces Quarkus - a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot - with its amazingly fast boot time and incredibly low RSS memory usage
 
-
+"serverlessserving", Jonny Browning
+4.3
+This lab introduces OpenShift Serverless serving, allowing applications to scale down to zero and spin up when they are requested.
 
 
 
