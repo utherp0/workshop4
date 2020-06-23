@@ -31,6 +31,7 @@ Serverless Eventing with Camel-k on OpenShift
 Pipelines with Tekton on OpenShift  
 Service Mesh on OpenShift  
 Quay, Buildah and Podman
+Building supersonic subatomic Java applications with Quarkus
 OpenShift Serverless Serving
 
 To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).
