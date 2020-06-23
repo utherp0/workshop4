@@ -1,0 +1,82 @@
+---
+# file: main.yml
+#
+# Deploy Elastic search operator
+
+- name: Deploy Elastic search operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/elasticsearch.yaml"
+
+# Deploy Jaeger
+- name: Deploy Jaeger operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/jaeger.yaml"
+
+# Deploy Kiali operator
+- name: Deploy Kiali operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/kiali.yaml"
+
+# Deploy Service mesh operator
+- name: Service mesh operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/servicemesh.yaml"
+
+# Create the istio-system namespace and KnativeServing CRD
+- name: Create istio-system namespace
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/istio-system-namespace.yaml"
+
+- name: pause
+  pause: 
+    minutes: "2"
+
+# Install istio-installation.yaml
+- name: Install istio
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/istio-installation.yaml"
+
+# Wait for Istio to complete its insttallation
+- name: Has Instio completed its install?
+  shell: oc get smcp -n istio-system -o jsonpath="{.items[0].status.annotations.readyComponentCount}"
+  register: istio
+  until: istio.stdout.find("9/9") != -1
+  retries: 100
+  delay: 5
+
+# Log in all the users to ensure there project is created
+- name: Log each user in
+  shell: oc login --username user{{ item }} --password openshift
+  loop: "{{ range(1, usercount + 1) | list }}"
+
+- name: login to Openshift as admin to allocate service mesh role
+  shell: oc login {{ocp_url}} --token={{ocp_login_token}} --insecure-skip-tls-verify
+
+# add role  mesh-user to allow a user to use service mesh
+- name: add mesh-user role to user
+  shell: oc adm policy add-role-to-user -n istio-system --role-namespace istio-system mesh-user user{{ item }}
+  loop: "{{ range(1, usercount + 1) | list }}"

@@ -6,20 +6,79 @@ Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
 This lab intends to introduce the developer to the tools available within OpenShift for logging and debugging applications.
 
-.The OpenShift Approach to Logging and Metric
+.The OpenShift Approach to Logging and Metrics
 ****
 OpenShift actually provides three distinct levels of information when it comes to logging:
 
-. Events
+. *Events*
+
 Events are changes to the object model within OpenShift. They relate to the objects stored as part of the state of the applications, i.e. the Pods, the Services, the Routes etc. Events are short-lived; they expire after an hour. They provide a very good indication of issues when the problem is to do with the orchestration of the application in the platform itself.  
 
-. Metrics
+. *Metrics*
+
 Metrics are the behavioural characteristics of the Containers/Pods themselves. Not the application, but how much CPU, Memory, networking etc the Pods (that contain the application) are consuming. This provides a very good indication of how the orchestrated Pods are behaving, but not the applications within.  
 
-. Logging
+. *Logging* 
+
 Finally the lowest level information. This is the log output from the actual application running in the Container. The nature of logging is slightly different in a Container orchestration system because you can have *many* applications running with the same name. OpenShift provides a clever mechanism for logging that identifies the application by a set of metadata that relates to the application's existence in the orchestration system as well the application's identity. This means that OpenShift can store the output of many identical applications but the applications can be examined independently.
 ****
 
-TIP: The attendee will be using the terminal application created in the pre-requisites step (for command line exercises). It is strongly suggested the attendee uses Chrome or Firefox. All of this lab is done with the terminal.
+This lab will walk you through some examples of using the various mechanisms to observe and fix some problems developers will encounter while developing on OpenShift.
 
-=== A quick overview of 'oc'
+=== Events
+
+As previously stated Events are changes to the object model within OpenShift. In this part of the lab we are going to trigger some events by breaking an application.
+
+The first step is to setup the workspace in which we will be working. In the UI (using the URL provided in the prerequisites) logon to your account, if you haven't already. Then go to the Administrator view (by going to the top left of the menu and selecting Adminstrator).
+
+On the Adminstrator view choose Home/Projects.
+
+Click on 'Create Project'. Set the name to events*X* (replace the X with your user number). Set the Display Name to 'Events Test Project'. Hit create.
+
+Once the Project has created you should be taken to the Project Details tab. Select Home/Events in the left hand menu. The resulting screen should look similar to this:
+
+image::events1.png[Events tab empty]
+
+Click on Home/Events. The resulting screen should look like:
+
+image::events2.png[No events yet]
+
+Now we will add an application to the project. Switch to the Developer view by clicking on Administrator and selecting Developer.
+
+Click on +Add. Choose 'From Catalog'. Enter *node* in the search box. Click on the 'node.js' template (the wording is something like 'Build and run node.js 10').
+
+Click 'Create Application'. In the 'Git Repo URL' textbox enter https://github.com/utherp0/workshop4
+
+Click on 'Advanced Git Options' - you may have to click it twice; removing context from the git repo URL textbox validates the URL (make sure it indicates that the URL is valid, if not check the text given above).
+
+In the Context Dir textbox enter /apps/nodeatomic
+
+Scroll down to the *General* section. Set the 'Application Name' to 'events-app'. Set the 'Name' to 'nodeatomic'
+
+Scroll down to the *Resources* section. Select 'Deployment Config'
+
+Click Create. Leave the application building and switch back to Adminstrator viewpoint (by clicking on Developer at the top left and choosing Developer).
+
+Click on Home/Events. You will see a screen similar to this:
+
+image::events3.png[build happening]
+
+Click on the pause icon at the top of the Events list.
+
+TIP: Events only exist on the system for an hour. You can pause the flow of events to read them by clicking on the pause icon.
+
+Note that the events show the build container being pulled, created, deployed and executed. 
+
+Now in the pulldown box at the top left of the events and set the resource to Build (build.openshift.io/v1). This will filter the events to only ones from that type of resource. The screen should now look like:
+
+image::events4.png[build events only]
+
+Now we are going to Chaos Monkey the application - click on Workloads/Deployment Configs. Select the nodeatomic DC by clicking on the name 'nodeatomic' in the list (there should only be one there).
+
+In the Deployment Config Overview screen click on the YAML tab.
+
+We are going to purposefully break the YAML to generate events showing the application is broken. Scroll down to the template section and find the spec definition (highlighted in the image below).
+
+image::events5.png[highlighted text]
+
+

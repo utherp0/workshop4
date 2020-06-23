@@ -196,6 +196,8 @@ Now you will see the entire object listed in YAML. This is the complete object f
 
 === Using jsonpath to extract specific object values
 
+One of the supported output formats from certain oc commands is 'jsonpath'. This uses the functionally rich XPath syntax to reformat the output. A good introduction to this is available at https://restfulapi.net/json-jsonpath/[https://restfulapi.net/json-jsonpath/]
+
 And this is where the oc command becomes incredibly powerful. Type the following:
 
 [source]

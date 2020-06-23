@@ -4,11 +4,11 @@ Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
 === Introduction
 
-This chapter will introduce the attendee to concepts of deployments and configuration injection using OpenShift Container Platform. 
+This lab will introduce the attendee to concepts of deployments and configuration injection using OpenShift Container Platform. 
 
 TIP: The attendee will be using a browser for interacting with both the OpenShift Container Platform UI and the provided terminal (for command line exercises). It is suggested the attendee uses Chrome or Firefox.
 
-TIP: This chapter follows directly on from the Application Basics one so it is assumed the attendee is logged on to the system and has the applications pre-created. If you are starting at this chapter please repeat the commands from the Application Basics chapter. You should start this chapter with two application running in the project, nodenews and ocpnode
+TIP: This lab follows directly on from the Application Basics one so it is assumed the attendee is logged on to the system and has the applications pre-created. If you are starting at this lab please repeat the commands from the Application Basics lab. You should start this lab with two applications running in the project 'sandbox*X*' (where X is your user number), nodenews and ocpnode
 
 === Introducing Deployment Configurations
 
@@ -57,7 +57,7 @@ Add “  env2: test”
 
 Make sure there is a space between the ':' and the data itself, otherwise it is invalid YAML and the editor will not allow you to save it.
 
-The YAML should look similar to the screenshot below, with your project name instead of sandbox99 and the name you have entered rather than CHANGETHIS.
+The YAML should look similar to the screenshot below, with your project name rather than CHANGETHIS.
 
 image::deployment-4.png[Example Config Map YAML]
 
