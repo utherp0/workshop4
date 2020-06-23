@@ -163,6 +163,13 @@ TIP: OpenShift Container Platform can be installed with two different modes of S
 
 === Controlling Access through Network Policies
 
+.Network Policies
+****
+OpenShift actually provides three distinct levels of information when it comes to logging:Historically OpenShift had two ways of setting up the SDN it used, the first being 'subnet', which made the SDN flat and every namespace/project visible by default to every other one, and 'Multitenant' which isolated every namespace with its own network ID. This was deemed to be too coarse a control, so the concept of 'Network Policies' was created. This allows for rules to be applied to any object within a namespace in terms of ingress and exgress. 
+
+By default when you create a project it is assigned some default policies that mirror the behaviour of the 'Multitenant' configuration, isolating the namespace. In this section we will remove those defaults and create some others to show the capabilities.
+****
+
 Click on 'Network/Network Policies'
 
 For each of the policies listed click on the triple dot icon on the far right and choose ‘Delete Network Policy’.

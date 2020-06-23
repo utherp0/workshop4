@@ -8,4 +8,6 @@
     - deploy_serverless_operator
     - deploy_serverlesseventing_operator
     - deploy_camelk_operator
+    - deploy_service_mesh
+    
     
