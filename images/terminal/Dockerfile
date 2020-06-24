@@ -59,6 +59,7 @@ RUN oc completion bash >>/etc/bash_completion.d/oc_completion
 RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
 RUN chmod -R 777 /workspace/workshop4
+RUN chmod -R 777 /tmp
 
 WORKDIR /workspace
 
