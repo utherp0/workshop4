@@ -49,7 +49,7 @@ Find the URL for the CodeReady Workspaces using the following command :
 
 [source]
 ----
-echo "codeready-codeready."$(oc whoami --show-console=true | cut -d'.' -f2-7)
+echo "codeready-codereadyworkspaces."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 ----
 
 The above command will display a URL which you should copy and paste into a web browser tab.
