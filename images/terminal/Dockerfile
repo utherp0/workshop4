@@ -24,12 +24,6 @@ mv /tmp/kamel /usr/local/bin && \
 chmod +x /usr/local/bin/kamel && \
 rm /tmp/*
 
-RUN curl -sL -o /tmp/kn.tar.gz https://kn-cli-downloads-knative-serving.apps.cluster-devexjun-aaaf.devexjun-aaaf.example.opentlc.com/amd64/linux/kn-linux-amd64.tar.gz && \
-tar -C /tmp -xf /tmp/kn.tar.gz --no-same-owner && \
-mv /tmp/kn /usr/local/bin && \
-chmod +x /usr/local/bin/kn && \
-rm /tmp/*
-
 RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 && \
 chmod +x /usr/local/bin/odo
 
