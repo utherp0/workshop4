@@ -11,7 +11,7 @@ Most Applications require the ability to store information that persists after t
 
 If you have an Application running as a Pod and, say, the Node on which it is running goes down, then OpenShift will automatically recreate it somewhere within the Cluster. This recreation is done from the Image, along with things such as Config Maps and Secrets which can change files in the Container and Environment variables. But the Application cannot change these things, the image containing the filesystem or the provided Config Maps and Secrets.
 
-OpenShift provides the concept of 'Persistent Volumes'. These are filesystems expressed as directories into the Container on creation but actually stored away from teh Container - this means the Application can use the filesystem as with any filesystem but the contents remain in the volume when the Container is removed.
+OpenShift provides the concept of 'Persistent Volumes'. These are filesystems expressed as directories into the Container on creation but actually stored away from the Container - this means the Application can use the filesystem as with any filesystem but the contents remain in the volume when the Container is removed.
 
 This means wherever the Container is hosted within the Cluster it has the Persisted Volume attached, which means that the data in that volume can survive loss of the Application.
 ****
@@ -172,7 +172,7 @@ When the storage is set to RWO this creates a single copy of the storage. This s
 
 This type of storage is *singular* across the Cluster. This means that all copies of the Application will have access to the *same* piece of storage. This is very useful but currently only supported if the storage mechanism is NFS or Azure Disk.
 
-. *Read Only (RWO)*
+. *Read Only (ROX)*
 
 This type of storage is *singular* across the Cluster but is read only. 
 ****
@@ -248,7 +248,7 @@ cd /labs/storage
 cat listing.txt
 ----
 
-The file has survived the removal of the Application. This is the strength anf capabilities offered through Persistent Volumes.
+The file has survived the removal of the Application. This is the strength and capabilities offered through Persistent Volumes.
 
 === Demonstrating the RWO behaviour
 
