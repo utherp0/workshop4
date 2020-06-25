@@ -29,6 +29,13 @@ Name - ‘serverlessX’ where X is your assigned user number
 
 Display Name and Description - doesn't matter
 
+In the terminal window, switch to the new project with this command (replacing X with your assigned user number)
+
+[source]
+----
+oc project serverlessX
+----
+
 === Deploying a serverless application using the Knative CLI
 
 The application we are going to deploy is a simple PHP application. The container image has already been built and is hosted on quay.io.
