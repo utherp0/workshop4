@@ -201,6 +201,11 @@ TIP: One of the Pods will now have the message TEST shown. In all probabilities 
 
 The Cluster you are using for this lab is not enabled for Enterprise logging. If it was developer, depending on RBAC, can make ElasticSearch related searches over aggregated logs for applications. 
 
+==== Cleaning up the lab
+
+Finally, go back to the OpenShift UI. Click on Administrator/Projects. Click on the three dot menu to the far right of your eventsx (where x is your user number) project. Select Delete Project. When prompted type the name of your project.
+
+
 
 
 
