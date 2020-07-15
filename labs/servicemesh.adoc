@@ -32,10 +32,8 @@ The application is called layers and it is a very simple Node JS REST interface 
 
 [source]
 ----
-oc new-project service-mesh-X 
+oc new-project service-mesh-{{USER_ID}}
 ----
-
-(Where X is your user number)
 
 Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods. We will be using some preloaded assets in the Terminal window, so enter the following command to set the context: 
 
@@ -146,7 +144,7 @@ echo "kiali-istio-system."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 
 This command will create the URL for the Kiali system in use within the cluster. Open this URL in a new browser tab.
 
-Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials and then select the blue '1 application' link in the box labelled with your service-mesh-XX project.
+Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials and then select the blue '1 application' link in the box labelled with your service-mesh-{{USER_ID}} project.
 
 On the left hand side of the Kiali screen select 'Graph and you should see a screen similar to that shown below :
 
@@ -211,7 +209,7 @@ Reconfigure layer1 to send messages to layer2 using the command:
 oc apply -f layer1.yaml
 ----
 
-Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-XX project selected and you are viewing the Topology view. You should see the 'layers' application grouping with layer1-v1 and layer2 (with versions v1 and v2) grouped together within the application group. Click on layer1-v1 and you will see on the fly-out window on the right hand side that it has one pod. This pod contains the running application container and the istio sidecar container too. If you select one of the layer 2 applications you will see that it has 2 replica pods as directed by the layer2.yaml deployment file.
+Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping with layer1-v1 and layer2 (with versions v1 and v2) grouped together within the application group. Click on layer1-v1 and you will see on the fly-out window on the right hand side that it has one pod. This pod contains the running application container and the istio sidecar container too. If you select one of the layer 2 applications you will see that it has 2 replica pods as directed by the layer2.yaml deployment file.
 
 In the OpenShift terminal window restart the for loop to start sending http requests to layer1. You should now see that layer1 is sending requests on to layer 2 and you should see the IP address of the nodes on which those two layers are running as shown below. This also shows the distribution of traffic to the different versions of layer2. 
 
@@ -228,7 +226,7 @@ In the OpenShift terminal window restart the for loop to start sending http requ
 
 In most micro-service based applications messages will not conveniently display application versions or IP addresses as in this example application. Consequently Kiali visualization is very important to show what actually happens in the 'real world'.
 
-Switch to the Kiali browser view and select the graph view. Wait until the traffic starts to appear. You may see some extraneous traffic going to nodes that are not in the current project namespaces. These are genuine messages being send to the Istio system to provide the monitoring capability. To hide the unwanted nodes use a filter in the 'Hide' text field at the top of the graph and use a filter of "namespace!=service-mesh-XX". Replace XX with your user number and do not include quote characters.
+Switch to the Kiali browser view and select the graph view. Wait until the traffic starts to appear. You may see some extraneous traffic going to nodes that are not in the current project namespaces. These are genuine messages being send to the Istio system to provide the monitoring capability. To hide the unwanted nodes use a filter in the 'Hide' text field at the top of the graph and use a filter of "namespace!=service-mesh-{{USER_ID}}". Don't include the quote characters.
 
 The Kiali graph view (shown below) is currently displaying the communication into layer 1 and then from layer 1 to layer 2. Layer 2 has a virtual service which is governing the conditions under which layer 2 will get any network traffic such as protocol filtering, path filtering etc. In the absence of a destination rule to govern the flow of traffic a (roughly) 50% - 50% split of traffic is seen between version 1 and version 2 of layer 2. Select "Request percentage" in the second dropdown menu to see the distribution to version 1 and version 2 of layer2. Restart the for loop to send traffic in the terminal window if necessary.
 
@@ -248,7 +246,7 @@ oc create -f layer3.yaml
 
 You will see that four deployments are created for the four different versions of layer3. 
 
-Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-XX project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has six micro-services within it. This is shown below:
+Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has six micro-services within it. This is shown below:
 
 image::service-mesh-08.png[OpenShift topology view of micro-services]
 
@@ -593,11 +591,8 @@ To tidy up the cluster now that the chapter is complete please use the command
 
 [source]
 ----
-oc delete project service-mesh-XX
+oc delete project service-mesh-{{USER_ID}}
 ----
-
-_where XX is your user ID number.
-
 
 
 

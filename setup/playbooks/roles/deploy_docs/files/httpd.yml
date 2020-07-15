@@ -1,0 +1,130 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: devex
+    namespace: docs
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: image.openshift.io/v1
+  namespace: docs
+  kind: ImageStream
+  metadata:
+    namespace: docs
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: labs
+      app.kubernetes.io/component: labs
+      app.kubernetes.io/instance: labs
+    name: httpd-24-centos7
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: centos/httpd-24-centos7
+      from:
+        kind: DockerImage
+        name: centos/httpd-24-centos7
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    namespace: docs
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: labs
+      app.kubernetes.io/component: labs
+      app.kubernetes.io/instance: labs
+    name: labs
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: labs
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deploymentconfig: labs
+      spec:
+        containers:
+        - image: centos/httpd-24-centos7
+          name: labs
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          volumeMounts:
+          - name: labs-volume
+            mountPath: /var/www/html
+          resources: {}
+        volumes:
+        - persistentVolumeClaim:
+            claimName: devex
+          name: labs-volume
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - labs
+        from:
+          kind: ImageStreamTag
+          name: httpd-24-centos7:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    namespace: docs
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: labs
+      app.kubernetes.io/component: labs
+      app.kubernetes.io/instance: labs
+    name: labs
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    selector:
+      deploymentconfig: labs
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}

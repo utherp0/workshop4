@@ -1,5 +1,3 @@
-== OpenShift DO [DEVTOOLS]
-
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
@@ -85,14 +83,12 @@ oc whoami
 odo project list
 ----
 
-This should result in your user name being displayed followed by the sandboxX project being shown by the result to the odo command. If you have deleted your sandbox project recreate it with the command below :
+This should result in your user name being displayed followed by the sandbox_{{USER_ID}} project being shown by the result to the odo command. If you have deleted your sandbox project recreate it with the command below :
 
 [source]
 ----
-oc new-project sandboxXX 
+oc new-project sandbox_{{USER_ID}} 
 ----
-
-where xx is your user ID number.
 
 *If you do need to login to odo outside of this workshop use the 'odo login' command with appropriate parameters*
 
@@ -120,11 +116,10 @@ You will see that the directory only has the source file simpleRest.js and the p
 
 === Create, push source & run cycle
 
-Create a new project using the odo command replacing X with your user number below
 
 [source]
 ----
-odo create nodejs node-app-rest-user-83
+odo create nodejs node-app-rest-{{USER_ID}}
 ----
 
 TIP:The syntax of the above command is 'odo create <component-type> <component-name> --project <project-for-the-component>'
@@ -227,7 +222,7 @@ Finally, let's clean up the project by typing
 
 [source]
 ----
-odo delete node-app-rest-user-83
+odo delete node-app-rest-{{USER_ID}}
 ----
 
 This will delete the application from the project
