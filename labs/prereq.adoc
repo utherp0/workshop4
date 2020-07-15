@@ -1,5 +1,3 @@
-== Workshop Pre-requisites
-
 === Setting up the UI and Terminal
 
 *The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used whenever possible*
@@ -8,15 +6,15 @@ TIP: For a number of the labs you will be interacting with the OpenShift cluster
 
 NOTE: If you leave the Terminal window open for a long time without using it it will disconnect. To reconnect simply refresh the page.
 
-Open the browser and navigate to the console url {webConsoleUrl}[{webConsoleUrl}, window="_blank"]
+Open the browser and navigate to the console url {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"]
 
-Logon using the user provided by the course administrator (user*x* where *x* is a unique number for your session)
+Logon using the user provided by the course administrator ({{USER_ID}})
 
 When logged on you will be presented with a screen listing the projects, of which there are currently none
 
 Hit 'Create Project'
 
-For 'Name' enter terminal*x*, where *x* is the same unique number from your UserID (user*X*)
+For 'Name' enter terminal_{{USER_ID}}
 
 'Display Name' and 'Description' are optional labels
 
@@ -38,11 +36,11 @@ image::prereq-1.png[Selecting the Open URL]
 
 This will open another tab with a command line in it - this is your terminal for the duration of the basic workshop
 
-Switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command' as shown below
+Switch back to the UI and click on the {{USER_ID}} displayed at the top right and select 'Copy Login Command' as shown below
 
-image:prereq-2.png[Selecting Copy Login]
+image::prereq-2.png[Selecting Copy Login]
 
-In the new tab that appears login with your userx (unique number instead of x) and password 'openshift'
+In the new tab that appears login with username {{USER_ID}} and password 'openshift'
 
 Click on 'Display Token'
 

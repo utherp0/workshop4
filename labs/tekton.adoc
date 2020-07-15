@@ -1,5 +1,3 @@
-== OpenShift Pipelines - Tekton [INNOVATION]
-
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
