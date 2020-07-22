@@ -3,12 +3,78 @@
 # OCP login details
 # Please provide the URL for your RHPDS Openshift. 
 # Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
-ocp_url:
+ocp_url: 
 # Please provide an Openshift login token.
 # Either type on the command line "oc whoami -t" to get a token or
 # use the Openshift Console to get one. 
 
-ocp_login_token:
+ocp_login_token: 
 
 # Number of users to setup correctly for Service Mesh
 usercount: 100
+
+# OpenShift console URL
+# e.g. https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
+OPENSHIFT_CONSOLE_URL: 
+
+workshop_manifests:
+  - id: intro
+    title: Introduction and Setup
+    labs:
+      - id: intro
+        title: Introduction
+      - id: prereq
+        title: Workshop Pre-requisites
+  - id: essentials
+    title: OpenShift Essentials
+    labs:
+      - id: applicationbasics
+        title: Application Basics
+      - id: deployments
+        title: Understanding Deployments and Configuration
+      - id: applicationdeploymentstrategies
+        name: Application Deployment Configurations and DevOps Approaches
+      - id: sdn
+        name: Understanding the Software Defined Network
+      - id: rbac
+        name: The RBAC model for Developers
+      - id: pvs
+        name: Understanding Persistent Volumes
+      - id: healthprobes
+        name: Pod Health Probes
+      - id: metrics
+        name: Introduction to Metrics and Logging in OpenShift
+  - id: devtools
+    title: Developer Tools
+    labs:
+      - id: introductiontooc
+        title: Introduction to 'oc'
+      - id: odo
+        title: OpenShift DO (odo)
+      - id: tekton
+        title: OpenShift Pipelines - Tekton
+      - id: quay
+        title: OpenShift and the Quay Image Repository
+      - id: codereadyworkspaces
+        title: CodeReady Workspaces
+  - id: innovation
+    title: OpenShift Innovation
+    labs:
+      - id: serverlessserving
+        title: OpenShift Serverless Serving
+      - id: camelk
+        title: Camel K on OpenShift
+      - id: camelkocpserverlesseventing
+        title: Camel K and OpenShift Serverless Eventing
+      - id: camelkocpserverlessservice
+        title: Camel K and OpenShift Serverless Serving
+      - id: servicemesh
+        title: OpenShift Service Mesh
+      - id: quarkus
+        title: Introduction to Quarkus on OpenShift
+
+extra_urls:
+  - title: Rocket Chat
+    url: <URL OF ROCKET CHAT>
+  - title: Bored? Play the Pod Escape game
+    url: https://podescape.io

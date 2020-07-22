@@ -1,0 +1,282 @@
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
+=== Introduction
+
+This lab will introduce the attendee to concepts of deployments and configuration injection using OpenShift Container Platform. 
+
+TIP: The attendee will be using a browser for interacting with both the OpenShift Container Platform UI and the provided terminal (for command line exercises). It is suggested the attendee uses Chrome or Firefox.
+
+TIP: This lab follows directly on from the Application Basics one so it is assumed the attendee is logged on to the system and has the applications pre-created. If you are starting at this lab please repeat the commands from the Application Basics lab. You should start this lab with two applications running in the project 'sandbox_{{USER_ID}}', nodenews and ocpnode.
+
+=== Introducing Deployment Configurations
+
+Ensure you are on the Administrator View (top level, select 'Administrator')
+Select 'Workloads/Deployment Configs'
+
+image::deployment-1.png[Deployment Configs]
+
+TIP: Observe the information provided on the Deployment Configs screen. DC indicates the Deployment Config by name, NS is the project/namespace, Labels are the OpenShift labels applied to the DC for collating and visualisation, status indicates the active Pod count for the Deployment and pod selector indicates the labels used for the Pods attributed to the Deployment Config.
+
+Click on the 'nodenews' deployment-config
+
+Next to the Pod icon, with the count in it which should be set to two, click on the up arrow twice
+
+image::deployment-2.png[Scaling the Deployment]
+
+TIP: We have told the deployment config to run four replicas. The system now updated the replication controller, whose job is to make sure that x replicas are running healthily, and once the replication controller is updated the system will ensure that number of replicas is running
+
+Click on ‘YAML’
+
+In the YAML find an entry for replicas. It should say 4. Set it to 2, then save.
+
+image::deployment-3.png[Editing the DC YAML]
+
+Click on ‘Deployment Configs’ near the top of the panel.
+
+Select the nodenews deployment config by clicking on the nodenews DC link
+
+Ensure the Pod count is now two
+
+=== Dependency Injection using Config Maps
+
+Click on 'Workloads/Config Maps'
+
+TIP: Config Maps allow you to create groups of name/value pairs in objects that can be expressed into the Applications via the Deployment Configs and can change the file system, environment and behaviour of the Application without having to change the 'image' from whence the Application was created. This is extremely useful for dependency injection without having to rebuild the Application image
+
+Click on ‘Create Config Map’
+
+In the editor change the name: from example to ‘nodenewsconfig’
+
+Delete all of the lines below *data:*
+
+Add “  env1: test”
+
+Add “  env2: test”
+
+Make sure there is a space between the ':' and the data itself, otherwise it is invalid YAML and the editor will not allow you to save it.
+
+The YAML should look similar to the screenshot below, with your project name rather than CHANGETHIS.
+
+image::deployment-4.png[Example Config Map YAML]
+
+Press 'Create'
+
+Go back to the command line tab
+
+Type ‘oc get configmaps’
+
+Type ‘oc describe configmap nodenewsconfig’
+
+Go back to UI, select 'Workloads/Deployment Configs'
+
+Click on the 'nodenews' dc
+
+Click on 'Environment'
+
+In ‘All Values from existing config maps’ select nodenewsconfig from the pulldown on the left and add nodenewsconfig as the prefix in the righthand textbox (labelled PREFIX (OPTIONAL) )
+
+Click 'Save'
+
+Click on 'Workloads/Pods' - if you are quick enough you will see the nodenews Pods being redeployed
+
+*By default when you create a Deployment Config in OpenShift, as part of an Application or as a standalone object via YAML, the Deployment Config will have two distinct triggers for automation. These make the Deployment redeploy when a: the image that the Deployment Config is based on changes in the registry or b: the defined configuration of the Deployment changes via a change to the DC object itself*
+
+TIP: These are default behaviours but can be overridden. They are designed to make sure that the current deployment exactly matches the Images and the definition of the deployment by default.
+
+Click on one of the Pods for 'nodenews'
+
+In the Pod Details page click on 'Terminal'
+
+In the terminal type ‘env | grep nodenewsconfig’
+
+*Note that the env variables from the config map have been expressed within the Pod as env variables (with the nodenewsconfig prefixed)*
+
+image::deployment-5.png[Injected config map environment variables]
+
+Go back to the Terminal tab you created in the pre-requisites. We are going to use some material pre-loaded into the terminal image. Type the following commands in the Terminal tab.:
+
+[source]
+----
+cd /workspace/workshop4/attendee
+cat testfile.yaml
+----
+
+This file is the one to be used. If it, or any of the directories, don't exist, please follow the pre-requisite instructions and recreate the Terminal application.
+
+TIP: All objects in Kubernetes/Openshift can be expressed as yaml and this is a basic configmap for a file. What is very nice about the API and it's object oriented nature is that you can export any object that you have the RBAC rights to view and import them directly back into OpenShift, which is what we will do now with the following commands in the terminal
+
+[source]
+----
+oc create -f testfile.yaml
+oc get configmaps
+----
+
+Go back to the UI, select 'Workloads/Deployment Configs'
+
+Select 'nodenews' dc
+
+Click on 'YAML'
+
+In order to add the config-map as a volume we need to change the container specification within the deployment config.
+
+Find the setting for ‘imagePullPolicy’. Put the cursor to the end of the line. Hit return. Underneath enter:
+
+[source]
+----
+        volumeMounts:
+          - name: workshop-testfile
+            mountPath: /workshop/config
+----
+
+Make sure the indentation is the same as for the ‘imagePullPolicy’.
+
+Now in the ‘spec:’ portion we need to add our config-map as a volume.
+
+Find ‘restartPolicy’. Put the cursor to the end of the line and press return. Underneath enter:
+
+[source]
+----
+     volumes:
+       - name: workshop-testfile
+         configMap:
+           name: testfile
+           defaultMode: 420
+----
+
+Save the deployment config.
+
+Click on 'Workloads/Pods'. Watch the new versions of the nodenews application deploy.
+
+When they finish deploying click on one of the nodenews Pods. Click on 'Terminal'.
+
+In the terminal type:
+
+[source]
+----
+cd /workshop
+ls
+cd config
+----
+
+TIP: Note that we have a new file called ‘app.conf’ in this directory. This file is NOT part of the image that generated the container.
+
+In the terminal type:
+
+[source]
+----
+cat app.conf
+----
+
+*This is the value from the configmap object expressed as a file into the running container.*
+
+In the terminal type:
+
+[source]
+----
+vi app.conf
+----
+
+Press ‘i’ to insert, then type anything. Then press ESC. Then type ‘:wq’
+
+TIP: You will not be able to save it. The file expressed into the Container from the configmap is ALWAYS readonly which ensures
+any information provided via the config map is controlled and immutable.
+
+Type ‘:q!’ to quit out of the editor
+
+=== Dependency Injection of sensitive information using Secrets
+
+*The config map to be written as a file is actually written to the Container Hosts as a file, and then expressed into the running Container as a symbolic link. This is good but can be seen as somewhat insecure because the file is stored 'as-is' on the Container Hosts, where the Containers are executed*
+
+*For secure information, such as passwords, connection strings and the like, OpenShift has the concept of 'Secrets'. These act like config maps 'but' importantly the contents of the secrets are encrypted at creation, encrypted at storage when written to the Container Hosts and then unencrypted only when expressed into the Container, meaning only the running Container can see the value of the secret.*
+
+In the UI select 'Workloads/Secrets'
+
+Click on 'Create'
+
+Choose ‘Key/Value Secret'
+
+For ‘Secret Name’ give ‘nodenewssecret’
+
+Set ‘Key’ to ‘password’
+
+Set ‘Value’ textbox to ‘mypassword’
+
+Click ‘Create’
+
+When created click on the ‘YAML’ box in the Secrets/Secret Details overview
+
+TIP: Note that the type is ‘Opaque’ and the data is encrypted
+
+Click on ‘Add Secret To Workload’
+
+In the ‘Select a workload’ pulldown select the nodenews DC
+
+Ensure the ‘Add Secret As’ is set to Environment Variables
+
+Add the Prefix ‘secret’
+
+Click ‘Save’
+
+Watch the Pods update on the subsequent ‘DC Nodenews’ overview
+
+When they have completed click on ‘Pods’
+
+Choose one of the nodenews running pods, click on it, choose Terminal
+
+In the terminal type ‘env | grep secret’
+
+=== Understanding the Deployment Strategies
+
+Click on 'Workloads/Deployment Configs'
+
+Click on the DC for 'nodenews'
+
+Scale the Application up to four copies using the up arrow next to the Pod count indicator
+
+Once the count has gone to 4 and all the Pods are indicated as healthy (the colour of the Pod ring is blue for all Pods) select Action/Start Rollout.
+
+The DC panel will now render the results of the deployment.
+
+TIP: Deployments can have one of two strategies. This example uses the 'Rolling' strategy which is designed for zero downtime deployments. It works but spinning up a single copy of the new Pod, and when that Pod reports as being healthy only then is one of the old Pods removed. This ensures that at all times the required number of replicas are running healthy with no downtime for the Application itself.
+
+Click on 'Actions/Edit Deployment Config'
+
+Scroll the editor down to the ‘spec:’ tag as shown below
+
+[source]
+----
+spec:
+ strategy:
+   type: Rolling
+   rollingParams:
+----
+
+Change the type: tag of the strategy to Recreate as shown below
+
+[source]
+----
+spec:
+ strategy:
+   type: Recreate
+----
+
+Click on 'Save'
+
+Click on 'Workloads/Deployment Configs', select nodenews dc
+
+Click on ‘Action/Start Rollout’
+
+Watch the colour of the Pod rings as the system carries out the deployment
+
+TIP: In the case of a Recreate strategy the system ensures that NO copies of the old deployment are running simultaneously with the new ones. It deletes all the running Pods, regardless of the required number of replicas, and when all Pods report as being fully deleted it will start spinning up the new copies. This is for a scenario when you must NOT have any users interacting with the old Application once the new one is deployed, such as a security flaw in the old Application
+
+==== Cleaning up
+
+From the OpenShift browser window, click on 'Home' and then 'Projects' on the left hand side menu.
+
+In the triple dot menu next to your own project (sandbox_{{USER_ID}}) select ‘Delete Project’
+Type ‘sandbox_{{USER_ID}}’ such that the Delete button turns red and is active.
+
+Press Delete to remove the project.
+
+

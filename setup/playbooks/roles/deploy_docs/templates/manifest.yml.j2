@@ -1,0 +1,14 @@
+id: "{{ item.id }}"
+name: "{{ item.title }}"
+
+content:
+  url: http://labs:8080/labs
+
+vars:
+  OPENSHIFT_CONSOLE_URL: "https://console-openshift-console.mycluster.com"
+
+modules:
+  activate:
+  {% for lab in item.labs %}
+{{ "- " + lab.id }}
+  {% endfor %}
