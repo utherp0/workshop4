@@ -1,5 +1,3 @@
-== Application Basics [INTRODUCTION]
-
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
 === Introduction
@@ -10,7 +8,7 @@ TIP: The attendee will be using a browser for interacting with both the OpenShif
 
 === Starting up - logging on and creating a project
 
-Log on to cluster at {webConsoleUrl}[{webConsoleUrl}, window="_blank"] as 'userx', where x is the number assigned to you by the course administrator, password 'openshift'
+Log on to cluster at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] as '{{USER_ID}}', password 'openshift'.
 
 Ensure you are on the Administrator View - at the top left of the UI is a selection box which describes the current view selected.
 
@@ -18,7 +16,7 @@ Ensure you are on the Administrator View - at the top left of the UI is a select
 
 Click on 'Create Project'
 
-Name - ‘sandboxX’ where x is user number
+Name - ‘sandbox_{{USER_ID}}’
 
 The Display Name and Description components are cosmetic labels and can be left empty. Hit 'Create'
 
@@ -217,12 +215,10 @@ NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/containe
 
 To explore the command line further execute the following commands and observe the results.
 
-NOTE: Change the X at the end of sandbox to your user number
-
 [source]
 ----
 oc projects
-oc project sandboxX
+oc project sandbox_{{USER_ID}}
 ----
 
 User should now be using the sandboxX project created and configured earlier

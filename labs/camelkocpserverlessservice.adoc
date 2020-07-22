@@ -1,5 +1,3 @@
-== Camel K and OpenShift Serverless Serving [INNOVATION]
-
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 
 === Introduction
@@ -25,7 +23,7 @@ oc whoami
 oc project
 ----
 
-TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
+TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandbox_{{USER_ID}} please repeat the commands in the pre-requisites.
 
 === OpenShift Serverless and the Operator Lifecycle Manager
 
