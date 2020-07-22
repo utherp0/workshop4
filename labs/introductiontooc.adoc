@@ -1,5 +1,3 @@
-== Introduction to 'oc' [INTRODUCTION]
-
 Author: Ian Lawson (feedback to ian.lawson@redhat.com)
 
 === Introduction
@@ -36,11 +34,11 @@ image::ocintro1.png[Correct response from oc]
 
 The oc client works using something called a 'context'. This is a valid login to a target OpenShift system. If the commands do not return the successful output (see above for a similar output) then please repeat the login steps listed in the pre-requisites.
 
-What we are going to do is create a Project to work in. This is equivalent, but not the same as, the Kubernetes 'namespace'. Type the following (remembering to replace the 'x' in the name with your user number):
+What we are going to do is create a Project to work in. This is equivalent, but not the same as, the Kubernetes 'namespace'. Type the following:
 
 [source]
 ----
-oc new-project octestx
+oc new-project octest_{{USER_ID}}
 ----
 
 image::ocintro2.png[Correct response from oc new-project]
@@ -234,11 +232,11 @@ The oc command gives access to *all* the objects available for the logged on Use
 
 === Cleanup the lab
 
-We will finally use the oc command to clean the project. Type the following, replacing the x with your user number (i.e. octest84):
+We will finally use the oc command to clean the project. Type the following:
 
 [source]
 ----
-oc delete project octestx
+oc delete project octest_{{USER_ID}}
 ----
 
 

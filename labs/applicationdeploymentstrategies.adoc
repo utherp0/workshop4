@@ -1,5 +1,3 @@
-== Application Deployment Configurations and DevOps Approaches [ESSENTIALS]
-
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
@@ -20,10 +18,8 @@ To begin the creation of the application use the following commands in an comman
 
 [source]
 ----
-oc new-project simple-rest-X 
+oc new-project simple-rest-{{USER_ID}}
 ----
-
-(Where X is your user number)
 
 [source]
 ----
@@ -37,7 +33,7 @@ oc expose service simple-rest-app-v1-0 --name="simple-rest-app-route"
 
 It is important to understand the resources and content that are created by the above commands within OpenShift:
 
-* A new project is created called simple-rest-X.
+* A new project is created called simple-rest-{{USER_ID}}.
 * A deployment configuration is created called simple-rest-app-v1-0.
 * A replication controller is created associated with the application and the built objects. This defines the scaling of the application in terms of the number of pods and the deployment strategy (rolling or recreate). 
 * A build configuration is created to compile the application source code which is extracted from the associated GIT repository. 
@@ -145,7 +141,7 @@ metadata:
   labels:
     app: simple-rest-app-v1-0
   name: simple-rest-app-route
-  namespace: simple-rest-XX
+  namespace: simple-rest-{{USER_ID}}
   resourceVersion: "884652"
   selfLink: /apis/route.openshift.io/v1/namespaces/simple-rest/routes/simple-rest-app-route
   uid: d4910fef-16b9-11ea-a6c5-0a580a800048
@@ -249,11 +245,11 @@ In this example you will create an application that mirrors that shown above and
 
 ==== Creating the applications
 
-This example uses a common code base to create the specific applications for the above four holiday types. To create the four applications in a single project use the steps below substituting your student number for 'X' so that you get a separate project to other users in the workshop.
+This example uses a common code base to create the specific applications for the above four holiday types. To create the four applications in a single project use the steps below.
 
 [source]
 ----
-oc new-project myholidayX
+oc new-project myholiday_{{USER_ID}}
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
 --name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break 
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
@@ -287,10 +283,10 @@ This will result in a new route being created and the hostname will be displayed
 
 [source]
 ----
-adventure-holiday-myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com
+adventure-holiday-myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com
 ----
 
-The element of the path that we need for the new common hostname is from the .apps part forward, and a new part will be created to replace 'adventure-holiday-myholiday2' based on the project name. A shell script is used to configure the four route creation yaml files which are downloaded from the workshop git repository. If you have not already done so clone the git repository using the command below and then switch directory and examine one of the yaml files.
+The element of the path that we need for the new common hostname is from the .apps part forward, and a new part will be created to replace 'adventure-holiday-myholiday_user2' based on the project name. A shell script is used to configure the four route creation yaml files which are downloaded from the workshop git repository. If you have not already done so clone the git repository using the command below and then switch directory and examine one of the yaml files.
 
 [source]
 ----
@@ -338,7 +334,7 @@ metadata:
     app: adventure-holiday
   name: adventure-route
 spec:
-  host: myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com
+  host: myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com
   path: "/adventure"
   to:
     kind: Service
@@ -377,10 +373,10 @@ An example of the important information from the above command is shown below.
 [source]
 ----
 NAME                  HOST/PORT                                               PATH           SERVICES
-adventure-route       myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /adventure     adventure-holiday
-cruise-route          myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /cruise        cruise-holiday
-package-route         myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /package       package-holiday
-short-holiday-route   myholiday2.apps.cluster-c2d5.c2d5.example.opentlc.com   /short-break   short-holiday
+adventure-route       myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /adventure     adventure-holiday
+cruise-route          myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /cruise        cruise-holiday
+package-route         myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /package       package-holiday
+short-holiday-route   myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /short-break   short-holiday
 ----
 
 Test the routes (copy and paste from your result of the 'oc get routes' command - do not copy the commands below .... ) by accessing the four different holiday types from the common url with the curl commands below. The text responses will show that the correct application is responding to each request.
@@ -397,8 +393,8 @@ curl <common-url>/short-break
 
 From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
 
-In the triple dot menu next to your own project (simple-rest-X) select ‘Delete Project’
-Type ‘simple-rest-X’ (where X is your user number) such that the Delete button turns red and is active.
+In the triple dot menu next to your own project (simple-rest-{{USER_ID}}) select ‘Delete Project’
+Type ‘simple-rest-{{USER_ID}}’ such that the Delete button turns red and is active.
 Press Delete to remove the project.
 
-Repeat the above process for the myholidayX project too.
+Repeat the above process for the myholiday_{{USER_ID}} project too.

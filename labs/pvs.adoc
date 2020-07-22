@@ -1,0 +1,278 @@
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
+=== Introduction
+
+.Persistent Volumes
+****
+Most Applications require the ability to store information that persists after they are gone. With the approach that OpenShift and Kubernetes have to Applications, which is that they should really be able to be destroyed and recreated, this causes some issues.
+
+If you have an Application running as a Pod and, say, the Node on which it is running goes down, then OpenShift will automatically recreate it somewhere within the Cluster. This recreation is done from the Image, along with things such as Config Maps and Secrets which can change files in the Container and Environment variables. But the Application cannot change these things, the image containing the filesystem or the provided Config Maps and Secrets.
+
+OpenShift provides the concept of 'Persistent Volumes'. These are filesystems expressed as directories into the Container on creation but actually stored away from the Container - this means the Application can use the filesystem as with any filesystem but the contents remain in the volume when the Container is removed.
+
+This means wherever the Container is hosted within the Cluster it has the Persisted Volume attached, which means that the data in that volume can survive loss of the Application.
+****
+
+=== Setting up the lab
+
+If you are not already logged on go to the UI URL {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and logon as {{USER_ID}} and password openshift. 
+
+If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
+
+Ensure you are on the Administrator View (top level, select Administrator)
+
+Click on ‘Create Project’
+
+Enter ‘pvtest_{{USER_ID}}’ for the name
+
+Enter ‘PV Test’ for the Display Name and Description
+
+Hit ‘Create’
+
+Switch to the Developer UI (click on Developer in the top left pulldown)
+
+Select ‘From Catalog’
+
+Search for ‘node’
+
+Click on the ‘node.js’ option 
+
+Click ‘Create Application’
+
+Leave the Builder Image Version as ‘10’
+
+Enter the following for the Git Repo URL - ‘https://github.com/utherp0/workshop4’
+
+Click on ‘Show Advanced Git Options’
+
+In Context Dir put ‘/apps/nodeatomic’
+
+In Application Name put ‘nodeatomic’
+
+In Name put ‘nodeatomic’
+
+Scroll down to Resources and click on DeploymentConfig
+
+Click on ‘Create’
+
+When the Topology page appears click on the node Pod to see the information window
+
+image::pvs-1.png[Active Application]
+
+Ensure the build completes correctly - watch the Developer/Topology page until the Pod is dark blue
+
+TIP: What we have done is to create a simple application running in a Pod. We will use this Application to show the power of Persistent Volumes
+
+=== Adding a Persistent Volume to an Application
+
+Ensure you are on the Developer/Topology page. Make sure the DC tab is visible for the Application (if it isn't click on the Node Pod in the Topology tab).
+
+In the DC tab click on the Resources tab. This shows the Pods, Builds, Services and Routes for this Application. You will have one Pod - click on the Pod name in the tab.
+
+In the Pod Details tab click on the Terminal tab. This will start a terminal window
+
+TIP: We are now going to enter commands directly into the Pod itself. The Pod thinks it is an OS; in fact it is a contained file system running on a Worker Node
+
+Type the following into the Terminal window:
+
+[source]
+----
+df -h
+----
+
+You will see a response similar to this:
+
+image::pvs-2.png[df with no pv]
+
+TIP: This command returns all the file mounts that the 'Operating System' has. In this case you will see an 'overlay' filesystem mounted on the root of the Container, at the '/' directory. This is the Container file system, created from the immutable image and now operating as effectively an OS
+
+Now we are going to create a test file in this Container. Type the following into the Terminal window:
+
+[source]
+----
+cd
+pwd
+ls -al > listing.txt
+ls -al listing.txt
+----
+
+What we have done is moved to the home directory (using 'cd'), printed the working directory, listed all the files in that directory and outputted them to a text file, and then confirmed the text file exists.
+
+Now we are going to force the Application to redeploy. Click on 'Topology' in the left hand menu. Click on the node Application to get the DC tab up on the right.
+
+Now click on the Pod name again, which will take you to the Pod Details page. On the far right is a pulldown marked 'Action'. Click on that, and in the pulldown select 'Delete Pod'. When prompted on whether to delete it, click 'Delete' to delete it.
+
+The system will take you the Pods tab and you will see, if you are quick, the Pod deleting and OpenShift instantly recreating it. This is the strength of OpenShift.
+
+Now in the Pods tab click on the name of the new Pod (it will be something like nodeatomic-1-xxxxx). This takes you to the Pod Details for the new Pod. Click on the Terminal tab to get a terminal again.
+
+Now type:
+
+[source]
+----
+cd
+pwd
+ls listing.txt
+----
+
+You will see that the file we created in the Application file space no longer exists
+
+TIP: This is what we described earlier. When the Pod is deleted the new instance can only be created from the Image plus additional files via Config Maps and Secrets. Any state change to the filesystem done by the previous Pod is instantly discarded
+
+Now we will add a Persistent Volume to the Application. To do this we need to change the Deployment Config of the Application - this defines how the Application is orchestrated within OpenShift
+
+Switch to the Administrator viewpoint by clicking on Developer at the top left and select Administrator. Open the Deployment Configs tab by clicking on Workloads/Deployment Configs (not deployments - these are the Kubernetes deployment objects that are a less functional way of deploying an Application).
+
+There should be one DC listed with the name 'nodeatomic'. Click on the name to get the Deployment Config Details tab. This shows the number of active Pods and information about the deployment config
+
+Now select the Action menu at the top right and choose 'Add Storage'
+
+.Persisent Volumes and Persistent Volume Claims
+****
+OpenShift implements storage using three distinct objects:
+
+. *Persistent Volumes (PV)*  
+
+These are the actual physical storage units. With storage providers that don't have dynamic storage provision these units are pre-created and can then be assigned to a deployment config (which represents the Application) using the next object, the Persistent Volume Claim (PVC). When a PV is created, be it in advance or dynamically, you can configure the retention strategy. This is 'retain' or 'delete'. With a 'delete' strategy when *all* references to the PV are removed (i.e. PVCs, deployments and the like) the storage unit is physically deleted. With 'retain' the file contents of the PV remain - this is for the case where you want to remove all of the application footprint from the cluster but want to retain its data for later recreation. In this case the PV remains unbounded.
+
+. *Persistent Volume Claim (PVC)*
+
+When an Application claims a PV (or has one created dynamically) the PVC defines how the PV is expressed into the Application. You can think of this as the configuration for the application's use of the filesystem. The PVC defines, for example. the access mode. This is discussed in detail later in the lab.
+
+. *Storage Class (SC)*
+
+OpenShift administrators and storage providers can setup RBAC defined classes which are a template for creating PVs and PVCs. This is to allow multiple levels of storage types and control who can use them - for instance you could have a 'SLOW' storage class that assigned to less powerful storage and had a fixed size. 
+
+****
+
+Now we will add a PVC to our application - at the 'Add Storage' tab you will see a heading for 'Persistent Volume Claim'. We haven't created a claim so click the select box for 'Create new claim'
+
+The screen should look like this:
+
+image::pvs-4.png[create new claim]
+
+Most of the workshops use AWS so there should be a class called 'gp2'. Leave that selected.
+
+In the Persistent Volume Claim Name type 'nodeatomicclaim'
+
+Now look at the Access Mode. This is very important. With AWS EBS you only have the option of RWO and this should be preselected.
+
+. Persistent Volume Access Modes
+****
+OpenShift supports three distinct modes for storage behaviours and these are very important.
+
+. *Single User (RWO)*
+
+When the storage is set to RWO this creates a single copy of the storage. This storage is assigned and mounted onto the *first* Node where an Application lands - if you have multiple copies of the Application and they are on separate Nodes the first one will get the storage and the subsequent ones will *not* be able to start up. 
+
+. *Shared Access (RWX)*
+
+This type of storage is *singular* across the Cluster. This means that all copies of the Application will have access to the *same* piece of storage. This is very useful but currently only supported if the storage mechanism is NFS or Azure Disk.
+
+. *Read Only (ROX)*
+
+This type of storage is *singular* across the Cluster but is read only. 
+****
+
+Set the size of the PVC to 1GB (enter 1 in the textbox and leave the units as GiB)
+
+Set the Mount Path to '/labs/storage'
+
+TIP: Be very careful with the mount point. You can overwrite existing files and directories in the Container image. If you use subpath you can actually spoof the Container (i.e. inject your own executables). This is a powerful feature by design.
+
+Hit 'Save'
+
+The interface will shift to the Deployment Config Details and a deployment will automatically start. This is because we have physically changed the deployment config and by default OpenShift will automatically redeploy if the configuration of the deployment *or* the image that is used for the deployment are changed
+
+Whilst deploying the screen will look like:
+
+image::pvs-5.png[deployment]
+
+Once the deployment has finished and one Pod is displayed, click on the 'Pods' tab of the Deployment Config Details tab. There should be one pod and it should be called something like 'nodeatomic-2-zzzzz' (the '2' indicates the version of the deployment). Click on the Pod name.
+
+In the Pod Details tab click on the Terminal tab. This opens a Terminal into the new Pod.
+
+Type the following commands:
+
+[source]
+----
+df -h
+----
+
+You should see an extra disk mount. This is the Persistent Volume but as far as the Container is concerned it is now a part of the file system. Type the following commands in the Terminal:
+
+[source]
+----
+cd /labs/storage
+ls -al $HOME > listing.txt
+ls -al
+----
+
+You should see a file having been created. If you look carefully at the output the file should be listed something like this:
+
+[source]
+----
+-rw-r--r--. 1 1000670000 1000670000   903 Jun 25 09:49 listing.txt
+----
+
+This file is owned by the UID for the Container, and the permissions are RW for that UID.
+
+=== Storage surviving Application loss
+
+What we are going to do now is remove the Application. Instead of deleting the Pod, and having OpenShift automatically recreate it, we are going to scale the deployment down to zero replicas, which will get rid of the Application completely.
+
+Switch back to the Developer view (click on Administrator and choose Developer). Make sure the Topology is showing and click on the node Pod. When the Deployment tab appears on the right-hand side, click on the Overview tab.
+
+This displays the overview of the Deployment Config. You will see a representation of the Application shown as a Pod with the number 1 in the middle. Next to the icon are two arrows - these are used to scale up and down the number of replicas. Click on the down arrow and set the replicas for the Application to zero.
+
+image::pvs-6.png[scaled down application]
+
+Click on the Resources tab and make sure there are no Pods running - the message will say 'No Pods found for this resource'.
+
+Now click on Developer and switch back to the Adminstrator view. On the left hand menu click on Storage/Persistent Volume Claims. You will see the PVC is still bound even though we have no replicas of the Application. It remains resident at this point.
+
+Switch back to the Developer view. In the Topology click on the empty node. In the Deployment Config tab click on Overview. You will see the 'scale down' arrow is grayed out because we have no replicas. Scale the count back up to 1 (make sure you only scale to 1 at this point).
+
+When the Pod has started (dark blue circle) click on Resources. You will see a new Pod has spun up (it will have a different set of five letters at the end of the Pod). Click on the Pod name.
+
+When the Pod Details tab appears click on Terminal again.
+
+Type the following commands in the Terminal:
+
+[source]
+----
+cd /labs/storage
+cat listing.txt
+----
+
+The file has survived the removal of the Application. This is the strength and capabilities offered through Persistent Volumes.
+
+=== Demonstrating the RWO behaviour
+
+Click on Topology. Click on the node icon. When the Deployment Config tab appears click on Overview.
+
+Click on the up arrow to scale the Application to two copies. This will *fail*. The second Pod will hang in Pending.
+
+Click on Advanced/Events in the left hand menu. You should see an Event highlighted in red that looks similar to the screen below:
+
+image::pvs-7.png[unable to attach the volume]
+
+The volume is RWO, meaning only one node can have it at once. OpenShift will load balance the Application copies, so it is highly unlikely the two Pods will land on the same node.
+
+NOTE: You *may* get a situation where the two Pods do start. This is when they have both landed on the same Worker node.
+
+Click on Topology. Click on the node icon (it will show one Pod active and one Pod pending). In the Deployment Config tab make sure you are on the Overview tab. Scale the application back to one copy. OpenShift will delete the pending Pod and the Application will return to a single working copy.
+
+=== Summary and clean-up
+
+What you have seen is the creation, assigning and use of a piece of persisted storage within an Application on OpenShift. The concept of PVs is incredibly powerful and useful - for instance you could store sticky session state for an Application in a PV. In fact, a lot of the persisted applications offered on OpenShift, such as databases and the like, use PVs to retain their state. 
+
+To clean-up the lab, switch to Adminstrator view, select Home/Projects. Click on the three dot menu at the far right of the entry for pvtest_{{USER_ID}} and select Delete Project. Confirm deletion by typing the project name when prompted.
+
+
+
+
+
+
+
+

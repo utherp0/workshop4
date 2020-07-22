@@ -1,5 +1,3 @@
-== Camel K and OpenShift Serverless Eventing [INNOVATION]
-
 Author: Phil Prosser (feedback to pprosser@redhat.com)
 
 === Introduction
@@ -29,7 +27,7 @@ oc whoami
 oc project
 ----
 
-TIP: If the response from the commands indicates that you are not userX (where X is your assigned user number) and not using the project sandboxX please repeat the commands in the pre-requisites.
+TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandboxX please repeat the commands in the pre-requisites.
 
 Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
 
@@ -345,7 +343,7 @@ The output should look like :-
 
 [source]
 ----
-No resources found in sandboxX namespace.
+No resources found in sandbox_{{USER_ID}} namespace.
 ----
 
 ==== Install a Kafka Broker using AMQ Streams
@@ -354,7 +352,7 @@ NOTE: AMQ Streams using an Operator to perform all of the administration tasks o
 
 Once the operators are installed, the CRDs become available for you to use through the developer view in the OpenShift console.
 
-In the OpenShift console, make sure you in developer view looking at your sandboxX project.
+In the OpenShift console, make sure you in developer view looking at your sandbox_{{USER_ID}} project.
 
 This should look similar to the screenshot below 
 
@@ -419,7 +417,7 @@ apiVersion: kafka.strimzi.io/v1beta1
 kind: Kafka
 metadata:
   name: my-cluster
-  namespace: sandbox30
+  namespace: sandbox_{{USER_ID}}
 spec:
   kafka:
     version: 2.4.0
@@ -509,15 +507,13 @@ vi mykafkaknative.yaml
 
 Paste the following into the file, ensuring you replace the bootstrapServer with the one you noted above. Please make sure you keep the single quotes in the file.
 
-Replace the 'X' o 'sandbox' with your allocated number
-
 [source]
 ----
 apiVersion: eventing.knative.dev/v1alpha1
 kind: KnativeEventingKafka
 metadata:
   name: knative-eventing-kafka
-  namespace: sandboxX
+  namespace: sandbox_{{USER_ID}}
 spec:
   bootstrapServers: 'replacewithyourbootstrapserver:9092'
   setAsDefaultChannelProvisioner: true

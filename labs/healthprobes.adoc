@@ -1,7 +1,3 @@
-[[healthprobes]]
-
-== Pod Health Probes [ESSENTIALS]
-
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
@@ -32,7 +28,7 @@ Ensure you are on the Administrator View (top level, select Administrator)
 
 Click on 'Create Project'
 
-Name - ‘probesX’ where X is your assigned user number
+Name - ‘probes_{{USER_ID}}’
 
 Display Name - 'Probes'
 
@@ -139,10 +135,8 @@ Click on the arrow on the top right corner of the Pod, or click on the route URL
 
 [source]
 ----
-oc project probesX
+oc project probes_{{USER_ID}}
 ----
-
-(Where X is the number that you used when you created the project)
 
 *To create the probe use the OC command line interface to execute the following command.*
 
@@ -444,8 +438,8 @@ Finally, switch to the application browser page and change the URL to end in /he
 
 From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
 
-In the triple dot menu next to your own project (ProbesX) select ‘Delete Project’
-Type ‘ProbesX’ (where X is your user number) such that the Delete button turns red and is active.
+In the triple dot menu next to your own project (probes_{{USER_ID}}) select ‘Delete Project’
+Type ‘probes_{{USER_ID}}’ such that the Delete button turns red and is active.
 
 Press Delete to remove the project.
 
