@@ -1,18 +1,20 @@
 Facilitator: Mark Roberts
 Email: mroberts@redhat.com
 Title: Senior Solution Architect
-ClusterURL: https://secureether-etherpad.apps.cluster-saintro-673f.saintro-673f.example.opentlc.com/
+ClusterURL: https://console-openshift-console.apps.cluster-july-857d.july-857d.example.opentlc.com/
 DocumentTitle: DevEx Workshop - Essentials+
 ----
 introductiontooc
 applicationbasics
-applicationdeploymentstrategies
 deployments
+applicationdeploymentstrategies
+sdn
+rbac
+pvs
 healthprobes
 odo
 tekton
-pvs
-rbac
-sdn
 servicemesh
+serverlessserving
+quarkus
 ----

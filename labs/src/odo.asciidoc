@@ -120,11 +120,11 @@ You will see that the directory only has the source file simpleRest.js and the p
 
 === Create, push source & run cycle
 
-Create a new project using the odo command replacing X with your user number below
+Create a new project using the odo command replacing X with your user number below.
 
 [source]
 ----
-odo create nodejs node-app-rest-user-83
+odo create nodejs node-app-rest-user-X 
 ----
 
 TIP:The syntax of the above command is 'odo create <component-type> <component-name> --project <project-for-the-component>'
@@ -223,14 +223,14 @@ Refresh the browser window showing the application output and you will see your 
 
 odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
 
-Finally, let's clean up the project by typing
+Finally, let's clean up the project by typing, replacing X with our user number.
 
 [source]
 ----
-odo delete node-app-rest-user-83
+odo delete node-app-rest-user-X
 ----
 
-This will delete the application from the project
+This will delete the application from the project.
 
 
 
