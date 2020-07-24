@@ -148,7 +148,7 @@ Click on the Rocketchat Operator
 
 Click 'Install'
 
-In Installation Mode chamge the target to 'A specific namespace on the cluster'
+In Installation Mode change the target to 'A specific namespace on the cluster'
 
 Select 'chat' in the project pulldown
 

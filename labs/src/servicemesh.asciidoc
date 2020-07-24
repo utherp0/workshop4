@@ -21,7 +21,7 @@ Kiali provides the observability capability to the Red Hat Service Mesh. This en
 ==== Jaeger
 
 Jaeger provides a detailed distributed traffic tracing capability. This shows accurately message interaction and enables teams to understand in detail the sequencing of traffic flow and to identify bottlenecks and weaknesses within the mesh.
-
+ 
 === Using Red Hat Service Mesh
 
 The following workshop steps will show you how to create a service mesh using a simple application. The application communication will work perfectly fine with the use of OpenShift services and routes, and the introduction of the service mesh to provide more capable communication management will have no implications on the application code.
@@ -51,7 +51,7 @@ To add the current project as a service mesh member within the control plane cal
 oc create -f servicemeshmember.yaml
 ----
 
-=== Phase 1 -Initial application
+=== Phase 1 - Initial application
 
 The micro-service based application that you are about to create is very simple and uses a rest interface that can be asked to call another downstream version of itself. This can continue for as many application instances as needed to illustrate the features of the service mesh. 
 
@@ -353,7 +353,7 @@ In the previous test it was seen that there was a 50% - 50% distribution of traf
 
 [source]
 ----
-oc apply -f destination-rule-virtual-service-layer2.yaml
+oc create -f destination-rule-virtual-service-layer2.yaml
 ----
 
 Reconfigure layer2 to send messages to layer3 using the command:
