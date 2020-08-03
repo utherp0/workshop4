@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+
+  roles:
+    - login_ocp
+    - deploy_docs
+    
+    
