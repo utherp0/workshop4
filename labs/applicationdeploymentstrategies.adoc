@@ -1,0 +1,400 @@
+Author: Mark Roberts (feedback to mroberts@redhat.com)
+
+=== Introduction
+
+*DevOps is a much overloaded term that is used to describe a variety of concepts in the creation of modern applications. In a simple definition DevOps is concerned with the interface between development practices used for the creative elements of software engineering and the procedural rigour of operationally running applications in production. Clearly these concepts have different objectives so it is important for teams (whether tasked with development or operations) to have a good understanding of the concepts, objectives and concerns of their counterparts on the other side of the fence.*
+
+*In terms of this workshop it is important to highlight the  capabilities of containerized platforms with respect to the roll out of new versions of applications and how they get introduced to production and to end users. Terms such as blue/green deployments, black and white deployments, A/B deployments and canary deployments are used in various text books on 'DevOps' principles and some of these areas will be used in this chapter of the workshop.*
+
+The activities in this workshop will introduce a new version of a simple application to use in two different manners.
+
+==== Workshop Content
+
+TIP: The application to be used in this workshop is a simple NodeJS REST interface. Version 1 exists on the master branch of the GIT Repository and version 2 exists on the experimental branch.
+
+To begin the creation of the application use the following commands in an command line window. :
+
+==== Creation of version 1
+
+[source]
+----
+oc new-project simple-rest-{{USER_ID}}
+----
+
+[source]
+----
+oc new-app --name simple-rest-app-v1-0  https://github.com/marrober/simpleRest.git
+
+oc expose service simple-rest-app-v1-0 --name="simple-rest-app-route"
+----
+
+.What was added to the project ?
+****
+
+It is important to understand the resources and content that are created by the above commands within OpenShift:
+
+* A new project is created called simple-rest-{{USER_ID}}.
+* A deployment configuration is created called simple-rest-app-v1-0.
+* A replication controller is created associated with the application and the built objects. This defines the scaling of the application in terms of the number of pods and the deployment strategy (rolling or recreate). 
+* A build configuration is created to compile the application source code which is extracted from the associated GIT repository. 
+* The build configuration will create a build instance which includes logs of the build process and a reference to the built image.
+* The newly created image is deployed as a running pod (or pods depending on the number of pods defined in the deployment configuration).
+* A service is created as part of the application creation process. The service endpoints will point to the pod(s) created by the build process. In the case of a rebuild and redeploy operation the service endpoints are updated to point to the new pods in accordance with the deployment strategy of the deployment configuration.
+* The service is then exposed external to the cluster by the creation of a route. The route has a fully qualified domain name for access from machines outside the cluster. 
+
+The diagram below shows the above and how they relate together.
+
+image::deployment-strategies-1.png[Deployment artefacts]
+****
+
+To identify the URL of the route execute the command shown below:
+
+[source]
+----
+oc get route simple-rest-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip\n"}'
+----
+
+This will display a formatted URL with the 'http://' part at the beginning which will be similar to :
+
+\http://simple-rest-app-route-simple-rest.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
+
+To test the application use the command line window to issue a curl command to:
+
+[source]
+----
+curl <url from the above command>
+----
+
+The response should be as shown below (example ip address) :
+
+"10.131.0.114 v1.0"
+
+
+==== Creation of version 2
+
+The development team now wants to introduce an experimental version 2 of the application and introduce it to the users in a number of different ways. The first action is to create the new build process for the experimental version using the command below.
+
+[source]
+----
+oc new-app --name simple-rest-app-v2-0 https://github.com/marrober/simpleRest.git#experimental
+----
+
+TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to OpenShift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
+
+.What was added to the project ?
+****
+
+New content was added to the project as a result of the above command specific to the experimental (v2) version of the application.
+
+* A deployment configuration
+* A replication controller 
+* A build configuration
+* A running container in a pod
+* A service
+
+The diagram below shows the above and how they relate together.
+
+image::deployment-strategies-2.png[Deployment artefacts]
+****
+
+At this point the version 2 application is operational but not accessible externally to the cluster.
+
+=== Blue / Green Deployment
+
+TIP: The benefit of creating the new version of the application alongside the old is that it is quick and easy to migrate users to a new version of the application. It also allows teams to validate that the pods are running correctly.
+
+Switching the route from v1 to v2 involves patching the route to change configuration. Before executing this operation open a new command window and execute the command below to send requests to the route every second. The responses received should all include the ip address of the pod and the version (v1) of the application.
+
+[source]
+----
+for i in {1..1000}; do curl $(oc get route simple-rest-app-route -o jsonpath='{"http://"}{.spec.host}') ; echo ""; sleep 1; done
+----
+
+A series of reports of ip address and version 1 of the application will then start to scroll up the screen. Leave this running.
+
+Switch back to the original command window and execute the command below to patch the route to version 2 of the application.
+
+[source]
+----
+oc patch route/simple-rest-app-route -p '{"spec":{"to":{"name":"simple-rest-app-v2-0"}}}'
+----
+
+Switch back to the command window with the shell script running and you should see the responses have a new ip address and now report v2 of the application. This has completed a migration from the old version of the application to the new.
+
+The details of the route patched by the above command are displayed by the command:
+
+[source]
+----
+oc get route/simple-rest-app-route -o yaml
+----
+
+The output of the above command is shown below, and the nested information from spec -> to -> name is easy to see.
+
+[source]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  creationTimestamp: 2019-12-04T17:16:37Z
+  labels:
+    app: simple-rest-app-v1-0
+  name: simple-rest-app-route
+  namespace: simple-rest-{{USER_ID}}
+  resourceVersion: "884652"
+  selfLink: /apis/route.openshift.io/v1/namespaces/simple-rest/routes/simple-rest-app-route
+  uid: d4910fef-16b9-11ea-a6c5-0a580a800048
+spec:
+  host: simple-rest-app-route-simple-rest.apps.cluster-telf-c8e6.telf-c8e6.example.opentlc.com
+  port:
+    targetPort: 8080-tcp
+  subdomain: ""
+  to:
+    kind: Service
+    name: simple-rest-app-v2-0
+    weight: 100
+  wildcardPolicy: None
+status:
+  ingress:
+  - conditions:
+    - lastTransitionTime: 2019-12-04T17:16:38Z
+      status: "True"
+      type: Admitted
+    host: simple-rest-app-route-simple-rest.apps.cluster-telf-c8e6.telf-c8e6.example.opentlc.com
+    routerCanonicalHostname: apps.cluster-telf-c8e6.telf-c8e6.example.opentlc.com
+    routerName: default
+    wildcardPolicy: None
+----
+
+Before moving to the A/B deployment strategy switch back to version v1 with the command:
+
+[source]
+----
+oc patch route/simple-rest-app-route -p '{"spec":{"to":{"name":"simple-rest-app-v1-0"}}}'
+----
+
+Confirm this has worked in the command window executing the shell script.
+
+=== A/B Deployment
+
+TIP: The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are required.
+
+Gradually migrating traffic from v1 to v2 involves patching the route to change configuration as shown below.
+
+image::deployment-strategies-3.png[Traffic routing]
+
+To migrate 30% of traffic to version 2 execute the following command:
+
+[source]
+----
+oc set route-backends simple-rest-app-route simple-rest-app-v1-0=70 simple-rest-app-v2-0=30
+----
+
+Switch back to the command window running the shell script and after a short wait you will see the occasional report from version 2.
+
+To balance the workload between the two versions execute the following command:
+
+[source]
+----
+oc set route-backends simple-rest-app-route simple-rest-app-v1-0=50 simple-rest-app-v2-0=50
+----
+
+Switch back to the command window running the shell script and after a short wait you will see a more even distribution of calls between versions 1 and 2.
+
+The details of the route patched by the above command are displayed by the command:
+
+[source]
+----
+oc get route/simple-rest-app-route -o yaml
+----
+
+A section of the output of the above command is included below, showing the split of traffic between versions 1 and 2.
+
+[source]
+----
+spec:
+  alternateBackends:
+  - kind: Service
+    name: simple-rest-app-v2-0
+    weight: 50
+  host: simple-rest-app-route-simple-rest.apps.cluster-telf-c8e6.telf-c8e6.example.opentlc.com
+  port:
+    targetPort: 8080-tcp
+  subdomain: ""
+  to:
+    kind: Service
+    name: simple-rest-app-v1-0
+    weight: 50
+----
+
+When satisfied that version 2 is working as required the following command will switch all traffic to that version.
+
+[source]
+----
+oc set route-backends simple-rest-app-route simple-rest-app-v1-0=0 simple-rest-app-v2-0=100
+----
+
+=== URL based routing
+
+Many organizations want to use a common URL for their web sites so that it is easy for users. This is often achieved by pointing a specific URL at an OpenShift cluster route within a global load balancer function, however this is not essential and it is possible to use routes to achieve the same result. Take as an example a holiday company called myholiday.com. The company wishes to sell package holidays, short breaks, cruises and adventure holidays and they create different applications for these purposes. By using a common host name in a series of route it is possible to ensure that traffic flows to the right location, based on the path of the url used. The diagram below shows the descried scenario and how the routes, services and applications work together
+
+image::deployment-strategies-4.png[URL based routing]
+
+In this example you will create an application that mirrors that shown above and you will use a single URL for access to the four different elements of the application. 
+
+==== Creating the applications
+
+This example uses a common code base to create the specific applications for the above four holiday types. To create the four applications in a single project use the steps below.
+
+[source]
+----
+oc new-project myholiday_{{USER_ID}}
+oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
+--name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break 
+oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
+--name=package-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=package
+oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
+--name=cruise-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=cruise
+oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
+--name=adventure-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=adventure
+----
+
+Switch to the web user interface and select the project that you have just created. Then select the topology view from the left hand side developer menu and watch the applications build and deploy. Progress of the build phase can also be tracked using the command :
+
+[source]
+----
+oc get build
+----
+
+When all of the builds are complete the applications will take a few seconds to deploy and then will be ready. 
+
+At this stage the applications have services but they do not have any routes exposing them outside the cluster. Ordinarily users would create a route for each application which would result in a different URL for each. In this activity a common URL is required for all four. 
+
+To identify the cluster specific element of the hostname to use for the route, create a temporary route using the command below. The second command is used to get the hostname for the route.
+
+[source]
+----
+ oc expose service/adventure-holiday
+ oc get route adventure-holiday -o jsonpath='{.spec.host}'
+----
+
+This will result in a new route being created and the hostname will be displayed similar to :
+
+[source]
+----
+adventure-holiday-myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com
+----
+
+The element of the path that we need for the new common hostname is from the .apps part forward, and a new part will be created to replace 'adventure-holiday-myholiday_user2' based on the project name. A shell script is used to configure the four route creation yaml files which are downloaded from the workshop git repository. If you have not already done so clone the git repository using the command below and then switch directory and examine one of the yaml files.
+
+[source]
+----
+git clone https://github.com/utherp0/workshop4.git
+cd workshop4/attendee/myholiday
+cat adventure-route.yaml
+----
+
+The YAML file is shown below :
+
+[source]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: adventure-holiday
+  name: adventure-route
+spec:
+  host: URL
+  path: "/adventure"
+  to:
+    kind: Service
+    name: adventure-holiday
+    weight: 100
+----
+
+The host 'URL' will be replaced by the configure-routes.sh shell script. The path shows /adventure, and a similar path exists in the cruise, package and short-break files to point to their specific paths.
+
+Execute the shell script 'configure-routes.sh' with this command:
+
+[source]
+----
+./configure-routes.sh
+----
+
+Now take another look at adventure-route.yaml, which will be similar to that which is shown below.
+
+[source]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: adventure-holiday
+  name: adventure-route
+spec:
+  host: myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com
+  path: "/adventure"
+  to:
+    kind: Service
+    name: adventure-holiday
+    weight: 100
+----
+
+The host path is now made up of the common element from the project name and the common cluster specific path.
+
+Delete the temporary route used to generate the hostname with the command below.
+
+[source]
+----
+oc delete route/adventure-holiday
+----
+
+Execute the following commands to create the four routes.
+
+[source]
+----
+oc create -f adventure-route.yaml
+oc create -f cruise-route.yaml  
+oc create -f package-route.yaml  
+oc create -f short-break-route.yaml
+----
+
+Examine the new routes using the command :
+
+[source]
+----
+oc get routes
+----
+
+An example of the important information from the above command is shown below.
+
+[source]
+----
+NAME                  HOST/PORT                                               PATH           SERVICES
+adventure-route       myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /adventure     adventure-holiday
+cruise-route          myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /cruise        cruise-holiday
+package-route         myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /package       package-holiday
+short-holiday-route   myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com   /short-break   short-holiday
+----
+
+Test the routes (copy and paste from your result of the 'oc get routes' command - do not copy the commands below .... ) by accessing the four different holiday types from the common url with the curl commands below. The text responses will show that the correct application is responding to each request.
+
+[source]
+----
+curl <common-url>/adventure
+curl <common-url>/cruise
+curl <common-url>/package
+curl <common-url>/short-break
+----
+
+==== Cleaning up
+
+From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
+
+In the triple dot menu next to your own project (simple-rest-{{USER_ID}}) select ‘Delete Project’
+Type ‘simple-rest-{{USER_ID}}’ such that the Delete button turns red and is active.
+Press Delete to remove the project.
+
+Repeat the above process for the myholiday_{{USER_ID}} project too.

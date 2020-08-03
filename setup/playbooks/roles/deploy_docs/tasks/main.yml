@@ -1,0 +1,74 @@
+---
+# file: main.yml
+
+- name: Create docs project
+  k8s:
+    name: docs
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: change to docs project in oc
+  shell: oc project docs
+
+- name: create manifests
+  template:
+    src: "{{ role_path }}/templates/manifest.yml.j2"
+    dest: "{{ role_path }}/files/manifests/{{ item.id }}.yml"
+  loop: "{{ workshop_manifests }}"
+
+- name: Create httpd application
+  k8s:
+    state: present
+    definition: "{{ lookup('file', 'httpd.yml') }}" 
+
+- name: get name of httpd pod
+  shell: oc get pod -l deploymentconfig=labs -o jsonpath="{.items[0].metadata.name}"
+  register: podname
+  retries: 50
+  delay: 5
+  until: podname.rc == 0 # retry while we wait for pods to be created
+
+- name: wait until pod is running
+  shell: oc wait --for=condition=Ready pod/{{ podname.stdout }}
+
+- name: copy lab files into httpd container
+  shell: oc rsync {{ role_path }}/../../../../labs {{ podname.stdout }}:/var/www/html
+
+- name: copy manifest files into httpd container
+  shell: oc rsync {{ role_path }}/files/manifests {{ podname.stdout }}:/var/www/html/manifests
+
+- name: get list of manifest filenames on this machine
+  command: ls {{ role_path }}/files/manifests
+  register: dir_out
+
+- name: Deploy workshopper application
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'workshopper.yml.j2') }}"
+
+- name: Get route to workshopper application
+  shell: "oc get route devex --template='{{ '{{' }} .spec.host {{ '}}' }}'"
+  register: workshopper_route
+
+- name: Create username-distribution project
+  k8s:
+    name: username-distribution
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Deploy username-distribution application
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'username-distribution.json.j2') }}"
+
+- name: change to username-distribution project in oc
+  shell: oc project username-distribution
+
+- name: Get route to username-distribution application
+  shell: "oc get route username-distribution --template='{{ '{{' }} .spec.host {{ '}}' }}'"
+  register: username_route
+
+- debug:
+    msg: "Here is the URL for the starting point: https://{{ username_route.stdout }}"
