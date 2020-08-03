@@ -116,6 +116,7 @@ You will see that the directory only has the source file simpleRest.js and the p
 
 === Create, push source & run cycle
 
+Create a new project using the odo command:
 
 [source]
 ----
@@ -225,7 +226,7 @@ Finally, let's clean up the project by typing
 odo delete node-app-rest-{{USER_ID}}
 ----
 
-This will delete the application from the project
+This will delete the application from the project.
 
 
 
