@@ -28,7 +28,7 @@ Ensure you are on the Administrator View (top level, select Administrator)
 
 Click on 'Create Project'
 
-Name - ‘probes_{{USER_ID}}’
+Name - ‘probes-{{USER_ID}}’
 
 Display Name - 'Probes'
 
@@ -135,7 +135,7 @@ Click on the arrow on the top right corner of the Pod, or click on the route URL
 
 [source]
 ----
-oc project probes_{{USER_ID}}
+oc project probes-{{USER_ID}}
 ----
 
 *To create the probe use the OC command line interface to execute the following command.*
@@ -438,8 +438,8 @@ Finally, switch to the application browser page and change the URL to end in /he
 
 From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
 
-In the triple dot menu next to your own project (probes_{{USER_ID}}) select ‘Delete Project’
-Type ‘probes_{{USER_ID}}’ such that the Delete button turns red and is active.
+In the triple dot menu next to your own project (probes-{{USER_ID}}) select ‘Delete Project’
+Type ‘probes-{{USER_ID}}’ such that the Delete button turns red and is active.
 
 Press Delete to remove the project.
 

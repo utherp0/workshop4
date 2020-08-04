@@ -249,7 +249,7 @@ This example uses a common code base to create the specific applications for the
 
 [source]
 ----
-oc new-project myholiday_{{USER_ID}}
+oc new-project myholiday-{{USER_ID}}
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
 --name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break 
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
@@ -397,4 +397,4 @@ In the triple dot menu next to your own project (simple-rest-{{USER_ID}}) select
 Type ‘simple-rest-{{USER_ID}}’ such that the Delete button turns red and is active.
 Press Delete to remove the project.
 
-Repeat the above process for the myholiday_{{USER_ID}} project too.
+Repeat the above process for the myholiday-{{USER_ID}} project too.
