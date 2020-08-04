@@ -1,0 +1,234 @@
+Author: Ian Lawson (feedback to ian.lawson@redhat.com)
+
+=== Introduction
+
+This lab intends to introduce the developer to the tools available within OpenShift for logging and debugging applications.
+
+.The OpenShift Approach to Logging and Metrics
+****
+OpenShift actually provides three distinct levels of information when it comes to logging:
+
+. *Events*
+
+Events are changes to the object model within OpenShift. They relate to the objects stored as part of the state of the applications, i.e. the Pods, the Services, the Routes etc. Events are short-lived; they expire after an hour. They provide a very good indication of issues when the problem is to do with the orchestration of the application in the platform itself.  
+
+. *Metrics*
+
+Metrics are the behavioural characteristics of the Containers/Pods themselves. Not the application, but how much CPU, Memory, networking etc the Pods (that contain the application) are consuming. This provides a very good indication of how the orchestrated Pods are behaving, but not the applications within.  
+
+. *Logging* 
+
+Finally the lowest level information. This is the log output from the actual application running in the Container. The nature of logging is slightly different in a Container orchestration system because you can have *many* applications running with the same name. OpenShift provides a clever mechanism for logging that identifies the application by a set of metadata that relates to the application's existence in the orchestration system as well the application's identity. This means that OpenShift can store the output of many identical applications but the applications can be examined independently.
+****
+
+This lab will walk you through some examples of using the various mechanisms to observe and fix some problems developers will encounter while developing on OpenShift.
+
+=== Events
+
+As previously stated Events are changes to the object model within OpenShift. In this part of the lab we are going to trigger some events by breaking an application.
+
+The first step is to setup the workspace in which we will be working. In the UI (using the URL provided in the prerequisites) logon to your account, if you haven't already. Then go to the Administrator view (by going to the top left of the menu and selecting Adminstrator).
+
+On the Adminstrator view choose Home/Projects.
+
+Click on 'Create Project'. Set the name to events_{{USER_ID}}. Set the Display Name to 'Events Test Project'. Hit create.
+
+Once the Project has created you should be taken to the Project Details tab. Select Home/Events in the left hand menu. The resulting screen should look similar to this:
+
+image::events1.png[Events tab empty]
+
+Click on Home/Events. The resulting screen should look like:
+
+image::events2.png[No events yet]
+
+Now we will add an application to the project. Switch to the Developer view by clicking on Administrator and selecting Developer.
+
+Click on +Add. Choose 'From Catalog'. Enter *node* in the search box. Click on the 'node.js' template (the wording is something like 'Build and run node.js 10').
+
+Click 'Create Application'. In the 'Git Repo URL' textbox enter https://github.com/utherp0/workshop4
+
+Click on 'Advanced Git Options' - you may have to click it twice; removing context from the git repo URL textbox validates the URL (make sure it indicates that the URL is valid, if not check the text given above).
+
+In the Context Dir textbox enter /apps/nodeatomic
+
+Scroll down to the *General* section. Set the 'Application Name' to 'events-app'. Set the 'Name' to 'nodeatomic'
+
+Scroll down to the *Resources* section. Select 'Deployment Config'.
+
+Click Create. Leave the application building and switch back to Adminstrator viewpoint (by clicking on Developer at the top left and choosing Developer).
+
+Click on Home/Events. You will see a screen similar to this:
+
+image::events3.png[build happening]
+
+Click on the pause icon at the top of the Events list.
+
+TIP: Events only exist on the system for an hour. You can pause the flow of events to read them by clicking on the pause icon.
+
+Note that the events show the build container being pulled, created, deployed and executed. 
+
+Now in the pulldown box at the top left of the events set the resource to Build (build.openshift.io/v1). This will filter the events to only ones from that type of resource. The screen should now look like:
+
+image::events4.png[build events only]
+
+Now click in the pulldown box at the top left of the events. In the textbox where it says 'Select Resource' type 'pod'. From the selection in the pulldown choose 'Pod'. 
+
+Pause the event stream again.
+
+Switch to your terminal app window (the command line interface described in the prerequisites). type the following:
+
+[source]
+----
+oc project events_{{USER_ID}}
+oc get dc
+oc scale dc/nodeatomic --replicas=6
+----
+
+image::events5.png[manually scale]
+
+Switch back to the OpenShift UI. You should still be on the Events tab with the events stream paused. Hit the play icon at the top left of the event stream list. You will notice new events relating to the creation of the new Pods.
+
+The events are short lived and related entirely to the behaviour of the objects within your project, and any project you can see through the RBAC policies applied for you. 
+
+=== Metrics
+
+Metrics are the behavioural statistics for the Containers; each container in the system, within a Pod, generates a consistent stream of metrics that can be viewed and processed by the control plane. 
+
+.OpenShift Container Metrics
+****
+Each Pod outputs three streams of realtime metrics. These are:
+
+. *Memory Usage*
+
+The current memory consumption for the Pod in question. This can be limited by administrators on a Project basis. This is expressed in MiB by default.
+
+. *CPU Usage*
+
+The current CPU consumption for the Pod in question. This can be limited by asministrators on a Project basis. This is expressed in millicores by default.
+
+. *Filesystem*
+
+The current file access consumption. This is expressed in KiB by default.
+****
+
+In the Administration view click on Workloads/Pods. Select the topmost Pod and click on its name. The Pod Details tab will display the current metrics for the Pod. 
+
+image::events6.png[Example Pod metrics]
+
+Now click on Home/Projects. Click on the events_{{USER_ID}} project. Scroll down to the 'Utilization' tab. This shows graphs for the agregated metrics for *all* Pods running in the Project, along with network transfer in/out for the Project and Pod count.
+
+image::events7.png[Aggregated Pod metrics]
+
+As of writing the following examples are in tech preview. On the Utilization tab click directly on the Pod Count graph itself. This will take you to an expanded graph which is a realtime version of the metrics executed by a query. The query is displayed beneath the graph. If you watch the graph it will update periodically.
+
+Switch back to the terminal tab and enter:
+
+[source]
+----
+oc scale dc/nodeatomic --replicas=1
+----
+
+Switch back to OpenShift UI. After a small pause (the metrics are collected over time) the graph should drop to reflect the change in Pod count. 
+
+image::events8.png[pods scaled back]
+
+This Metric functionality is incrdibly powerful and is being further developed for later releases.
+
+=== Logging
+
+Logging is the output of the actual applications themselves. By default OpenShift logs all output of the Application. 
+
+.Handling Application Multiplicity in Logging
+****
+One of the major hurdles when crafting logging for a Container orchestration system is the non-uniqueness of the Application across the estate.
+
+Put simply, you can have one or more copies of the same Application running. In previous systems, such as virtualisation, each application was unique on the hosting mechanism. With Container orchestration this isn't the case.
+
+There was a stack called ELK - ElasticSearch, Logstash and Kibana. ElasticSearch provided the search mechanism which comprised of individual searchable 'documents' which encompassed each log. These were keyed by the Application name. Logstash would take the log from the Application, create the searchable component that was uniquely keyed by the Application name. and then users would apply searches using Kibana.
+
+In a Container orchestration system this wouldn't work as your *multiple* copies of the Application would generate records with the same Application name - imagine you had three copies of Application 'myapp' running and one was generating errors. You wouldn't be able to identify which one because all the logs would be indexed using 'myapp'.
+
+So for OpenShift a new stack was used - the EFK stack. This consists, again, of ElasticSearch for indexing the logs, Kibana for searching them but now uses Fluentd to obtain the logs. What Fluentd does that is different is that the indexable component now has keys based on OpenShift values - which node the application is running on, the Pod name, the Cluster name. This means you can now search and see which exact Pod is throwing the error.
+
+For example, if you had three Pods running 'myapp' you could search for any errors in named Pods, any informational messages from Pods on a given node and the like.
+****
+
+==== Examining Logs using the OCP UI
+
+Switch to the Developer view and then to the topology view. You should have one copy of the Application running (one Pod). Click on the Pod to show the DC tab on the right side of the page. Now click on Resources to list the Pods.
+
+On the Pod icon click the URL icon (top right). This will open another tab with the output of the Application in it. Switch back to the OpenShift interface and click on 'View Logs', situated to the right of the single Pod in the DC tab.
+
+This will present you with the Pod Details page and the log output for this Pod. Switch back to the Application tab, titled 'Node Atomic basic operations'.
+
+Add /log to the end of the URL and hit return. The page should change to a simple webpage that says 'Logged 20 messages....'
+
+Switch back to the OpenShift interface. The log will now have twenty log messages (count 0 to count 19) displayed.
+
+Click on Topology. Click on the Pod to bring up the DC tab. Click on Overview.
+
+We are going to scale the Application to two copies; click on the up arrow displayed next to the Pod indicator *once*. Click on Resources and make sure there are now two copies of the Application running.
+
+==== Examining logs using the oc command
+
+Switch to the Terminal tab. In the terminal tab type the following:
+
+[source]
+----
+oc get pods | grep Running
+----
+
+This will list two Pods running - these are your applications. They will have a name such as nodeatomic-1-xxxxx. 
+
+For each of the Pods type (replace the xxxxx for the five characters at the end of the Pod name):
+
+[source]
+----
+oc logs nodeatomic-1-xxxxx
+----
+
+If you repeat the command for both one of them will have the simple log, the other will have the output of the twenty messages.
+
+Return to the Application tab and change the end of the url from /log to /log?message=TEST
+
+Switch back to the Terminal tab and repeat the 'oc logs' command for both Pods again.
+
+TIP: One of the Pods will now have the message TEST shown. In all probabilities it will be the same one that displayed the twenty log messages - this is because the session in the browser 'sticky' connects to one Pod. 
+
+==== OpenShift Enterprise Logging
+
+The Cluster you are using for this lab is not enabled for Enterprise logging. If it was developer, depending on RBAC, can make ElasticSearch related searches over aggregated logs for applications. 
+
+==== Cleaning up the lab
+
+Finally, go back to the OpenShift UI. Click on Administrator/Projects. Click on the three dot menu to the far right of your events_{{USER_ID}} project. Select Delete Project. When prompted type the name of your project.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
