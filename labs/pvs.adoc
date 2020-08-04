@@ -23,7 +23,7 @@ Ensure you are on the Administrator View (top level, select Administrator)
 
 Click on ‘Create Project’
 
-Enter ‘pvtest_{{USER_ID}}’ for the name
+Enter ‘pvtest-{{USER_ID}}’ for the name
 
 Enter ‘PV Test’ for the Display Name and Description
 
@@ -267,7 +267,7 @@ Click on Topology. Click on the node icon (it will show one Pod active and one P
 
 What you have seen is the creation, assigning and use of a piece of persisted storage within an Application on OpenShift. The concept of PVs is incredibly powerful and useful - for instance you could store sticky session state for an Application in a PV. In fact, a lot of the persisted applications offered on OpenShift, such as databases and the like, use PVs to retain their state. 
 
-To clean-up the lab, switch to Adminstrator view, select Home/Projects. Click on the three dot menu at the far right of the entry for pvtest_{{USER_ID}} and select Delete Project. Confirm deletion by typing the project name when prompted.
+To clean-up the lab, switch to Adminstrator view, select Home/Projects. Click on the three dot menu at the far right of the entry for pvtest-{{USER_ID}} and select Delete Project. Confirm deletion by typing the project name when prompted.
 
 
 
