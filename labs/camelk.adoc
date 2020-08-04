@@ -22,7 +22,7 @@ oc whoami
 oc project
 ----
 
-TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandbox_{{USER_ID}} please repeat the commands in the pre-requisites.
+TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandbox-{{USER_ID}} please repeat the commands in the pre-requisites.
 
 === Camel K and the Operator Lifecycle Manager
 
