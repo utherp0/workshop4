@@ -16,7 +16,7 @@ Select Home/Projects
 
 Click on ‘Create Project’
 
-For the project name give it networktest_{{USER_ID}}
+For the project name give it networktest-{{USER_ID}}
 
 Display Name and Description are optional
 
@@ -68,7 +68,7 @@ image::sdn-1.png[Both Applications Loaded]
 
 Once the applications have created change the mode from Developer to Administrator using the top left selection point
 
-Click on 'Projects'. Select the networktest_{{USER_ID}} project
+Click on 'Projects'. Select the networktest-{{USER_ID}} project
 
 Click on 'Networking/Services'
 
@@ -129,7 +129,7 @@ In the Terminal window type:
 
 [source]
 ----
-curl http://application1.networktest_{{USER_ID}}.svc.cluster.local:8080
+curl http://application1.networktest-{{USER_ID}}.svc.cluster.local:8080
 ----
 
 TIP: And this is the fully qualified version of the Service. by including the namespace/project name we can reach, effectively, any service on the SDN assuming the SDN has been configured to allow that. In this case we are just targeting our own Service from the application Container, now we will try the other application in the namespace.*
@@ -193,7 +193,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
  name: example
- namespace: networktest_{{USER_ID}}
+ namespace: networktest-{{USER_ID}}
 spec:
  podSelector:
    matchLabels:
@@ -232,7 +232,7 @@ TIP: This shows that the Service is prohibited even from Services in its own nam
 
 Click on 'Projects'
 
-On the triple dot icon on the far right for networktest_{{USER_ID}} select ‘Delete Project’
+On the triple dot icon on the far right for networktest-{{USER_ID}} select ‘Delete Project’
 
-In the pop-up enter the name of the project (‘networktest_{{USER_ID}}’) and hit Delete
+In the pop-up enter the name of the project (‘networktest-{{USER_ID}}’) and hit Delete
 

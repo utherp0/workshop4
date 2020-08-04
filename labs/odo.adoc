@@ -83,11 +83,11 @@ oc whoami
 odo project list
 ----
 
-This should result in your user name being displayed followed by the sandbox_{{USER_ID}} project being shown by the result to the odo command. If you have deleted your sandbox project recreate it with the command below :
+This should result in your user name being displayed followed by the sandbox-{{USER_ID}} project being shown by the result to the odo command. If you have deleted your sandbox project recreate it with the command below :
 
 [source]
 ----
-oc new-project sandbox_{{USER_ID}} 
+oc new-project sandbox-{{USER_ID}} 
 ----
 
 *If you do need to login to odo outside of this workshop use the 'odo login' command with appropriate parameters*

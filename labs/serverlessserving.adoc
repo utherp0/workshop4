@@ -23,7 +23,7 @@ Ensure you are on the Administrator View (top level, select Administrator)
 
 Click on 'Create Project'
 
-Name - ‘serverless_{{USER_ID}}’
+Name - ‘serverless-{{USER_ID}}’
 
 Display Name and Description - doesn't matter
 
@@ -31,7 +31,7 @@ In the terminal window, switch to the new project with this command
 
 [source]
 ----
-oc project serverless_{{USER_ID}}
+oc project serverless-{{USER_ID}}
 ----
 
 === Deploying a serverless application using the Knative CLI
@@ -173,5 +173,5 @@ To clean up the resources from this lab, delete the project with this command:
 
 [source]
 ----
-oc delete project serverless_{{USER_ID}}
+oc delete project serverless-{{USER_ID}}
 ----

@@ -14,7 +14,7 @@ In the UI click on 'Home/Projects'
 
 Click on 'Create Project'
 
-For the project name give it rbactest_{{USER_ID}}
+For the project name give it rbactest-{{USER_ID}}
 
 Display Name and Description are optional
 
@@ -70,7 +70,7 @@ Click on the 'System Role Bindings'
 
 image::rbac-3.png[System Role Bindings]
 
-TIP: Note that with the addition of System Role Bindings to the screen we can now see the three Service Accounts also created. Deployer is part of the system:deployers binding, builder is part of the system:image-builders binding and the group of users under system:serviceaccounts:rbactest_{{USER_ID}} have the system:image-pullers binding.
+TIP: Note that with the addition of System Role Bindings to the screen we can now see the three Service Accounts also created. Deployer is part of the system:deployers binding, builder is part of the system:image-builders binding and the group of users under system:serviceaccounts:rbactest-{{USER_ID}} have the system:image-pullers binding.
 
 Click on the (CR) admin Role Ref
 
@@ -84,7 +84,7 @@ Click on 'Create Binding'
 
 Set Name to ‘partneraccess’
 
-Select ‘rbactest_{{USER_ID}}’ from the Namespace pulldown; it should be the only one.
+Select ‘rbactest-{{USER_ID}}’ from the Namespace pulldown; it should be the only one.
 
 *As a user with the admin role within the namespace/project you can add other users with role bindings within your project.*
 
@@ -120,7 +120,7 @@ Click on the DC rbactest
 
 Using the arrows scale the deployment to 4 pods
 
-Click on 'Home/Projects' and select your project (rbactest_{{USER_ID}})
+Click on 'Home/Projects' and select your project (rbactest-{{USER_ID}})
 
 Click on ‘Role Bindings’ in the project overview pane
 
@@ -136,7 +136,7 @@ Click on 'Create Binding'
 
 Set Name to ‘partneraccess’
 
-Choose the ‘rbactest_{{USER_ID}}’ in the Namespace pulldown
+Choose the ‘rbactest-{{USER_ID}}’ in the Namespace pulldown
 
 Select ‘view’ in the Role Name pull down
 
@@ -174,6 +174,6 @@ NOTE: Note that you cannot delete the other persons project.
 
 Hit Cancel
 
-In the triple dot menu next to your own project (rbactest_{{USER_ID}}) select ‘Delete Project’
+In the triple dot menu next to your own project (rbactest-{{USER_ID}}) select ‘Delete Project’
 
-Type ‘rbactest_{{USER_ID}}’ in the message box and press ‘Delete’
+Type ‘rbactest-{{USER_ID}}’ in the message box and press ‘Delete’

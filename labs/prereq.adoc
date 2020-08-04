@@ -14,7 +14,7 @@ When logged on you will be presented with a screen listing the projects, of whic
 
 Hit 'Create Project'
 
-For 'Name' enter terminal_{{USER_ID}}
+For 'Name' enter terminal-{{USER_ID}}
 
 'Display Name' and 'Description' are optional labels
 
