@@ -1,0 +1,46 @@
+config:
+    renderer: asciidoc
+
+modules:
+  intro:
+    name: Introduction
+  prereq:
+    name: Workshop Pre-requisites
+  introductiontooc:
+    name: Introduction to 'oc'
+  applicationbasics:
+    name: Application Basics
+  deployments:
+    name: Understanding Deployments and Configuration
+  applicationdeploymentstrategies:
+    name: Application Deployment Configurations and DevOps Approaches
+  sdn:
+    name: Understanding the Software Defined Network
+  rbac:
+    name: The RBAC model for Developers
+  pvs:
+    name: Understanding Persistent Volumes
+  healthprobes:
+    name: Pod Health Probes
+  metrics:
+    name: Introduction to Metrics and Logging in OpenShift
+  serverlessserving:
+    name: OpenShift Serverless Serving
+  camelk:
+    name: Camel K on OpenShift
+  camelkocpserverlesseventing:
+    name: Camel K and OpenShift Serverless Eventing
+  camelkocpserverlessservice:
+    name: Camel K and OpenShift Serverless Serving
+  odo:
+    name: OpenShift DO (odo)
+  tekton:
+    name: OpenShift Pipelines - Tekton
+  servicemesh:
+    name: OpenShift Service Mesh
+  quay:
+    name: OpenShift and the Quay Image Repository
+  quarkus:
+    name: Introduction to Quarkus on OpenShift
+  codereadyworkspaces:
+    name: CodeReady Workspaces

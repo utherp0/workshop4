@@ -1,0 +1,179 @@
+=== Introduction
+
+*This chapter will introduce the attendee to the concepts around the Role Based Access Control model integrated into OpenShift. This will cover the use of Users, Service Accounts and Permissions.*
+
+NOTE: For the majority of this chapter the attendee will need to pair up with another. If the numbers are odd the presenter should fill the gap of the missing attendee - pair the attendees up before the chapter starts and get them to exchange numbers - your partner's username, and enter this whererever it says PARTNERUSERNAME below.
+
+If you are not already logged on go to the UI URL {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and logon as '{{USER_ID}}' and password openshift. 
+
+If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
+
+Ensure you are on the Administrator View (top level, select Administrator)
+
+In the UI click on 'Home/Projects'
+
+Click on 'Create Project'
+
+For the project name give it rbactest_{{USER_ID}}
+
+Display Name and Description are optional
+
+Click on 'Create'
+
+=== Examining Service Accounts
+
+Once the project has been created, click on 'User Management/Service Accounts'
+
+image::rbac-1.png[List of Service Accounts]
+
+TIP: Service Accounts are effectively virtual users - even though you have logged on when you do anything within the namespace, such as a build or a deployment, the namespace uses a virtual user, with appropriate permissions, to do the actual tasks internally, like pushing a built image to the registry, or pulling an image to start a Container.
+
+*Each project gets a Service Account by default, named default or to give it its full name system:serviceaccount:rbactestx:default (where x is your number). There are also Service Accounts for doing the appropriate actions, such as Builder and Deployer*
+
+*In addition further Service Accounts can be created by the project owner and given additional security details and roles, such as being able to execute Containers as root, or giving Containers specific controlled sec-comp profiles (like changing the Group ID for the process)*
+
+Switch to the Developer view using the top left pulldown
+
+In the Topology Tab click on ‘From Catalog’
+
+In the search box enter ‘node’. Select the Node.js option
+
+Click ‘Create Application’
+
+Default the image to version 10
+
+For the git repo enter ‘https://github.com/utherp0/nodenews’
+
+Set the Application Name to ‘rbac’
+
+Set the Name to ‘rbactest’
+
+In Resources set the deployment to DeploymentConfig
+
+Click 'Create'
+
+Click on the Node pod indicator so the informational panel appears
+
+Watch the build and ensure it completes
+
+Once the build is complete ensure the deployment occurs. The Pod ring will turn dark blue
+
+Switch back to Administrator view using the top left selection point
+
+Click on User Management/Role Bindings
+
+image::rbac-2.png[Admin Role]
+
+TIP: Note that we have one Role Binding shown at the moment, which is for Admin and applies to a kind of 'user' and a subject name of '{{USER_ID}}'. This is the binding of your user to the administration role within the project.
+
+Click on the 'System Role Bindings'
+
+image::rbac-3.png[System Role Bindings]
+
+TIP: Note that with the addition of System Role Bindings to the screen we can now see the three Service Accounts also created. Deployer is part of the system:deployers binding, builder is part of the system:image-builders binding and the group of users under system:serviceaccounts:rbactest_{{USER_ID}} have the system:image-pullers binding.
+
+Click on the (CR) admin Role Ref
+
+*This screen displays ALL the actions, via API, that this role has access to grouped by the API groups. This mapping is what controls what the user can do via the bindings they have.*
+
+=== Adding Role Bindings to your namespace/project
+
+Click on 'User Management/Role Bindings'
+
+Click on 'Create Binding'
+
+Set Name to ‘partneraccess’
+
+Select ‘rbactest_{{USER_ID}}’ from the Namespace pulldown; it should be the only one.
+
+*As a user with the admin role within the namespace/project you can add other users with role bindings within your project.*
+
+Select ‘Admin’ in the Role Name pulldown
+
+Ensure ‘User’ is selected in the radiobox for Subject
+
+Enter ‘userPARTNERUSER’ for the Subject Name
+
+*What we are doing is adding the user you have chosen to pair with as an admin role binding within your project.*
+
+Click 'Create'
+
+Ensure the partner has done the same with your {{USER_ID}}
+
+Click on Home/Projects
+
+*If the partner user has set the role binding appropriately you will now see two projects - your own and the other person's*
+
+Click on the partner’s project (rbactest_PARTNERUSERNAME)
+
+Change to the Developer view using the top left selection point
+
+Ensure you can see the Topology page
+
+Change back to the Administrator view using the top left selection point
+
+Select 'Workloads/Deployment Configs'
+
+Ensure that the ‘rbactest’ DC shown has a Namespace that is the Partner’s project
+
+Click on the DC rbactest
+
+Using the arrows scale the deployment to 4 pods
+
+Click on 'Home/Projects' and select your project (rbactest_{{USER_ID}})
+
+Click on ‘Role Bindings’ in the project overview pane
+
+On the triple dot for ‘partneraccess’ choose ‘Delete’
+
+Confirm deletion in the pop-up message box
+
+=== Giving Users lower levels of permission
+
+Click on 'User Management/Role Bindings'
+
+Click on 'Create Binding'
+
+Set Name to ‘partneraccess’
+
+Choose the ‘rbactest_{{USER_ID}}’ in the Namespace pulldown
+
+Select ‘view’ in the Role Name pull down
+
+Ensure the Subject radiobox is set to ‘User’
+
+In the Subject Name enter the user name for the partner
+
+Click Create
+
+Ensure the partner has done the same with your {{USER_ID}}
+
+Click on 'Home/Projects'
+
+Select the partner project (rbactest_PARTNERUSERNAME)
+
+In the Project overview pane click on Role Bindings
+
+NOTE: You now do not have the appropriate access rights to interact with the role bindings as you only have View access to the target project
+
+Click on 'Workloads/Deployment Config'
+
+Click on the rbactest (DC)
+
+Try and scale down the Pod to one pod
+
+NOTE: View access allows you to see the state of objects but NOT to change them.
+
+Click on 'Home/Projects'
+
+In the triple dot menu next to the rbactest_PARTNERUSERNAME select ‘Delete Project’
+
+Type ‘rbactest_PARTNERUSERNAME’ in the message box and press ‘Delete’
+
+NOTE: Note that you cannot delete the other persons project.
+
+Hit Cancel
+
+In the triple dot menu next to your own project (rbactest_{{USER_ID}}) select ‘Delete Project’
+
+Type ‘rbactest_{{USER_ID}}’ in the message box and press ‘Delete’

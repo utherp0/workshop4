@@ -36,18 +36,14 @@ OpenShift Serverless Serving
 
 To run a workshop request an OpenShift4.3 Workshop via RHPDS. If you do not wish to use RHPDS create a 4.3 Cluster and ensure you create users for the attendees (userx with password openshift).
 
-This is a dynamic version of the Workshop and allows creators to define and setup workshops with any combination of the labs provided. This is done using the
-DocBuilder application provided in source and release format (see releases for the latest build).
-
-High level design document for the DocBuilder including details on how to use it is available at https://docs.google.com/document/d/1AgcLZ5BDKxNt8eYZ_cqanPHzmubescMjCeQUdtunAcw/edit?ts=5ed63004
+This is a dynamic version of the Workshop and allows creators to define and setup workshops with any combination of the labs provided. 
 
 To build the documentation for the workshop you need to do the following:
 
-1: Create an output directory for the documentation - this will be used to deliver the HTML, Images and PDF for the workshop  
-2: Produce a manifest. This manifest defines the workshop. Examples are provided in the labs/manifest directory. The manifest contains configuration information for the course, including Facilitor name, email and title, Cluster URL (the root console address for the OpenShift Cluster) and the title required for the documentation  
-3: If running this yourself you need Maven, the Asciidoc Maven libraries and JAVA (8+) installed on your machine  
-4: Run the release DocBuilder using - "java -jar releases/(which version you want).jar" - the DocBuilder will then tell you what parameters you need to provide. These are workingDirectory (will be created, scaffolded and torn down), manifestFile (it is suggested you copy one of the provided manifests and edit it), gitCloneDirectory (the root directory where you have cloned this repo), outputDirectory (needs to exist in advance)  
-5: Distribute the documentation appropriately  
+1: Edit the variables in setup/playbooks/group_vars/all to setup cluster access for Ansible, choose links for the workshop (e.g. Rocket Chat link, see below), and choose which labs you want to be in the workshop
+2: Change to the setup/playbooks directory
+3: Run the Deploy_Docs.yml playbook - `ansible-playbook Deploy_Docs.yml`
+4: The last task in the playbook will give you the starting point URL
 
 If you would like to contribute labs there is a guide on how to write them and what to be aware of at https://docs.google.com/document/d/1DwSFGP1SO-1MOfEck6AGDjjU4d2k8YGYmpcMtxhaEZo/edit
 
@@ -55,84 +51,7 @@ All of the Google docs are available in PDF format in the docs/ directory of the
 
 ------------------------------------------------------------
 
-When running a remote session it is highly advised to have two additional applications running on the Cluster for communications with the attendees. These are as follows, with instructions on how to set them up:
-
-1: Etherpad
-
-Log on as a Cluster Admin
-
-Create a project using 'oc new-project etherpad'
-
-oc new-app mysql-persistent --param MYSQL_USER=ether --param MYSQL_PASSWORD=ether --param MYSQL_DATABASE=ether --param VOLUME_CAPACITY=4Gi --param MYSQL_VERSION=5.7
-
-Wait until the MySQL pod is running (watch for the deployment to finish)
-
-oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-etherpad/master/etherpad-template.yaml -p DB_USER=ether -p DB_PASS=ether -p DB_DBID=ether -p DB_PORT=3306 -p DB_HOST=mysql -p ADMIN_PASSWORD=secret
-
-Once the etherpad Pod is running, switch back to the UI - go to the project etherpad, Networking/Routes
-
-Click on the Route
-
-Click on 'New Pad'
-
-Remove all text from the Pad
-
-Copy and paste the text below into the pad:
-
--------------------------- (not this line)
-Welcome to OpenShift DevEx Labs
-
-Please choose an untaken username from below and type your name next to it to claim it. Once you have a username you can use the labs.
-
-The labs are reachable at INSERTCLUSTERURL
-
-Documentation for the labs is at INSERTDOCSHERE (add an extra line for the Innovation docs if needed)
-
-Also please join the Rocketchat at INSERTROCKETCHATURL - you will have to create an account. Once there join the #support channel where you can raise any issues or problems with the labs.
-
-user1  
-user2  
-user3  
-user4  
-user5  
-user6  
-user7  
-user8  
-user9  
-user10  
-user11  
-user12  
-user13  
-user14  
-user15  
-user16  
-user17  
-user18  
-user19  
-user20  
-user21  
-user22  
-user23  
-user24  
-user25  
-user26  
-user27  
-user28  
-user29  
-user30  
-  
-[Red Hat]  
-user80  
-user81  
-user82  
-user83  
-user84  
-
---------------------- (not this line)
-
-Change the cluster URL in the Pad to the Cluster URL you are running on.
-
-2: Rocketchat
+When running a remote session it is highly advised to have Rocket Chat running on the Cluster for communication with the attendees. Instructions on how to set them up are as follows:
 
 Log onto the Cluster as a Cluster Admin user
 
@@ -208,4 +127,4 @@ Scroll down and hit create
 
 Copy the 'Location' field (with the https://whatever)
 
-In the short URL generator of your choice use this to get a short URL - this is the landing page for the attendees.
+Copy this into the relevant variable in setup/playbooks/group_vars/all (before you run the playbook)
