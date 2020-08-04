@@ -6,7 +6,7 @@ This lab will introduce the attendee to concepts of deployments and configuratio
 
 TIP: The attendee will be using a browser for interacting with both the OpenShift Container Platform UI and the provided terminal (for command line exercises). It is suggested the attendee uses Chrome or Firefox.
 
-TIP: This lab follows directly on from the Application Basics one so it is assumed the attendee is logged on to the system and has the applications pre-created. If you are starting at this lab please repeat the commands from the Application Basics lab. You should start this lab with two applications running in the project 'sandbox_{{USER_ID}}', nodenews and ocpnode.
+TIP: This lab follows directly on from the Application Basics one so it is assumed the attendee is logged on to the system and has the applications pre-created. If you are starting at this lab please repeat the commands from the Application Basics lab. You should start this lab with two applications running in the project 'sandbox-{{USER_ID}}', nodenews and ocpnode.
 
 === Introducing Deployment Configurations
 
@@ -274,8 +274,8 @@ TIP: In the case of a Recreate strategy the system ensures that NO copies of the
 
 From the OpenShift browser window, click on 'Home' and then 'Projects' on the left hand side menu.
 
-In the triple dot menu next to your own project (sandbox_{{USER_ID}}) select ‘Delete Project’
-Type ‘sandbox_{{USER_ID}}’ such that the Delete button turns red and is active.
+In the triple dot menu next to your own project (sandbox-{{USER_ID}}) select ‘Delete Project’
+Type ‘sandbox-{{USER_ID}}’ such that the Delete button turns red and is active.
 
 Press Delete to remove the project.
 

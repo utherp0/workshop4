@@ -31,7 +31,7 @@ The first step is to setup the workspace in which we will be working. In the UI 
 
 On the Adminstrator view choose Home/Projects.
 
-Click on 'Create Project'. Set the name to events_{{USER_ID}}. Set the Display Name to 'Events Test Project'. Hit create.
+Click on 'Create Project'. Set the name to events-{{USER_ID}}. Set the Display Name to 'Events Test Project'. Hit create.
 
 Once the Project has created you should be taken to the Project Details tab. Select Home/Events in the left hand menu. The resulting screen should look similar to this:
 
@@ -79,7 +79,7 @@ Switch to your terminal app window (the command line interface described in the 
 
 [source]
 ----
-oc project events_{{USER_ID}}
+oc project events-{{USER_ID}}
 oc get dc
 oc scale dc/nodeatomic --replicas=6
 ----
@@ -115,7 +115,7 @@ In the Administration view click on Workloads/Pods. Select the topmost Pod and c
 
 image::events6.png[Example Pod metrics]
 
-Now click on Home/Projects. Click on the events_{{USER_ID}} project. Scroll down to the 'Utilization' tab. This shows graphs for the agregated metrics for *all* Pods running in the Project, along with network transfer in/out for the Project and Pod count.
+Now click on Home/Projects. Click on the events-{{USER_ID}} project. Scroll down to the 'Utilization' tab. This shows graphs for the agregated metrics for *all* Pods running in the Project, along with network transfer in/out for the Project and Pod count.
 
 image::events7.png[Aggregated Pod metrics]
 
@@ -201,7 +201,7 @@ The Cluster you are using for this lab is not enabled for Enterprise logging. If
 
 ==== Cleaning up the lab
 
-Finally, go back to the OpenShift UI. Click on Administrator/Projects. Click on the three dot menu to the far right of your events_{{USER_ID}} project. Select Delete Project. When prompted type the name of your project.
+Finally, go back to the OpenShift UI. Click on Administrator/Projects. Click on the three dot menu to the far right of your events-{{USER_ID}} project. Select Delete Project. When prompted type the name of your project.
 
 
 

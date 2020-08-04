@@ -38,7 +38,7 @@ What we are going to do is create a Project to work in. This is equivalent, but 
 
 [source]
 ----
-oc new-project octest_{{USER_ID}}
+oc new-project octest-{{USER_ID}}
 ----
 
 image::ocintro2.png[Correct response from oc new-project]
@@ -236,7 +236,7 @@ We will finally use the oc command to clean the project. Type the following:
 
 [source]
 ----
-oc delete project octest_{{USER_ID}}
+oc delete project octest-{{USER_ID}}
 ----
 
 

@@ -16,7 +16,7 @@ Ensure you are on the Administrator View - at the top left of the UI is a select
 
 Click on 'Create Project'
 
-Name - ‘sandbox_{{USER_ID}}’
+Name - ‘sandbox-{{USER_ID}}’
 
 The Display Name and Description components are cosmetic labels and can be left empty. Hit 'Create'
 
@@ -218,7 +218,7 @@ To explore the command line further execute the following commands and observe t
 [source]
 ----
 oc projects
-oc project sandbox_{{USER_ID}}
+oc project sandbox-{{USER_ID}}
 ----
 
 User should now be using the sandboxX project created and configured earlier
