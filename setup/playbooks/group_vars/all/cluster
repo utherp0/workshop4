@@ -1,0 +1,13 @@
+# Please provide the URL for your RHPDS Openshift. 
+# Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
+ocp_url: https://c100-e.eu-gb.containers.cloud.ibm.com:32256
+
+
+# Please provide an Openshift login token.
+# Either type on the command line "oc whoami -t" to get a token or
+# use the Openshift Console to get one. 
+ocp_login_token: VmFoRxYOZaA3klj1o9uSFb3VBCU__CIX7dq_9ZfBdp4
+
+# OpenShift console URL
+# e.g. https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
+OPENSHIFT_CONSOLE_URL: https://console-openshift-console.browning-966975-8e403d02da27f23cda259248b817e83d-0000.eu-gb.containers.appdomain.cloud/

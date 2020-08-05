@@ -1,22 +1,3 @@
-#
-# Please note that the oc CLI is required locally to run the playbook.
-# OCP login details
-# Please provide the URL for your RHPDS Openshift. 
-# Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
-ocp_url: 
-# Please provide an Openshift login token.
-# Either type on the command line "oc whoami -t" to get a token or
-# use the Openshift Console to get one. 
-
-ocp_login_token: 
-
-# Number of users to setup correctly for Service Mesh
-usercount: 100
-
-# OpenShift console URL
-# e.g. https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
-OPENSHIFT_CONSOLE_URL: 
-
 workshop_manifests:
   - id: intro
     title: Introduction and Setup
@@ -70,11 +51,5 @@ workshop_manifests:
         title: Camel K and OpenShift Serverless Serving
       - id: servicemesh
         title: OpenShift Service Mesh
-      - id: quarkus
-        title: Introduction to Quarkus on OpenShift
-
-extra_urls:
-  - title: Rocket Chat
-    url: <URL OF ROCKET CHAT>
-  - title: Bored? Play the Pod Escape game
-    url: https://podescape.io
+      # - id: quarkus
+      #   title: Introduction to Quarkus on OpenShift
