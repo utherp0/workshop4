@@ -5,7 +5,7 @@ metadata:
   name: devex
   namespace: docs
 data:
-  WORKSHOPS_URLS: "{{ dir_out.stdout_lines | map('regex_replace', '^(.*)$', 'http://labs:8080/manifests/manifests/\\1') | list | join(',') }}"
+  WORKSHOPS_URLS: "{{ dir_out.stdout_lines | map('regex_replace', '^(.*)$', 'http://labs:8080/\\1') | list | join(',') }}"
   OPENSHIFT_CONSOLE_URL: "{{ OPENSHIFT_CONSOLE_URL }}"
   LOG_TO_STDOUT: "true"
 ---
