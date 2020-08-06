@@ -1,16 +1,16 @@
 apiVersion: v1
 items:
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: devex
-    namespace: docs
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
+# - apiVersion: v1
+#   kind: PersistentVolumeClaim
+#   metadata:
+#     name: devex
+#     namespace: docs
+#   spec:
+#     accessModes:
+#       - ReadWriteOnce
+#     resources:
+#       requests:
+#         storage: 1Gi
 - apiVersion: image.openshift.io/v1
   namespace: docs
   kind: ImageStream
@@ -75,13 +75,13 @@ items:
           - containerPort: 8443
             protocol: TCP
           volumeMounts:
-          - name: labs-volume
+          - name: manifests-volume
             mountPath: /var/www/html
           resources: {}
         volumes:
-        - persistentVolumeClaim:
-            claimName: devex
-          name: labs-volume
+        - configMap:
+            name: manifests
+          name: manifests-volume
     test: false
     triggers:
     - type: ConfigChange
