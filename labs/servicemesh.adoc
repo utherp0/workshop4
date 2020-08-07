@@ -21,7 +21,7 @@ Kiali provides the observability capability to the Red Hat Service Mesh. This en
 ==== Jaeger
 
 Jaeger provides a detailed distributed traffic tracing capability. This shows accurately message interaction and enables teams to understand in detail the sequencing of traffic flow and to identify bottlenecks and weaknesses within the mesh.
-
+ 
 === Using Red Hat Service Mesh
 
 The following workshop steps will show you how to create a service mesh using a simple application. The application communication will work perfectly fine with the use of OpenShift services and routes, and the introduction of the service mesh to provide more capable communication management will have no implications on the application code.
