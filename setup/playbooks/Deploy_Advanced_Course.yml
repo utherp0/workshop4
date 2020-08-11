@@ -9,5 +9,6 @@
     - deploy_serverlesseventing_operator
     - deploy_camelk_operator
     - deploy_service_mesh
+    - deploy_codeready_operator
     
     
