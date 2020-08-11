@@ -8,49 +8,32 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-To get started, access the Che instance and log in using the username and password you’ve been assigned.
+To get started, open your 'crw' project, and open the 'codeready' url.
 
-You will be prompted to update your account information before proceeding, enter the following in the respective fields:
+On the login page, select 'Register'. You will have to register a new user before proceeding. Enter the following in the respective fields:
 
 [source]
 ----
-Username: {{USER_ID}}
+First name: {{USER_ID}}
+Last name: {{USER_ID}}
 Email: {{USER_ID}}@no-reply.com
-First Name: {{USER_ID}}
-Last Name: {{USER_ID}}
+Username: {{USER_ID}}
+Password: openshift
+Confirm password: openshift
 ----
 
-Once you log in, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
+Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
 
-You will now create a Quarkus workspace for you to use. Select the Quarkus tile, then click Create a Custom Workspace on the top right-hand of the page.
+You will now create a Quarkus workspace for you to use. Select the `Custom Workspace` tab.
 
-Ensure that you are on Ready-To-Go-Stack tab.
-
-In the name field, enter the workspace name:
+In the `Workspace Name` field, enter the workspace name:
 
 [source]
 ----
 quarkus-lab
 ----
 
-In the Select Stack field, select the  `Quarkus Tools` option.
-
-In the Projects field, remove the default `getting-started` project.
-
-Next select the `git` tab and enter the following URL in the `git URL` field:
-
-[source]
-----
-https://github.com/akouao/quarkus-lab
-----
-
-Click `add` to save your imported GitHub project selection.
-
-image::quarkus-1.png[Imported GitHub project]
-
-Scroll to the top of the page, and select the Import Devfile tab. Ensure that the URL option is selected.
-
-In the URL field, enter the following devfile URL
+In the `devfile` section, select the 'URL of devfile' field and enter the following devfile URL:
 
 [source]
 ----
@@ -59,7 +42,9 @@ https://raw.githubusercontent.com/akouao/quarkus-lab/devfile/devfile.yaml
 
 NOTE: Devfiles are YAML files that are consumed and transformed into a cloud workspace composed of multiple containers. The devfile can be saved in the root folder of a Git repository, a feature branch of a Git repository, a publicly accessible destination, or as a separate, locally stored artifact.
 
-That's it. Your workspace configuration is complete. Select `Create and Open`.
+That's it. Your workspace configuration is complete. Hit the `Load devfile` button.
+
+image::quarkus-1.png[View of interface with populated workspace name and imported devfile]
 
 After a minute or two, you will be placed in the workspace.
 
@@ -71,7 +56,7 @@ Ready? Let’s go!
 
 ==== Getting Started with Quarkus
 
-In this step, you will create a straightforward application serving a `hello` endpoint. To demonstrate dependency injection, this endpoint uses a `greeting` bean.\
+In this step, you will create a straightforward application serving a `hello` endpoint. To demonstrate dependency injection, this endpoint uses a `greeting` bean.
 
 image::quarkus-2.png[Restful greeting service process]
 
@@ -238,7 +223,7 @@ Go back to the terminal in which you ran the app with `java -jar` and stop the a
 
 TIP: Close all terminal windows, and file windows, except for the "Live Coding" terminal
 
-====== Congratulations!
+===== Congratulations!
 
 You’ve seen how to build a basic app, package it as an executable JAR and start it up very quickly. The JAR file can be used like any other executable JAR file (e.g. running it as-is, packaging as a Linux container, etc.)
 
@@ -353,7 +338,7 @@ TIP: In this case, the hostname is the hostname from the pod the app is running 
 
 Close all terminal windows, and file windows, except for the "Start Live Coding" terminal
 
-====== Congratulations!
+===== Congratulations!
 
 It’s a familiar CDI-based environment for you Enterprise Java developers out there, with powerful mechanisms to reload your code as you type (or very close to realtime).
 
@@ -473,7 +458,7 @@ Go to the Terminal in which you ran the native app and press `CTRL+C` to stop ou
 
 TIP: Close all terminal windows, and file windows, except for the "Start Live Coding" terminal
 
-====== Congratulations!
+===== Congratulations!
 
 You’ve now built a Java application as an executable JAR and a Linux native binary.
 
@@ -578,7 +563,7 @@ image::quarkus-13.png[Name response in Swagger UI]
 
 Pretty handy way to test out your APIs!
 
-====== Congratulations
+===== Congratulations
 
 In this exercise you learned more about the MicroProfile OpenAPI specification and how to use it to do in-place documentation of your RESTful microservice APIs.
 
