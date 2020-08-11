@@ -1,11 +1,5 @@
-apiVersion: template.openshift.io/v1
-kind: Template
-metadata:
-  name: username-distribution
-  annotations:
-    openshift.io/display-name: Username Distribution
-    description: Username distribution app for DevEx course
-objects:
+apiVersion: v1
+items:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -52,7 +46,10 @@ objects:
         containers:
         - env:
           - name: REDIS_PASSWORD
-            value: ${REDIS_PASSWORD}
+            valueFrom:
+              secretKeyRef:
+                key: REDIS_PASSWORD
+                name: redis
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -147,13 +144,16 @@ objects:
           - name: LAB_REDIS_HOST
             value: "redis"
           - name: LAB_REDIS_PASS
-            value: ${REDIS_PASSWORD}
+            valueFrom:
+              secretKeyRef:
+                key: REDIS_PASSWORD
+                name: redis
           - name: LAB_TITLE
             value: "OpenShift Developer Experience Workshop"
           - name: LAB_USER_PREFIX
             value: "user"
           - name: LAB_MODULE_URLS
-            value: "{% for module in workshop_manifests[:-1] %}{{ 'http://' + workshopper_route.stdout + '/workshop/' + module['id'] + '/lab/' + module['labs'][0]['id'] + '?userid=%USERNAME%;' + module['title'] + ',' }}{% endfor %}{{ 'http://' + workshopper_route.stdout + '/workshop/' + workshop_manifests[-1]['id'] + '/lab/' + workshop_manifests[-1]['labs'][0]['id'] + '?userid=%USERNAME%;' + workshop_manifests[-1]['title'] }}"
+            value: "{% for module in workshop_manifests[:-1] %}{{ 'http://' + workshopper_route.result.spec.host + '/workshop/' + module['id'] + '/lab/' + module['labs'][0]['id'] + '?userid=%USERNAME%;' + module['title'] + ',' }}{% endfor %}{{ 'http://' + workshopper_route.result.spec.host + '/workshop/' + workshop_manifests[-1]['id'] + '/lab/' + workshop_manifests[-1]['labs'][0]['id'] + '?userid=%USERNAME%;' + workshop_manifests[-1]['title'] }}"
           - name: LAB_EXTRA_URLS
             value: "{% for extra_url in extra_urls[:-1] %}{{ extra_url['url'] + ';' + extra_url['title'] + ',' }}{% endfor %}{{ extra_urls[-1]['url'] + ';' + extra_urls[-1]['title'] }}"
           - name: LAB_USER_COUNT
@@ -268,11 +268,5 @@ objects:
     resources:
       requests:
         storage: 1Gi
-parameters:
-- name: REDIS_PASSWORD
-  displayName: Redis Password
-  description: Password for redis store
-  generate: expression
-  from: '[a-zA-Z0-9]{16}'
-
-# TODO - put the redis password into a secret
+kind: List
+resources: {}
