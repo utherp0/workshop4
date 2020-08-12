@@ -8,26 +8,15 @@
     kind: Namespace
     state: present
 
-- name: change to docs project in oc
-  shell: oc project docs
-
-- name: create manifests
-  template:
-    src: "{{ role_path }}/templates/manifest.yml.j2"
-    dest: "{{ role_path }}/files/manifests/{{ item.id }}.yml"
-  loop: "{{ workshop_manifests }}"
-
-- name: create configMap from manifests
-  shell: "oc create configmap manifests --from-file={{ role_path }}/files/manifests"
+- name: create configMaps from manifests
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'manifestConfigMap.yml.j2') }}"
 
 - name: Create httpd application
   k8s:
     state: present
     definition: "{{ lookup('file', 'httpd.yml') }}" 
-
-- name: get list of manifest filenames on this machine
-  command: ls {{ role_path }}/files/manifests
-  register: dir_out
 
 - name: Deploy workshopper application
   k8s:
@@ -35,8 +24,34 @@
     definition: "{{ lookup('template', 'workshopper.yml.j2') }}"
 
 - name: Get route to workshopper application
-  shell: "oc get route devex --template='{{ '{{' }} .spec.host {{ '}}' }}'"
+  k8s:
+    kind: Route
+    namespace: docs
+    name: devex
   register: workshopper_route
+
+- name: check if redis secret already exists
+  k8s_info:
+    api_version: v1
+    kind: Secret
+    name: redis
+    namespace: username-distribution
+  register: redis_secret
+
+- name: generate random redis secret
+  k8s:
+    state: present
+    namespace: username-distribution
+    definition:
+      apiVersion: v1
+      data:
+        REDIS_PASSWORD: "{{ lookup('password', '/dev/null length=15') | b64encode }}"
+      kind: Secret
+      metadata:
+        creationTimestamp: null
+        name: redis
+  when: redis_secret.resources | length == 0
+
 
 - name: Create username-distribution project
   k8s:
@@ -45,20 +60,18 @@
     kind: Namespace
     state: present
 
-- name: change to username-distribution project in oc
-  shell: oc project username-distribution
-
-- name: create project template locally from jinja template
-  template:
-    src: "{{ role_path }}/templates/username-distribution.yml.j2"
-    dest: "{{ role_path }}/files/username-distribution.yml"
-
 - name: Deploy username-distribution application
-  shell: "oc new-app --file={{ role_path }}/files/username-distribution.yml"
+  k8s:
+    state: present
+    namespace: username-distribution
+    definition: "{{ lookup('template', 'username-distribution.yml.j2') }}"
 
 - name: Get route to username-distribution application
-  shell: "oc get route username-distribution --template='{{ '{{' }} .spec.host {{ '}}' }}'"
-  register: username_route
+  k8s:
+    kind: Route
+    namespace: username-distribution
+    name: username-distribution
+  register: username_routes
 
 - debug:
-    msg: "Here is the URL for the starting point: https://{{ username_route.stdout }}"
+    msg: "Here is the URL for the starting point: https://{{ username_routes.result.spec.host }}"
