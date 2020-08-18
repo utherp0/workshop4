@@ -25,10 +25,18 @@
 
 - name: Get route to workshopper application
   k8s:
+    api_version: route.openshift.io/v1
     kind: Route
     namespace: docs
     name: devex
   register: workshopper_route
+
+- name: Create username-distribution project
+  k8s:
+    name: username-distribution
+    api_version: v1
+    kind: Namespace
+    state: present
 
 - name: check if redis secret already exists
   k8s_info:
@@ -52,14 +60,6 @@
         name: redis
   when: redis_secret.resources | length == 0
 
-
-- name: Create username-distribution project
-  k8s:
-    name: username-distribution
-    api_version: v1
-    kind: Namespace
-    state: present
-
 - name: Deploy username-distribution application
   k8s:
     state: present
@@ -71,6 +71,7 @@
     kind: Route
     namespace: username-distribution
     name: username-distribution
+    api_version: route.openshift.io/v1
   register: username_routes
 
 - debug:
