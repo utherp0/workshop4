@@ -185,7 +185,7 @@ Go to Network/Network Policies
 
 Click on ‘Create Network Policy’
 
-Enter the following - remember to change YOURNUMBERHERE to your user number
+Enter the following:
 
 [source]
 ----
