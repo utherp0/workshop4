@@ -162,6 +162,8 @@ items:
             value: "{{ username_app_user_pass }}"
           - name: LAB_ADMIN_PASS
             value: "{{ username_app_admin_pass }}"
+          - name: LAB_DURATION_HOURS
+            value: "1y"
           imagePullPolicy: IfNotPresent
           name: username-distribution
           ports:
