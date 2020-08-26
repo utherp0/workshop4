@@ -50,7 +50,7 @@
 
 # Wait for CodeReady to be ready before continuing
 - name: Has CodeReady Workspaces CheCluster been deployed?
-  shell: oc get checluster codeready-workspaces -n crw -o jsonpath="{.status.cheClusterRunning}"
+  shell: oc get CheCluster codeready-workspaces -n crw -o jsonpath="{.status.cheClusterRunning}"
   register: coderw
   until: coderw.stdout.find("Available") != -1
   retries: 50
@@ -66,4 +66,4 @@
     wait: yes
 
 - name: Import Quarkus Stack image
-  shell: "oc import-image --all quarkus-stack -n openshift"
+  shell: oc import-image --all quarkus-stack -n openshift
