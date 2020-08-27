@@ -33,7 +33,7 @@
     state: present
     src: "{{ role_path }}/files/crwoperator.yaml"
 
-- name: pause
+- name: Wait for CRW Operator to deploy
   wait_for:
     path: "{{ role_path }}/files/crwoperator.yaml"
     state: present
@@ -53,10 +53,10 @@
   shell: oc get CheCluster codeready-workspaces -n crw -o jsonpath="{.status.cheClusterRunning}"
   register: coderw
   until: coderw.stdout.find("Available") != -1
-  retries: 50
-  delay: 10
+  retries: 500
+  delay: 5
 
-- name: Verify that the Quarkus image yaml file exists
+- name: Verify that quarkus stack object is created
   k8s:
     api_key: "{{ ocp_login_token }}"
     host: "{{ ocp_url }}"
@@ -66,4 +66,4 @@
     wait: yes
 
 - name: Import Quarkus Stack image
-  shell: oc import-image --all quarkus-stack -n openshift
+  shell: oc import-image --all quarkus-stack -n crw
