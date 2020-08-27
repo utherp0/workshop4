@@ -25,7 +25,8 @@ Introduction to Deployments and Builds in OpenShift
 Introduction to DevOps Approaches  
 Introduction to the Software Defined Network from a dev perspective  
 Introduction to the OpenShift RBAC model from a dev perspective  
-Introduction to Persistent Volumes  
+Introduction to Persistent Volumes
+Introduction to Quarkus
 Camel-k on OpenShift  
 Serverless Eventing with Camel-k on OpenShift  
 Pipelines with Tekton on OpenShift  
