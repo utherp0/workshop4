@@ -3,12 +3,11 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: quarkus-stack
-  namespace: openshift
+  namespace: crw
 spec:
   tags:
   - annotations:
       description: Quarkus stack for Java and CodeReady Workspaces
-      iconClass: icon-java
       supports: java
       tags: builder,java
       version: "2.1"
