@@ -98,11 +98,11 @@ Camel K has detected that OpenShift Serverless is installed and automatically de
 
 TIP:: The next set of instructions will only be possible if Knative Serving hasn't already scaled the pod back to zero. If you do not see any running pods then please move on to the section title "Knative in action"  
 
-At the time of writing, there is no easy way to view the pod log files of a knative service in the console, so in the Developer view click on Advanced/Project Details and select Workloads. The interface should look like:
+To view the logs for the integration, click any where inside the "dotted lines"
 
 image::camekknativeserving-2.png[Viewing overview of running Integration]
 
-For the greetings integration, you should see a '1 or 1 pods' on the right hand side. Click on it.
+Click on 'View Logs'
 
 You should see a screen similar to the one below
 
@@ -146,8 +146,6 @@ curl -m 60 URLFROMABOVE/camel/greetings/YOURNAMEHERE
 ----
 
 After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing.
-
-At the time of writing, the inital start up time issue is known to engineering and is documented in the Red Hat documentation. A fix for this will be coming in a future release. Please remember that Knative serving is still in Tech Preview
 
 image::camekknativeserving-7.png[Knative serving started]
 
