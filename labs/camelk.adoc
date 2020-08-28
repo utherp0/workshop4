@@ -100,7 +100,7 @@ NOTE: The first time you deploy an Integration, it will take a few minutes. The 
 
 To see what is going on go to the console UI in the Browser, make sure you are switched to 'Developer view'
 
-Click on 'Advanced/Project Details'
+Click on 'Project'
 
 If your screen is wide enough the Activity pane will appear on the right hand side. If not, scroll down to the 'Activity' pane - this shows the events and actions currently occuring within the project. It will look similar to this:
 
@@ -241,7 +241,7 @@ Go back to the browser terminal that’s outputting the log, press ‘ctrl c’
 
 Look at the Topology view in the Openshift console(or 'oc get integrations' in the terminal) 
 
-The integration should have been deleted and no Pods should now be running (other than the Terminal pod), just like a developer would see by pressing 'ctrl c' on a Java application running on their laptop
+The integration should have been deleted and no Pods should now be running, just like a developer would see by pressing 'ctrl c' on a Java application running on their laptop (other than the Terminal pod - if you have the terminal app, and the integraion in the same project)
 
 Close down one of the terminal window tabs so you only have one terminal and the OpenShift console
 
