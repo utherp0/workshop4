@@ -8,23 +8,23 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-To get started, open your 'crw' project, and open the 'codeready' url.
+To get started, open your `crw` project, and open the CodeReady url.
 
-On the login page, select 'Register'. You will have to register a new user before proceeding. Enter the following in the respective fields:
+On the login page, select `Register`. You will have to register a new user before proceeding. Enter the following in the respective fields:
 
 [source]
 ----
-First name: {{USER_ID}}
-Last name: {{USER_ID}}
-Email: {{USER_ID}}@no-reply.com
-Username: {{USER_ID}}
+First name: user{{USER_ID}}
+Last name: user{{USER_ID}}
+Email: user{{USER_ID}}@no-reply.com
+Username: user{{USER_ID}}
 Password: openshift
 Confirm password: openshift
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
 
-You will now create a Quarkus workspace for you to use. Select the `Custom Workspace` tab.
+You will now create a Quarkus workspace to use. Select the `Custom Workspace` tab.
 
 In the `Workspace Name` field, enter the workspace name:
 
@@ -42,13 +42,15 @@ https://raw.githubusercontent.com/akouao/quarkus-lab/devfile/devfile.yaml
 
 NOTE: Devfiles are YAML files that are consumed and transformed into a cloud workspace composed of multiple containers. The devfile can be saved in the root folder of a Git repository, a feature branch of a Git repository, a publicly accessible destination, or as a separate, locally stored artifact.
 
-That's it. Your workspace configuration is complete. Hit the `Load devfile` button.
+Hit the `Load devfile` button to ensure that the configuration is loaded.
+
 
 image::quarkus-1.png[View of interface with populated workspace name and imported devfile]
 
-After a minute or two, you will be placed in the workspace.
 
-Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`, `Preview README.md` and `Quarkus Tools for Eclipse Theia`.
+That's it. Your workspace configuration is complete. Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+
+Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
 
 TIP: If things get weird, you can simply reload the browser tab to refresh the view.
 
@@ -58,11 +60,15 @@ Ready? Let’s go!
 
 In this step, you will create a straightforward application serving a `hello` endpoint. To demonstrate dependency injection, this endpoint uses a `greeting` bean.
 
+
 image::quarkus-2.png[Restful greeting service process]
+
 
 You can see icons on the left for navigating between project explorer, search and other plugins. You’ll use these during the course of this workshop. Feel free to click on them and see what they do:
 
+
 image::quarkus-3.png[Workspace icons on the left pane]
+
 
 Many features of CodeReady Workspaces are accessed via Commands. You can see a few of the commands listed with links on the home page (e.g. New File.., Git Clone.., and others).
 
@@ -70,15 +76,19 @@ TIP: If you ever need to run commands that you don’t see in a menu, you can pr
 
 ===== Locate the project
 
+What you will discover in this section includes:
+
 * The Maven structure
 * An `org.acme.rest.GreetingResource` resource exposed on `/hello`, along with a simple test
 * A landing page that is accessible on http://localhost:8080 after starting the application
 * The application configuration file
 * Other source files we’ll use later
 
-Navigate to `src` → `main` → `java` → `org.acme.rest` in the project tree and double click on `GreetingResource.java`:
+Click on the project explorer icon on the left panel. Navigate to `quarkus-lab` → `getting-started` → `src` → `main` → `java` → `org.acme.rest` in the project tree and double click on `GreetingResource.java`:
+
 
 image::quarkus-4.png[GreetingResource.java location]
+
 
 This class has a very simple RESTful endpoint definition:
 
@@ -102,13 +112,17 @@ TIP: Compared to vanilla JAX-RS, with Quarkus there is no need to create an Appl
 
 Live Coding (also referred to as dev mode) allows us to run the app and make changes on the fly. Quarkus will automatically re-compile and reload the app when changes are made. This is a powerful and efficient style of developing that you will use throughout the lab.
 
-You can always use the `mvn` (Maven) commands to run Quarkus apps, but we’ve created a few helpful shortcuts on the right to run various Maven commands.
+You can always use the `mvn` (Maven) commands to run Quarkus apps, but we’ve created a few helpful shortcuts under the `quarkus-tools` subheading on the right - by cliking the cube icon - to run various Maven commands.
+
+TIP: The location of the various Maven commands will be referred to as quarkus-tools from now on.
 
 Start the app by clicking on Start Live Coding in quarkus-tools:
 
 TIP: You only need to click the button once.
 
+
 image::quarkus-5.png[Selection of Live Coding Button]
+
 
 This will compile and run the app using `mvn compile quarkus:dev` in a Terminal window. Leave this terminal window open throughout the lab! You will complete the entire lab without shutting down Quarkus Live Coding mode, so be careful not to close the tab (if you do, you re-run it). This is very useful for quick experimentation.
 
@@ -125,13 +139,19 @@ Note the amazingly fast startup time! The app is now running "locally" (within t
 
 CodeReady will also detect that the Quarkus app opens port `5005` (for debugging) and `8080` (for web requests). Do NOT open port `5005`, but when prompted, open the port 8080, which opens a small web browser in CodeReady:
 
+TIP: Close all pop-up dialog boxes that appear on the bottom right of your screen.
+
+
 image::quarkus-6.png[Dialog box for port 8080]
+
 
 You should see the default Quarkus welcome page on the right-hand side of your workspace (you may need to click the reload icon).
 
 Open a new CodeReady Workspaces Terminal:
 
+
 image::quarkus-7.png[Selection of New Nerminal button]
+
 
 and invoke the hello endpoint using the following curl command:
 
@@ -140,32 +160,33 @@ and invoke the hello endpoint using the following curl command:
 curl http://localhost:8080/hello
 ----
 
-You can also click on the URL link labelled `web-development` on the right to open the same default page in a separate browser tab.
+You can also click on the URL link labelled `web-development` - located in quarkus-tools - in a separate browser tab.
 
 Add `/hello` to the URL in your browser to see the same result as the curl command.
 
 image::quarkus-8.png[Hello endpoint in browser]
 
-Now, let’s exercise the live reload capabilities of Quarkus. In CodeReady, open the `GreetingResource.java` file (in `src/main/java/org/acme/rest`) remove the line `return "hello"` in the editor. Now insert the line `“return hola"`. 
+
+Now, let’s exercise the live reload capabilities of Quarkus. In CodeReady, open the `GreetingResource.java` file (in `src/main/java/org/acme/rest`) remove the line `return "hello";` in the editor. Now insert the line `“return hola";`. 
 
 After making this change, reload the same browser tab that was showing `hello`.
 
 As you may have guessed from the red squigglies earlier, an error has occurred. One common complaint from Java developers is that the most meaningful information about the stack is displayed last on the terminal. Fortunately with Quarkus, the order is reversed; you see the meaningful information right away!
 
-Here, we can see that the error states `"return hola"` is not a statement.
+Here, we can see that the error states that line 19 `"return hola"` is not a statement.
 
-Return to `GreetingResource.java` file (in `src/main/java/org/acme/rest`) file. Change
+Return to `GreetingResource.java` file (in `src/main/java/org/acme/rest`) file. Change:
 
 [source]
 ----
-"return hola"
+"return hola";
 ----
 
 to
 
 [source]
 ----
-return "hola"
+return "hola";
 ----
 
 TIP: Pay careful attention to where you put the quotation marks this time!
@@ -178,7 +199,19 @@ TIP: `quarkus:dev` runs Quarkus in development mode. This enables live reload wi
 
 TIP: This will also listen for a debugger on port `5005`. If you want to wait for the debugger to attach before running you can pass `-Ddebug` on the command line. If you don’t want the debugger at all you can use `-Ddebug=false`.
 
-Open the `GreetingResource.java` file (in `src/main/java/org/acme/rest`) and return `return "hola"`; back to to `return "hello"`; in the editor.
+Open the `GreetingResource.java` file (in `src/main/java/org/acme/rest`) and return:
+
+[source]
+----
+return "hola;
+----
+
+to
+
+[source]
+----
+return "hello";
+----
 
 ===== Package the Application
 
@@ -186,15 +219,17 @@ Quarkus apps can be packaged as an executable JAR file or a native binary. We’
 
 Click on `Package Application` in quarkus-tools.
 
-This produces an executable jar file in the `target/` directory:
+This produces an executable jar file in the `quarkus-lab` → `getting-started` → `target` directory:
+
 
 image::quarkus-9.png[Produced .jar file in /target directory]
 
-`getting-started-1.0-SNAPSHOT-runner.jar` - being an executable jar. Be aware that it’s not an über-jar as the dependencies are copied into the `target/lib` directory.
+
+`getting-started-1.0.0-SNAPSHOT-runner.jar` - being an executable jar. Be aware that it’s not an über-jar as the dependencies are copied into the `target/lib` directory.
 
 ===== Running the executable JAR
 
-Run the packaged application. In a Terminal, run the following command:
+Run the packaged application. In a Terminal - which you can open in quarkus-tools - run the following command:
 
 [source]
 ----
@@ -203,7 +238,7 @@ java -Dquarkus.http.port=8081 -jar $CHE_PROJECTS_ROOT/quarkus-lab/getting-starte
 
 TIP: We use -Dquarkus.http.port=8081 to avoid conflicting with port 8080 used for Live Coding mode
 
-With the app running, open a separate terminal window, and ensure the app is running by executing a `curl` command:
+With the app running on the terminal, open a separate terminal window (do not close the current one!), and ensure the app is running by executing a `curl` command:
 
 [source]
 ----
@@ -233,9 +268,9 @@ In the previous step you created a basic RESTful Java application with Quarkus. 
 
 ===== Add Custom Bean
 
-Let’s modify the application and add a companion bean. In CodeReady, navigate to the `org.acme.getting-started.service.GreetingService.java` class in the project browser.
+Let’s modify the application and add a companion bean. In CodeReady, navigate to `quarkus-lab` → `getting-started` → `src` → `main` → `java` → `org.acme.service` in the project tree and double click on `GreetingService.java` in the project browser.
 
-Next, copy the below code into the GreetingService.java class:
+Next, copy the below code into the `GreetingService.java` class:
 
 [source]
 ----
@@ -254,7 +289,12 @@ public class GreetingService {
 
 This is an injectable bean that implements a `greeting()` method returning a string `hello <hostname>` (where `<hostname>` is the Linux hostname of the machine on which the code runs).
 
-Next, open the existing `GreetingResource.java` file (in the `org.acme.people.rest` package) and add a new field and method above the existing `hello` method:
+Next, open the existing `GreetingResource.java` file (in the `org.acme.people.rest` package) and add the following method underneath
+
+[source]
+----
+public static final Logger log = LoggerFactory.getLogger(GreetingResource.class);
+----
 
 [source]
 ----
@@ -267,6 +307,8 @@ public String greeting(@PathParam("name") String name) {
     return service.greeting(name);
 }
 ----
+
+TIP: Pay careful attention to the class names. We are currently using both the GreetingResource AND GreetingService class.
 
 Your `GreetingResource.java` file should look like this so far:
 
@@ -308,7 +350,9 @@ This will cause our new `GreetingResource` class to be instantiated and injected
 
 You will get red error squigglies when you paste this code due to missing import statements:
 
+
 image::quarkus-10.png[Added method to GreetingResource.java with missing imports]
+
 
 Add the necessary imports below the existing import statements near the top of the file, where the other existing imports are:
 
@@ -363,28 +407,27 @@ Within the `pom.xml` is the declaration for the Quarkus Maven plugin which conta
 
 [source]
 ----
- <profile>
-    <id>native</id>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-maven-plugin</artifactId>
-          <version>${quarkus.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>native-image</goal>
-              </goals>
-              <configuration>
-                <enableHttpUrlHandler>true</enableHttpUrlHandler>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
+<profile>
+  <id>native</id>
+  <build>
+    <plugins>
+      <plugin>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-maven-plugin</artifactId>
+      <version>${quarkus-plugin.version}</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>native-image</goal>
+          </goals>
+          <configuration>
+            <enableHttpUrlHandler>true</enableHttpUrlHandler>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+<profile>
 ----
 
 We use a profile because, you will see very soon, packaging the native image takes a few seconds. However, this compilation time is only incurred once, as opposed to every time the application starts, which is the case with other approaches for building and executing JARs.
@@ -397,14 +440,18 @@ TIP: Since we are on Linux in this environment, and the OS that will eventually 
 
 In addition to the regular files, the build will produce `target/people-1.0-SNAPSHOT-runner`. This is a native Linux binary. Not a shell script, or a JAR file, but a native binary.
 
+TIP: Close any pop-up dialog boxes that appear.
+
 ===== Run Native Image
 
 Since our environment here is Linux, you can just run it. In the terminal, run:
 
 [source]
 ----
-/projects/quarkus-lab/getting-started/target/getting-started-1.0.0-SNAPSHOT-runner -Dquarkus.http.port=8081
+$CHE_PROJECTS_ROOT/quarkus-lab/getting-started/target/getting-started-1.0.0-SNAPSHOT-runner -Dquarkus.http.port=8081
 ----
+
+$CHE_PROJECTS_ROOT/quarkus-workshop-labs/target/people-1.0-SNAPSHOT-runner -Dquarkus.http.port=8081 
 
 TIP: We use port `8081` here to avoid conflicting with our already-running development mode Quarkus app.
 
@@ -417,7 +464,9 @@ Notice the amazingly fast startup time:
 
 That’s 18 milliseconds to start up.
 
-And extremely low memory usage as reported by the Linux ps utility. While the app is running, open another Terminal and run:
+TIP: Your startup time may vary.
+
+And extremely low memory usage as reported by the Linux ps utility. While the app is running, open a new terminal and run:
 
 [source]
 ----
@@ -553,15 +602,21 @@ to the end of the URL to access the Swagger UI and play with your API.
 
 Using the UI, expand the `/hello/greeting/{name}` endpoint. Here you can basic detail about the endpoint: the name of the endpoint, parameters and their type, and the response type one can expect.
 
-Click the Try it out button to expand the box allowing you to try it. Enter any openshift into the name field and click Execute:
+Click the `Try it out` button to expand the box allowing you to try it. Enter any openshift into the name field and click Execute:
+
 
 image::quarkus-12.png[Name input in Swagger UI]
 
+
 This accesses the endpoint in the same way that `curl` does, and shows you the result (along with corresponding metadata in the HTTP response):
+
 
 image::quarkus-13.png[Name response in Swagger UI]
 
+
 Pretty handy way to test out your APIs!
+
+TIP: Please note, the response body will vary. It should, however, follow the following format: `hello openshift from <your-hostname>`
 
 ===== Congratulations
 
@@ -569,19 +624,11 @@ In this exercise you learned more about the MicroProfile OpenAPI specification a
 
 There are additional types of documentation you can add, for example you can declare the security features and requirements of your API and then use these where appropriate in your paths and operations.
 
-=== Cleaning up
+=== Final Cleanup
 
-Finally, lets tidy up the cluster now that your introduction to Quarkus is complete. Please use the command
+Finally, lets tidy up the cluster now that your introduction to Quarkus is complete. Navigate to your openshift terminal and enter the command
 
 [source]
 ----
-oc delete project quarkus-workshop-{{USER_ID}}
+oc delete project crw-user{{USER_ID}}
 ----
-
-
-
-
-
-
-
-

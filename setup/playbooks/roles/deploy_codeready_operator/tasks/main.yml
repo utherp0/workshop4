@@ -65,5 +65,9 @@
     src: "{{ role_path }}/files/stack.imagestream.yaml"
     wait: yes
 
+- name: pause
+  pause: 
+    minutes: "1"
+
 - name: Import Quarkus Stack image
-  shell: oc import-image --all quarkus-stack -n crw
+  shell: oc import-image --all quarkus-stack -n openshift
