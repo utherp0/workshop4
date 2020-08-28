@@ -6,6 +6,8 @@ workshop_manifests:
         title: Introduction
       - id: prereq
         title: Workshop Pre-requisites
+      - id: introductiontooc
+        title: Introduction to 'oc'
   - id: essentials
     title: OpenShift Essentials
     labs:
@@ -28,8 +30,6 @@ workshop_manifests:
   - id: devtools
     title: Developer Tools
     labs:
-      - id: introductiontooc
-        title: Introduction to 'oc'
       - id: odo
         title: OpenShift DO (odo)
       - id: tekton
