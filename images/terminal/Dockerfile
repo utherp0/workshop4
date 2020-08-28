@@ -18,7 +18,7 @@ mv /tmp/tkn /usr/local/bin && \
 chmod +x /usr/local/bin/tkn && \
 rm /tmp/*
 
-RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/v1.1.0/camel-k-client-1.1.0-linux-64bit.tar.gz && \
+RUN curl -sL -o /tmp/kamel.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-client-1.0.0-RC2-linux-64bit.tar.gz && \
 tar -C /tmp -xf /tmp/kamel.tar.gz --no-same-owner && \
 mv /tmp/kamel /usr/local/bin && \
 chmod +x /usr/local/bin/kamel && \
