@@ -4,3 +4,4 @@
 .vscode/spellright.dict
 attendee/simpleRest/.odo/
 setup/playbooks/roles/deploy_docs/files/manifests/*
+target/
