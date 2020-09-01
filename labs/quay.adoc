@@ -191,13 +191,13 @@ oc whoami
 oc version
 ----
 
-The Buildah command needs to be logged into the OpenShift server registry to gan access to the images.  The URL for the OpenShift registry to be used in the Buildah login process is the address in the image repository table up to and including .com.
+The Buildah command needs to be logged into the OpenShift server registry to gan access to the images. The URL for the OpenShift registry to be used in the Buildah login process is the address in the image repository table up to and including .com.
 
 To get just the image repository URL use the command : 
 
 [source]
 ----
-buildah login 
+oc get is -o jsonpath='{.items[0].status.publicDockerImageRepository}' | cut -d '/' -f1
 ----
 
 This will return a string similar to :
