@@ -16,11 +16,9 @@ Further documentation on the specifics of Tekton can be found on the github site
 
 === Tasks
 
-==== Download pipeline assets
+==== View pipeline assets
 
-TIP: As part of the pre-requisites you should have cloned the required git repo and created the base project for all the chapters - if you haven't please go back to the pre-requisites and follow the instructions
-
-Check the required assets for the workshop are available in your terminal image using:
+View the assets for the workshop using:
 
 [source]
 ----
@@ -29,6 +27,15 @@ ls -al
 ----
 
 You should now see a list of yaml files that are used during the remainder of this chapter.
+
+==== Project creation
+
+Create a new project for the pipeline work called pipelines-{{USER_ID}} using the command
+
+[source]
+----
+oc new-project pipelines-{{USER_ID}}
+----
 
 ==== Simple task creation and execution
 
@@ -67,7 +74,7 @@ Repeat the final command a few times until you see it change to be similar to th
 [source]
 ----
 NAME          STARTED           DURATION      STATUS
-task-run-1    3 minutes ago    21 seconds    Succeeded 
+task-run-1    40 seconds ago    21 seconds    Succeeded 
 ----
 
 The result of running the task can then be viewed by executing the following command:
@@ -133,15 +140,14 @@ tkn pipeline start pipeline-1
 
 Once you have executed the command switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
 
-image::pipelines-7.png[Example Pipelines UI]
+image::pipelines-2.png[Example Pipelines UI]
 
-Once the pipeline is indicated to have finished, go back to the terminal and enter the command suggested by the response to the tkn command - it will look similar to this:
+Once the pipeline is indicated to have finished by showing 'Succeeded' in the 'Last Run Status' column, go back to the terminal and enter the command suggested by the response to the tkn command - it will look similar to this:
 
 [source]
 ----
 tkn pipelinerun logs pipeline-1-run-kx95g -f
 ----
-Note that the -n parameter is optional, it states the namespace to look in for the pipelinerun and we are running in a single namespace
 
 Enter the command as provided by the tkn command and the response should look something like this:
 
@@ -391,11 +397,11 @@ tkn pipeline start pipeline-5
 
 Now switch to the OpenShift console. Select the Pipelines entry on the left side of the Developer panel.
 
-image::pipelines-8.png[Two completed pipelines]
+image::pipelines-6.png[Two completed pipelines]
 
 You can click on the pipeline-run (labelled pipeline-5-run-XXXXX) and examine the logs for each of the tasks. 
 
-image::pipelines-9.png[Task details]
+image::pipelines-7.png[Task details]
 
 To examine the pipeline run in the terminal window use the command :
 
@@ -432,7 +438,14 @@ Within task 6 the first step displays the contents of the workspace. Note that t
 [task-6 : view-volume-content] secrets
 [task-6 : view-volume-content] This is a file in the volume
 
+==== Cleaning up
 
+From the OpenShift browser window click on 'administrator' and then 'Projects' on the left hand side menu.
+
+In the triple dot menu next to your own project (pipelines-{{USER_ID}}) select ‘Delete Project’
+Type pipelines-{{USER_ID}}’ such that the Delete button turns red and is active.
+
+Press Delete to remove the project.
 
 
 
