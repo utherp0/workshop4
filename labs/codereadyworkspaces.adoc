@@ -47,10 +47,12 @@ Find the URL for the CodeReady Workspaces using the following command :
 
 [source]
 ----
-echo "codeready-codereadyworkspaces."$(oc whoami --show-console=true | cut -d'.' -f2-7)
+echo "codeready-openshift-workspaces."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 ----
 
 The above command will display a URL which you should copy and paste into a web browser tab.
+
+Authenticate with your user id and password of 'openshift'.
 
 If an authorization access page is displayed press the button labelled 'Allow selected permissions' and you will then see a user registration page similar to that which is shown below.
 
@@ -68,27 +70,31 @@ After logging into CodeReady Workspaces for the first time you will see a gettin
 
 image::codeready-workspaces-02.png[CodeReady Workspaces getting started]
 
-This screen allows you to create a new workspace by selecting a technology stack. This will result in a specific container image being selected for use to create your workspace. Feel free to experiment with the different stacks later but for now select the option 'Workspaces' on the left hand side menu and then select the blue 'Add Workspace' button. 
+This screen allows you to create a new workspace by selecting a technology stack. This will result in a specific container image being selected to create your workspace. Feel free to experiment with the different stacks later but for now select the option 'Workspaces' on the left hand side menu and then select the blue 'Add Workspace' button. 
 
 In the new workspace screen enter the workspace name in the format {{USER_ID}}-workspace1.
 
-In the section entitled 'Select Stack' choose the Stack called 'NodeJS Express Web Application'. You should see node-js-web-app appear at the bottom of the screen in the list of projects. 
+In the dropdown menu for the Devfile select 'NodeJS Express'.
+
+Select 'Create & Open'.
+
+When the workspace has been created press the yellow rectangle with a white arrow in the top left corner of the workspace and click the Workspaces(1) link on the left and side. Click the plus sign on the right hand side on the line for the workspace to initiate the 'add project' process.
 
 You may see that there is already a sample project in the list. You can leave this in if you wish but if you want to experiment with GIT interaction press the 'Add or Import Project' button, then press the Git button and then paste into the dialog a Github URL in the format : git@github.com:<user-name>/<repository-name>.git.
 
 If you do not have a project that is suitable then please clone the project from here : git@github.com:marrober/layers.git into a Git repository under your Git ID and then use that. By doing this you will have a repository to which you can push changes from your workspace.
 
-The Projects list at the bottom of the workspace creation screen should now show something similar to that which is shown below depending on the project that you selected from Github.
+The Projects listed in the project should now show something similar to that which is shown below depending on the project that you selected from Github.
 
 image::codeready-workspaces-03.png[Creating a workspace]
 
-Press the green bar with the title 'CREATE AND OPEN'.
+Press the green button 'Save' and then press the green button 'Apply' to restart the workspace.
 
-The workspace creation screen will then be displayed similar to that which is shown below :
+When you see a pop up that states the workspace has been updated click on the workspace name on the left hand side. This will launch the workspace as shown below.
 
 image::codeready-workspaces-04.png[Workspace creating]
 
-When the workspace ha been created it will show as below :
+When the workspace has been started it will show as below :
 
 image::codeready-workspaces-05.png[Workspace]
 
@@ -100,9 +106,9 @@ Press the file management button (top left hand side button) and open the file t
 
 In order to seamlessly interact with Github you configure the workspace to operate under your Github ID. To do this perform the following tasks.
 
-From the top menu on the workspace select File -> then select Settings -> then select Open Preferences. From the list of preferences that appear within the editor window scroll to Git and open up that list of settings. Select 'user.email' and then press the pop up button with 'Add Value' on it. Repeat this for the 'user.name' setting.
+From the top menu on the workspace select File -> then select Settings -> then select Open Preferences. From the list of preferences that appear within the editor window scroll to Git and open up that list of settings. Select 'User' and enter the user name and email address.
 
-In the user settings editor on the right hand side of the workspace enter the appropriate values for your username and email address. Press File -> Save or Cntrl-S to save the file. You may also want to switch on auto-save with the menu item file-> Auto Save.
+Press File -> Save or Ctrl-S to save the file. You may also want to switch on auto-save with the menu item file-> Auto Save.
 
 Close the preferences window.
 

@@ -44,6 +44,8 @@ In the top left of the UI, where the label indicates the view mode, change the m
 
 Select ‘From Catalog’
 
+Clear any checkboxes in the section labelled 'Type' so that all options are available.
+
 Enter ‘node’ in the search box
 
 *The various catalogue items present different configurations of applications that can be created. For example the node selections include a simple node.js application or node.js with a database platform that is pre-integrated and ready to use within the application. For this workshop you will use a simple node.js application.*
@@ -75,7 +77,7 @@ In a separate browser tab go to https://github.com/marrober/simpleRest.git[https
 
 Close the github tab
 
-Back at the OCP4.2 user interface complete the following information in the section titled 'General'.
+Back at the OCP4 user interface complete the following information in the section titled 'General'.
 
 For the Application name enter 'rest-application'.
 
@@ -97,7 +99,7 @@ Click Create
 
 Click on the Icon marked ‘Node’
 
-*A side panel will appear with information on the Deployment Configuration that has just been created. The overview tab shows summary information and allows the user to scale the number of pods up and down. The resources tab shows information on the building process, the pods and the services and route to reach the application (if these have been created).*
+*A side panel will appear with information on the Deployment Configuration that has just been created. The overview tab shows summary information and allows the user to scale the number of pods up and down. The resources tab shows information on the building process, the pods and the services and route to reach the application (if these have been created). The monitoring tab shows information on warnings, metrics and events.*
 
 Wait for the Build to finish, the Pod to change from Container Creating to Running.
 
@@ -217,7 +219,7 @@ From the action menu on the right hand side click *Edit Deployment Configuration
 
 image::healthprobes-3.png[View of the health probe in the Deployment Configuration]
 
-*On the Deployment Configuration page that is displayed ensure that the YAML tab is selected and scroll down to aroundline 68 to see the YAML definition for the liveness probe. It is also possible to edit the parameters of the probe from this screen if necessary.*
+*On the Deployment Configuration page that is displayed ensure that the YAML tab is selected and scroll down to around line 200 to see the YAML definition for the liveness probe. It is also possible to edit the parameters of the probe from this screen if necessary.*
 
 *In order to execute the probe it is necessary to simulate a pod failure that will stop the application from responding to the health check. A specific REST interface on the application has been created for this purpose called +/ignore+.*
 
@@ -389,13 +391,17 @@ The subset of the command output shown above indicates that the address is now l
 
 *Under production use conditions for the application may change and the pod may recover from the inability to respond to the readiness probe. If this happens then it will be added back to the endpoint list.*
 
+From OpenShift version 4.5 it is also possible to see the pod events from the fly-out right click menu. To view this select the topology view in the web browser interface and click on the pod. On the dialog on the right hand side select the monitoring tab and open the events (warnings) tab as shown below.
+
+image::healthprobes-6.png[Pod events showing activation of the readiness probe]
+
 *To simulate this the Node application has a REST endpoint at /restore. Since the pod is currently not receiving communications from outside the cluster the call to the restore endpoint is done from within the pod command window.*
 
 Switch to the OpenShift browser window that was showing the pod events. 
 
 *Note that you will see a large number of pod readiness probe failures while you were reading the notes.*
 
-In the OpenShift Console choose Administrator View, then Workloads/Pods. Click on the Pod that is active and in the Pod information page click on the Terminal option.
+In the OpenShift Console choose Administrator View, then Workloads/Pods. Click on the Pod that is running and in the Pod information page click on the Terminal option.
 
 Within the Pod Terminal enter the command :
 
@@ -436,7 +442,7 @@ Finally, switch to the application browser page and change the URL to end in /he
 
 ==== Cleaning up
 
-From the OpenShift browser window click on 'Advanced' and then 'Projects' on the left hand side menu.
+From the OpenShift browser window click on 'administrator' and then 'Projects' on the left hand side menu.
 
 In the triple dot menu next to your own project (probes-{{USER_ID}}) select ‘Delete Project’
 Type ‘probes-{{USER_ID}}’ such that the Delete button turns red and is active.
