@@ -4,7 +4,7 @@ metadata:
   name: camel-k
   namespace: openshift-operators
 spec:
-  channel: alpha
+  channel: stable
   name: camel-k
   source: community-operators
   sourceNamespace: openshift-marketplace

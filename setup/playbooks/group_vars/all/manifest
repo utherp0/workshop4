@@ -6,6 +6,8 @@ workshop_manifests:
         title: Introduction
       - id: prereq
         title: Workshop Pre-requisites
+      - id: introductiontooc
+        title: Introduction to 'oc'
   - id: essentials
     title: OpenShift Essentials
     labs:
@@ -28,8 +30,6 @@ workshop_manifests:
   - id: devtools
     title: Developer Tools
     labs:
-      - id: introductiontooc
-        title: Introduction to 'oc'
       - id: odo
         title: OpenShift DO (odo)
       - id: tekton
@@ -51,5 +51,5 @@ workshop_manifests:
         title: Camel K and OpenShift Serverless Serving
       - id: servicemesh
         title: OpenShift Service Mesh
-      # - id: quarkus
-      #   title: Introduction to Quarkus on OpenShift
+      - id: quarkus
+        title: Introduction to Quarkus on OpenShift

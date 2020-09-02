@@ -22,11 +22,9 @@ Once the project has been created (you will be given a dashboard) change the mod
 
 On the Topology page it will state 'No workloads found' - Click on 'Container Image'
 
-In 'Image Name' enter 'quay.io/ilawson/devex4'
+In 'Image Name' enter 'quay.io/ilawson/devex4' and hit return
 
-Click on the search icon to the right of the text box
-
-Leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
+The UI will validate the URL (successfully) - leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
 
 Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
 

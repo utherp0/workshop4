@@ -26,13 +26,13 @@ Using the top left selection switch the UI from Administrator to Developer
 
 In the Topology Tab click on ‘From Catalog’
 
-In the search box enter ‘node’. Select the Node.js option
+In the search box enter ‘node’. Select the Node.js option (Builder Image)
 
 Click ‘Create Application’
 
-Default the image to version 10
+Default the builder image to version 12 (it should already have this selected)
 
-For the git repo enter ‘https://github.com/utherp0/nodenews’
+For the git repo enter ‘https://github.com/utherp0/nodenews’ - insure the UI indicates 'Validated' when you leave the text field
 
 Set the 'Application Name' to ‘application1-app’
 
@@ -46,7 +46,7 @@ Click on ‘+Add’
 
 Click on ‘From Catalog’
 
-In the search box enter ‘node’. Again select the Node.js option
+In the search box enter ‘node’. Again select the Node.js option (Builder Image)
 
 Click ‘Create Application’ 
 
@@ -101,6 +101,10 @@ TIP: Note that the IP address for the Service has NOT changed. Scaling the Appli
 === Using the shorthand Service name directly
 
 Click on 'Workloads/Pods'
+
+Set the filter to 'Running' for ease of view
+
+image::sdn-4b.png[filtered pods]
 
 Click on the first running Pod for application1 (the name will be application1-1-(something)
 
@@ -181,11 +185,11 @@ Repeat the ‘curl’ command listed above for the person sat next to you, i.e. 
 
 Ensure you get a webpage
 
-Go to Network/Network Policies
+Go to Networking/Network Policies
 
 Click on ‘Create Network Policy’
 
-Enter the following - remember to change YOURNUMBERHERE to your user number
+Delete the contents of the YAML editor and replace it with the following:
 
 [source]
 ----

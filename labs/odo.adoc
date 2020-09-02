@@ -219,7 +219,7 @@ Refresh the browser window showing the application output and you will see your 
 
 odo is clearly a very fast way to go from code to running your application without having to install tools and frameworks on your laptop
 
-Finally, let's clean up the project by typing
+Finally, let's clean up the project by typing, replacing X with our user number.
 
 [source]
 ----

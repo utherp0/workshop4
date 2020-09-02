@@ -25,7 +25,8 @@ Introduction to Deployments and Builds in OpenShift
 Introduction to DevOps Approaches  
 Introduction to the Software Defined Network from a dev perspective  
 Introduction to the OpenShift RBAC model from a dev perspective  
-Introduction to Persistent Volumes  
+Introduction to Persistent Volumes
+Introduction to Quarkus
 Camel-k on OpenShift  
 Serverless Eventing with Camel-k on OpenShift  
 Pipelines with Tekton on OpenShift  
@@ -40,10 +41,14 @@ This is a dynamic version of the Workshop and allows creators to define and setu
 
 To build the documentation for the workshop you need to do the following:
 
-1: Edit the variables in setup/playbooks/group_vars/all to setup cluster access for Ansible, choose links for the workshop (e.g. Rocket Chat link, see below), and choose which labs you want to be in the workshop
-2: Change to the setup/playbooks directory
-3: Run the Deploy_Docs.yml playbook - `ansible-playbook Deploy_Docs.yml`
-4: The last task in the playbook will give you the starting point URL
+1. Edit the variables in setup/playbooks/group_vars/all directory
+   * cluster - cluster URLs and API token
+   * manifest - defines the labs that will be included in the workshop
+   * links - the hyperlinks that will appear at the bottom of the username distribution app
+   * extra_vars - password for the username distribution admin interface, password for attendees to be given a username, and number of usernames to create in the username distribution app
+2. Change to the setup/playbooks directory
+3. Run the Deploy_Docs.yml playbook - `ansible-playbook Deploy_Docs.yml`
+4. The last task in the playbook will give you the starting point URL
 
 If you would like to contribute labs there is a guide on how to write them and what to be aware of at https://docs.google.com/document/d/1DwSFGP1SO-1MOfEck6AGDjjU4d2k8YGYmpcMtxhaEZo/edit
 
@@ -97,34 +102,8 @@ On step 4 choose 'Keep standalone'
 
 You will now get a Rocketchat with the channel #general
 
-Select the icon for 'Create New' and create a channel called #support - set it to public, not private
+Add some text for the welcome to the #general
 
-Add some text for the welcome to the #general and #support
+Copy the URL for the Route (minus the subdirectories) and copy the link into the setup/playbooks/group_vars/all/links file
 
-Copy the URL for the Route (minus the subdirectories) and go back to the Etherpad and paste it in there
-
-3: Create a Short URL for the landing page on Etherpad
-
-Go back to the UI for the Cluster (as Cluster Admin)
-
-In Projects choose etherpad
-
-Go to Networking/Routes
-
-Hit 'Create Route'
-
-Set the name to secureetherpad
-
-Set the service to 'etherpad' (not MySQL)
-
-Set the target port to 9001
-
-Click the 'Secure Route'
-
-Set TLS Termination to 'Edge'
-
-Scroll down and hit create
-
-Copy the 'Location' field (with the https://whatever)
-
-Copy this into the relevant variable in setup/playbooks/group_vars/all (before you run the playbook)
+Create a Short URL for the username distribution app to share with the attendees

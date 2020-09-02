@@ -55,7 +55,7 @@ Add “  env2: test”
 
 Make sure there is a space between the ':' and the data itself, otherwise it is invalid YAML and the editor will not allow you to save it.
 
-The YAML should look similar to the screenshot below, with your project name rather than CHANGETHIS.
+The YAML should look similar to the screenshot below, with your project name rather than sandbox-user99
 
 image::deployment-4.png[Example Config Map YAML]
 
@@ -82,6 +82,8 @@ Click on 'Workloads/Pods' - if you are quick enough you will see the nodenews Po
 *By default when you create a Deployment Config in OpenShift, as part of an Application or as a standalone object via YAML, the Deployment Config will have two distinct triggers for automation. These make the Deployment redeploy when a: the image that the Deployment Config is based on changes in the registry or b: the defined configuration of the Deployment changes via a change to the DC object itself*
 
 TIP: These are default behaviours but can be overridden. They are designed to make sure that the current deployment exactly matches the Images and the definition of the deployment by default.
+
+In the filter pulldown at the top select the checkbox for 'Running'
 
 Click on one of the Pods for 'nodenews'
 
@@ -111,6 +113,8 @@ oc create -f testfile.yaml
 oc get configmaps
 ----
 
+image::deployment-6.png[terminal output]
+
 Go back to the UI, select 'Workloads/Deployment Configs'
 
 Select 'nodenews' dc
@@ -128,6 +132,8 @@ Find the setting for ‘imagePullPolicy’. Put the cursor to the end of the lin
             mountPath: /workshop/config
 ----
 
+image::deployment-7.png[code insert]
+
 Make sure the indentation is the same as for the ‘imagePullPolicy’.
 
 Now in the ‘spec:’ portion we need to add our config-map as a volume.
@@ -142,6 +148,8 @@ Find ‘restartPolicy’. Put the cursor to the end of the line and press return
            name: testfile
            defaultMode: 420
 ----
+
+image::deployment-8.png[second code insert]
 
 Save the deployment config.
 
@@ -248,7 +256,6 @@ Scroll the editor down to the ‘spec:’ tag as shown below
 spec:
  strategy:
    type: Rolling
-   rollingParams:
 ----
 
 Change the type: tag of the strategy to Recreate as shown below

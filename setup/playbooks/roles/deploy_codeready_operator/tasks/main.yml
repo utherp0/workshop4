@@ -1,0 +1,73 @@
+---
+- name: Create codeready namespace
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/crwnamespace.yaml"
+
+- name: Wait for namespace to be created
+  wait_for:
+    path: "{{ role_path }}/files/crwnamespace.yaml"
+    state: present
+
+- name: Deploy crw Operator Group
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/crwoperatorgroup.yaml"
+
+- name: Wait for crw Operator Group to be deployed
+  wait_for:
+    path: "{{ role_path }}/files/crwoperatorgroup.yaml"
+    state: present
+
+- name: Deploy CodeReady Workspace Operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/crwoperator.yaml"
+
+- name: Wait for CRW Operator to deploy
+  wait_for:
+    path: "{{ role_path }}/files/crwoperator.yaml"
+    state: present
+
+# Create the Codeready CheCluster
+- name: Create CodeReady CRD
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/crw.yaml"
+    wait: yes
+
+# Wait for CodeReady to be ready before continuing
+- name: Has CodeReady Workspaces CheCluster been deployed?
+  shell: oc get CheCluster codeready-workspaces -n crw -o jsonpath="{.status.cheClusterRunning}"
+  register: coderw
+  until: coderw.stdout.find("Available") != -1
+  retries: 500
+  delay: 5
+
+- name: Verify that quarkus stack object is created
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/stack.imagestream.yaml"
+    wait: yes
+
+- name: pause
+  pause: 
+    minutes: "1"
+
+- name: Import Quarkus Stack image
+  shell: oc import-image --all quarkus-stack -n openshift

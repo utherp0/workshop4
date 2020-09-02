@@ -1,0 +1,17 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: quarkus-stack
+  namespace: openshift
+spec:
+  tags:
+  - annotations:
+      description: Quarkus stack for Java and CodeReady Workspaces
+      supports: java
+      tags: builder,java
+      version: "2.1"
+    from:
+      kind: DockerImage
+      name: quay.io/openshiftlabs/quarkus-workshop-stack:2.1
+    name: "2.1"

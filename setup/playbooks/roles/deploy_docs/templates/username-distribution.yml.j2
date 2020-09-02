@@ -1,11 +1,5 @@
-apiVersion: template.openshift.io/v1
-kind: Template
-metadata:
-  name: username-distribution
-  annotations:
-    openshift.io/display-name: Username Distribution
-    description: Username distribution app for DevEx course
-objects:
+apiVersion: v1
+items:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -18,7 +12,7 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: quay.io/openshiftlabs/username-distribution:latest
+        name: quay.io/browningjp/username-distribution:latest
       generation: 2
       importPolicy: {}
       name: latest
@@ -52,7 +46,10 @@ objects:
         containers:
         - env:
           - name: REDIS_PASSWORD
-            value: ${REDIS_PASSWORD}
+            valueFrom:
+              secretKeyRef:
+                key: REDIS_PASSWORD
+                name: redis
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -105,7 +102,7 @@ objects:
         - redis
         from:
           kind: ImageStreamTag
-          name: redis:3.2
+          name: redis:latest
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
@@ -147,13 +144,16 @@ objects:
           - name: LAB_REDIS_HOST
             value: "redis"
           - name: LAB_REDIS_PASS
-            value: ${REDIS_PASSWORD}
+            valueFrom:
+              secretKeyRef:
+                key: REDIS_PASSWORD
+                name: redis
           - name: LAB_TITLE
             value: "OpenShift Developer Experience Workshop"
           - name: LAB_USER_PREFIX
             value: "user"
           - name: LAB_MODULE_URLS
-            value: "{% for module in workshop_manifests[:-1] %}{{ 'http://' + workshopper_route.stdout + '/workshop/' + module['id'] + '/lab/' + module['labs'][0]['id'] + '?userid=%USERNAME%;' + module['title'] + ',' }}{% endfor %}{{ 'http://' + workshopper_route.stdout + '/workshop/' + workshop_manifests[-1]['id'] + '/lab/' + workshop_manifests[-1]['labs'][0]['id'] + '?userid=%USERNAME%;' + workshop_manifests[-1]['title'] }}"
+            value: "{% for module in workshop_manifests[:-1] %}{{ 'http://' + workshopper_route.result.spec.host + '/workshop/' + module['id'] + '/lab/' + module['labs'][0]['id'] + '?userid=%USERNAME%;' + module['title'] + ',' }}{% endfor %}{{ 'http://' + workshopper_route.result.spec.host + '/workshop/' + workshop_manifests[-1]['id'] + '/lab/' + workshop_manifests[-1]['labs'][0]['id'] + '?userid=%USERNAME%;' + workshop_manifests[-1]['title'] }}"
           - name: LAB_EXTRA_URLS
             value: "{% for extra_url in extra_urls[:-1] %}{{ extra_url['url'] + ';' + extra_url['title'] + ',' }}{% endfor %}{{ extra_urls[-1]['url'] + ';' + extra_urls[-1]['title'] }}"
           - name: LAB_USER_COUNT
@@ -162,6 +162,8 @@ objects:
             value: "{{ username_app_user_pass }}"
           - name: LAB_ADMIN_PASS
             value: "{{ username_app_admin_pass }}"
+          - name: LAB_DURATION_HOURS
+            value: "1y"
           imagePullPolicy: IfNotPresent
           name: username-distribution
           ports:
@@ -268,11 +270,5 @@ objects:
     resources:
       requests:
         storage: 1Gi
-parameters:
-- name: REDIS_PASSWORD
-  displayName: Redis Password
-  description: Password for redis store
-  generate: expression
-  from: '[a-zA-Z0-9]{16}'
-
-# TODO - put the redis password into a secret
+kind: List
+resources: {}
