@@ -50,6 +50,6 @@ Since the configuration for users only adds roles to the users there is little o
 
 for i in {1..99}; do oc login --username user$i --password openshift; done
 
-oc login --username opentlc-mgr --password ***REMOVED***
+oc login --username opentlc-mgr --password <insert password>
 
 for i in {1..99}; do oc add-role-to-user -n istio-system --role-namespace istio-system mesh-user user$i; done
