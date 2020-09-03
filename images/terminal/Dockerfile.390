@@ -24,15 +24,7 @@ chmod +x /usr/local/bin/odo
 RUN dnf -y install podman container-selinux --enablerepo updates-testing
 RUN dnf -y install buildah container-selinux --enablerepo updates-testing
 RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
-
-RUN \
-    groupadd -g 1003 sudo && groupadd -g 1002 admin && useradd -u 1002 -g admin -G sudo -m -s /bin/bash admin && \
-    sed -i /etc/sudoers -re 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g' && \
-    sed -i /etc/sudoers -re 's/^root.*/root ALL=(ALL:ALL) NOPASSWD: ALL/g' && \
-    sed -i /etc/sudoers -re 's/^#includedir.*/## **Removed the include directive** ##"/g' && \
-    echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    echo "Customized the sudoers file for passwordless access to the admin user!" && \
-    echo "admin user:";  su - admin -c id
+RUN dnf -y install jq container-selinux --enablerepo updates-testing
 
 RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
@@ -40,7 +32,7 @@ WORKDIR /workspace
 
 EXPOSE 8080
 
-USER admin
+USER 1001
 
 ENV HOME=/workspace
 
