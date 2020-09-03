@@ -25,7 +25,7 @@ RUN dnf -y install podman container-selinux --enablerepo updates-testing
 RUN dnf -y install buildah container-selinux --enablerepo updates-testing
 RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
 
-RUN chmod 666 /etc/hosts && ls -al /etc/hosts
+RUN useradd -m admin && echo "admin:admin" | chpasswd && adduser admin sudo
 
 RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
