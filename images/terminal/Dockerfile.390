@@ -26,7 +26,7 @@ RUN dnf -y install buildah container-selinux --enablerepo updates-testing
 RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
 
 RUN \
-    groupadd -g 999 admin && useradd -u 999 -g admin -G sudo -m -s /bin/bash admin && \
+    groupadd -g 1002 admin && useradd -u 1002 -g admin -G sudo -m -s /bin/bash admin && \
     sed -i /etc/sudoers -re 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g' && \
     sed -i /etc/sudoers -re 's/^root.*/root ALL=(ALL:ALL) NOPASSWD: ALL/g' && \
     sed -i /etc/sudoers -re 's/^#includedir.*/## **Removed the include directive** ##"/g' && \
