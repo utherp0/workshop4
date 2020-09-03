@@ -6,9 +6,20 @@ ENV GOPATH=/go
 
 RUN  mkdir /go && chmod 755 /go && yum install -y git golang-bin && go get github.com/yudai/gotty && yum clean all && mkdir /workspace && chmod 777 workspace
 
+RUN curl -sL -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux-s390x/oc.tar.gz && \
+tar -C /tmp -xf /tmp/oc.tar.gz --no-same-owner && \
+mv /tmp/oc /usr/local/bin && \
+chmod +x /usr/local/bin/oc && \
+rm /tmp/*
 
+RUN curl -sL -o /tmp/tkn.tar.gz https://github.com/tektoncd/cli/releases/tag/v0.12.0/tkn_0.12.0_Linux_s390x.tar.gz && \
+tar -C /tmp -xf /tmp/tkn.tar.gz --no-same-owner && \
+mv /tmp/tkn /usr/local/bin && \
+chmod +x /usr/local/bin/tkn && \
+rm /tmp/*
 
-
+RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-s390x && \
+chmod +x /usr/local/bin/odo
 
 WORKDIR /workspace
 
