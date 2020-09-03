@@ -22,12 +22,12 @@ RUN curl -sL -o /usr/local/bin/odo https://mirror.openshift.com/pub/openshift-v4
 chmod +x /usr/local/bin/odo
 
 RUN dnf -y install podman container-selinux --enablerepo updates-testing
-
 RUN dnf -y install buildah container-selinux --enablerepo updates-testing
-
 RUN dnf -y install skopeo container-selinux --enablerepo updates-testing
 
-RUN chmod a+w /etc/hosts
+RUN chmod 666 /etc/hosts && ls -al /etc/hosts
+
+RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
 WORKDIR /workspace
 
