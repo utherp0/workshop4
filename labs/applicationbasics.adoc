@@ -50,7 +50,7 @@ Click 'Add'
 
 Select ‘From Catalog’
 
-Untick the filter that says 'Operator Backed'. This filter allows the developer to see a reduced set of the available options
+If it is selected, untick the filter that says 'Operator Backed'. This filter allows the developer to see a reduced set of the available options.
 
 Enter ‘node’ in the 'filter by keyword' search box
 
@@ -79,7 +79,7 @@ Leave the builder image at 12
 *The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
 versions.*
 
-Enter the following for the Git repo for the application - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews, window="_blank"]
+Enter the following for the Git repo for the application - [https://github.com/utherp0/nodenews, window="_blank"]
 
 Once you remove focus from the git repo text entry point ensure the git repo is correct; a label will appear below the text box saying 'Validated'. If it doesn't check the URL is correct.
 
