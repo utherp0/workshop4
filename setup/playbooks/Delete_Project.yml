@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: delete openshift project
+      k8s:
+        name: "{{ project_name }}"
+        api_version: v1
+        kind: Namespace
+        state: absent
+    
+    
