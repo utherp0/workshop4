@@ -1,17 +1,17 @@
 apiVersion: v1
 items:
 - apiVersion: image.openshift.io/v1
-  namespace: docs
+  namespace: {{ project_name }}
   kind: ImageStream
   metadata:
-    namespace: docs
+    namespace: {{ project_name }}
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: labs
-      app.kubernetes.io/component: labs
-      app.kubernetes.io/instance: labs
+      app: manifests
+      app.kubernetes.io/component: manifests
+      app.kubernetes.io/instance: manifests
     name: httpd-24-centos7
   spec:
     lookupPolicy:
@@ -32,19 +32,20 @@ items:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
-    namespace: docs
+    namespace: {{ project_name }}
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: labs
-      app.kubernetes.io/component: labs
-      app.kubernetes.io/instance: labs
-    name: labs
+      app: manifests
+      app.kubernetes.io/component: manifests
+      app.kubernetes.io/instance: manifests
+      app.kubernetes.io/part-of: docs
+    name: manifests
   spec:
     replicas: 1
     selector:
-      deploymentconfig: labs
+      deploymentconfig: manifests
     strategy:
       resources: {}
     template:
@@ -53,11 +54,11 @@ items:
           openshift.io/generated-by: OpenShiftNewApp
         creationTimestamp: null
         labels:
-          deploymentconfig: labs
+          deploymentconfig: manifests
       spec:
         containers:
         - image: centos/httpd-24-centos7
-          name: labs
+          name: manifests
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -77,7 +78,7 @@ items:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - labs
+        - manifests
         from:
           kind: ImageStreamTag
           name: httpd-24-centos7:latest
@@ -92,15 +93,15 @@ items:
 - apiVersion: v1
   kind: Service
   metadata:
-    namespace: docs
+    namespace: {{ project_name }}
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: labs
-      app.kubernetes.io/component: labs
-      app.kubernetes.io/instance: labs
-    name: labs
+      app: manifests
+      app.kubernetes.io/component: manifests
+      app.kubernetes.io/instance: manifests
+    name: manifests
   spec:
     ports:
     - name: 8080-tcp
@@ -112,7 +113,7 @@ items:
       protocol: TCP
       targetPort: 8443
     selector:
-      deploymentconfig: labs
+      deploymentconfig: manifests
   status:
     loadBalancer: {}
 kind: List
