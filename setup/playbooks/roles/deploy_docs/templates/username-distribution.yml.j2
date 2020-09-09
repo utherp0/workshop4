@@ -25,6 +25,7 @@ items:
       template.alpha.openshift.io/wait-for-ready: "true"
     labels:
       template: redis-persistent-template
+      app.kubernetes.io/part-of: username-distribution-app
     name: redis
   spec:
     replicas: 1

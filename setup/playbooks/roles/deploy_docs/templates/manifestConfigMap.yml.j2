@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: manifests
-  namespace: docs
+  namespace: {{ project_name }}
 data:
 {% for item in workshop_manifests %}
   {{ item.id }}: |-

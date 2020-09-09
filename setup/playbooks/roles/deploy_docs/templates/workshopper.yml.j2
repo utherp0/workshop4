@@ -2,45 +2,47 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: devex
-  namespace: docs
+  name: docs
+  namespace: {{ project_name }}
 data:
-  WORKSHOPS_URLS: "{{ workshop_manifests | map(attribute='id') | map('regex_replace', '^(.*)$', 'http://labs:8080/\\1') | list | join(',') }}"
+  WORKSHOPS_URLS: "{{ workshop_manifests | map(attribute='id') | map('regex_replace', '^(.*)$', 'http://manifests:8080/\\1') | list | join(',') }}"
   OPENSHIFT_CONSOLE_URL: "{{ OPENSHIFT_CONSOLE_URL }}"
   LOG_TO_STDOUT: "true"
 ---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: devex
-  namespace: docs
+  name: docs
+  namespace: {{ project_name }}
+  labels:
+    app.kubernetes.io/part-of: docs
 spec:
   selector:
-    app: devex
+    app: docs
   replicas: 1
   template:
     metadata:
       labels:
-        app: devex
+        app: docs
     spec:
       containers:
-        - name: devex
+        - name: docs
           image: quay.io/openshiftlabs/workshopper:1.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: devex
+                name: docs
           resources: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: devex
-  namespace: docs
+  name: docs
+  namespace: {{ project_name }}
 spec:
   selector:
-    app: devex
+    app: docs
   ports:
     - protocol: TCP
       port: 8080
@@ -49,12 +51,12 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: devex
-  namespace: docs
+  name: docs
+  namespace: {{ project_name }}
 spec:
   path: /
   to:
     kind: Service
-    name: devex
+    name: docs
   port:
     targetPort: 8080
