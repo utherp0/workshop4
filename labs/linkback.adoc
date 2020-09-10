@@ -1,1 +1,1 @@
-To get back to the Workshop Portal, click {{USERNAME_URL}}[here]
+To get back to the Workshop Portal, click {{USERNAME_URL}}[here, target="_self"]
