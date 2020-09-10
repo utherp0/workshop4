@@ -35,7 +35,7 @@ spec:
                 name: docs
           env:
             - name: USERNAME_URL
-              value: "https://username-distribution-{{ project_name }}-{{ manifests_routes.result.spec.host.split('.')[1:] | join('.') }}"
+              value: "https://username-distribution-{{ project_name }}.{{ manifests_routes.result.spec.host.split('.')[1:] | join('.') }}"
           resources: {}
 ---
 apiVersion: v1
