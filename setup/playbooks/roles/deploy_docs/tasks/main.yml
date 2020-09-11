@@ -16,7 +16,15 @@
 - name: Create httpd application
   k8s:
     state: present
-    definition: "{{ lookup('template', 'httpd.yml.j2') }}" 
+    definition: "{{ lookup('template', 'httpd.yml.j2') }}"
+
+- name: Get route to manifests application
+  k8s:
+    kind: Route
+    namespace: "{{ project_name }}"
+    name: manifests
+    api_version: route.openshift.io/v1
+  register: manifests_routes
 
 - name: Deploy workshopper application
   k8s:

@@ -116,5 +116,31 @@ items:
       deploymentconfig: manifests
   status:
     loadBalancer: {}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    namespace: {{ project_name }}
+    annotations:
+      openshift.io/host.generated: "true"
+    labels:
+      app: manifests
+      app.kubernetes.io/component: manifests
+      app.kubernetes.io/instance: manifests
+      app.kubernetes.io/name: ""
+      app.kubernetes.io/part-of: docs
+      app.openshift.io/runtime: ""
+      app.openshift.io/runtime-version: latest
+    name: manifests
+  spec:
+    port:
+      targetPort: 8080-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: manifests
+      weight: 100
+    wildcardPolicy: None
 kind: List
 metadata: {}
