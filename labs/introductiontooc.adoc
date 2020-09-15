@@ -99,7 +99,7 @@ Fortunately we can shortcut this as developers, if we have, for example, a GitHu
 
 [source]
 ----
-oc new-app https://github.com/utherp0/meow2
+oc new-app https://github.com/utherp0/meow2 --as-deployment-config
 ----
 
 The oc command will cause OpenShift to create all the contents it needs for an Application based on the source code it finds at the GitHub repo. In this case the source code contains the building blocks for a node.js application. The image belows shows the output you should receive:
@@ -136,7 +136,7 @@ Now, for the sake of the lab, we will create a second application. Type:
 
 [source]
 ----
-oc new-app https://github.com/utherp0/nodenews
+oc new-app https://github.com/utherp0/nodenews --as-deployment-config
 ----
 
 Again use the 'oc get pods' and 'oc status' to watch the build of the second application. When it completes it will look like this:
@@ -156,8 +156,8 @@ This will list the Pods running, i.e. the applications. We will now scale the 'm
 
 [source]
 ----
-oc scale deployment/meow2 --replicas=3
-oc scale deployment/nodenews --replicas=2
+oc scale dc/meow2 --replicas=3
+oc scale dc/nodenews --replicas=2
 ----
 
 Once the commands come back successfully type:
@@ -220,7 +220,7 @@ What we will do now is to scale down *all* of the applications to a single Pod u
 [source]
 ----
 for depl in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
-do oc scale deployment/$depl --replicas=1; \
+do oc scale dc/$depl --replicas=1; \
 done
 
 oc get pods | grep Running
