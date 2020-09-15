@@ -10,7 +10,7 @@ TIP: The attendee will be using the terminal application created in the pre-requ
 
 OpenShift is built around Kubernetes, which is a fantastically complex and elegant orchestration system for containers. It works by maintaining a state vision of the entire system, which is a set of what are called 'objects'.
 
-An 'object' has a type - i.e. Service, Pod, User, Namesapce and the like. This type tells Kubernetes how and what it can do with the object; in fact Kubernetes has a number of processes called 'controllers' whose only job is to create, monitor and maintain these 'objects'. 
+An 'object' has a type - i.e. Service, Pod, User, Namespace and the like. This type tells Kubernetes how and what it can do with the object; in fact Kubernetes has a number of processes called 'controllers' whose only job is to create, monitor and maintain these 'objects'. 
 
 In order for a user to interact with the system, be it OpenShift or Kubernetes, an API is provided that allows you to create, manipulate and remove these objects. But it's very complicated, because of the nature of the systems. 
 
@@ -200,7 +200,7 @@ And this is where the oc command becomes incredibly powerful. Type the following
 
 [source]
 ----
-oc get dc -o jsonpath='{.items[*].metadata.name}'
+oc get deployment -o jsonpath='{.items[*].metadata.name}'
 ----
 
 We can use the output of an object in json through a jsonpath filter and access *any* component of the object. Here's a more useful example - type the following:
