@@ -200,7 +200,7 @@ And this is where the oc command becomes incredibly powerful. Type the following
 
 [source]
 ----
-oc get deployment -o jsonpath='{.items[*].metadata.name}'
+oc get dc -o jsonpath='{.items[*].metadata.name}'
 ----
 
 We can use the output of an object in json through a jsonpath filter and access *any* component of the object. Here's a more useful example - type the following:
@@ -219,8 +219,8 @@ What we will do now is to scale down *all* of the applications to a single Pod u
 
 [source]
 ----
-for depl in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
-do oc scale dc/$depl --replicas=1; \
+for dc in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
+do oc scale dc/$dc --replicas=1; \
 done
 
 oc get pods | grep Running
