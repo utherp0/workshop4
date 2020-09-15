@@ -156,8 +156,8 @@ This will list the Pods running, i.e. the applications. We will now scale the 'm
 
 [source]
 ----
-oc scale dc/meow2 --replicas=3
-oc scale dc/nodenews --replicas=2
+oc scale deployment/meow2 --replicas=3
+oc scale deployment/nodenews --replicas=2
 ----
 
 Once the commands come back successfully type:
@@ -219,8 +219,8 @@ What we will do now is to scale down *all* of the applications to a single Pod u
 
 [source]
 ----
-for dc in $(oc get dc -o jsonpath='{.items[*].metadata.name}'); \
-do oc scale dc/$dc --replicas=1; \
+for depl in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
+do oc scale deployment/$depl --replicas=1; \
 done
 
 oc get pods | grep Running
