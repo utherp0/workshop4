@@ -253,7 +253,7 @@ Click on Topology. Click on the node icon. When the Deployment Config tab appear
 
 Click on the up arrow to scale the Application to two copies. This will *fail*. The second Pod will hang in Pending.
 
-Click on Advanced/Events in the left hand menu. You should see an Event highlighted in red that indicates the volume cannot be mounted due to a 'multi-attach' error
+Click on Monitoring in the left hand menu and then select the Events tab. You should see an Event highlighted in red that indicates the volume cannot be mounted due to a 'multi-attach' error
 
 The volume is RWO, meaning only one node can have it at once. OpenShift will load balance the Application copies, so it is highly unlikely the two Pods will land on the same node.
 
