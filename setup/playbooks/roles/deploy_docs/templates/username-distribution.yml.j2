@@ -12,7 +12,7 @@ items:
     - annotations: null
       from:
         kind: DockerImage
-        name: quay.io/openshiftlabs/username-distribution:latest
+        name: quay.io/browningjp/username-distribution:latest
       generation: 2
       importPolicy: {}
       name: latest
@@ -25,6 +25,7 @@ items:
       template.alpha.openshift.io/wait-for-ready: "true"
     labels:
       template: redis-persistent-template
+      app.kubernetes.io/part-of: username-distribution-app
     name: redis
   spec:
     replicas: 1
@@ -102,7 +103,7 @@ items:
         - redis
         from:
           kind: ImageStreamTag
-          name: redis:3.2
+          name: redis:latest
           namespace: openshift
       type: ImageChange
     - type: ConfigChange

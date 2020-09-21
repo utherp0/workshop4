@@ -35,11 +35,19 @@ Select ‘From Catalog’
 
 Search for ‘node’
 
+<<<<<<< HEAD
 Click on the ‘node.js’ option 
 
 Click ‘Create Application’
 
 Leave the Builder Image Version as ‘10’
+=======
+Click on the ‘node.js’ option (Builder Image)
+
+Click ‘Create Application’
+
+Leave the Builder Image Version as ‘12’
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 Enter the following for the Git Repo URL - ‘https://github.com/utherp0/workshop4’
 
@@ -67,7 +75,11 @@ TIP: What we have done is to create a simple application running in a Pod. We wi
 
 Ensure you are on the Developer/Topology page. Make sure the DC tab is visible for the Application (if it isn't click on the Node Pod in the Topology tab).
 
+<<<<<<< HEAD
 In the DC tab click on the Resources tab. This shows the Pods, Builds, Services and Routes for this Application. You will have one Pod - click on the Pod name in the tab.
+=======
+In the DC tab click on the Resources tab if it is not already showing. This shows the Pods, Builds, Services and Routes for this Application. You will have one Pod - click on the Pod name in the tab.
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 In the Pod Details tab click on the Terminal tab. This will start a terminal window
 
@@ -221,7 +233,11 @@ This file is owned by the UID for the Container, and the permissions are RW for 
 
 What we are going to do now is remove the Application. Instead of deleting the Pod, and having OpenShift automatically recreate it, we are going to scale the deployment down to zero replicas, which will get rid of the Application completely.
 
+<<<<<<< HEAD
 Switch back to the Developer view (click on Administrator and choose Developer). Make sure the Topology is showing and click on the node Pod. When the Deployment tab appears on the right-hand side, click on the Overview tab.
+=======
+Switch back to the Developer view (click on Administrator and choose Developer). Make sure the Topology is showing and click on the node Pod. When the Deployment tab appears on the right-hand side, click on the Details tab.
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 This displays the overview of the Deployment Config. You will see a representation of the Application shown as a Pod with the number 1 in the middle. Next to the icon are two arrows - these are used to scale up and down the number of replicas. Click on the down arrow and set the replicas for the Application to zero.
 
@@ -231,7 +247,11 @@ Click on the Resources tab and make sure there are no Pods running - the message
 
 Now click on Developer and switch back to the Adminstrator view. On the left hand menu click on Storage/Persistent Volume Claims. You will see the PVC is still bound even though we have no replicas of the Application. It remains resident at this point.
 
+<<<<<<< HEAD
 Switch back to the Developer view. In the Topology click on the empty node. In the Deployment Config tab click on Overview. You will see the 'scale down' arrow is grayed out because we have no replicas. Scale the count back up to 1 (make sure you only scale to 1 at this point).
+=======
+Switch back to the Developer view. In the Topology click on the empty node. In the Deployment Config tab click on Details. You will see the 'scale down' arrow is grayed out because we have no replicas. Scale the count back up to 1 (make sure you only scale to 1 at this point).
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 When the Pod has started (dark blue circle) click on Resources. You will see a new Pod has spun up (it will have a different set of five letters at the end of the Pod). Click on the Pod name.
 
@@ -249,6 +269,7 @@ The file has survived the removal of the Application. This is the strength and c
 
 === Demonstrating the RWO behaviour
 
+<<<<<<< HEAD
 Click on Topology. Click on the node icon. When the Deployment Config tab appears click on Overview.
 
 Click on the up arrow to scale the Application to two copies. This will *fail*. The second Pod will hang in Pending.
@@ -260,6 +281,17 @@ image::pvs-7.png[unable to attach the volume]
 The volume is RWO, meaning only one node can have it at once. OpenShift will load balance the Application copies, so it is highly unlikely the two Pods will land on the same node.
 
 NOTE: You *may* get a situation where the two Pods do start. This is when they have both landed on the same Worker node.
+=======
+Click on Topology. Click on the node icon. When the Deployment Config tab appears click on Details.
+
+Click on the up arrow to scale the Application to two copies. This will *fail*. The second Pod will hang in Pending.
+
+Click on Monitoring in the left hand menu and then select the Events tab. You should see an Event highlighted in red that indicates the volume cannot be mounted due to a 'multi-attach' error
+
+The volume is RWO, meaning only one node can have it at once. OpenShift will load balance the Application copies, so it is highly unlikely the two Pods will land on the same node.
+
+NOTE: You *may* get a situation where the two Pods do start. This is when they have both landed on the same Worker node. Try scaling the DC up until a new Pod lands on a different Worker node
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 Click on Topology. Click on the node icon (it will show one Pod active and one Pod pending). In the Deployment Config tab make sure you are on the Overview tab. Scale the application back to one copy. OpenShift will delete the pending Pod and the Application will return to a single working copy.
 

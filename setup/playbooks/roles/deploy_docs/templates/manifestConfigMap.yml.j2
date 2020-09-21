@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: manifests
-  namespace: docs
+  namespace: {{ project_name }}
 data:
 {% for item in workshop_manifests %}
   {{ item.id }}: |-
@@ -14,11 +14,13 @@ data:
       url: https://raw.githubusercontent.com/utherp0/workshop4/master/labs
 
     vars:
-      OPENSHIFT_CONSOLE_URL: "https://console-openshift-console.mycluster.com"
+      OPENSHIFT_CONSOLE_URL: "will be overwritten"
+      USERNAME_URL: "will be overwritten"
 
     modules:
       activate:
 {% for lab in item.labs %}
       {{ "- " + lab.id }}
 {% endfor %}
+      - linkback
 {% endfor %}

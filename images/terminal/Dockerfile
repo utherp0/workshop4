@@ -30,7 +30,7 @@ chmod +x /usr/local/bin/odo
 RUN curl -sL -o /usr/local/bin/kn https://storage.googleapis.com/knative-nightly/client/latest/kn-linux-amd64 && \
 chmod +x /usr/local/bin/kn
 
-RUN curl -sL -o /tmp/kamelexamples.tar.gz https://github.com/apache/camel-k/releases/download/1.0.0-RC2/camel-k-examples-1.0.0-RC2.tar.gz && \
+RUN curl -sL -o /tmp/kamelexamples.tar.gz https://github.com/apache/camel-k/releases/download/v1.1.0/camel-k-examples-1.1.0.tar.gz && \
 mkdir /tmp/examples && \
 tar -C /tmp/examples -xf /tmp/kamelexamples.tar.gz --no-same-owner && \
 mv /tmp/examples /workspace && \
@@ -52,6 +52,7 @@ RUN oc completion bash >>/etc/bash_completion.d/oc_completion
 
 RUN cd /workspace && git clone https://github.com/utherp0/workshop4
 
+RUN chmod -R 777 /workspace/examples
 RUN chmod -R 777 /workspace/workshop4
 RUN chmod -R 777 /tmp
 

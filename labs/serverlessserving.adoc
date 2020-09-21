@@ -141,7 +141,11 @@ siege -c 50 -t 30s <URL_OF_SERVICE>
 
 This command bombards the application for 30 seconds.
 
+<<<<<<< HEAD
 On the Topology view, click on the application (circle inside the box) to bring up the sidebar, then go to the 'Resources' tab. You will see that a bunch of pods have been spun up to serve the requests (around 14). Once the `siege` command completes, the pods will begin to disappear until the application has scaled back down to zero.
+=======
+On the Topology view, click on the application (circle inside the box) to bring up the sidebar, then go to the 'Resources' tab. You will see that a bunch of pods have been spun up to serve the requests (around 11). Once the `siege` command completes, the pods will begin to disappear until the application has scaled back down to zero.
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 ==== Limiting the number of pods
 

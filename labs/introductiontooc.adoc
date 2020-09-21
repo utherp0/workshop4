@@ -10,7 +10,7 @@ TIP: The attendee will be using the terminal application created in the pre-requ
 
 OpenShift is built around Kubernetes, which is a fantastically complex and elegant orchestration system for containers. It works by maintaining a state vision of the entire system, which is a set of what are called 'objects'.
 
-An 'object' has a type - i.e. Service, Pod, User, Namesapce and the like. This type tells Kubernetes how and what it can do with the object; in fact Kubernetes has a number of processes called 'controllers' whose only job is to create, monitor and maintain these 'objects'. 
+An 'object' has a type - i.e. Service, Pod, User, Namespace and the like. This type tells Kubernetes how and what it can do with the object; in fact Kubernetes has a number of processes called 'controllers' whose only job is to create, monitor and maintain these 'objects'. 
 
 In order for a user to interact with the system, be it OpenShift or Kubernetes, an API is provided that allows you to create, manipulate and remove these objects. But it's very complicated, because of the nature of the systems. 
 
@@ -99,7 +99,7 @@ Fortunately we can shortcut this as developers, if we have, for example, a GitHu
 
 [source]
 ----
-oc new-app https://github.com/utherp0/meow2
+oc new-app https://github.com/utherp0/meow2 --as-deployment-config
 ----
 
 The oc command will cause OpenShift to create all the contents it needs for an Application based on the source code it finds at the GitHub repo. In this case the source code contains the building blocks for a node.js application. The image belows shows the output you should receive:
@@ -136,7 +136,7 @@ Now, for the sake of the lab, we will create a second application. Type:
 
 [source]
 ----
-oc new-app https://github.com/utherp0/nodenews
+oc new-app https://github.com/utherp0/nodenews --as-deployment-config
 ----
 
 Again use the 'oc get pods' and 'oc status' to watch the build of the second application. When it completes it will look like this:
@@ -219,7 +219,7 @@ What we will do now is to scale down *all* of the applications to a single Pod u
 
 [source]
 ----
-for dc in $(oc get dc -o jsonpath='{.items[*].metadata.name}'); \
+for dc in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
 do oc scale dc/$dc --replicas=1; \
 done
 

@@ -5,9 +5,15 @@
 TIP: For a number of the labs you will be interacting with the OpenShift cluster using a number of different command line tools. In order to avoid you having to install them on your own machine we have taken advantage of the nature of OpenShift and produced a Container that does it all for you, and provides a terminal experience in the browser. In this section you will create that application; this terminal is used throughout the workshop.
 
 NOTE: If you leave the Terminal window open for a long time without using it it will disconnect. To reconnect simply refresh the page.
+<<<<<<< HEAD:labs/prereq.adoc
 
 Open the browser and navigate to the console url {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"]
 
+=======
+
+Open the browser and navigate to the console url {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"]
+
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8:labs/prereq.adoc
 Logon using the user provided by the course administrator ({{USER_ID}})
 
 When logged on you will be presented with a screen listing the projects, of which there are currently none
@@ -22,11 +28,9 @@ Once the project has been created (you will be given a dashboard) change the mod
 
 On the Topology page it will state 'No workloads found' - Click on 'Container Image'
 
-In 'Image Name' enter 'quay.io/ilawson/devex4'
+In 'Image Name' enter 'quay.io/ilawson/devex4' and hit return
 
-Click on the search icon to the right of the text box
-
-Leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
+The UI will validate the URL (successfully) - leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
 
 Wait for the ring around the application icon to change to dark blue - this indicates the application has been started
 

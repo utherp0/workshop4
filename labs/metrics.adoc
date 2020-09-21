@@ -37,6 +37,7 @@ Once the Project has created you should be taken to the Project Details tab. Sel
 
 image::events1.png[Events tab empty]
 
+<<<<<<< HEAD
 Click on Home/Events. The resulting screen should look like:
 
 image::events2.png[No events yet]
@@ -52,6 +53,23 @@ Click on 'Advanced Git Options' - you may have to click it twice; removing conte
 In the Context Dir textbox enter /apps/nodeatomic
 
 Scroll down to the *General* section. Set the 'Application Name' to 'events-app'. Set the 'Name' to 'nodeatomic'
+=======
+Now we will add an application to the project. Switch to the Developer view by clicking on Administrator and selecting Developer.
+
+Click on +Add. Choose 'From Catalog'. Enter *node* in the search box. Click on the 'node.js' Builder Image
+
+Click 'Create Application'. In the 'Git Repo URL' textbox enter https://github.com/utherp0/workshop4
+
+Insure the text 'Validated' appears beneath the textbox. If it doesn't check the URL
+
+Click on 'Advanced Git Options'
+
+In the Context Dir textbox enter /apps/nodeatomic
+
+Scroll down to the *General* section. Set the 'Application Name' to 'events-app'. 
+
+Set the 'Name' to 'nodeatomic'
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 Scroll down to the *Resources* section. Select 'Deployment Config'.
 
@@ -71,9 +89,17 @@ Now in the pulldown box at the top left of the events set the resource to Build 
 
 image::events4.png[build events only]
 
+<<<<<<< HEAD
 Now click in the pulldown box at the top left of the events. In the textbox where it says 'Select Resource' type 'pod'. From the selection in the pulldown choose 'Pod'. 
 
 Pause the event stream again.
+=======
+Now click in the pulldown box at the top left of the events. In the textbox where it says 'Select Resource' type 'pod'. From the selection in the pulldown choose 'Pod'. Remove the 'Build' filter 
+
+Pause the event stream again. It should look like this:
+
+image::events4b.png[pod events paused]
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 Switch to your terminal app window (the command line interface described in the prerequisites). type the following:
 
@@ -111,7 +137,15 @@ The current CPU consumption for the Pod in question. This can be limited by asmi
 The current file access consumption. This is expressed in KiB by default.
 ****
 
+<<<<<<< HEAD
 In the Administration view click on Workloads/Pods. Select the topmost Pod and click on its name. The Pod Details tab will display the current metrics for the Pod. 
+=======
+In the Administration view click on Workloads/Pods. 
+
+Set the filter at the top left of the page to 'Running'
+
+Select the topmost Pod and click on its name. The Pod Details tab will display the current metrics for the Pod. 
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 image::events6.png[Example Pod metrics]
 
@@ -155,7 +189,11 @@ For example, if you had three Pods running 'myapp' you could search for any erro
 
 ==== Examining Logs using the OCP UI
 
+<<<<<<< HEAD
 Switch to the Developer view and then to the topology view. You should have one copy of the Application running (one Pod). Click on the Pod to show the DC tab on the right side of the page. Now click on Resources to list the Pods.
+=======
+Switch to the Developer view and then to the topology view. You should have one copy of the Application running (one Pod). Click on the Pod to show the DC tab on the right side of the page. Now click on Resources if it doesn't display that to list the Pods.
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 On the Pod icon click the URL icon (top right). This will open another tab with the output of the Application in it. Switch back to the OpenShift interface and click on 'View Logs', situated to the right of the single Pod in the DC tab.
 
@@ -165,7 +203,11 @@ Add /log to the end of the URL and hit return. The page should change to a simpl
 
 Switch back to the OpenShift interface. The log will now have twenty log messages (count 0 to count 19) displayed.
 
+<<<<<<< HEAD
 Click on Topology. Click on the Pod to bring up the DC tab. Click on Overview.
+=======
+Click on Topology. Click on the Pod to bring up the DC tab. Click on Details.
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8
 
 We are going to scale the Application to two copies; click on the up arrow displayed next to the Pod indicator *once*. Click on Resources and make sure there are now two copies of the Application running.
 

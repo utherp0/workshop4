@@ -20,7 +20,11 @@ Name - ‘sandbox-{{USER_ID}}’
 
 The Display Name and Description components are cosmetic labels and can be left empty. Hit 'Create'
 
+<<<<<<< HEAD:labs/applicationbasics.adoc
 When the project completes creation click on the 'Role Bindings' tab
+=======
+When the project completes creation click on the User Management tab on the left of the interface and select 'Role Bindings'
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8:labs/applicationbasics.adoc
 
 *By default when you create a Project within OpenShift your user is given administration rights. This allows the user 
 to create any objects that they have rights to create and to change the security and access settings for the project 
@@ -39,14 +43,20 @@ Click 'Add'
 
 * *From Git - this provides another way to do a Source-2-Image build by first choosing the Git repo and then the builder image to use*
 * *Container Image - this provides a way to directly deploy an Image from a repository*
-* *From Catalog - this allows the Developer to browse all available templates, which are predefined sets of Objects to create an application* 
 * *From Dockerfile - this allows the Developer to do a controlled build of an Image from a Dockerfile*
 * *YAML - this allows the Developer to provide a set of populated YAML to define the objects to be added to the Project*
+* *From Catalog - this allows the Developer to browse all available templates, which are predefined sets of Objects to create an application* 
 * *Database - this allows the Developer to browse pre-created Database services to add to the Project*
+* *Operator Backed - this allows the developer to deploy an Application that is backed by an Operator, i.e. using a CR to deploy an application*
+* *Helm Charts - this allows the developer to add something to the project from a Helm chart, which defines the base state of a set of Kubernetes objects*
+* *Pipeline - this allows the developer to instantly add a Tekton based pipeline for automated delivery of an application*
+* *Event Source - this allows the developer to register a subscription to aclass of events from a given system* 
 
 Select ‘From Catalog’
 
-Enter ‘node’ in the search box
+Untick the filter that says 'Operator Backed'. This filter allows the developer to see a reduced set of the available options
+
+Enter ‘node’ in the 'filter by keyword' search box
 
 image::applicationbasics-1.png[Node Choice]
 
@@ -68,12 +78,14 @@ Click on 'Create Application'
 *This approach uses the OpenShift ''source-2-image'' concept, which is a controlled mechanism provided by OpenShift that automates the creation 
 of application images using a base image and a source repository.* 
 
-Change the Builder Image Version to 8
+Leave the builder image at 12
 
 *The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
 versions.*
 
 Enter the following for the Git repo for the application - https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews, window="_blank"]
+
+Once you remove focus from the git repo text entry point ensure the git repo is correct; a label will appear below the text box saying 'Validated'. If it doesn't check the URL is correct.
 
 In a separate browser tab go to https://github.com/utherp0/nodenews[https://github.com/utherp0/nodenews, window="_blank"]
 
@@ -81,14 +93,10 @@ In a separate browser tab go to https://github.com/utherp0/nodenews[https://gith
 
 Close the github tab
 
-Back at the OCP4.3 UI click on the 'Application Name' entry box. It will auto-fill with the Application Name and the Name will auto-fill as well. 
+Back at the OCP4.5 UI scroll down and ensure the Application Name and Name textboxes have been autofilled. These should be set to nodenews-app and nodenews in order
 
 *OpenShift 4 introduces the concept of Application Grouping. This allows a visualisation of multiple Applications in the same 'group', making visibility of the Application much 
 simpler.*
-
-Ensure the application name is ‘nodenews-app’
-
-Ensure the Name is ‘nodenews’
 
 Scroll down to 'Resources'. Click the selection box for 'Deployment Config' rather than the default of 'Deployment'
 
@@ -131,13 +139,15 @@ Click 'From Catalog'
 
 Search for ‘httpd’
 
-Select the Apache HTTP Server (httpd) template - Note that there are two options, you want to choose the one that is labelled (httpd) and starts with the text 'Build and serve static content'
+Select the Apache HTTP Server (httpd) template - Note that there are two options, you want to choose the one that is labelled (httpd) and starts with the text 'Build and serve static content' and is labelled 'Builder Image'
 
 Click on 'Create Application'
 
 Leave Image Version as 2.4
 
 Enter the following for the Git repo for the application - https://github.com/utherp0/forumstaticassets[https://github.com/utherp0/forumstaticassets, window="_blank"]
+
+When you unfocus the textbox the word 'Validated' will appear - if this doesn't check the URL for correctness
 
 Make sure the Application is ‘nodenews-app’
 
@@ -156,7 +166,7 @@ the group as a single action.*
 
 Click on the forumstaticassets Pod
 
-Watch the build complete, the Container Creating and the Running event.
+Watch the build complete, the Container Creating and the Running event. During the build process you may see errors in the right panel; these are actually correct. The concept of a Deployment immediately tries to deploy the image of the application. In the case of a S2I build this image doesn't immediately exist, because the system has to build it, so the deployment tries to deploy until the build is finished, at which point the deployment will succeed. It is often better to use the OpenShift Deployment Config approach; deployments are there for Kubernetes compliance.
 
 image::applicationbasics-4c.png[Multi-app topology]
 
@@ -166,13 +176,15 @@ Click 'From Catalog'
 
 Search for ‘node’
 
-Select ‘Node.js’
+Select ‘Node.js’ (the Builder Image)
 
 Click 'Create Application'
 
-Leave at Builder Image Version 10
+Leave at Builder Image Version 12
 
 Enter the following for the Git repo for the application - https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode, window="_blank"]
+
+Insure the 'Validated' message appears when you exit the field. Again, if it doesn't check the URL.
 
 In the ‘Application’ pulldown select ‘Create Application‘
 
@@ -211,7 +223,7 @@ oc whoami
 oc version
 ----
 
-NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html, window="_blank"]
+NOTE: Also see the *Command-Line Reference*: https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html, window="_blank"]
 
 To explore the command line further execute the following commands and observe the results.
 
@@ -275,13 +287,13 @@ Click on the ‘nodenews’ application
 
 Note the ‘DC’ reference to the application under the icon
 
-In the pop-up panel on the right click on 'Resources'
+In the pop-up panel on the right click on 'Resources' if it is not already showing
 
 Note that there are two pods running with the application now
 
 Change the mode from Developer to Administrator
 
-Select the 'sandboxx' project in the project list
+Select the 'sandbox{{USER_ID}}' project in the project list
 
 Note the metrics for the project
 
@@ -296,6 +308,8 @@ It is possible to filter groups of pods that are displayed based on the headings
 Change to Developer mode and then select Topology if the Topology page isn’t already shown
 
 Hold down the shift button, click and hold on the forumstaticassets icon, and pull it out of the application grouping graphic. Release the hold on the forumstaticassets icon.
+
+image::applicationbasics-8.png[Moving app from group]
 
 *The UI will now prompt you if you wish to remove the application component. Select Remove. This component is now separated from the application group*
 

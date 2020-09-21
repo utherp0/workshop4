@@ -61,7 +61,7 @@ cd phase1
 oc create -f layer1.yaml --save-config
 ----
 
-Switch to the web user interface and select the developer view for your current project. Select the topology view and you will see the application start to be created. Click on the centre of the blue circle for the application and you should see the fly out menu on the right with details of the service and the running pod. Select the pod and scroll down the details of the pod until you see a section titled 'Containers'. This should show two containers as indicated below which are the 'layers' application container and the Istio sidecar container.
+Switch to the web user interface and select the developer view for your service mesh project. Select the topology view and you will see the application start to be created. Click on the centre of the blue circle for the application and you should see the fly out menu on the right with details of the service and the running pod on the resources tab. Select the pod and scroll down the details of the pod until you see a section titled 'Containers'. This should show two containers as indicated below which are the 'layers' application container and the Istio sidecar container.
 
 image::service-mesh-01.png[Pod with application container and sidecar container]
 
@@ -150,9 +150,9 @@ On the left hand side of the Kiali screen select 'Graph and you should see a scr
 
 image::service-mesh-04.png[Kiali initial screen]
 
-If your screen shows application nodes and services then Kiali is responding to the traffic that was sent in the 100 calls to the application a few minutes ago. Kiali will display a discovered configuration of applications and services if there has been traffic for it to observe.
+If your screen shows application nodes and services then Kiali is responding to the traffic that was sent in the 100 calls to the application a few minutes ago. Kiali will display a discovered configuration of applications and services if there has recently been traffic for it to observe.
 
-If the Kiali view has timed out and removed the discovered services oyu will see a screen identical to that which is shown above. In that case press the blue button with the text 'Display unused nodes' and you will see the nodes and services of the application.
+If the Kiali view has timed out and removed the discovered services you will see a screen identical to that which is shown above. In that case press the blue button with the text 'Display unused nodes' and you will see the nodes and services of the application.
 
 You will now see the layer-1 application which is broken out as the service (dotted triangle) and the application (dotted square). Press the legend button to see the key to the objects in the browser window. You will also see that the service has an Istio virtual service associated with it.
 
@@ -199,7 +199,7 @@ Create the additional virtual service for the component with the commands:
 
 [source]
 ----
-oc create -f virtual-service-layer2.yaml
+oc create -f virtual-service-layer2.yaml --save-config
 ----
 
 Reconfigure layer1 to send messages to layer2 using the command:
@@ -246,7 +246,11 @@ oc create -f layer3.yaml
 
 You will see that four deployments are created for the four different versions of layer3. 
 
+<<<<<<< HEAD:labs/servicemesh.adoc
 Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has six micro-services within it. This is shown below:
+=======
+Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has seven micro-services within it. This is shown below:
+>>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8:labs/servicemesh.adoc
 
 image::service-mesh-08.png[OpenShift topology view of micro-services]
 
