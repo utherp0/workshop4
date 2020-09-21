@@ -20,11 +20,7 @@ Name - ‘sandbox-{{USER_ID}}’
 
 The Display Name and Description components are cosmetic labels and can be left empty. Hit 'Create'
 
-<<<<<<< HEAD:labs/applicationbasics.adoc
-When the project completes creation click on the 'Role Bindings' tab
-=======
 When the project completes creation click on the User Management tab on the left of the interface and select 'Role Bindings'
->>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8:labs/applicationbasics.adoc
 
 *By default when you create a Project within OpenShift your user is given administration rights. This allows the user 
 to create any objects that they have rights to create and to change the security and access settings for the project 

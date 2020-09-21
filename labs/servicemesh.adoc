@@ -246,11 +246,7 @@ oc create -f layer3.yaml
 
 You will see that four deployments are created for the four different versions of layer3. 
 
-<<<<<<< HEAD:labs/servicemesh.adoc
-Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has six micro-services within it. This is shown below:
-=======
 Switch to the OpenShift browser window and ensure that you are using the developer mode on the top left corner, you have the service-mesh-{{USER_ID}} project selected and you are viewing the Topology view. You should see the 'layers' application grouping now has seven micro-services within it. This is shown below:
->>>>>>> afd0353a5322606ceb303e22cb9718c154f3f7e8:labs/servicemesh.adoc
 
 image::service-mesh-08.png[OpenShift topology view of micro-services]
 
