@@ -2,24 +2,27 @@ Author: Ally Kouao (feedback to akouao@redhat.com)
 
 === Introduction
 
+.Quarkus
+****
 Quarkus is a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot, crafted from the best of breed Java libraries and standards. Amazingly fast boot time, incredibly low RSS memory (not just heap size!) offering near instant scale up and high density memory utilization in container orchestration platforms like Kubernetes. Quarkus uses a technique called link:https://quarkus.io/vision/container-first[compile time boot, window="_blank"] and offers a unified imperative and reactive programming model and a number of other developer features like Live Reload to bring real joy to your development.
 
 Throughout this lab you’ll discover how Quarkus can make your development of cloud native apps faster and more productive. You will be using link:https://www.eclipse.org/che/[Red Hat CodeReady Workspace, window="_blank"], an online IDE based on CodeReady Workspaces. Changes to files are auto-saved every few seconds, so you don’t need to explicitly save changes.
+****
 
 ==== Setting up your workspace environment
 
 To get started, open your `crw` project, and open the CodeReady url.
 
+You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
+
 On the login page, select `Register`. You will have to register a new user before proceeding. Enter the following in the respective fields:
 
 [source]
 ----
-First name: user{{USER_ID}}
-Last name: user{{USER_ID}}
-Email: user{{USER_ID}}@no-reply.com
-Username: user{{USER_ID}}
-Password: openshift
-Confirm password: openshift
+Username: {{USER_ID}}
+Email: {{USER_ID}}@no-reply.com
+First name: {{USER_ID}}
+Last name: {{USER_ID}}
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
@@ -48,20 +51,19 @@ Hit the `Load devfile` button to ensure that the configuration is loaded.
 image::quarkus-1.png[View of interface with populated workspace name and imported devfile]
 
 
-That's it. Your workspace configuration is complete. Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
 
 Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
 
 TIP: If things get weird, you can simply reload the browser tab to refresh the view.
 
-Ready? Let’s go!
-
-==== Getting Started with Quarkus
-
+.Getting Started with Quarkus
+****
 In this step, you will create a straightforward application serving a `hello` endpoint. To demonstrate dependency injection, this endpoint uses a `greeting` bean.
 
 
 image::quarkus-2.png[Restful greeting service process]
+****
 
 
 You can see icons on the left for navigating between project explorer, search and other plugins. You’ll use these during the course of this workshop. Feel free to click on them and see what they do:
@@ -262,9 +264,10 @@ TIP: Close all terminal windows, and file windows, except for the "Live Coding" 
 
 You’ve seen how to build a basic app, package it as an executable JAR and start it up very quickly. The JAR file can be used like any other executable JAR file (e.g. running it as-is, packaging as a Linux container, etc.)
 
-==== Dependency Injection
-
+.Dependency Injection
+****
 In the previous step you created a basic RESTful Java application with Quarkus. In this step we’ll add a custom bean using dependency injection (DI). Quarkus DI solution is based on the link:https://docs.jboss.org/cdi/spec/2.0/cdi-spec.html[Contexts and Dependency Injection for Java 2.0 specification, window="_blank].
+****
 
 ===== Add Custom Bean
 
@@ -386,13 +389,12 @@ Close all terminal windows, and file windows, except for the "Start Live Coding"
 
 It’s a familiar CDI-based environment for you Enterprise Java developers out there, with powerful mechanisms to reload your code as you type (or very close to realtime).
 
-==== Building Native Quarkus Apps
-
+.Building Native Quarkus Apps
+****
 Let’s now produce a native executable for our application. It improves the startup time of the application, and produces a minimal disk and memory footprint. The executable would have everything to run the application including the "JVM" (shrunk to be just enough to run the application), and the application. This is accomplished using link:https://www.graalvm.org/[GraalVM, window="_blank"].
 
 GraalVM is a universal virtual machine for compiling and running applications written in JavaScript, Python, Ruby, R, JVM-based languages like Java, Scala, Groovy, Kotlin, Clojure, and LLVM-based languages such as C and C++. It includes ahead-of-time compilation, aggressive dead code elimination, and optimal packaging as native binaries that moves a lot of startup logic to build-time, thereby reducing startup time and memory resource requirements significantly.
-
-image::quarkus-11.png[Native executable process]
+****
 
 GraalVM is already installed for you. Inspect the value of `GRAALVM_HOME` variable in the terminal with:
 
@@ -511,7 +513,8 @@ TIP: Close all terminal windows, and file windows, except for the "Start Live Co
 
 You’ve now built a Java application as an executable JAR and a Linux native binary.
 
-==== Documenting and Testing APIs
+.Documenting and Testing APIs
+****
 
 Exposing APIs has become an essential part of all modern applications. At the center of this revolution known as the API Economy we find RESTful APIs, which can transform any application into language agnostic services that can be called from anywhere: on-premises, private cloud, public cloud, etc.
 
@@ -521,9 +524,8 @@ An OpenAPI definition can then be used by documentation generation tools to disp
 
 Quarkus implements the link:https://github.com/eclipse/microprofile-open-api/[MicroProfile Open API Specification, window="_blank"] and as such exposes several developer APIs for documenting your application’s APIs.
 
-The MicroProfile OpenAPI specification requires vendors to produce a valid OpenAPI document from pure JAX-RS 2.0 applications, without the developer adding any special annotations for OpenAPI. This means that vendors must process all the relevant JAX-RS annotations (such as `@Path` and `@Consumes`) as well as Java objects (POJOs) used as input or output to JAX-RS operations.
-
 Therefore you as a developer get a lot of functionality out of the box without doing anything. Let’s test this out.
+****
 
 ===== Add Extension
 
@@ -605,13 +607,13 @@ Using the UI, expand the `/hello/greeting/{name}` endpoint. Here you can basic d
 Click the `Try it out` button to expand the box allowing you to try it. Enter any openshift into the name field and click Execute:
 
 
-image::quarkus-12.png[Name input in Swagger UI]
+image::quarkus-11.png[Name input in Swagger UI]
 
 
 This accesses the endpoint in the same way that `curl` does, and shows you the result (along with corresponding metadata in the HTTP response):
 
 
-image::quarkus-13.png[Name response in Swagger UI]
+image::quarkus-12.png[Name response in Swagger UI]
 
 
 Pretty handy way to test out your APIs!
@@ -626,9 +628,16 @@ There are additional types of documentation you can add, for example you can dec
 
 === Final Cleanup
 
-Finally, lets tidy up the cluster now that your introduction to Quarkus is complete. Navigate to your openshift terminal and enter the command
+Finally, lets tidy up the cluster now that your introduction to Quarkus is complete.
 
-[source]
-----
-oc delete project crw-user{{USER_ID}}
-----
+Navigate to the left of your console and click the `workspaces` tab.
+
+Locate the name of your workspace, and click the stop button - a square icon - that is-line your workspace and just below the `Actions` subheading.
+
+Click the cog/settings icon beside the stop icon.
+
+Naviate to the `Overview` tab.
+
+Click the red `Delete` button. When the pop-up appears, tick the checkbox to confirm that you understand your action to delete, and click the final `Delete` button.
+
+Your workspace has been deleted once it disappears from your workspaces. Upon deletion, close the browser CodeReady workspaces browser that you currently have open.
