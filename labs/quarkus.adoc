@@ -20,7 +20,7 @@ On the login page, select `Register`. You will have to register a new user befor
 [source]
 ----
 Username: {{USER_ID}}
-Email: {{USER_ID}}@no-reply.com
+Email: {{USER_ID}}@example.com
 First name: {{USER_ID}}
 Last name: {{USER_ID}}
 ----
