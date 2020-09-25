@@ -23,7 +23,7 @@ oc new-project simple-rest-{{USER_ID}}
 
 [source]
 ----
-oc new-app --name simple-rest-app-v1-0  https://github.com/marrober/simpleRest.git
+oc new-app --name simple-rest-app-v1-0  https://github.com/marrober/simpleRest.git --as-deployment-config
 
 oc expose service simple-rest-app-v1-0 --name="simple-rest-app-route"
 ----
@@ -35,12 +35,12 @@ It is important to understand the resources and content that are created by the 
 
 * A new project is created called simple-rest-{{USER_ID}}.
 * A deployment configuration is created called simple-rest-app-v1-0.
-* A replication controller is created associated with the application and the built objects. This defines the scaling of the application in terms of the number of pods and the deployment strategy (rolling or recreate). 
-* A build configuration is created to compile the application source code which is extracted from the associated GIT repository. 
+* A replication controller is created associated with the application and the built objects. This defines the scaling of the application in terms of the number of pods and the deployment strategy (rolling or recreate).
+* A build configuration is created to compile the application source code which is extracted from the associated GIT repository.
 * The build configuration will create a build instance which includes logs of the build process and a reference to the built image.
 * The newly created image is deployed as a running pod (or pods depending on the number of pods defined in the deployment configuration).
 * A service is created as part of the application creation process. The service endpoints will point to the pod(s) created by the build process. In the case of a rebuild and redeploy operation the service endpoints are updated to point to the new pods in accordance with the deployment strategy of the deployment configuration.
-* The service is then exposed external to the cluster by the creation of a route. The route has a fully qualified domain name for access from machines outside the cluster. 
+* The service is then exposed external to the cluster by the creation of a route. The route has a fully qualified domain name for access from machines outside the cluster.
 
 The diagram below shows the above and how they relate together.
 
@@ -76,7 +76,7 @@ The development team now wants to introduce an experimental version 2 of the app
 
 [source]
 ----
-oc new-app --name simple-rest-app-v2-0 https://github.com/marrober/simpleRest.git#experimental
+oc new-app --name simple-rest-app-v2-0 https://github.com/marrober/simpleRest.git#experimental --as-deployment-config
 ----
 
 TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to OpenShift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
@@ -87,7 +87,7 @@ TIP: Note the use of the #experimental branch identifier in the end of the GIT r
 New content was added to the project as a result of the above command specific to the experimental (v2) version of the application.
 
 * A deployment configuration
-* A replication controller 
+* A replication controller
 * A build configuration
 * A running container in a pod
 * A service
@@ -241,7 +241,7 @@ Many organizations want to use a common URL for their web sites so that it is ea
 
 image::deployment-strategies-4.png[URL based routing]
 
-In this example you will create an application that mirrors that shown above and you will use a single URL for access to the four different elements of the application. 
+In this example you will create an application that mirrors that shown above and you will use a single URL for access to the four different elements of the application.
 
 ==== Creating the applications
 
@@ -251,13 +251,13 @@ This example uses a common code base to create the specific applications for the
 ----
 oc new-project myholiday-{{USER_ID}}
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
---name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break 
+--name=short-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=short-break --as-deployment-config
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
---name=package-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=package
+--name=package-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=package --as-deployment-config
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
---name=cruise-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=cruise
+--name=cruise-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=cruise --as-deployment-config
 oc new-app https://github.com/utherp0/workshop4.git --context-dir=attendee/myholiday \
---name=adventure-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=adventure
+--name=adventure-holiday -l app.kubernetes.io/part-of=holidays HOLIDAY_TYPE=adventure --as-deployment-config
 ----
 
 Switch to the web user interface and select the project that you have just created. Then select the topology view from the left hand side developer menu and watch the applications build and deploy. Progress of the build phase can also be tracked using the command :
@@ -267,9 +267,9 @@ Switch to the web user interface and select the project that you have just creat
 oc get build
 ----
 
-When all of the builds are complete the applications will take a few seconds to deploy and then will be ready. 
+When all of the builds are complete the applications will take a few seconds to deploy and then will be ready.
 
-At this stage the applications have services but they do not have any routes exposing them outside the cluster. Ordinarily users would create a route for each application which would result in a different URL for each. In this activity a common URL is required for all four. 
+At this stage the applications have services but they do not have any routes exposing them outside the cluster. Ordinarily users would create a route for each application which would result in a different URL for each. In this activity a common URL is required for all four.
 
 To identify the cluster specific element of the hostname to use for the route, create a temporary route using the command below. The second command is used to get the hostname for the route.
 
@@ -355,8 +355,8 @@ Execute the following commands to create the four routes.
 [source]
 ----
 oc create -f adventure-route.yaml
-oc create -f cruise-route.yaml  
-oc create -f package-route.yaml  
+oc create -f cruise-route.yaml
+oc create -f package-route.yaml
 oc create -f short-break-route.yaml
 ----
 
