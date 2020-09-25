@@ -25,6 +25,7 @@ items:
       template.alpha.openshift.io/wait-for-ready: "true"
     labels:
       template: redis-persistent-template
+      app.kubernetes.io/part-of: username-distribution-app
     name: redis
   spec:
     replicas: 1
@@ -106,7 +107,7 @@ items:
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
-  
+
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:

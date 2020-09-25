@@ -22,9 +22,9 @@ The Display Name and Description components are cosmetic labels and can be left 
 
 When the project completes creation click on the User Management tab on the left of the interface and select 'Role Bindings'
 
-*By default when you create a Project within OpenShift your user is given administration rights. This allows the user 
-to create any objects that they have rights to create and to change the security and access settings for the project 
-itself, i.e. add users as Administrators, Edit Access, Read access or disable other user's abilities to even see 
+*By default when you create a Project within OpenShift your user is given administration rights. This allows the user
+to create any objects that they have rights to create and to change the security and access settings for the project
+itself, i.e. add users as Administrators, Edit Access, Read access or disable other user's abilities to even see
 the project and the objects within.*
 
 === Creating your first Application
@@ -41,45 +41,47 @@ Click 'Add'
 * *Container Image - this provides a way to directly deploy an Image from a repository*
 * *From Dockerfile - this allows the Developer to do a controlled build of an Image from a Dockerfile*
 * *YAML - this allows the Developer to provide a set of populated YAML to define the objects to be added to the Project*
-* *From Catalog - this allows the Developer to browse all available templates, which are predefined sets of Objects to create an application* 
+* *From Catalog - this allows the Developer to browse all available templates, which are predefined sets of Objects to create an application*
 * *Database - this allows the Developer to browse pre-created Database services to add to the Project*
 * *Operator Backed - this allows the developer to deploy an Application that is backed by an Operator, i.e. using a CR to deploy an application*
 * *Helm Charts - this allows the developer to add something to the project from a Helm chart, which defines the base state of a set of Kubernetes objects*
 * *Pipeline - this allows the developer to instantly add a Tekton based pipeline for automated delivery of an application*
-* *Event Source - this allows the developer to register a subscription to aclass of events from a given system* 
+* *Event Source - this allows the developer to register a subscription to aclass of events from a given system*
 
 Select ‘From Catalog’
 
-If it is selected, untick the filter that says 'Operator Backed'. This filter allows the developer to see a reduced set of the available options.
+Untick the filter that says 'Operator Backed'. This filter allows the developer to see a reduced set of the available options
 
 Enter ‘node’ in the 'filter by keyword' search box
 
 image::applicationbasics-1.png[Node Choice]
 
-*OpenShift allows for multiple base images to be built upon - the selection of node searches for any images or templates registered into the system 
+*OpenShift allows for multiple base images to be built upon - the selection of node searches for any images or templates registered into the system
 with the label 'node'. In the screenshot above, and in the catalog you will be presented with, there will be a selection of base images.*
 
 Select ‘Node.js’
 
 image::applicationbasics-3.png[Node Choice]
 
-*When you select an option, in this case the Node.js builder one, you are presented with a wizard that shows you exactly what 
-components will be created as part of your Project. In this case, with Node.js, the template will create a build config, that will build the 
-Image that will contain your Application, an ImageStream which is the OpenShift representation of an Image, a deployment config, which defines exactly how the image 
-will be deployed as a running Container within the Project, a service which is the internal endpoint for the application within the Project and a route, 
+*When you select an option, in this case the Node.js builder one, you are presented with a wizard that shows you exactly what
+components will be created as part of your Project. In this case, with Node.js, the template will create a build config, that will build the
+Image that will contain your Application, an ImageStream which is the OpenShift representation of an Image, a deployment config, which defines exactly how the image
+will be deployed as a running Container within the Project, a service which is the internal endpoint for the application within the Project and a route,
 optionally, which will provide access to the Application for external consumers.*
 
 Click on 'Create Application'
 
-*This approach uses the OpenShift ''source-2-image'' concept, which is a controlled mechanism provided by OpenShift that automates the creation 
-of application images using a base image and a source repository.* 
+*This approach uses the OpenShift ''source-2-image'' concept, which is a controlled mechanism provided by OpenShift that automates the creation
+of application images using a base image and a source repository.*
 
 Leave the builder image at 12
 
-*The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
+*The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node
 versions.*
 
 Enter the following for the Git repo for the application - [https://github.com/utherp0/nodenews, window="_blank"]
+
+Once you remove focus from the git repo text entry point ensure the git repo is correct; a label will appear below the text box saying 'Validated'. If it doesn't check the URL is correct.
 
 Once you remove focus from the git repo text entry point ensure the git repo is correct; a label will appear below the text box saying 'Validated'. If it doesn't check the URL is correct.
 
@@ -91,7 +93,7 @@ Close the github tab
 
 Back at the OCP4.5 UI scroll down and ensure the Application Name and Name textboxes have been autofilled. These should be set to nodenews-app and nodenews in order
 
-*OpenShift 4 introduces the concept of Application Grouping. This allows a visualisation of multiple Applications in the same 'group', making visibility of the Application much 
+*OpenShift 4 introduces the concept of Application Grouping. This allows a visualisation of multiple Applications in the same 'group', making visibility of the Application much
 simpler.*
 
 Scroll down to 'Resources'. Click the selection box for 'Deployment Config' rather than the default of 'Deployment'
@@ -108,23 +110,23 @@ Click on the Icon marked 'Node'
 
 image::applicationbasics-4.png[Node Sidepanel]
 
-*The side-panel contains an overview of the Application you chose. In this case it will cover 
-the build. Once a build has completed this side panel shows the Pods that are running, the builds that have completed, the services 
+*The side-panel contains an overview of the Application you chose. In this case it will cover
+the build. Once a build has completed this side panel shows the Pods that are running, the builds that have completed, the services
 exported for the Application and the routes, if the Application has any.*
 
 Wait for the Build to finish, the Pod to change from Container Creating to Running
 
 image::applicationbasics-4b.png[Node Sidepanel with App Running]
 
-*When an Application is created the Pod ring will be empty, indicating that an Application will appear once the build has completed. When the build 
-completes the Pod ring will switch to light blue, indicating the Pod is being pulled (the image is being pulled from the registry to the Node where the 
+*When an Application is created the Pod ring will be empty, indicating that an Application will appear once the build has completed. When the build
+completes the Pod ring will switch to light blue, indicating the Pod is being pulled (the image is being pulled from the registry to the Node where the
 Pod will land) and is starting (the Pod is physically in place but the Containers within it are not reporting as ready). Once the Pod is placed and running the colour
 of the Pod ring will change to dark blue.*
 
 Click on the Tick at the bottom left of the Pod
 
-*If you scroll the log of the Build output you will see the steps that the build takes. This includes laying the foundational file layers for the base 
-image, performing the code specific build operations (in this case an ''npm install'') and then pushing the file layers for the image into the OpenShift 
+*If you scroll the log of the Build output you will see the steps that the build takes. This includes laying the foundational file layers for the base
+image, performing the code specific build operations (in this case an ''npm install'') and then pushing the file layers for the image into the OpenShift
 integrated registry.*
 
 === Adding additional Applications
@@ -157,7 +159,7 @@ Make sure the ‘Create a Route’ checkbox is clicked
 
 Click 'Create'
 
-*Note that the new Application icon appears within a bounded area on the Topology page labelled with the 'Application' chosen above. If you click on the area between the Pods you can move 
+*Note that the new Application icon appears within a bounded area on the Topology page labelled with the 'Application' chosen above. If you click on the area between the Pods you can move
 the group as a single action.*
 
 Click on the forumstaticassets Pod
@@ -202,7 +204,7 @@ image::applicationbasics-4d.png[Multi-app topology]
 
 === Interacting with OpenShift through the Command Line
 
-With the OpenShift Enterprise command line interface (CLI), you can create applications and manage OpenShift projects from a terminal. 
+With the OpenShift Enterprise command line interface (CLI), you can create applications and manage OpenShift projects from a terminal.
 The CLI is ideal in situations where you are:
 
 * Working directly with project source code.
@@ -238,7 +240,7 @@ Next we will try a command that will fail because of OpenShift's security contro
 oc get users
 ----
 
-*There is a level of permission within the OpenShift system called ''Cluster Admin''. This permission allows a User to access any of the objects on the 
+*There is a level of permission within the OpenShift system called ''Cluster Admin''. This permission allows a User to access any of the objects on the
 system regardless of Project. It is effectively a super-user and as such normal users do not normally have this level of access.*
 
 [source]
@@ -246,7 +248,7 @@ system regardless of Project. It is effectively a super-user and as such normal 
 oc get pods
 ----
 
-*If you look carefully at the Pods shown you will notice there are additional Pods above and beyond the ones expected for your Applications. If you look at the state of 
+*If you look carefully at the Pods shown you will notice there are additional Pods above and beyond the ones expected for your Applications. If you look at the state of
 these Pods they will be marked as Completed. Everything in OpenShift is executed as a Pod, including Builds. These completed Pods are the Builds we have run so far.*
 
 [source]
@@ -265,8 +267,8 @@ oc get dc
 ----
 
 *DC is an abbreviation for Deployment Config. These are Objects that directly define how an Application is deployed within OpenShift. This is the ''ops''
-side of the OpenShift system. Deployment Configs are different to Kubernetes Deployments in that they are an extension and contain things such as Config Maps, Secrets, 
-Volume Mounts, labelled targetting of Nodes and the like.* 
+side of the OpenShift system. Deployment Configs are different to Kubernetes Deployments in that they are an extension and contain things such as Config Maps, Secrets,
+Volume Mounts, labelled targetting of Nodes and the like.*
 
 Enter the command below to tell OpenShift to scale the number of instances of the Deployment Config 'nodenews' to two rather than the default one.
 
@@ -277,7 +279,7 @@ oc scale dc/nodenews --replicas=2
 
 === A Summary of Application Interactions
 
-Go back to the UI and make sure you are on Developer mode. Click on Topology. 
+Go back to the UI and make sure you are on Developer mode. Click on Topology.
 
 Click on the ‘nodenews’ application
 
@@ -312,6 +314,3 @@ image::applicationbasics-8.png[Moving app from group]
 Now hold down the shift button again, click and hold on the free floating forumstaticassets icon, and drag back over the boundary displayed for the nodenews-app application group. Release the hold and the application should be re-grouped.
 
 Continue on with the Deployments chapter, which uses the applications created here to show the capabilities of the deployment configuration and how to alter the behaviour and file system of a Container without changing the image.
-
-
-

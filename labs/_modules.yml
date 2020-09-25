@@ -44,3 +44,5 @@ modules:
     name: Introduction to Quarkus on OpenShift
   codereadyworkspaces:
     name: CodeReady Workspaces
+  linkback:
+    name: Return to the Workshop Portal

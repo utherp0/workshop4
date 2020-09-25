@@ -15,7 +15,7 @@ This means wherever the Container is hosted within the Cluster it has the Persis
 
 === Setting up the lab
 
-If you are not already logged on go to the UI URL {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and logon as {{USER_ID}} and password openshift. 
+If you are not already logged on go to the UI URL {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and logon as {{USER_ID}} and password openshift.
 
 If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
@@ -131,7 +131,7 @@ Now select the Action menu at the top right and choose 'Add Storage'
 ****
 OpenShift implements storage using three distinct objects:
 
-. *Persistent Volumes (PV)*  
+. *Persistent Volumes (PV)*
 
 These are the actual physical storage units. With storage providers that don't have dynamic storage provision these units are pre-created and can then be assigned to a deployment config (which represents the Application) using the next object, the Persistent Volume Claim (PVC). When a PV is created, be it in advance or dynamically, you can configure the retention strategy. This is 'retain' or 'delete'. With a 'delete' strategy when *all* references to the PV are removed (i.e. PVCs, deployments and the like) the storage unit is physically deleted. With 'retain' the file contents of the PV remain - this is for the case where you want to remove all of the application footprint from the cluster but want to retain its data for later recreation. In this case the PV remains unbounded.
 
@@ -141,7 +141,7 @@ When an Application claims a PV (or has one created dynamically) the PVC defines
 
 . *Storage Class (SC)*
 
-OpenShift administrators and storage providers can setup RBAC defined classes which are a template for creating PVs and PVCs. This is to allow multiple levels of storage types and control who can use them - for instance you could have a 'SLOW' storage class that assigned to less powerful storage and had a fixed size. 
+OpenShift administrators and storage providers can setup RBAC defined classes which are a template for creating PVs and PVCs. This is to allow multiple levels of storage types and control who can use them - for instance you could have a 'SLOW' storage class that assigned to less powerful storage and had a fixed size.
 
 ****
 
@@ -163,7 +163,7 @@ OpenShift supports three distinct modes for storage behaviours and these are ver
 
 . *Single User (RWO)*
 
-When the storage is set to RWO this creates a single copy of the storage. This storage is assigned and mounted onto the *first* Node where an Application lands - if you have multiple copies of the Application and they are on separate Nodes the first one will get the storage and the subsequent ones will *not* be able to start up. 
+When the storage is set to RWO this creates a single copy of the storage. This storage is assigned and mounted onto the *first* Node where an Application lands - if you have multiple copies of the Application and they are on separate Nodes the first one will get the storage and the subsequent ones will *not* be able to start up.
 
 . *Shared Access (RWX)*
 
@@ -171,7 +171,7 @@ This type of storage is *singular* across the Cluster. This means that all copie
 
 . *Read Only (ROX)*
 
-This type of storage is *singular* across the Cluster but is read only. 
+This type of storage is *singular* across the Cluster but is read only.
 ****
 
 Set the size of the PVC to 1GB (enter 1 in the textbox and leave the units as GiB)
@@ -253,7 +253,7 @@ Click on Topology. Click on the node icon. When the Deployment Config tab appear
 
 Click on the up arrow to scale the Application to two copies. This will *fail*. The second Pod will hang in Pending.
 
-Click on Advanced/Events in the left hand menu. You should see an Event highlighted in red that indicates the volume cannot be mounted due to a 'multi-attach' error
+Click on Monitoring in the left hand menu and then select the Events tab. You should see an Event highlighted in red that indicates the volume cannot be mounted due to a 'multi-attach' error
 
 The volume is RWO, meaning only one node can have it at once. OpenShift will load balance the Application copies, so it is highly unlikely the two Pods will land on the same node.
 
@@ -263,14 +263,6 @@ Click on Topology. Click on the node icon (it will show one Pod active and one P
 
 === Summary and clean-up
 
-What you have seen is the creation, assigning and use of a piece of persisted storage within an Application on OpenShift. The concept of PVs is incredibly powerful and useful - for instance you could store sticky session state for an Application in a PV. In fact, a lot of the persisted applications offered on OpenShift, such as databases and the like, use PVs to retain their state. 
+What you have seen is the creation, assigning and use of a piece of persisted storage within an Application on OpenShift. The concept of PVs is incredibly powerful and useful - for instance you could store sticky session state for an Application in a PV. In fact, a lot of the persisted applications offered on OpenShift, such as databases and the like, use PVs to retain their state.
 
 To clean-up the lab, switch to Adminstrator view, select Home/Projects. Click on the three dot menu at the far right of the entry for pvtest-{{USER_ID}} and select Delete Project. Confirm deletion by typing the project name when prompted.
-
-
-
-
-
-
-
-
