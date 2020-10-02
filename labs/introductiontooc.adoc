@@ -219,7 +219,7 @@ What we will do now is to scale down *all* of the applications to a single Pod u
 
 [source]
 ----
-for dc in $(oc get deployment -o jsonpath='{.items[*].metadata.name}'); \
+for dc in $(oc get deploymentconfig -o jsonpath='{.items[*].metadata.name}'); \
 do oc scale dc/$dc --replicas=1; \
 done
 
