@@ -6,8 +6,29 @@ workshop_manifests:
         title: Introduction
       - id: prereq
         title: Workshop Pre-requisites
+      - id: introductiontooc
+        title: Introduction to 'oc'
+  - id: essentials
+    title: OpenShift Essentials
+    labs:
+      - id: applicationbasics
+        title: Application Basics
+      - id: deployments
+        title: Understanding Deployments and Configuration
+      - id: applicationdeploymentstrategies
+        name: Application Deployment Configurations and DevOps Approaches
+      - id: sdn
+        name: Understanding the Software Defined Network
+      - id: rbac
+        name: The RBAC model for Developers
+      - id: pvs
+        name: Understanding Persistent Volumes
+      - id: healthprobes
+        name: Pod Health Probes
+      - id: metrics
+        name: Introduction to Metrics and Logging in OpenShift
   - id: innovation
-    title: Hackathon Preparation
+    title: Hackathon preparation
     labs:
       - id: serverlessserving
         title: OpenShift Serverless Serving

@@ -1,0 +1,60 @@
+---
+  # file: main.yml
+
+- name: Create Knative serving namespace
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/fuseonlinenamespace.yaml"
+
+- name: Wait for namespace to be created
+  wait_for:
+    path: "{{ role_path }}/files/fuseonlinenamespace.yaml"
+    state: present
+  
+- name: Deploy fuseonline Operator Group
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/fuseonlineoperatorgroup.yaml"
+
+- name: Wait for fuseonline Operator Group to be deployed
+  wait_for:
+    path: "{{ role_path }}/files/fuseonlineoperatorgroup.yaml"
+    state: present
+
+- name: Deploy Fuse Online Operator
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/fuseonlineoperator.yaml"
+
+- name: Wait for Fuse Online Operator to deploy
+  wait_for:
+    path: "{{ role_path }}/files/fuseonlineoperator.yaml"
+    state: present
+
+- name: pause
+  pause:
+    minutes: "2"
+  
+# Create the Fuse Online Syndesis
+- name: Create Fuse Online Syndesis
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/syndesis.yaml"
+    wait: yes
+
+- name: pause
+  pause:
+    minutes: "2"
+
