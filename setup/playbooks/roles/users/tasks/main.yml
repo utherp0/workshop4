@@ -1,0 +1,17 @@
+---
+# file: main.yml
+
+- name: Create projects
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'projects.yml.j2') }}"
+
+- name: Create groups
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'groups.yml.j2') }}"
+
+- name: role bindings
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'rolebindings.yml.j2') }}"
