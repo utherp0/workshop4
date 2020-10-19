@@ -11,7 +11,7 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-To get started, open the CodeReady URL: http://codeready-crw{{route_url}}[{{route_url}}, window="_blank"]
+To get started, open the CodeReady URL: http://codeready-crw{{ROUTE_URL}}[http://codeready-crw{{ROUTE_URL}}, window="_blank"]
 
 TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
