@@ -28,7 +28,7 @@ workshop_manifests:
       - id: metrics
         name: Introduction to Metrics and Logging in OpenShift
   - id: innovation
-    title: Hackathon preparation
+    title: Hackathon labs
     labs:
       - id: serverlessserving
         title: OpenShift Serverless Serving
