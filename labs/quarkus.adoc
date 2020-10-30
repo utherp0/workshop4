@@ -23,9 +23,11 @@ Username: {{USER_ID}}
 Email: {{USER_ID}}@example.com
 First name: {{USER_ID}}
 Last name: {{USER_ID}}
+Password: openshift
+Confirm password: openshift
 ----
 
-Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
+Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create or pre-configure.
 
 You will now create a Quarkus workspace to use. Select the `Custom Workspace` tab.
 
@@ -602,9 +604,9 @@ Then, add
 
 to the end of the URL to access the Swagger UI and play with your API.
 
-Using the UI, expand the `/hello/greeting/{name}` endpoint. Here you can basic detail about the endpoint: the name of the endpoint, parameters and their type, and the response type one can expect.
+Using the UI, expand the `/hello/greeting/{name}` endpoint. Here you can observe basic detail about the endpoint: the name of the endpoint, parameters and their type, and the response type one can expect.
 
-Click the `Try it out` button to expand the box allowing you to try it. Enter any openshift into the name field and click Execute:
+Click the `Try it out` button to expand the box allowing you to try it. Enter openshift into the name field and click Execute:
 
 
 image::quarkus-11.png[Name input in Swagger UI]
