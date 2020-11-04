@@ -1,0 +1,9 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: fuseonlineoperatorgroup10
+  namespace: team10
+spec:
+  targetNamespaces:
+  - team10

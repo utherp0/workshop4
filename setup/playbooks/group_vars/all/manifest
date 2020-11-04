@@ -8,6 +8,23 @@ workshop_manifests:
         title: Workshop Pre-requisites
       - id: introductiontooc
         title: Introduction to 'oc'
+  - id: essentials
+    title: OpenShift Essentials
+    labs:
+      - id: applicationbasics
+        title: Application Basics
+      - id: deployments
+        title: Understanding Deployments and Configuration
+      - id: applicationdeploymentstrategies
+        name: Application Deployment Configurations and DevOps Approaches
+      - id: sdn
+        name: Understanding the Software Defined Network
+      - id: pvs
+        name: Understanding Persistent Volumes
+      - id: healthprobes
+        name: Pod Health Probes
+      - id: metrics
+        name: Introduction to Metrics and Logging in OpenShift
   - id: innovation
     title: Camel K
     labs:
@@ -24,3 +41,8 @@ workshop_manifests:
         title: Camel K and OpenShift Serverless Eventing
       - id: camelkocpserverlessservice
         title: Camel K and OpenShift Serverless Serving
+  - id: innovation
+    title: Optional Camel K Comprehension
+    labs: 
+      - id: rbac
+        name: The RBAC model for Developers

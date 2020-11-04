@@ -1,11 +1,13 @@
+---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: amq-streams
+  name: fuse-online
+  namespace: team10
 spec:
-  channel: stable
+  channel: alpha
   installPlanApproval: Automatic
-  name: amq-streams
+  name: fuse-online
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: amqstreams.v1.5.3
+  startingCSV: fuse-online-operator.v7.7.0

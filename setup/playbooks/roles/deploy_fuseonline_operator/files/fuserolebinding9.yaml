@@ -1,0 +1,14 @@
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: team9-fuseonlineaccess
+  namespace: team9
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: team9
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: syndesis-editor

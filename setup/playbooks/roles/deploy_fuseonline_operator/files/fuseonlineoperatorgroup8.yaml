@@ -1,0 +1,9 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: fuseonlineoperatorgroup8
+  namespace: team8
+spec:
+  targetNamespaces:
+  - team8
