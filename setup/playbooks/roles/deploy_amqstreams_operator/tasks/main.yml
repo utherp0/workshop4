@@ -4,6 +4,9 @@
 # Deploy AMQ Streams Operator
 - name: Deploy AMQ Streams Operator
   shell: oc apply -f {{ role_path }}/files/amqstreamsoperator.yaml -n openshift-operators
+- name: pause
+  pause:
+    minutes: "3"
 
 # Deploy Kafka Instance for each team
 - name: Deploy kafka instance for team 1

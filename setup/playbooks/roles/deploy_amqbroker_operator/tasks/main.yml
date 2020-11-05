@@ -116,6 +116,10 @@
     state: present
     src: "{{ role_path }}/files/artemis10.yaml"
 
+- name: pause
+  pause:
+    minutes: "3"
+
 # Create the Address
 - name: Create Broker address for team 1
   k8s:

@@ -3,9 +3,9 @@
 
   roles:
     - login_ocp
+    - deploy_service_mesh
+    - deploy_amqstreams_operator
     - deploy_fuseonline_operator
     - deploy_amqbroker_operator
-    - deploy_amqstreams_operator
-    - deploy_serverless_operator
     - deploy_camelk_operator
-    - deploy_service_mesh
+    - deploy_serverless_operator
