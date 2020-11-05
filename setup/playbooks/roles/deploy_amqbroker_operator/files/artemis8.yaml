@@ -17,6 +17,8 @@ spec:
     addressSetting:
       - autoCreateAddresses: true
         autoCreateDeadLetterResources: true
+  console:
+    expose: true
   deploymentPlan:
     image: >-
       registry.redhat.io/amq7/amq-broker@sha256:90ddd06465516fdf22e66e5f0b78d85b7727064f5879a009c23ebcfcc4ca321f

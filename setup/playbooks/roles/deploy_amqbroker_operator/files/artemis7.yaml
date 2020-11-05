@@ -1,8 +1,8 @@
 apiVersion: broker.amq.io/v2alpha3
 kind: ActiveMQArtemis
 metadata:
-  name: team5-amq-broker
-  namespace: team5
+  name: team7-amq-broker
+  namespace: team7
 spec:
   acceptors:
     - expose: true
@@ -17,6 +17,8 @@ spec:
     addressSetting:
       - autoCreateAddresses: true
         autoCreateDeadLetterResources: true
+  console:
+    expose: true
   deploymentPlan:
     image: >-
       registry.redhat.io/amq7/amq-broker@sha256:90ddd06465516fdf22e66e5f0b78d85b7727064f5879a009c23ebcfcc4ca321f

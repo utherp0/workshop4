@@ -1,18 +1,6 @@
 ---
 # file: main.yml
 
-# Deploy AMQ Streams Operator
-#- name: Deploy AMQ Streams Operator
-#  k8s:
-#    api_key: "{{ ocp_login_token }}"
-#    host: "{{ ocp_url }}"
-#    validate_certs: no
-#    state: present
-#    src: "{{ role_path }}/files/amqstreamsoperator.yaml"
-
-# Using oc via shell as k8s modile is causing error on the mac from some reason
-
-# Wait for Knative serving to be ready before continuing
 - name: Deploy AMQ Broker Operator for team 1
   shell: oc apply -f {{ role_path }}/files/amqbrokeroperator1.yaml -n team1
 
@@ -46,6 +34,87 @@
 - name: pause
   pause:
     minutes: "3"
+
+# Deploy Artemis Instance for each team
+- name: Deploy Artemis for team 1
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis1.yaml"
+
+- name: Deploy Artemis for team 2
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis2.yaml"
+
+- name: Deploy Artemis for team 3
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis3.yaml"
+
+- name: Deploy Artemis for team 4
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis4.yaml"
+
+- name: Deploy Artemis for team 5
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis5.yaml"
+
+- name: Deploy Artemis for team 6
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis6.yaml"
+
+- name: Deploy Artemis for team 7
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis7.yaml"
+
+- name: Deploy Artemis for team 8
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis8.yaml"
+
+- name: Deploy Artemis for team 9
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis9.yaml"
+
+- name: Deploy Artemis for team 10
+  k8s:
+    api_key: "{{ ocp_login_token }}"
+    host: "{{ ocp_url }}"
+    validate_certs: no
+    state: present
+    src: "{{ role_path }}/files/artemis10.yaml"
 
 # Create the Address
 - name: Create Broker address for team 1
@@ -137,4 +206,3 @@
     state: present
     src: "{{ role_path }}/files/address10.yaml"
     wait: yes
-
