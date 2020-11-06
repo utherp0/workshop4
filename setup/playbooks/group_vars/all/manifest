@@ -25,8 +25,10 @@ workshop_manifests:
         name: Pod Health Probes
       - id: metrics
         name: Introduction to Metrics and Logging in OpenShift
+      - id: rbac
+        name: The RBAC model for Developers
   - id: innovation
-    title: Camel K
+    title: Tech Talks
     labs:
       - id: camelk
         title: Camel K on OpenShift
@@ -41,8 +43,3 @@ workshop_manifests:
         title: Camel K and OpenShift Serverless Eventing
       - id: camelkocpserverlessservice
         title: Camel K and OpenShift Serverless Serving
-  - id: innovation
-    title: Optional Camel K Comprehension
-    labs: 
-      - id: rbac
-        name: The RBAC model for Developers
