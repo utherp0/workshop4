@@ -11,7 +11,7 @@
     state: present
     definition: "{{ lookup('template', 'groups.yml.j2') }}"
 
-- name: role bindings
+- name: Create role bindings
   k8s:
     state: present
     definition: "{{ lookup('template', 'rolebindings.yml.j2') }}"

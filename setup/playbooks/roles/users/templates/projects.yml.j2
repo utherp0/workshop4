@@ -15,4 +15,20 @@ spec:
 status:
   phase: Active
 
+---
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: team{{ team }}-infra
+  creationTimestamp: null
+  annotations:
+    openshift.io/sa.scc.mcs: 's0:c58,c17'
+    openshift.io/sa.scc.supplemental-groups: 1003340000/10000
+    openshift.io/sa.scc.uid-range: 1003340000/10000
+spec:
+  finalizers:
+    - kubernetes
+status:
+  phase: Active
+
 {% endfor %}
