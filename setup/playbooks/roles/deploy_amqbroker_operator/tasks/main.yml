@@ -1,212 +1,35 @@
 ---
 # file: main.yml
 
-- name: Deploy AMQ Broker Operator for team 1
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator1.yaml -n team1
-
-- name: Deploy AMQ Broker Operator for team 2
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator2.yaml -n team2
-
-- name: Deploy AMQ Broker Operator for team 3
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator3.yaml -n team3
-
-- name: Deploy AMQ Broker Operator for team 4
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator4.yaml -n team4
-
-- name: Deploy AMQ Broker Operator for team 5
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator5.yaml -n team5
-
-- name: Deploy AMQ Broker Operator for team 6
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator6.yaml -n team6
-
-- name: Deploy AMQ Broker Operator for team 7
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator7.yaml -n team7
-
-- name: Deploy AMQ Broker Operator for team 8
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator8.yaml -n team8
-
-- name: Deploy AMQ Broker Operator for team 9
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator9.yaml -n team9
-
-- name: Deploy AMQ Broker Operator for team 10
-  shell: oc apply -f {{ role_path }}/files/amqbrokeroperator10.yaml -n team10
+- name: Deploy AMQ Broker Operator for each team
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'amqbrokeroperator.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: operators
 
 - name: pause
   pause:
     minutes: "3"
+  when: operators.changed
 
 # Deploy Artemis Instance for each team
-- name: Deploy Artemis for team 1
+- name: Deploy Artemis for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/artemis1.yaml"
-
-- name: Deploy Artemis for team 2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis2.yaml"
-
-- name: Deploy Artemis for team 3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis3.yaml"
-
-- name: Deploy Artemis for team 4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis4.yaml"
-
-- name: Deploy Artemis for team 5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis5.yaml"
-
-- name: Deploy Artemis for team 6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis6.yaml"
-
-- name: Deploy Artemis for team 7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis7.yaml"
-
-- name: Deploy Artemis for team 8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis8.yaml"
-
-- name: Deploy Artemis for team 9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis9.yaml"
-
-- name: Deploy Artemis for team 10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/artemis10.yaml"
+    definition: "{{ lookup('template', 'artemis.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: artemis
 
 - name: pause
   pause:
     minutes: "3"
+  when: artemis.changed
 
 # Create the Address
-- name: Create Broker address for team 1
+- name: Create Broker address for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/address1.yaml"
-    wait: yes
+    definition: "{{ lookup('template', 'address.yml.j2') }}"
+  loop: "{{ labs_teams }}"
   
-- name: Create Broker address for team 2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address2.yaml"
-    wait: yes
-
-- name: Create Broker address for team 3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address3.yaml"
-    wait: yes
-
-- name: Create Broker address for team 4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address4.yaml"
-    wait: yes
-
-- name: Create Broker address for team 5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address5.yaml"
-    wait: yes
-
-- name: Create Broker address for team 6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address6.yaml"
-    wait: yes
-
-- name: Create Broker address for team 7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address7.yaml"
-    wait: yes
-
-- name: Create Broker address for team 8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address8.yaml"
-    wait: yes
-
-- name: Create Broker address for team 9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address9.yaml"
-    wait: yes
-
-- name: Create Broker address for team 10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/address10.yaml"
-    wait: yes

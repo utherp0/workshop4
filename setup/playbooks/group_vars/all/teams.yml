@@ -1,0 +1,33 @@
+labs_teams:
+
+  # Ten teams, each with ten users in it
+
+  - name: team1
+    members: "{{ range(1,11) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team2
+    members: "{{ range(11,21) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team3
+    members: "{{ range(21,31) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team4
+    members: "{{ range(31,41) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team5
+    members: "{{ range(41,51) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team6
+    members: "{{ range(51,61) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team7
+    members: "{{ range(61,71) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team8
+    members: "{{ range(71,81) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team9
+    members: "{{ range(81,91) | map('regex_replace', '(.+)', 'user\\1') | list }}"
+
+  - name: team10
+    members: "{{ range(91,101) | map('regex_replace', '(.+)', 'user\\1') | list }}"

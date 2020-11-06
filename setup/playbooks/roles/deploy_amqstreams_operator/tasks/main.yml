@@ -3,177 +3,33 @@
 
 # Deploy AMQ Streams Operator
 - name: Deploy AMQ Streams Operator
-  shell: oc apply -f {{ role_path }}/files/amqstreamsoperator.yaml -n openshift-operators
+  k8s:
+    namespace: openshift-operators
+    state: present
+    definition: "{{ lookup('file', 'amqstreamsoperator.yaml') }}"
+  register: operator
+
 - name: pause
   pause:
     minutes: "3"
+  when: operator.changed
 
 # Deploy Kafka Instance for each team
-- name: Deploy kafka instance for team 1
+- name: Deploy kafka instance for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/kafka1.yaml"
-
-- name: Deploy kafka instance for team 2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka2.yaml"
-
-- name: Deploy kafka instance for team 3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka3.yaml"
-
-- name: Deploy kafka instance for team 4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka4.yaml"
-  
-- name: Deploy kafka instance for team 5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka5.yaml"
-
-- name: Deploy kafka instance for team 6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka6.yaml"
-
-- name: Deploy kafka instance for team 7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka7.yaml"
-
-- name: Deploy kafka instance for team 8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka8.yaml"
-
-- name: Deploy kafka instance for team 9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka9.yaml"
-
-- name: Deploy kafka instance for team 10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/kafka10.yaml"
-
+    definition: "{{ lookup('template', 'kafka.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: instances
+    
 - name: pause
   pause:
     minutes: "3"
+  when: instances.changed
 
 # Deploy Kafka topic for each team
-- name: Deploy kafka topic for team 1
+- name: Deploy kafka topic for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/topic1.yaml"
-
-- name: Deploy kafka topic for team 2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic2.yaml"
-
-- name: Deploy kafka topic for team 3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic3.yaml"
-
-- name: Deploy kafka topic for team 4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic4.yaml"
-
-- name: Deploy kafka topic for team 5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic5.yaml"
-
-- name: Deploy kafka topic for team 6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic6.yaml"
-
-- name: Deploy kafka topic for team 7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic7.yaml"
-
-- name: Deploy kafka topic for team 8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic8.yaml"
-
-- name: Deploy kafka topic for team 9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic9.yaml"
-
-- name: Deploy kafka topic for team 10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/topic10.yaml"
-
-- name: pause
-  pause:
-    minutes: "3"
+    definition: "{{ lookup('template', 'topic.yml.j2') }}"
+  loop: "{{ labs_teams }}"

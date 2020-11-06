@@ -2,359 +2,53 @@
   # file: main.yml
 
 # Deploy Fuse Online Operator Group 
-- name: Deploy Fuse Online Operator Group
+- name: Deploy Fuse Online Operator Group for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup1.yaml"
+    definition: "{{ lookup('template', 'fuseonlineoperatorgroup.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: operator_groups
 
-- name: Wait for Fuse Online group to be deployed for team1
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup1.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup2.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team2
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup2.yaml"
-    state: present
-  
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup3.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team3
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup3.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup4.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team4
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup4.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup5.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team5
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup5.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup6.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team6
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup6.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup7.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team7
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup7.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup8.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team8
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup8.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup9.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team9
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup9.yaml"
-    state: present
-
-- name: Deploy Fuse Online Operator Group
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuseonlineoperatorgroup10.yaml"
-
-- name: Wait for Fuse Online group to be deployed for team10
-  wait_for:
-    path: "{{ role_path }}/files/fuseonlineoperatorgroup10.yaml"
-    state: present
+# XXX This doesn't do anything useful... the files exist anyway
+# - name: Wait for Fuse Online group to be deployed for team1
+#   wait_for:
+#     path: "{{ role_path }}/files/fuseonlineoperatorgroup1.yaml"
+#     state: present
 
 - name: pause
   pause:
     minutes: "3"
+  when: operator_groups.changed
 
 # Deploy Fuse Online operator
-- name: Deploy Fuse Online for team 1
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator1.yaml -n team1
-
-- name: Deploy Fuse Online for team 2
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator2.yaml -n team2
-
-- name: Deploy Fuse Online for team 3
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator3.yaml -n team3
-
-- name: Deploy Fuse Online for team 4
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator4.yaml -n team4
-
-- name: Deploy Fuse Online for team 5
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator5.yaml -n team5
-
-- name: Deploy Fuse Online for team 6
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator6.yaml -n team6
-
-- name: Deploy Fuse Online for team 7
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator7.yaml -n team7
-
-- name: Deploy Fuse Online for team 8
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator8.yaml -n team8
-
-- name: Deploy Fuse Online for team 9
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator9.yaml -n team9
-
-- name: Deploy Fuse Online for team 10
-  shell: oc apply -f {{ role_path }}/files/fuseonlineoperator10.yaml -n team10
+- name: Deploy Fuse Online for each team
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'fuseonlineoperator.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: fuse_online
 
 - name: pause
   pause:
     minutes: "3"
+  when: fuse_online.changed
   
 # Create the Fuse Online Syndesis
-- name: Create Fuse Online Syndesis for team1
+- name: Create Fuse Online Syndesis for each team
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/syndesis1.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis2.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis3.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis4.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis5.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis6.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis7.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis8.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis9.yaml"
-    wait: yes
-
-- name: Create Fuse Online Syndesis for team10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/syndesis10.yaml"
-    wait: yes
+    definition: "{{ lookup('template', 'syndesis.yml.j2') }}"
+  loop: "{{ labs_teams }}"
+  register: syndesis
 
 - name: pause
   pause:
     minutes: "2"
+  when: syndesis.changed
 
 # Create group role bindings for Fuse online access
 - name: Role binding for team1
   k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
     state: present
-    src: "{{ role_path }}/files/fuserolebinding1.yaml"
-    wait: yes
-
-- name: Role binding for team2
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding2.yaml"
-    wait: yes
-
-- name: Role binding for team3
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding3.yaml"
-    wait: yes
-
-- name: Role binding for team4
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding4.yaml"
-    wait: yes
-
-- name: Role binding for team5
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding5.yaml"
-    wait: yes
-
-- name: Role binding for team6
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding6.yaml"
-    wait: yes
-
-- name: Role binding for team7
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding7.yaml"
-    wait: yes
-
-- name: Role binding for team8
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding8.yaml"
-    wait: yes
-
-- name: Role binding for team9
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding9.yaml"
-    wait: yes
-
-- name: Role binding for team10
-  k8s:
-    api_key: "{{ ocp_login_token }}"
-    host: "{{ ocp_url }}"
-    validate_certs: no
-    state: present
-    src: "{{ role_path }}/files/fuserolebinding1.yaml"
-    wait: yes
-
-
+    definition: "{{ lookup('template', 'fuserolebinding.yml.j2') }}"
+  loop: "{{ labs_teams }}"
