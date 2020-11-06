@@ -1,19 +1,20 @@
-{% for team in range(1,11,1) %}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   creationTimestamp: null
   name: admin
-  namespace: team{{ team }}
+  namespace: {{ item.name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: admin
 subjects:
+{% for user in item.members %}
 - apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: {{ team }}
+  kind: User
+  name: {{ user }}
+{% endfor %}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -21,13 +22,14 @@ kind: RoleBinding
 metadata:
   creationTimestamp: null
   name: admin
-  namespace: team{{ team }}-infra
+  namespace: {{ item.name }}-infra
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: admin
 subjects:
+{% for user in item.members %}
 - apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: {{ team }}
+  kind: User
+  name: {{ user }}
 {% endfor %}

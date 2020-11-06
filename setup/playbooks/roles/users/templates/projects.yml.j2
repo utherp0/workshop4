@@ -1,10 +1,9 @@
-{% for team in range(1,11,1) %}
 ---
 kind: Project
 apiVersion: project.openshift.io/v1
 metadata:
-  name: team{{ team }}
-  creationTimestamp: null
+  name: {{ item.name }}
+  # creationTimestamp: null
   annotations:
     openshift.io/sa.scc.mcs: 's0:c58,c17'
     openshift.io/sa.scc.supplemental-groups: 1003340000/10000
@@ -19,8 +18,8 @@ status:
 kind: Project
 apiVersion: project.openshift.io/v1
 metadata:
-  name: team{{ team }}-infra
-  creationTimestamp: null
+  name: {{ item.name }}-infra
+  # creationTimestamp: null
   annotations:
     openshift.io/sa.scc.mcs: 's0:c58,c17'
     openshift.io/sa.scc.supplemental-groups: 1003340000/10000
@@ -30,5 +29,3 @@ spec:
     - kubernetes
 status:
   phase: Active
-
-{% endfor %}

@@ -5,13 +5,16 @@
   k8s:
     state: present
     definition: "{{ lookup('template', 'projects.yml.j2') }}"
+  loop: "{{ labs_teams }}"
 
 - name: Create groups
   k8s:
     state: present
     definition: "{{ lookup('template', 'groups.yml.j2') }}"
+  loop: "{{ labs_teams }}"
 
 - name: Create role bindings
   k8s:
     state: present
     definition: "{{ lookup('template', 'rolebindings.yml.j2') }}"
+  loop: "{{ labs_teams }}"
