@@ -1,4 +1,4 @@
-apiVersion: maistra.io/v1
+apiVersion: maistra.io/v2
 kind: ServiceMeshControlPlane
 metadata:
   name: full-install
@@ -48,4 +48,4 @@ spec:
     tracing:
       enabled: true
       jaeger:
-        template: all-in-one 
+        template: all-in-one

@@ -64,7 +64,7 @@
 - name: Has Instio completed its install?
   shell: oc get smcp -n istio-system -o jsonpath="{.items[0].status.annotations.readyComponentCount}"
   register: istio
-  until: istio.stdout.find("9/9") != -1
+  until: istio.stdout.find("11/11") != -1
   retries: 100
   delay: 5
 
