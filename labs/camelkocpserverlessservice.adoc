@@ -83,7 +83,7 @@ In the terminal window, deploy the integration
 [source]
 ----
 cd /workspace/examples
-kamel run --name greetings --dependency=camel-rest --dependency camel-undertow --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
+kamel run --name greetings --property camel.rest.port=8080 --open-api greetings-api.json greetings.groovy
 ----
 
 Go to the developer view in the OpenShift Console
