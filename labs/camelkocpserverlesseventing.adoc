@@ -17,17 +17,34 @@ Eventing has become an important part of a Microservice architecture. It enables
 In this lab, we are going to look at eventing, and how easy it is to integration with Camel K.
 ****
 
-=== Check the project is ready to use
+=== Check the user is ready to go
 
 In the browser based terminal window, check you are still logged on and using the correct project by typing:
 
 [source]
 ----
 oc whoami
-oc project
 ----
 
-TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandboxX please repeat the commands in the pre-requisites.
+If the response from the commands indicates that you are not {{USER_ID}} please repeat the commands in the pre-requisites.
+
+=== Creating the project
+
+Log on to cluster as {{USER_ID}}, password openshift
+
+Ensure you are on the Administrator View (top level, select Administrator)
+
+Click on 'Create Project'
+
+Name - ‘eventing-{{USER_ID}}’
+
+Display Name and Description - doesn't matter
+
+In the terminal window, switch to the new project with this command
+
+[source]
+----
+oc project eventing-{{USER_ID}}
 
 Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
 
