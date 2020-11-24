@@ -3,12 +3,12 @@
 
   roles:
     - login_ocp
-    # - deploy_tekton_operator
-    # - deploy_amqstreams_operator
-    # - deploy_serverless_operator
-    # - deploy_serverlesseventing_operator
-    # - deploy_camelk_operator
-    # - deploy_service_mesh
+    - deploy_tekton_operator
+    - deploy_amqstreams_operator
+    - deploy_serverless_operator
+    - deploy_serverlesseventing_operator
+    - deploy_camelk_operator
+    - deploy_service_mesh
     - deploy_codeready_operator
     
     
