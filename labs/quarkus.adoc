@@ -13,7 +13,7 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 Prerequisite: You must be using a Chrome or Firefox web browser.
 
-To get started, open the link:http://codeready-crw.apps.cluster-3e21.3e21.example.opentlc.com/[CodeReady URL, window="_blank"]
+To get started, open the link:http://codeready-crw.apps.cluster-ROOT_URL.example.opentlc.com/[CodeReady URL, window="_blank"]
 
 TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
