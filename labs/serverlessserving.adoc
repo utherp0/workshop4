@@ -149,7 +149,7 @@ In this next step, we will put a limit on the number of pods that the autoscaler
 
 [source]
 ----
-kn service update my-knative-app --max-scale=5
+kn service update my-knative-app --scale-max 5
 ----
 
 This sets an upper limit of 5 pods for our application.
