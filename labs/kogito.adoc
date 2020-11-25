@@ -6,7 +6,7 @@ Author: Ally Kouao (feedback to akouao@redhat.com)
 ****
 Business Automation covers the appliation area of business processes, workflows, decisions, rules and optimization. Kogito bring these capablities to the Cloud Native world by utilizing the latest innovations in the Java landscape, like Quarkus and GraalVM, while building on battle-test components such as Drools, jBPM and OptaPlanner.
 
-Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cloud infrastructure. Kogito can adapt to your business domain rather than the other way around; no more leaing abstraction of the tool into your client appliations. Better yet, Kogito offers a powerful developer experience based on battle-tested components; achieve instant developer efficiency by having tooling embeddeable wherever you need it, code generation taking care of 80% of the work, amongst multiple other benefits. Find out more about other possibilities on thelink:https://kogito.kie.org[official Kogito website, window="_blank"]. 
+Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cloud infrastructure. Kogito can adapt to your business domain rather than the other way around; no more leaing abstraction of the tool into your client appliations. Better yet, Kogito offers a powerful developer experience based on battle-tested components; achieve instant developer efficiency by having tooling embeddeable wherever you need it, code generation taking care of 80% of the work, amongst multiple other benefits. Find out more about other possibilities on the link:https://kogito.kie.org[official Kogito website, window="_blank"]. 
 ****
 
 ==== Setting up your workspace environment
