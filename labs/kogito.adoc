@@ -1,0 +1,820 @@
+Author: Ally Kouao (feedback to akouao@redhat.com)
+
+=== Introduction
+
+.Kogito
+****
+Business Automation covers the appliation area of business processes, workflows, decisions, rules and optimization. Kogito bring these capablities to the Cloud Native world by utilizing the latest innovations in the Java landscape, like Quarkus and GraalVM, while building on battle-test components such as Drools, jBPM and OptaPlanner.
+
+Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cloud infrastructure. Kogito can adapt to your business domain rather than the other way around; no more leaing abstraction of the tool into your client appliations. Better yet, Kogito offers a powerful developer experience based on battle-tested components; achieve instant developer efficiency by having tooling embeddeable wherever you need it, code generation taking care of 80% of the work, amongst multiple other benefits. Find out more about other possibilities on thelink:https://kogito.kie.org[official Kogito website, window="_blank"]. 
+****
+
+==== Setting up your workspace environment
+
+To get started, open your `crw` project, and open the CodeReady url.
+
+You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
+
+On the login page, select `Register`. You will have to register a new user before proceeding. Enter the following in the respective fields:
+
+[source]
+----
+First name: {{USER_ID}}
+Last name: {{USER_ID}}
+Username: {{USER_ID}}
+Email: {{USER_ID}}@example.com
+Password: openshift
+Confirm password: openshift
+----
+
+Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create or pre-configure.
+
+You will now create a Quarkus workspace to use Kogito. Select the `Custom Workspace` tab.
+
+In the `Workspace Name` field, enter the workspace name:
+
+[source]
+----
+kogito-bpmn
+----
+
+In the `devfile` section, select the 'URL of devfile' field and enter the following devfile URL:
+
+[source]
+----
+https://raw.githubusercontent.com/akouao/kogito-bpmn-lab/devfile/devfile.yaml
+----
+
+NOTE: Devfiles are YAML files that are consumed and transformed into a cloud workspace composed of multiple containers. The devfile can be saved in the root folder of a Git repository, a feature branch of a Git repository, a publicly accessible destination, or as a separate, locally stored artifact.
+
+Hit the `Load devfile` button to ensure that the configuration is loaded.
+
+image::kogito-1.png[View of interface with populated workspace name and imported devfile]
+
+Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+
+Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
+
+TIP: If things get weird, you can simply reload the browser tab to refresh the view.
+
+===== Locate the Kogito project
+
+You can see icons on the left for navigating between project explorer, search and other plugins. You’ll use these during the course of this workshop. Feel free to click on them and see what they do:
+
+image::kogito-2.png[Workspace icons on the left pane of workspace]
+
+
+Many features of CodeReady Workspaces are accessed via Commands. You can see a few of the commands listed with links on the home page (e.g. New File.., Git Clone.., and others).
+
+TIP: If you ever need to run commands that you don’t see in a menu, you can press F1 to open the command window, or the more traditional `Control+SHIFT+P` (or `Command+SHIFT+P on Mac OS X`).
+
+What you will discover in the Kogito `getting-started` section includes:
+
+* The Maven structure
+* Example `test-process.bpmn2` process definition
+* An OpenAPI Swagger UI at `http://localhost:8080/swagger-ui`
+
+Within the `pom.xml` is the declaration of the Kogito BOM, allowing to omit the version on the different Kogito and Quarkus dependencies:
+
+[source]
+----
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.kie.kogito</groupId>
+        <artifactId>kogito-quarkus-bom</artifactId>
+        <version>${kogito.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler.version}</version>
+        <configuration>
+          <release>11</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>1.3.0.Final</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+----
+
+In addition, you can see the quarkus-maven-plugin, which is responsible for packaging the application as well as allowing to start the application in development mode.
+
+===== Running the Application in Live Coding Mode
+
+Live Coding (also referred to as dev mode) allows us to run the app and make changes on the fly. Quarkus will automatically re-compile and reload the app when changes are made. This is a powerful and efficient style of developing that you will use throughout the lab.
+
+You can always use the `mvn` (Maven) commands to run Kogito apps on Quarkus, but we’ve created a few helpful shortcuts under the `quarkus-tools` subheading on the right - by cliking the cube icon - to run various Maven commands.
+
+TIP: The location of the various Maven commands will be referred to as quarkus-tools from now on.
+
+Start the app by clicking on `Start Live Coding` in `quarkus-tools`:
+
+TIP: You only need to click the button once.
+
+image::kogito-3.png[Location of Live Coding Button]
+
+This will compile and run the app using `mvn compile quarkus:dev` in a Terminal window. Leave this terminal window open throughout the lab! You will complete the entire lab without shutting down Quarkus Live Coding mode, so be careful not to close the tab (if you do, you re-run it). This is very useful for quick experimentation.
+
+You should see ouput similar to:
+
+[source]
+----
+2020-11-12 21:22:06,187 INFO  [io.quarkus] (main) getting-started 1.0-SNAPSHOT (powered by Quarkus 1.3.0.Final) started in 2.829s. Listening on: http://0.0.0.0:8080
+2020-11-12 21:22:06,189 INFO  [io.quarkus] (main) Profile dev activated. Live Coding activated.
+2020-11-12 21:22:06,189 INFO  [io.quarkus] (main) Installed features: [cdi, kogito, resteasy, resteasy-jackson, smallrye-openapi, swagger-ui]
+2020-11-12 21:22:37,235 INFO  [io.quarkus] (vert.x-worker-thread-0) Quarkus stopped in 0.003s
+----
+
+Because this is the first Maven Kogito/Quarkus build in CodeReady workspaces, a number of dependencies need to be downloaded which can take some time.
+
+After the dependencies have been downloaded, and the application has been compiled, note the amazingly fast startup time! The app is now running "locally" (within the Che container in which the workspace is also running). `localhost` refers to the Kubernetes pod, not "your" laptop (so therefore opening localhost:8080 in your browser will not do anything).
+
+===== Access Swagger UI
+
+CodeReady will also detect that the app opens port `5005` (for debugging) and `8080` (for web requests). Do NOT open port `5005`, but when prompted, open the port 8080, which opens a small web browser in CodeReady:
+
+TIP: Close all pop-up dialog boxes that appear on the bottom right of your screen.
+
+image::kogito-4.png[Dialog box for port 8080]
+
+
+You should see the following page, which shows the API of the sample Kogito Greetings service provided by the archetype:
+
+image::kogito-5.png[Swagger UI interface]
+
+
+It works!
+
+When building APIs, developers want to test them quickly. Swagger UI is a great tool for visualizing and interacting with your APIs. The UI is automatically generated from your OpenAPI specification.
+
+TIP: By default, Swagger UI is only available when Quarkus is started in dev or test mode. If you want to make it available in production too, you can include the following configuration in your application.properties: `quarkus.swagger-ui.always-include=true`.
+
+Using the UI, expand the `GET /greetings/{id}` endpoint. Here you can basic detail about the endpoint: the name of the endpoint, parameters and their type, and the response type one can expect.
+
+image::kogito-6.png[Parameters within the GET /greetings/{id} endpoint in Swagger UI]
+
+
+==== Congratulations
+
+In this exercise you’ve seen how to start a Kogito application very quickly in quarkus:dev mode.
+
+You also learned more about the MicroProfile OpenAPI specification and how to use it to do in-place documentation of your RESTful microservice APIs.
+
+There are additional types of documentation you can add, for example you can declare the security features and requirements of your API and then use these where appropriate in your paths and operations.
+
+.Creating a process definition
+****
+BPMN2 allows us to define a graphical representation of a process (or workflow), and as such, we need a BPMN2 editor to implement our process. Kogito provides an online BPMN2 editor that we can use to build our process.
+****
+
+You will observe a process definition to demonstrate Kogito’s code generation, hot-reload and workflow capabilities. The process will look like this using Kogito BPMN2 Tooling:
+
+image::kogito-7.png[Simple process definition from BPMN2 editor]
+
+
+Return to your workspace that is adjacent to your Swagger UI interface, and create a BPMN file titled `getting-started.bpmn` in the following location: `kogito-lab` → `getting-started` → `src` → `main` → `resources` → `getting-started.bpmn`
+
+image::kogito-8.png[getting-started.bpmn file created]
+
+
+Navigate to the link:https://bpmn.new[Kogito BPMN Tooling, window="_blank"] and implement the process as shown in the following link:https://youtu.be/babjHSNrZBg[video, window="_blank"].
+
+TIP: Make sure to use `getting_started` for the name and id of the process, `org.acme` for the package, and `1.0` for the version.
+
+After copying the source code, close both windows and return to the CodeReady workspaces.
+
+Insert the source BPMN2 XML file defintion source code into `getting-started.bpmn`.
+
+Save the file by pressing `CTRL+S`.
+
+As we already have our app running in Live Coding mode, when you make these changes and reload the endpoint, Quarkus will notice these changes and live-reload them, including the changes in your business assets (i.e. processes, decision, rules, etc.).
+
+Refresh the browser containing Swagger UI to check that it works as expected.
+
+TIP: If you have closed the window, re-open it by clicking the `swagger-ui` endpoint on the right panel.
+
+The Swagger UI will show the REST resources that have been generated from the project's business assets, in this case the `getting_started` resource, which is backed by our process definition (note that the sample Greetings resource is also still shown in the Swagger UI).
+
+Expand the `POST /getting_started` resource. Click on the `Try it out` button on the right-hand-side of the screen. Click on the blue Execute button to fire the request. Scroll down the page, and you will notice that the response will be the instance-id/process-id of the created `getting-started` resource.
+
+image::kogito-9.png[Generated process-id from getting-started resource]
+
+
+Apart from the Swagger UI, we can also call our RESTFUL resources from any REST client, for example via cURL in a terminal.
+
+Minimise the Swagger UI window by clicking the preview icon in the right panel.
+
+Open a terminal - in the right panel - on your CodeReady workspace, and run the following command:
+
+[source]
+----
+curl -X GET "http://localhost:8080/getting_started" -H "accept: application/json"
+----
+
+As you can see, the process-id is the same as what was oberved in the Swagger UI interface.
+
+image::kogito-10.png[Prcess-id display via cURL command]
+
+
+Our process definition contains a UserTask. To retrieve the tasks of an instance, we need to execute another REST operation.
+
+Click again on `POST /getting_started` to minimise the operation.
+
+Expand the `GET ​/getting_started​/{id}​/tasks` operation, and click on the 'Try it out' button. In the `id` field, fill in the value of the process instance id the cURL command returned. Now, click on the blue Execute button.
+
+This will return a list of Tasks:
+
+image::kogito-11.png[Tasks returned from getting-started resource process-id]
+
+
+As we haven't defined any Task input and output data yet, we can simply complete the task without providing any data.
+
+Expand the `POST ​/getting_started​/{id}​/Task/{workitemId}` operation, and click on the Try it out button. In the id field, fill in the value of the process instance `id`, and fill in the task-id that we retrieved with our previous REST call in the `workItemId` field. Now, click on the blue Execute button.
+
+This will complete the task, and the process will continue and reach the End node and complete:
+
+With the task completed, the process instance will now be completed. Execute the following command again in your terminal, Notice that there are no process instances returned:
+
+[source]
+----
+curl -X GET "http://localhost:8080/getting_started" -H "accept: application/json"
+----
+
+==== Congratulations
+
+You’ve defined a process in BPMN2, and have seen the live-reload in action. You have witnessed how Kogito can automatically generate REST resources based on your process definition. Finally, you started a process instance, retrieved the task list, completed a task, and thereby finished the process instance!
+
+Minimize Swagger UI by clicking the Preview icon in the right panel. Return to your Live Coding Terminal, and stop the app by pressing `CTRL+C` and close the terminal. Close the `getting-started.bpmn` window if you still have it open.
+
+.Packaging the application
+
+Click `Package Application` in `quarkus-tools`
+
+2 executable jar files are created in the `target` directory:
+
+image::kogito-12.png[Produced .jar file in /target directory]
+
+
+`getting-started-1.0-SNAPSHOT.jar` - containing just the classes and resources of the projects, it’s the regular artifact produced by the Maven build.
+
+`getting-started-1.0-SNAPSHOT-runner.jar` - being an executable jar. Be aware that it’s not an über-jar as the dependencies are copied into the `target/lib` directory.
+
+===== Running the executable JAR
+
+You can run the packaged application by typing into a new terminal:
+
+[source]
+----
+java -jar $CHE_PROJECTS_ROOT/kogito-bpmn-lab/getting-started/target/*-runner.jar
+----
+
+Click `close` on the port 8080 prompt.
+
+Open another terminal window - you should now have two terminal windows. We can test our application again using the second Terminal tab to create a new process instance by clicking on the following command:
+
+[source]
+----
+curl -X POST "http://localhost:8080/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}"
+----
+
+The output shows the id of the new instance.
+
+Close both your terminal windows, and the Package Application tab on your workspace.
+
+.Build a native image
+
+Within `getting-started/pom.xml` is the declaration for the Quarkus Maven plugin which contains a profile for `native-image`:
+
+[source]
+----
+<profile>
+  <id>native</id>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>native-image</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${surefire.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+</profile>
+----
+
+A profile is used because - and you will see soon - packaging the native image takes a few seconds. However, this compilation time is only incurred once, as opposed to every time the application starts, which is the case with other approaches for building and executing JARs.
+
+Create a native executable by clicking `Build Native App` in `quarkus-tools`.
+
+It will take a couple of mintues to finish. Wait for it!
+
+Once the native-exeutable has been produced, you can just run it in your terminal:
+
+[source]
+----
+kogito-bpmn-lab/getting-started/target/getting-started-1.0-SNAPSHOT-runner
+----
+
+And notice the amazingly fast startup time:
+
+[source]
+----
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2020-11-23 14:44:33,707 INFO  [io.quarkus] (main) getting-started 1.0-SNAPSHOT (powered by Quarkus 1.3.0.Final) started in 0.019s. Listening on: http://0.0.0.0:8080
+2020-11-23 14:44:33,707 INFO  [io.quarkus] (main) Profile prod activated. 
+2020-11-23 14:44:33,707 INFO  [io.quarkus] (main) Installed features: [cdi, kogito, resteasy, resteasy-jackson, smallrye-openapi, swagger-ui]
+----
+
+That is 19 milliseconds to start a full business application, exposing a REST API and ready to serve requests in a shared learning environment! Your startup time may vary, but we can't deny that it is admirably speedy!
+
+Click close on the port  8080 prompt. 
+
+It also has extremely low memory usage as reported by the Linux `ps` utility:
+
+[source]
+----
+ps -o pid,rss,command -p $(pgrep -f runner)
+----
+
+You should see similar output:
+
+[source]
+----
+    PID   RSS COMMAND
+    320 67728 kogito-bpmn-lab/getting-started/target/getting-started-1.0-SNAPSHOT-runner
+----
+
+TIP: Note that the RSS and memory usage of any app, including Quarkus, will vary depending your specific environment, and will rise as the application experiences load.
+
+Ensure that the application is still working as expected by creating a new process instance in your terminal:
+
+[source]
+----
+curl -X POST "http://localhost:8080/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}"
+----
+
+In return, you should have returned a process instance id, such as:
+[source]
+----
+{"id":"a5fac42f-5dbc-4a7b-a103-8bb7ece3194d"}
+----
+
+===== Cleanup
+
+Return to your terminal and press `CTRL+C` to stop our native app.
+
+Close all remaining terminal windows.
+
+.Kogito on OpenShift
+
+Navigate to the OpenShift console at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and login.
+
+Click on {{USER_ID}} displayed at the top right and select `Copy Login Command`.
+
+image::kogito-13.png[Token location on OpenShift console]
+
+
+In the new tab that appears login with your credentials like above. 
+
+Click on 'Display Token'
+
+Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command
+
+Return to your CodeReady workspaces terminal. Paste and execute the command.
+
+Press 'y' to use insecure connections
+
+The terminal should now be logged on - to check it try:
+
+[source]
+----
+oc whoami
+oc version
+----
+
+Create a kogito project:
+
+[source]
+----
+oc new-project kogito-{{USER_ID}}
+----
+
+In your terminal, create a new binary build in OpenShift:
+
+[source]
+----
+oc new-build quay.io/quarkus/ubi-quarkus-native-binary-s2i:19.3.1 --binary --name=kogito-quickstart -l app=kogito-quickstart
+----
+
+TIP: This build uses the new Red Hat Universal Base Image, providing foundational software needed to run most applications, while staying at a reasonable size.
+
+Start and watch the build. It will take a minute or two to complete. 
+
+[source]
+----
+oc start-build kogito-quickstart --from-file=${CHE_PROJECTS_ROOT}/kogito-bpmn-lab/getting-started/target/getting-started-1.0-SNAPSHOT-runner --follow
+----
+
+Once completed, deploy it as an OpenShift application on your CodeReady terminal:
+
+[source]
+----
+oc new-app kogito-quickstart
+----
+
+Return to your OpenShift console, and navigate to 'Workloads/Deployment Configs' and select your app.
+
+And expose it for all to see on the CodeReady terminal:
+
+[source]
+----
+oc expose service kogito-quickstart
+----
+
+Finally, ensure that it has completed rolling out:
+
+[source]
+----
+oc rollout status -w dc/kogito-quickstart
+----
+
+Wait for the command to return `replication controller "kogito-quickstart-1" successfully rolled out before continuing.
+
+The app has now been deployed on OpenShift. Return to your OpenShift console to view the pod running.
+
+TIP: In this step, we covered the deployment of a Kogito application on OpenShift. However, there is much more, and the integration with these environments has been tailored to make Kogito applications execution very smooth. For example, the health extension can be used for health check, and the configuration support allows mounting the application configuration using config maps.
+
+And now we can access our application using cURL once again in the CodeReady terminal:
+
+[source]
+----
+curl -X POST "http://kogito-quickstart-kogito-opentlc.apps.cluster-ROOL_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}"
+----
+
+You should again see the id of the process instance just started:
+
+[source]
+----
+{"id":"9e90106e-c105-4ed8-be5b-3663b0ca9dd5"}
+----
+
+To ensure that the Kogito app doesn't go beyond a reasonable amount of memory, set resource constraints on it.
+
+We'll go with 50MB, to allow space to scale the application up:
+
+[source]
+----
+oc set resources dc/kogito-quickstart --limits=memory=50Mi
+----
+
+With that set, let's see how fast our app can scale up to 10 instances:
+
+[source]
+----
+oc scale --replicas=10 dc/kogito-quickstart
+----
+
+Back in the Overview in the OpenShift Console you'll see the app scaling dynamically up to 10 pods:
+
+image::kogito-14.png[Pods dynamically scaled to 10]
+
+
+Now, let's hit the pods with some load:
+
+[source]
+----
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+----
+
+You will be able to see in your terminal that the 10 instances of our Kogito application being load-balanced and process instances being created:
+
+[source]
+----
+{"id":"6535c5ac-7e9f-43fe-9427-e338894d0ba9"}
+{"id":"fb7fa310-d43b-4f3d-b46f-1b15c942687d"}
+{"id":"7bd74394-c1ac-4d51-be99-fc4a98e9ad1e"}
+...
+----
+
+TIP: The id of your instances may differ.
+
+Is 10 not enough?! Let's try 50:
+
+[source]
+----
+oc scale --replicas=50 dc/kogito-quickstart
+----
+
+Back in the OpenShift console, you'll see the app scaling dynamically up to 50 pods:
+
+Once they are all up and running, try the same load again:
+
+[source]
+----
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+----
+
+And witness all 50 pods responding evenly to requests. Try doing that with your average app running a container! Pretty cool, huh?
+
+TIP: This tutorial uses a single node OpenShift cluster, but in practice, you will have many more nodes, and can scale hundreds or thousands of replications if and when the load goes way up.
+
+==== Congratulations!
+
+You got a small glimpse of the power of Kogito apps on a Quarkus runtime, both with native builds and traditional JVM-based. There is much more to Kogito that is fast startup times and low resource usage, such as Decision Model & Notation (DMN) services that we will be exploring next.
+
+==== Final Cleanup
+
+From your CodeReady terminal, delete your OpenShift project:
+
+[source]
+----
+oc delete project kogito-{{USER_ID}}
+----
+
+Close your OpenShift console window.
+
+Click the yellow arrow on CodeReady Workspaces console to reveal the left panel. Click the `workspaces` tab.
+
+Locate the name of your workspace, and click the stop button - a square icon - that is-line your workspace and just below the `Actions` subheading.
+
+Click the checkbox beside your workspace name.
+
+Click `delete` and `delete`.
+
+.Kogito Decisions with DMN
+****
+Decision Model and Notation (DMN) is a standard by the Object Management Group (OMG) for describing and modeling decision logic.
+
+It provides a developer and business friendly way to design and model complex decisions using constructs like DRDs (Decision Requirement Diagrams), decision tables, boxed expressions and FEEL (Friendly Enough Expression Language) expressions.
+
+DMN is to decision logic what BPMN is to business process logic.
+
+The Kogito DMN engine is the most powerful DMN decision engine on the market, and the only engine that can run cloud-natively in a container environment.
+****
+
+Click `Add workspace` and ensure that you are on the Custom Workspace tab.
+
+In the `Workspace Name` field, enter the workspace name:
+
+[source]
+----
+kogito-dmn
+----
+
+In the `devfile` section, select the 'URL of devfile' field and enter the following devfile URL:
+
+[source]
+----
+https://raw.githubusercontent.com/akouao/kogito-dmn-lab/devfile/devfile.yaml
+----
+
+Hit the `Load devfile` button to ensure that the configuration is loaded.
+
+image::kogito-15.png[View of interface with populated workspace name and imported devfile]
+
+
+Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+
+DMN uses a graphical modeling language/notation to define decisions. Therefore, Kogito provides a graphical DMN editor as part of its toolset. Apart from providing this editor as an extension to Visual Studio Code and Red Hat Code Ready Workspaces, it is also provided link:https://dmn.new[online, window="_blank"]
+
+Navigate to the DMN file we have created for you in: `kogito-dmn-lab` → `airmiles-service`→ `src` → `resources` → `airmiles.dmn`
+
+Navigate to the link:https://kiegroup.github.io/kogito-online/#/editor/dmn[Kogito DMN Tooling, window="_blank"] and implement the process as shown in the following link:https://youtu.be/NAO0eV5c5tE[video, window="_blank"].
+
+Confirm that your decision table looks like so:
+
+// TODO
+image::kogito-16.png[Airmiles deicison table input]
+
+After copying the source code, close the window and return to CodeReady workspaces.
+
+Insert the source DMN2 XML file defintion source code into `airmiles.dmn`
+
+Save the file by pressing `CTRL+S`.
+
+Start the app by clicking on `Start Live Coding` in `quarkus-tools`.
+
+Check that the application works as expected by observing the Swagger UI interface. It will show the REST resources that have been generated from the project's business assets, in this case the `/airmiles` resource, which is backed by our DMN decision model:
+
+// TODO
+image::kogito-17.png[/airmiles resource on Swagger UI]
+
+In a new terminal, test the application by simply send a RESTful request to it using cURL. By entering the following command, you send a request the determines the number of airmiles a traveller with a GOLD status gets for a flight with a price of 600:
+
+[source]
+----
+curl -X POST 'http://localhost:8080/airmiles' -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD", "Price": 600}'
+----
+
+You will get the following result:
+
+`{"Status":"GOLD","Airmiles":720.0,"Price":600}`
+
+We can see that our DMN decision logic has determined that the number of airmiles is 720, which is 1.2 times the price of the flight.
+
+Return to your CodeReady console, and stop the application in the first terminal using `CTRL+C`.
+
+Create a
+
+==== Congratulations!
+
+You've implemented your first DMN model. Using the hot/live reload capabilities of Quarkus, we've seen how these changes are immediately reflected in our Swagger UI. Finally, you've fired a RESTful request to our DMN decision microservice and saw cloud-native decisioning with DMN in action.
+
+===== Cleanup
+
+Stop processes (if any) in the remaining terminal windows by pressing `CTRL+C`
+
+.DMN on OpenShift
+****
+Previously, we created a DMN model that implements the deicision logic of our airmiles service and tested it using a number of RESTful requests. In this section, we will deploy our service to OpenShift and scale it up to be able to handle production load.
+****
+
+Navigate to the OpenShift console at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and login.
+
+Click on {{USER_ID}} displayed at the top right and select `Copy Login Command`.
+
+// TODO
+image::kogito-18.png[Token location on OpenShift console]
+
+
+In the new tab that appears login with your credentials like above. 
+
+Click on 'Display Token'
+
+Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command
+
+Return to your CodeReady workspaces terminal. Paste and execute the command.
+
+Press 'y' to use insecure connections
+
+The terminal should now be logged on - to check it try:
+
+[source]
+----
+oc whoami
+oc version
+----
+
+Create a kogitio-airmiles project:
+
+[source]
+----
+oc new-project kogito-airmiles-{{USER_ID}}
+----
+
+Click `Build Native App` in `quarkus-tools` to compile the application as a Kogito Quarkus native image using GraalVM.
+
+Note that the compilation might take a minute or two. 
+
+Create a new binary build:
+
+[source]
+----
+oc new-build quay.io/quarkus/ubi-quarkus-native-binary-s2i:19.3.1 --binary --name=airmiles-service -l app=airmiles-service
+----
+
+Start and watch the build, which will take about a minute or two to complete:
+
+[source]
+----
+oc start-build airmiles-service --from-file=${CHE_PROJECTS_ROOT}/kogito-dmn-lab/airmiles-service/target/airmiles-service-1.0-SNAPSHOT-runner --follow
+----
+
+Once completed, deploy it as an OpenShift application on your CodeReady terminal:
+
+Once it has been completed, deploy it as an OpenShift application:
+
+[source]
+----
+oc new-app airmiles-service
+----
+
+Return to your OpenShift console, and navigate to 'Workloads/Deployment Configs' and select your app to view the Deployment Config details.
+
+Return to the CodeReady terminal, and expose the app for everyone to see:
+
+[source]
+----
+oc expose service airmiles-service
+----
+
+Finally, make sure it has properly completed rolling out:
+
+[source]
+----
+oc rollout status -w dc/airmiles-service
+----
+
+Wait for the command to report `replication controller "airmiles-service-1" successfully rolled out` before continuing.
+
+And now we can access our application using cURL once again:
+
+[source]
+----
+curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/airmiles" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD",    "Price": 600}'
+----
+
+You should similar output of the process instance:
+
+[source]
+----
+{"Status":"GOLD","Airmiles":720.0,"Price":600}
+----
+
+The app has now been deployed on OpenShift.
+
+==== Scale the application
+In order to be able to handle production load and have high availability semantics, we need to scale the application and add a number of extra running pods. Set a resource constraint of 50 MB:
+
+[source]
+----
+oc set resources dc/airmiles-service --limits=memory=50Mi
+----
+
+We can now easily scale the number of pods via the OpenShift oc client:
+
+[source]
+----
+oc scale --replicas=10 dc/airmiles-service
+----
+
+The app will scale dynamically up to 10 pods. This should only take a few seconds, return to your OpenShift console to see the 10 pods.
+
+Now that we have 10 pods running, lets hit it with some load:
+
+[source]
+----
+for i in {1..50} ; do curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/airmiles" -H "accept: application/json" -H "Content-Type: application/json"  -d '{ "Status": "GOLD",    "Price": 600}'; sleep .05 ; done
+----
+
+The 10 Kogito apps are being load-balanced - as you can see in the terminal - as the influx of process instances are created:
+
+[source]
+----
+{"Status":"GOLD","Airmiles":720.0,"Price":600}
+{"Status":"GOLD","Airmiles":720.0,"Price":600}
+{"Status":"GOLD","Airmiles":720.0,"Price":600}
+...
+----
+
+TIP: Don't worry if you missed it the first time, simply re-execute the commands above and watch the number of pods remain same and load balance the extra load of process instances!
+
+==== Congratulations!
+
+In this scenario you got a glimpse of the power of Kogito apps on a Quarkus runtime on OpenShift. You've packaged your Kogito DMN Decision Service in a container image, deployed it on OpenShift, scaled the environment to 10 PODs and hit it with a number of requests. Well done!
+
+==== Final Cleanup
+
+From your CodeReady terminal, delete your OpenShift project:
+
+[source]
+----
+oc delete project kogito-airmiles-{{USER_ID}}
+----
+
+Click the yellow arrow on CodeReady Workspaces console to reveal the left panel. Click the `workspaces` tab.
+
+Locate the name of your workspace, and click the stop button - a square icon - that is-line your workspace and just below the `Actions` subheading.
+
+Click the checkbox beside your workspace name.
+
+Click `delete` and `delete`.
+
+Upon deletion, close the browser CodeReady workspaces browser tab that you currently have open.

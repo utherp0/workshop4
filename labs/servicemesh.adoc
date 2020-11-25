@@ -1,5 +1,5 @@
 :hide-uri-scheme:
-== OpenShift Service Mesh [INNOVATION]
+== OpenShift Service Mesh
 
 Author: Mark Roberts (feedback to mroberts@redhat.com)
 
