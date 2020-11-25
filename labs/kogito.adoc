@@ -57,7 +57,7 @@ Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout
 
 TIP: If things get weird, you can simply reload the browser tab to refresh the view.
 
-===== Locate the Kogito project
+==== Locate the Kogito project
 
 You can see icons on the left for navigating between project explorer, search and other plugins. You’ll use these during the course of this workshop. Feel free to click on them and see what they do:
 
@@ -123,7 +123,7 @@ Within the `pom.xml` is the declaration of the Kogito BOM, allowing to omit the 
 
 In addition, you can see the quarkus-maven-plugin, which is responsible for packaging the application as well as allowing to start the application in development mode.
 
-===== Running the Application in Live Coding Mode
+==== Running the Application in Live Coding Mode
 
 Live Coding (also referred to as dev mode) allows us to run the app and make changes on the fly. Quarkus will automatically re-compile and reload the app when changes are made. This is a powerful and efficient style of developing that you will use throughout the lab.
 
@@ -153,7 +153,7 @@ Because this is the first Maven Kogito/Quarkus build in CodeReady workspaces, a 
 
 After the dependencies have been downloaded, and the application has been compiled, note the amazingly fast startup time! The app is now running "locally" (within the Che container in which the workspace is also running). `localhost` refers to the Kubernetes pod, not "your" laptop (so therefore opening localhost:8080 in your browser will not do anything).
 
-===== Access Swagger UI
+==== Access Swagger UI
 
 CodeReady will also detect that the app opens port `5005` (for debugging) and `8080` (for web requests). Do NOT open port `5005`, but when prompted, open the port 8080, which opens a small web browser in CodeReady:
 
@@ -270,7 +270,7 @@ You’ve defined a process in BPMN2, and have seen the live-reload in action. Yo
 
 Minimize Swagger UI by clicking the Preview icon in the right panel. Return to your Live Coding Terminal, and stop the app by pressing `CTRL+C` and close the terminal. Close the `getting-started.bpmn` window if you still have it open.
 
-.Packaging the application
+===== Packaging the application
 
 Click `Package Application` in `quarkus-tools`
 
@@ -283,7 +283,7 @@ image::kogito-12.png[Produced .jar file in /target directory]
 
 `getting-started-1.0-SNAPSHOT-runner.jar` - being an executable jar. Be aware that it’s not an über-jar as the dependencies are copied into the `target/lib` directory.
 
-===== Running the executable JAR
+==== Running the executable JAR
 
 You can run the packaged application by typing into a new terminal:
 
@@ -305,7 +305,7 @@ The output shows the id of the new instance.
 
 Close both your terminal windows, and the Package Application tab on your workspace.
 
-.Build a native image
+===== Build a native image
 
 Within `getting-started/pom.xml` is the declaration for the Quarkus Maven plugin which contains a profile for `native-image`:
 
@@ -396,13 +396,13 @@ In return, you should have returned a process instance id, such as:
 {"id":"a5fac42f-5dbc-4a7b-a103-8bb7ece3194d"}
 ----
 
-===== Cleanup
+==== Cleanup
 
 Return to your terminal and press `CTRL+C` to stop our native app.
 
 Close all remaining terminal windows.
 
-.Kogito on OpenShift
+===== Kogito on OpenShift
 
 Navigate to the OpenShift console at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] and login.
 
@@ -520,7 +520,7 @@ Now, let's hit the pods with some load:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{ROUTE_URL}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
 ----
 
 You will be able to see in your terminal that the 10 instances of our Kogito application being load-balanced and process instances being created:
@@ -548,7 +548,7 @@ Once they are all up and running, try the same load again:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{ROUTE_URL}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
 ----
 
 And witness all 50 pods responding evenly to requests. Try doing that with your average app running a container! Pretty cool, huh?
@@ -620,8 +620,8 @@ Navigate to the link:https://kiegroup.github.io/kogito-online/#/editor/dmn[Kogit
 
 Confirm that your decision table looks like so:
 
-// TODO
 image::kogito-16.png[Airmiles deicison table input]
+
 
 After copying the source code, close the window and return to CodeReady workspaces.
 
@@ -633,8 +633,9 @@ Start the app by clicking on `Start Live Coding` in `quarkus-tools`.
 
 Check that the application works as expected by observing the Swagger UI interface. It will show the REST resources that have been generated from the project's business assets, in this case the `/airmiles` resource, which is backed by our DMN decision model:
 
-// TODO
+
 image::kogito-17.png[/airmiles resource on Swagger UI]
+
 
 In a new terminal, test the application by simply send a RESTful request to it using cURL. By entering the following command, you send a request the determines the number of airmiles a traveller with a GOLD status gets for a flight with a price of 600:
 
@@ -670,7 +671,6 @@ Navigate to the OpenShift console at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSO
 
 Click on {{USER_ID}} displayed at the top right and select `Copy Login Command`.
 
-// TODO
 image::kogito-18.png[Token location on OpenShift console]
 
 
@@ -748,7 +748,7 @@ And now we can access our application using cURL once again:
 
 [source]
 ----
-curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/airmiles" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD",    "Price": 600}'
+curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}{{ROUTE_URL}}/airmiles" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD",    "Price": 600}'
 ----
 
 You should similar output of the process instance:
@@ -781,7 +781,7 @@ Now that we have 10 pods running, lets hit it with some load:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-ROOT_URL.example.opentlc.com/airmiles" -H "accept: application/json" -H "Content-Type: application/json"  -d '{ "Status": "GOLD",    "Price": 600}'; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}{{ROUTE_URL}}/airmiles" -H "accept: application/json" -H "Content-Type: application/json"  -d '{ "Status": "GOLD",    "Price": 600}'; sleep .05 ; done
 ----
 
 The 10 Kogito apps are being load-balanced - as you can see in the terminal - as the influx of process instances are created:
@@ -800,7 +800,7 @@ TIP: Don't worry if you missed it the first time, simply re-execute the commands
 
 In this scenario you got a glimpse of the power of Kogito apps on a Quarkus runtime on OpenShift. You've packaged your Kogito DMN Decision Service in a container image, deployed it on OpenShift, scaled the environment to 10 PODs and hit it with a number of requests. Well done!
 
-==== Final Cleanup
+===== Final Cleanup
 
 From your CodeReady terminal, delete your OpenShift project:
 
