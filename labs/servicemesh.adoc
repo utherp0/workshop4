@@ -7,8 +7,7 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 OpenShift is a platform that enables developers to deliver and manage extremely complex polyglot applications covering a variety of language runtimes and underlying technologies. However, OpenShift to date has not provided controls and monitoring regarding how each application component interacts with other components within an application or wider enterprise. This is where the Red Hat OpenShift Service Mesh adds value to the development and operations staff responsible for applications. 
 
-Red Hat OpenShift Service mesh is comprised of a number of separate open source projects that have been tested and integrated as a whole to deliver value to the OpenShift user. Each open source project breaks down further to specific named elements, some of which are encountered and described in the following workshop chapter. 
-
+Red Hat OpenShift Service mesh comprises a number of separate open source projects that have been tested and integrated as a whole to deliver value to the OpenShift user. Each open source project breaks down further to specific named elements, some of which are encountered and described in the following workshop chapter. 
 
 ==== Istio
 
@@ -16,11 +15,11 @@ Istio is an implementation of the service-mesh and this component is responsible
 
 ==== Kiali 
 
-Kiali provides the observability capability to the Red Hat Service Mesh. This enables users to build a picture of service interaction, observe traffic and look in detail at the resources that are added to the OpenShift platform to create the operational service mesh. Kiali is used to understand the structure of the mesh and to gather metrics. A link is available to from Kiali to Jaeger for distributed tracing.
+Kiali adds the observability capability to the Red Hat Service Mesh. This enables users to build a picture of service interaction, observe traffic and look in detail at the resources that are added to the OpenShift platform to create the operational service mesh. Kiali is used to understand the structure of the mesh and to gather metrics. A link is available from Kiali to Jaeger for distributed tracing.
 
 ==== Jaeger
 
-Jaeger provides a detailed distributed traffic tracing capability. This shows accurately message interaction and enables teams to understand in detail the sequencing of traffic flow and to identify bottlenecks and weaknesses within the mesh.
+Jaeger provides a detailed distributed traffic tracing capability. This shows accurately the message interaction and enables teams to understand in detail the sequencing of traffic flow and to identify bottlenecks and weaknesses within the mesh.
  
 === Using Red Hat Service Mesh
 
@@ -35,7 +34,7 @@ The application is called layers and it is a very simple Node JS REST interface 
 oc new-project service-mesh-{{USER_ID}}
 ----
 
-Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods. We will be using some preloaded assets in the Terminal window, so enter the following command to set the context: 
+Not all projects are required to be managed by service mesh. As a result you need to add the project that you just created to the service mesh control plane so that the sidecar containers will be injected into the pods to deliver the Istio functionality. We will be using some preloaded assets in the Terminal window, so enter the following command to set the context: 
 
 [source]
 ----
@@ -101,7 +100,7 @@ for i in {1..100}; do curl $ROUTE; echo ""; sleep .2;done
 
 ==== Adding Istio capability
 
-To enable the service mesh communication requires further resources to be created. The initial resources to be created are the gateway and the virtual service. The gateway resource identifies a host for which communication should be intercepted and directed to the istio-ingress gateway. The virtual service  acts as a communication director selecting traffic that matches specific criteria for routing to a destination service. The gateway and virtual service yaml content is shown in the diagram below which also shows schematically how the communication is directed.
+To enable the service mesh communication requires further resources to be created. The initial resources to be created are the gateway and the virtual service. The gateway resource identifies a host for which communication should be intercepted and directed to the istio-ingress gateway. The virtual service acts as a communication director selecting traffic that matches specific criteria for routing to a destination service. The gateway and virtual service yaml content is shown in the diagram below which also shows schematically how the communication is directed.
 
 image::service-mesh-03.png[Istio gateway and virtual service]
 
@@ -144,9 +143,11 @@ echo "kiali-istio-system."$(oc whoami --show-console=true | cut -d'.' -f2-7)
 
 This command will create the URL for the Kiali system in use within the cluster. Open this URL in a new browser tab.
 
-Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials and then select the blue '1 application' link in the box labelled with your service-mesh-{{USER_ID}} project.
+Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials. You will then see a box labelled with your service-mesh-{{USER_ID}} project as shown below :
 
-On the left hand side of the Kiali screen select 'Graph and you should see a screen similar to that shown below :
+image::service-mesh-03a.png[Kiali initial screen]
+
+Click on the blue hyperlink for the number '1' on the right hand side of the line that shows '1 application' to see the details of your application. On the left hand side of the Kiali screen select 'Graph and you should see a screen similar to that shown below :
 
 image::service-mesh-04.png[Kiali initial screen]
 
@@ -154,7 +155,7 @@ If your screen shows application nodes and services then Kiali is responding to 
 
 If the Kiali view has timed out and removed the discovered services you will see a screen identical to that which is shown above. In that case press the blue button with the text 'Display unused nodes' and you will see the nodes and services of the application.
 
-You will now see the layer-1 application which is broken out as the service (dotted triangle) and the application (dotted square). Press the legend button to see the key to the objects in the browser window. You will also see that the service has an Istio virtual service associated with it.
+You will now see the layer-1 application which is broken out as the service (triangle) and the application (square). Press the legend button to see the key to the objects in the browser window. You will also see that the service has an Istio virtual service associated with it.
 
 Press the display drop down menu at the top of the screen and select the traffic animation option. Back at the terminal window start sending traffic to the service again using the for loop shell script used previously (and repeated below) :
 
@@ -250,7 +251,7 @@ Switch to the OpenShift browser window and ensure that you are using the develop
 
 image::service-mesh-08.png[OpenShift topology view of micro-services]
 
-Under more common circumstances of a development project then names will often be cryptic and it will be hard to gain any understanding of the communication logic, sequence or hierarchy of an overall application. This is when the Kiali visualization view becomes extremely useful. 
+Under more common circumstances of a development project the names will often be cryptic and it will be hard to gain any understanding of the communication logic, sequence or hierarchy of an overall application. This is when the Kiali visualization view becomes extremely useful. 
 
 To tie the service mesh together for the different versions of layer3 a virtual service and a destination rule will be used. 
 
@@ -392,7 +393,7 @@ In the OpenShift terminal window recall the for loop that sends messages to the 
 "layer1 (v1) [10.130.2.240] ----> layer2 (v1) [10.128.2.151] ----> layer3-v3 (v3) [10.128.2.144]"
 ----
 
-Of the above 25 calls, 10 are for v1 (40%), 8 are for v2 (32%) and 7 are for v3 (28%). The distribution percentages become more accurate the more messages are sent. When more calls are made the distribution gets closer to the desired values. 
+Of the above 25 calls, 10 are for v1 (40%), 8 are for v2 (32%) and 7 are for v3 (28%). When more calls are made the distribution gets closer to the desired values. 
 
 Switch to the Kiali browser view and wait until the traffic starts to appear. On the second to left drop down option menu at the top of the Kiali screen select the option "Requests percentage". This will show the breakdown of traffic similar to that which is shown below:
 
@@ -524,7 +525,7 @@ layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-a (instance-1) [10.128.2.5
 layer1 (v1) [10.128.2.62] sleep (900 ms) ----> layer2-b (instance-2) [10.131.0.86] sleep (900 ms)
 ----
 
-Increase the delay to 1100 ms using the command :
+Stop the loop command and increase the delay to 1100 ms using the command :
 
 [source]
 ----
@@ -545,7 +546,7 @@ layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-2) [10.128.2.
 layer1 (v1) [10.128.2.62] sleep (1100 ms) ----> layer2-a (instance-1) [10.128.2.59] sleep (1100 ms)
 ----
 
-Increase the delay to 1600 ms using the command :
+Stop the loop command and increase the delay to 1600 ms using the command :
 
 [source]
 ----
@@ -575,11 +576,11 @@ vi destination-rule-virtual-service-layer2-B.yaml
 oc apply -f destination-rule-virtual-service-layer2-B.yaml
 ----
 
-Alternatively use the Kiali browser window, switch to the istio-config section on the left hand side and select the virtual service for either layer2-A or layer2-A. Edit the yaml within the window to alter the timeout value and save the changes. One of the good things about using this editor is the immediate validation of the yaml code.
+Alternatively use the Kiali browser window, switch to the istio-config section on the left hand side and select the virtual service for either layer2-A or layer2-B. Edit the yaml within the window to alter the timeout value and save the changes. One of the good things about using this editor is the immediate validation of the yaml code.
 
 Observe that traffic starts to be allowed through to that application only.
 
-Take a look at the traffic flow in the graph view of Kiali and you should see a display similar to that which is shown below (once Kiali has had the opportunity to catch up).
+Take a look at the traffic flow in the graph view of Kiali and you should see a display similar to that which is shown below (once Kiali has had the opportunity to catch up). If necessary reduce on of the virtual service timeouts to 1 second to ensure messages timeout and you will see the errors shown on the Kiali view.
 
 image::service-mesh-10.png[Traffic distribution with errors]
 
