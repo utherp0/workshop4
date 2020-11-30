@@ -11,7 +11,9 @@ Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cl
 
 ==== Setting up your workspace environment
 
-To get started, open your `crw` project, and open the CodeReady url.
+To get started, access link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[CodeReady Workspaces, window="_blank"]
+
+open your `crw` project, and open the CodeReady url.
 
 You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
@@ -485,7 +487,7 @@ And now we can access our application using cURL once again in the CodeReady ter
 
 [source]
 ----
-curl -X POST "http://kogito-quickstart-kogito-opentlc.apps.cluster-ROOL_URL.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}"
+curl -X POST "http://kogito-quickstart-kogito-opentlc.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}"
 ----
 
 You should again see the id of the process instance just started:
@@ -520,7 +522,7 @@ Now, let's hit the pods with some load:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{ROUTE_URL}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
 ----
 
 You will be able to see in your terminal that the 10 instances of our Kogito application being load-balanced and process instances being created:
@@ -548,7 +550,7 @@ Once they are all up and running, try the same load again:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{ROUTE_URL}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
 ----
 
 And witness all 50 pods responding evenly to requests. Try doing that with your average app running a container! Pretty cool, huh?
@@ -748,7 +750,7 @@ And now we can access our application using cURL once again:
 
 [source]
 ----
-curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}{{ROUTE_URL}}/airmiles" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD",    "Price": 600}'
+curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/airmiles" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "Status": "GOLD",    "Price": 600}'
 ----
 
 You should similar output of the process instance:
@@ -781,7 +783,7 @@ Now that we have 10 pods running, lets hit it with some load:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}{{ROUTE_URL}}/airmiles" -H "accept: application/json" -H "Content-Type: application/json"  -d '{ "Status": "GOLD",    "Price": 600}'; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://airmiles-service-kogito-airmiles-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/airmiles" -H "accept: application/json" -H "Content-Type: application/json"  -d '{ "Status": "GOLD",    "Price": 600}'; sleep .05 ; done
 ----
 
 The 10 Kogito apps are being load-balanced - as you can see in the terminal - as the influx of process instances are created:
