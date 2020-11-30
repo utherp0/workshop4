@@ -53,3 +53,5 @@ workshop_manifests:
         title: OpenShift Service Mesh
       - id: quarkus
         title: Introduction to Quarkus on OpenShift
+      - id: kogito
+        title: Kogito on OpenShift

@@ -14,3 +14,7 @@ OPENSHIFT_CONSOLE_URL:
 
 # name of the project for the username-distribution and documentation apps
 project_name: devex
+
+# Route URL containing base of cluster
+# e.g. aec4
+ROUTE_URL:

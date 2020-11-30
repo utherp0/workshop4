@@ -3,7 +3,3 @@ username_app_admin_pass: pleasechangethis
 username_app_user_pass: openshift
 
 user_count: 100
-
-# Route URL
-# e.g. .apps.cluster-3e21.3e21.example.opentlc.com/
-ROUTE_URL:
