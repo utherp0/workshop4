@@ -13,7 +13,7 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 * The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[CodeReady Workspaces, window="_blank"].
+To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[Red Hat CodeReady Workspaces, window="_blank"].
 
 TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
@@ -23,8 +23,8 @@ On the login page, select `Register`. You will have to register a new user befor
 ----
 Username: {{USER_ID}}
 Email: {{USER_ID}}@example.com
-First name: {{USER_ID}}
 Last name: {{USER_ID}}
+Username: {{USER_ID}}
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
@@ -54,6 +54,8 @@ image::quarkus-1.png[View of interface with populated workspace name and importe
 
 
 Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+
+TIP: If creating the project fails, simply click your your workspace name in the left panel underneath Recent Workspaces.
 
 Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
 

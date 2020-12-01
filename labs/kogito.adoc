@@ -13,11 +13,7 @@ Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cl
 
 * The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-To get started, open link:https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com[https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com, window="_blank"]
-
-{{ROUTE_URL}}
-
-hi
+To get started, open https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com[Red Hat CodeReady Workspaces, window="_blank"].
 
 You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
@@ -25,12 +21,10 @@ On the login page, select `Register`. You will have to register a new user befor
 
 [source]
 ----
-First name: {{USER_ID}}
-Last name: {{USER_ID}}
 Username: {{USER_ID}}
 Email: {{USER_ID}}@example.com
-Password: openshift
-Confirm password: openshift
+Last name: {{USER_ID}}
+Username: {{USER_ID}}
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create or pre-configure.
@@ -72,7 +66,7 @@ image::kogito-2.png[Workspace icons on the left pane of workspace]
 
 Many features of CodeReady Workspaces are accessed via Commands. You can see a few of the commands listed with links on the home page (e.g. New File.., Git Clone.., and others).
 
-TIP: If you ever need to run commands that you don’t see in a menu, you can press F1 to open the command window, or the more traditional `Control+SHIFT+P` (or `Command+SHIFT+P on Mac OS X`).
+TIP: If you ever need to run commands that you don’t see in a menu, you can press F1 to open the command window, or the more traditional `Control+SHIFT+P` (or `Command+SHIFT+P` on Mac OS X).
 
 What you will discover in the Kogito `getting-started` section includes:
 
