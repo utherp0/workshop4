@@ -10,8 +10,8 @@ spec:
       description: Quarkus stack for Java and CodeReady Workspaces
       supports: java
       tags: builder,java
-      version: "2.1"
+      version: "1.0"
     from:
       kind: DockerImage
-      name: quay.io/openshiftlabs/quarkus-workshop-stack:2.1
-    name: "2.1"
+      name: docker.io/schtool/che-quarkus-workshop:1.0.0.CR1
+    name: "1.0"
