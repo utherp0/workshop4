@@ -1,8 +1,6 @@
 Author: Ally Kouao (feedback to akouao@redhat.com)
 
-=== Introduction
-
-.Quarkus
+.Introduction to Quarkus
 ****
 Quarkus is a Kubernetes Native Java stack tailored for GraalVM & OpenJDK HotSpot, crafted from the best of breed Java libraries and standards. Amazingly fast boot time, incredibly low RSS memory (not just heap size!) offering near instant scale up and high density memory utilization in container orchestration platforms like Kubernetes. Quarkus uses a technique called link:https://quarkus.io/vision/container-first[compile time boot, window="_blank"] and offers a unified imperative and reactive programming model and a number of other developer features like Live Reload to bring real joy to your development.
 
@@ -11,11 +9,11 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-* The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
+TIP: The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
 To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[Red Hat CodeReady Workspaces, window="_blank"].
 
-TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
+You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
 On the login page, select `Register`. You will have to register a new user before proceeding. Enter the following in the respective fields:
 
@@ -31,8 +29,12 @@ Once you log in with your username and password, you will be placed on the Get S
 
 You will now create a Quarkus workspace to use. Select the `Custom Workspace` tab.
 
-For the `Workspace Name`, enter `quarkus-lab`
+In the `Workspace Name` field, enter the workspace name:
 
+[source]
+----
+quarkus-lab
+----
 In the `devfile` section, select the 'URL of devfile' field and enter the following devfile URL:
 
 [source]
