@@ -11,9 +11,9 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-Prerequisite: You must be using a Chrome or Firefox web browser.
+* The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-To get started, open the link:http://codeready-crw.apps.cluster-ROOT_URL.example.opentlc.com/[CodeReady URL, window="_blank"]
+To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[CodeReady Workspaces, window="_blank"].
 
 TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 

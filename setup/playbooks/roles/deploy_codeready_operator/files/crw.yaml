@@ -4,3 +4,31 @@ kind: CheCluster
 metadata:
   name: codeready-workspaces
   namespace: crw
+spec:
+  auth:
+    identityProviderURL: ''
+    identityProviderRealm: ''
+    identityProviderImage: ''
+    identityProviderClientId: ''
+    externalIdentityProvider: false
+    openShiftoAuth: true
+  database:
+    chePostgresUser: ''
+    externalDb: false
+    chePostgresHostName: ''
+    chePostgresPassword: ''
+    chePostgresDb: ''
+    chePostgresPort: ''
+  metrics:
+    enable: true
+  server:
+    pluginRegistryImage: ''
+    selfSignedCert: false
+    devfileRegistryImage: ''
+    tlsSupport: true
+    cheFlavor: codeready
+    cheImageTag: ''
+  storage:
+    preCreateSubPaths: true
+    pvcClaimSize: 1Gi
+    pvcStrategy: per-workspace
