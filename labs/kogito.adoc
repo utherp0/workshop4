@@ -13,7 +13,7 @@ Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cl
 
 * The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}[{{ROUTE_URL}}, window="_blank"].{{ROUTE_URL}}[{{ROUTE_URL}}, window="_blank"].example.opentlc.com/[CodeReady Workspaces, window="_blank"].
+To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com[http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com, window="_blank"].
 
 You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
