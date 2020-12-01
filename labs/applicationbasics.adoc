@@ -10,7 +10,7 @@ TIP: The attendee will be using a browser for interacting with both the OpenShif
 
 Log on to cluster at {{OPENSHIFT_CONSOLE_URL}}[{{OPENSHIFT_CONSOLE_URL}}, window="_blank"] as '{{USER_ID}}', password 'openshift'.
 
-Ensure you are on the Administrator View - at the top left of the UI is a selection box which describes the current view selected.
+Switch to the Administrator View - at the top left of the UI is a selection box which describes the current view selected.
 
 *The Administrator view provides you with an extended functionality interface that allows you to deep dive into the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system for developers. This workshop will have you swapping between the contexts for different tasks.*
 
@@ -37,6 +37,8 @@ Click 'Add'
 
 *The Catalog screen for the developer combines all the ways components can be added into the Project. These are:*
 
+* *Quick Starts - these are simple quick start applications of various types for reference*
+* *Samples - these are OpenShift provided applications from code samples
 * *From Git - this provides another way to do a Source-2-Image build by first choosing the Git repo and then the builder image to use*
 * *Container Image - this provides a way to directly deploy an Image from a repository*
 * *From Dockerfile - this allows the Developer to do a controlled build of an Image from a Dockerfile*
@@ -47,6 +49,7 @@ Click 'Add'
 * *Helm Charts - this allows the developer to add something to the project from a Helm chart, which defines the base state of a set of Kubernetes objects*
 * *Pipeline - this allows the developer to instantly add a Tekton based pipeline for automated delivery of an application*
 * *Event Source - this allows the developer to register a subscription to aclass of events from a given system* 
+* *Channel - this allows a developer to create a Knative channel for Knative event driven behaviours
 
 Select ‘From Catalog’
 
@@ -59,7 +62,7 @@ image::applicationbasics-1.png[Node Choice]
 *OpenShift allows for multiple base images to be built upon - the selection of node searches for any images or templates registered into the system 
 with the label 'node'. In the screenshot above, and in the catalog you will be presented with, there will be a selection of base images.*
 
-Select ‘Node.js’
+Select ‘Node.js’ (Builder Image)
 
 image::applicationbasics-3.png[Node Choice]
 
@@ -74,7 +77,7 @@ Click on 'Create Application'
 *This approach uses the OpenShift ''source-2-image'' concept, which is a controlled mechanism provided by OpenShift that automates the creation 
 of application images using a base image and a source repository.* 
 
-Leave the builder image at 12
+Leave the builder image at 12-ubi7
 
 *The ''source-2-image'' approach allows you to use differing versions of a base image - in this case you can execute the Node build against a number of supported Node 
 versions.*
@@ -89,7 +92,7 @@ In a separate browser tab go to https://github.com/utherp0/nodenews[https://gith
 
 Close the github tab
 
-Back at the OCP4.5 UI scroll down and ensure the Application Name and Name textboxes have been autofilled. These should be set to nodenews-app and nodenews in order
+Back at the OCP4.6 UI scroll down and ensure the Application Name and Name textboxes have been autofilled. These should be set to nodenews-app and nodenews in order
 
 *OpenShift 4 introduces the concept of Application Grouping. This allows a visualisation of multiple Applications in the same 'group', making visibility of the Application much 
 simpler.*
@@ -127,6 +130,8 @@ Click on the Tick at the bottom left of the Pod
 image, performing the code specific build operations (in this case an ''npm install'') and then pushing the file layers for the image into the OpenShift 
 integrated registry.*
 
+image::applicationbasics-4e.png[build output]
+
 === Adding additional Applications
 
 Click 'Add+'
@@ -139,15 +144,13 @@ Select the Apache HTTP Server (httpd) template - Note that there are two options
 
 Click on 'Create Application'
 
-Leave Image Version as 2.4
+Leave Image Version as 2.4-el7
 
 Enter the following for the Git repo for the application - https://github.com/utherp0/forumstaticassets[https://github.com/utherp0/forumstaticassets, window="_blank"]
 
 When you unfocus the textbox the word 'Validated' will appear - if this doesn't check the URL for correctness
 
 Make sure the Application is ‘nodenews-app’
-
-Click on the entry point for 'Name' - it should autofill
 
 Make sure the Name is forumstaticassets
 
@@ -162,7 +165,7 @@ the group as a single action.*
 
 Click on the forumstaticassets Pod
 
-Watch the build complete, the Container Creating and the Running event. During the build process you may see errors in the right panel; these are actually correct. The concept of a Deployment immediately tries to deploy the image of the application. In the case of a S2I build this image doesn't immediately exist, because the system has to build it, so the deployment tries to deploy until the build is finished, at which point the deployment will succeed. It is often better to use the OpenShift Deployment Config approach; deployments are there for Kubernetes compliance.
+Watch the build complete, the Container Creating and the Running event. 
 
 image::applicationbasics-4c.png[Multi-app topology]
 
@@ -176,7 +179,7 @@ Select ‘Node.js’ (the Builder Image)
 
 Click 'Create Application'
 
-Leave at Builder Image Version 12
+Leave at Builder Image Version 12-ubi7
 
 Enter the following for the Git repo for the application - https://github.com/utherp0/ocpnode[https://github.com/utherp0/ocpnode, window="_blank"]
 
@@ -268,6 +271,8 @@ oc get dc
 side of the OpenShift system. Deployment Configs are different to Kubernetes Deployments in that they are an extension and contain things such as Config Maps, Secrets, 
 Volume Mounts, labelled targetting of Nodes and the like.* 
 
+TIP: Note that when you do the 'oc get dc' you get two deployments listed. Remember that we chose the Kubernetes deployment option for the httpd app.
+
 Enter the command below to tell OpenShift to scale the number of instances of the Deployment Config 'nodenews' to two rather than the default one.
 
 [source]
@@ -289,7 +294,7 @@ Note that there are two pods running with the application now
 
 Change the mode from Developer to Administrator
 
-Select the 'sandbox{{USER_ID}}' project in the project list
+Select the 'sandbox-{{USER_ID}}' project in the project list
 
 Note the metrics for the project
 

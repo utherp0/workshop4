@@ -75,12 +75,16 @@ This command will show an explanation of that API object type, namely 'Pods'. No
 
 [source]
 ----
-oc explain pods --recursive
+oc explain pods --recursive | more
 ----
+
+We add the pipe into 'more' as there will be a lot of output.
 
 image::ocintro4.png[Full definition of Pod]
 
 Every object can be described using JSON or YAML - this command returns, from the Server, the exact definition of that object. This is incredibly useful when we get to editing the objects via oc.
+
+There is a lot of information so you can press space repeatedly to view it, or hit Ctrl-C to come out of the output
 
 === Adding some Applications
 
