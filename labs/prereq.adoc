@@ -10,7 +10,13 @@ Open the browser and navigate to the console url {{OPENSHIFT_CONSOLE_URL}}[{{OPE
 
 Logon using the user provided by the course administrator ({{USER_ID}})
 
-When logged on you will be presented with a screen listing the projects, of which there are currently none
+As of OpenShift 4.6+ you will see an introduction message similar to the one beneath. Click 'Skip Tour'.
+
+image::prereq-0.png[Skip the tour]
+
+Select the Administrator view buy clicking on 'Developer' at the top left and selecting Administrator.
+
+You will be presented with a screen listing the projects, of which there are currently none
 
 Hit 'Create Project'
 
@@ -20,9 +26,9 @@ For 'Name' enter terminal-{{USER_ID}}
 
 Once the project has been created (you will be given a dashboard) change the mode of the UI from Administrator to Developer by clicking on the top left of the UI where it says 'Administrator' and selecting 'Developer'
 
-On the Topology page it will state 'No workloads found' - Click on 'Container Image'
+On the Topology page it will state 'No resources found' - Click on 'Container Image'
 
-In 'Image Name' enter 'quay.io/ilawson/devex4' and hit return
+In 'Image Name from external registry' enter 'quay.io/ilawson/devex4' and hit return
 
 The UI will validate the URL (successfully) - leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
 
@@ -59,6 +65,8 @@ oc version
 ----
 
 The terminal should display your user for the first command and the client and Kubernetes versions for the second command
+
+You may now continue with the labs
 
 
 

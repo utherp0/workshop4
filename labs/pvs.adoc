@@ -21,13 +21,15 @@ If you do not already have a terminal tab running as defined in the pre-requisit
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
-Click on ‘Create Project’
+*Click on Home/Projects*
+
+*Click on ‘Create Project’*
 
 Enter ‘pvtest-{{USER_ID}}’ for the name
 
 Enter ‘PV Test’ for the Display Name and Description
 
-Hit ‘Create’
+*Click ‘Create’*
 
 Switch to the Developer UI (click on Developer in the top left pulldown)
 
@@ -35,31 +37,31 @@ Select ‘From Catalog’
 
 Search for ‘node’
 
-Click on the ‘node.js’ option (Builder Image)
+Select the ‘node.js’ option (Builder Image)
 
-Click ‘Create Application’
+*Click ‘Create Application’*
 
-Leave the Builder Image Version as ‘12’
+Leave the Builder Image Version as ‘12-ubi7’
 
 Enter the following for the Git Repo URL - ‘https://github.com/utherp0/workshop4’
 
-Click on ‘Show Advanced Git Options’
+*Click on ‘Show Advanced Git Options’*
 
 In Context Dir put ‘/apps/nodeatomic’
 
-In Application Name put ‘nodeatomic’
+In Application Name put ‘nodeatomic-app’
 
 In Name put ‘nodeatomic’
 
 Scroll down to Resources and click on DeploymentConfig
 
-Click on ‘Create’
+*Click on ‘Create’*
 
 When the Topology page appears click on the node Pod to see the information window
 
-image::pvs-1.png[Active Application]
-
 Ensure the build completes correctly - watch the Developer/Topology page until the Pod is dark blue
+
+image::pvs-1.png[Active Application]
 
 TIP: What we have done is to create a simple application running in a Pod. We will use this Application to show the power of Persistent Volumes
 
@@ -180,7 +182,7 @@ Set the Mount Path to '/labs/storage'
 
 TIP: Be very careful with the mount point. You can overwrite existing files and directories in the Container image. If you use subpath you can actually spoof the Container (i.e. inject your own executables). This is a powerful feature by design.
 
-Hit 'Save'
+*Click 'Save'*
 
 The interface will shift to the Deployment Config Details and a deployment will automatically start. This is because we have physically changed the deployment config and by default OpenShift will automatically redeploy if the configuration of the deployment *or* the image that is used for the deployment are changed
 

@@ -2,9 +2,9 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 === Introduction
 
-*DevOps is a much overloaded term that is used to describe a variety of concepts in the creation of modern applications. In a simple definition DevOps is concerned with the interface between development practices used for the creative elements of software engineering and the procedural rigour of operationally running applications in production. Clearly these concepts have different objectives so it is important for teams (whether tasked with development or operations) to have a good understanding of the concepts, objectives and concerns of their counterparts on the other side of the fence.*
+DevOps is a much overloaded term that is used to describe a variety of concepts in the creation of modern applications. In a simple definition DevOps is concerned with the interface between development practices used for the creative elements of software engineering and the procedural rigour of operationally running applications in production. Clearly these concepts have different objectives so it is important for teams (whether tasked with development or operations) to have a good understanding of the concepts, objectives and concerns of their counterparts on the other side of the fence.
 
-*In terms of this workshop it is important to highlight the capabilities of containerized platforms with respect to the roll out of new versions of applications and how they get introduced to production and to end users. Terms such as blue/green deployments, black and white deployments, A/B deployments and canary deployments are used in various text books on 'DevOps' principles and some of these areas will be used in this chapter of the workshop.*
+In terms of this workshop it is important to highlight the capabilities of containerized platforms with respect to the roll out of new versions of applications and how they get introduced to production and to end users. Terms such as blue/green deployments, black and white deployments, A/B deployments and canary deployments are used in various text books on 'DevOps' principles and some of these areas will be used in this chapter of the workshop.
 
 The activities in this workshop will introduce a new version of a simple application to use in two different manners.
 
@@ -19,10 +19,7 @@ To begin the creation of the application use the following commands in an comman
 [source]
 ----
 oc new-project simple-rest-{{USER_ID}}
-----
 
-[source]
-----
 oc new-app --name simple-rest-app-v1-0  https://github.com/marrober/simpleRest.git --as-deployment-config
 
 oc expose service simple-rest-app-v1-0 --name="simple-rest-app-route"
@@ -58,6 +55,17 @@ This will display a formatted URL with the 'http://' part at the beginning which
 
 \http://simple-rest-app-route-simple-rest.apps.cluster-xxxx-yyyy.xxxx-yyyy.example.opentlc.com/ip
 
+Before testing the application you need to be sure that it is running. Type the command shown below which will show the status for the build, deploy and application pods.
+
+[source]
+----
+oc get pods
+----
+
+Repeat the above command periodically until the deploy and build pods have a status of completed and you have a running application pod as shown in the example below:
+
+image::deployment-strategies-1a.png[Deployment artefacts]
+
 To test the application use the command line window to issue a curl command to:
 
 [source]
@@ -69,7 +77,6 @@ The response should be as shown below (example ip address) :
 
 "10.131.0.114 v1.0"
 
-
 ==== Creation of version 2
 
 The development team now wants to introduce an experimental version 2 of the application and introduce it to the users in a number of different ways. The first action is to create the new build process for the experimental version using the command below.
@@ -79,7 +86,7 @@ The development team now wants to introduce an experimental version 2 of the app
 oc new-app --name simple-rest-app-v2-0 https://github.com/marrober/simpleRest.git#experimental --as-deployment-config
 ----
 
-TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. This syntax cannot be used through the web interface to OpenShift so any requirements for non-standard GIT connectivity must be done through the command line interface. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
+TIP: Note the use of the #experimental branch identifier in the end of the GIT repository. To use this additional capability through the web user interface select "Advanced Git Options" after pasting the URL. You may then enter a branch, tag or commit ID to refine the content that is used. It is also possible to configure the source-2-image capability to reference a specific sub directory of the repository using the --context option.
 
 .What was added to the project ?
 ****
@@ -101,13 +108,13 @@ At this point the version 2 application is operational but not accessible extern
 
 === Blue / Green Deployment
 
-TIP: The benefit of creating the new version of the application alongside the old is that it is quick and easy to migrate users to a new version of the application. It also allows teams to validate that the pods are running correctly.
+The benefit of creating the new version of the application alongside the old is that it is quick and easy to migrate users to a new version of the application. It also allows teams to validate that the pods are running correctly.
 
-Switching the route from v1 to v2 involves patching the route to change configuration. Before executing this operation open a new command window and execute the command below to send requests to the route every second. The responses received should all include the ip address of the pod and the version (v1) of the application.
+Switching the route from v1 to v2 involves patching the route to change configuration. Before executing this operation open a new command window (use the duplicate function on the browser if you are using a command line running in a container) and execute the command below to send requests to the route every second. The responses received should all include the ip address of the pod and the version (v1) of the application.
 
 [source]
 ----
-for i in {1..1000}; do curl $(oc get route simple-rest-app-route -o jsonpath='{"http://"}{.spec.host}') ; echo ""; sleep 1; done
+for i in {1..1000}; do curl $(oc get route simple-rest-app-route -o jsonpath='{"http://"}{.spec.host}{"/ip"}') ; echo ""; sleep 1; done
 ----
 
 A series of reports of ip address and version 1 of the application will then start to scroll up the screen. Leave this running.
@@ -174,11 +181,13 @@ Before moving to the A/B deployment strategy switch back to version v1 with the 
 oc patch route/simple-rest-app-route -p '{"spec":{"to":{"name":"simple-rest-app-v1-0"}}}'
 ----
 
-Confirm this has worked in the command window executing the shell script.
+Confirm this has worked in the command window executing the shell script. If the shell script has ended you may need to re-run it to send requests to the application again.
 
 === A/B Deployment
 
-TIP: The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are required.
+The benefit of an A/B deployment strategy is that it is possible to gradually migrate workload to the new version. This example presents a simple process of gradually migrating a higher and higher percentage of traffic to the new version, however more advanced options are available for migrating traffic based on headers or source ip address to name just two. Red Hat OpenShift Service Mesh is another topic that is worth investigation if advanced traffic routing operations are of interest.
+
+Ensure that the shell script shown above is running to send requests to the application.
 
 Gradually migrating traffic from v1 to v2 involves patching the route to change configuration as shown below.
 
@@ -237,7 +246,7 @@ oc set route-backends simple-rest-app-route simple-rest-app-v1-0=0 simple-rest-a
 
 === URL based routing
 
-Many organizations want to use a common URL for their web sites so that it is easy for users. This is often achieved by pointing a specific URL at an OpenShift cluster route within a global load balancer function, however this is not essential and it is possible to use routes to achieve the same result. Take as an example a holiday company called myholiday.com. The company wishes to sell package holidays, short breaks, cruises and adventure holidays and they create different applications for these purposes. By using a common host name in a series of route it is possible to ensure that traffic flows to the right location, based on the path of the url used. The diagram below shows the descried scenario and how the routes, services and applications work together
+Many organizations want to use a common URL for their web sites so that it is easy for users. This is often achieved by pointing a specific URL at an OpenShift cluster route within a global load balancer function, however this is not essential and it is possible to use routes to achieve the same result. Take as an example a holiday company called myholiday.com. The company wishes to sell package holidays, short breaks, cruises and adventure holidays and they create different applications for these purposes. By using a common host name in a series of route it is possible to ensure that traffic flows to the right location based on the path of the url used. The diagram below shows the described scenario and how the routes, services and applications work together
 
 image::deployment-strategies-4.png[URL based routing]
 
@@ -285,6 +294,8 @@ This will result in a new route being created and the hostname will be displayed
 ----
 adventure-holiday-myholiday_user2.apps.cluster-c2d5.c2d5.example.opentlc.com
 ----
+
+(Note your user number may differ).
 
 The element of the path that we need for the new common hostname is from the .apps part forward, and a new part will be created to replace 'adventure-holiday-myholiday_user2' based on the project name. A shell script is used to configure the four route creation yaml files which are stored in the workshop git repository. Switch directory and examine one of the yaml files.
 

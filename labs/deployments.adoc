@@ -11,7 +11,10 @@ TIP: This lab follows directly on from the Application Basics one so it is assum
 === Introducing Deployment Configurations
 
 Ensure you are on the Administrator View (top level, select 'Administrator')
-Select 'Workloads/Deployment Configs'
+
+Select Home/Projects and click on the sandbox-{{USER_ID}} project
+
+Select (from the left hand menu) 'Workloads/Deployment Configs'
 
 image::deployment-1.png[Deployment Configs]
 
@@ -35,7 +38,7 @@ Click on ‘Deployment Configs’ near the top of the panel.
 
 Select the nodenews deployment config by clicking on the nodenews DC link
 
-Ensure the Pod count is now two
+Ensure the Pod count is now two - we have scaled the deployment of the Application up from 2 to 4 using the UI controls, then down to 2 using the direct editing of the YAML for the object. This is one of the key strengths of the OpenShift UI, the ability to directly edit the YAML of any object owned by the user
 
 === Dependency Injection using Config Maps
 
@@ -61,11 +64,13 @@ image::deployment-4.png[Example Config Map YAML]
 
 Press 'Create'
 
-Go back to the command line tab
+Go back to the terminal tab and type the following
 
-Type ‘oc get configmaps’
-
-Type ‘oc describe configmap nodenewsconfig’
+[source]
+----
+oc get configmaps
+oc describe configmap nodenewsconfig
+----
 
 Go back to UI, select 'Workloads/Deployment Configs'
 
@@ -73,7 +78,9 @@ Click on the 'nodenews' dc
 
 Click on 'Environment'
 
-In ‘All Values from existing config maps’ select nodenewsconfig from the pulldown on the left and add nodenewsconfig as the prefix in the righthand textbox (labelled PREFIX (OPTIONAL) )
+In ‘All Values from existing config maps or secrets (envFrom)’ select nodenewsconfig from the pulldown on the left
+
+Add nodenewsconfig as the prefix in the righthand textbox (labelled PREFIX (OPTIONAL) )
 
 Click 'Save'
 
@@ -85,13 +92,17 @@ TIP: These are default behaviours but can be overridden. They are designed to ma
 
 In the filter pulldown at the top select the checkbox for 'Running'
 
-Click on one of the Pods for 'nodenews'
+Click on one of the Running Pods for 'nodenews'
 
 In the Pod Details page click on 'Terminal'
 
 In the terminal type ‘env | grep nodenewsconfig’
 
 *Note that the env variables from the config map have been expressed within the Pod as env variables (with the nodenewsconfig prefixed)*
+
+TIP: What has happened is that the environment variables have been transcribed into the container; the redeployment that happened automatically, because the
+deployment is set to auto-redeploy when either the image that the container is sourced from is updated, or the configuration of the deployment changes, which it did 
+when we injected the config map as environment variables.
 
 image::deployment-5.png[Injected config map environment variables]
 
@@ -154,6 +165,10 @@ image::deployment-8.png[second code insert]
 Save the deployment config.
 
 Click on 'Workloads/Pods'. Watch the new versions of the nodenews application deploy.
+
+TIP: On the Pods panel you can set the filter for 'Name:' to be nodenews, and set a filter of 'Running' which will display only the Running Pods for nodenews
+
+image::deployment-8a.png[filtered pod list]
 
 When they finish deploying click on one of the nodenews Pods. Click on 'Terminal'.
 
@@ -227,11 +242,13 @@ Click ‘Save’
 
 Watch the Pods update on the subsequent ‘DC Nodenews’ overview
 
-When they have completed click on ‘Pods’
+When they have completed click on ‘Pods’ in the DC panel (not the menu on the left)
 
 Choose one of the nodenews running pods, click on it, choose Terminal
 
 In the terminal type ‘env | grep secret’
+
+TIP: What we have done is express an encrypted value into a running Container where it is unencrypted and expressed as an environment variable, which can be consumed by the application
 
 === Understanding the Deployment Strategies
 
@@ -251,21 +268,11 @@ Click on 'Actions/Edit Deployment Config'
 
 Scroll the editor down to the ‘spec:’ tag as shown below
 
-[source]
-----
-spec:
- strategy:
-   type: Rolling
-----
+image::deployment-9.png[rolling deployment]
 
 Change the type: tag of the strategy to Recreate as shown below
 
-[source]
-----
-spec:
- strategy:
-   type: Recreate
-----
+image::deployment-10.png[recreate deployment]
 
 Click on 'Save'
 
@@ -279,7 +286,7 @@ TIP: In the case of a Recreate strategy the system ensures that NO copies of the
 
 ==== Cleaning up
 
-From the OpenShift browser window, click on 'Home' and then 'Projects' on the left hand side menu.
+Select Home/Projects
 
 In the triple dot menu next to your own project (sandbox-{{USER_ID}}) select ‘Delete Project’
 Type ‘sandbox-{{USER_ID}}’ such that the Delete button turns red and is active.

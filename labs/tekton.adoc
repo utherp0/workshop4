@@ -5,10 +5,19 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 ****
 For many years teams have created automation pipelines to build, unit test, analyse and deploy applications in a variety of tool-chains. Some such tool-chains (Jenkins for one) pre-date the popularization of containers and are now being questioned for their fit for the delivery of cloud native applications. While we are at pains not to criticize Jenkins (we are big users and fans) there is scope to look at alternative approaches for cloud native applications.*
 
-OpenShift Pipelines are based on the Tekton open source project and they provide a Kubernetes style, resource based approach to the construction of pipelines. Tasks are defined as small units of operations (typically 10 to 15 lines of YAML) and such tasks are grouped together into taskruns or pipelines for execution.
+OpenShift Pipelines are based on the Tekton open source project and they provide a Kubernetes style resource based approach to the construction of pipelines. Tasks are defined as small units (typically 10 to 25 lines of YAML) and such tasks are grouped together into taskruns or pipelines for execution.
 
-A new command line exists for the execution of Tekton commands and a graphical user interface can be added to the cluster to provide a simple way to run tasks and to observe running or completed tasks.
+A command line exists for the execution of Tekton commands and a graphical user interface is also available which provides a simple way to run tasks and to observe running or completed tasks.
+
+Finally a plugin exists for the Visual Studio family of editors that can ease the creation and execution of Tekton pipelines.
 ****
+
+==== Further reading
+
+Details on the syntax and use of Tekton is available in a series of blog posts starting here : https://www.openshift.com/blog/guide-to-openshift-pipelines-part-1-introducing-openshift-pipelines[https://www.openshift.com/blog/guide-to-openshift-pipelines-part-1-introducing-openshift-pipelines, window="_blank"]
+
+Information on how to trigger pipelines from GitHub is available here :
+https://www.openshift.com/blog/guide-to-openshift-pipelines-part-6-triggering-pipeline-execution-from-github[https://www.openshift.com/blog/guide-to-openshift-pipelines-part-6-triggering-pipeline-execution-from-github, window="_blank"]
 
 The Tekton project can be found here : https://tekton.dev/[https://tekton.dev/, window="_blank"]
 
@@ -39,13 +48,13 @@ oc new-project pipelines-{{USER_ID}}
 
 ==== Simple task creation and execution
 
-TIP: In the simplest format a task can be executed by a taskrun object. The diagram below shows a simple taskrun calling a single task
+TIP: In the simplest format a task can be executed by a taskrun object. The diagram below shows a simple taskrun calling a single task.
 
 image::pipelines-1.png[Simple pipeline with a task and taskrun]
 
 .Tekton command line
 ****
-A new command line utility is used to manage the Tekton command line. The commands cover the various different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks and conditions.
+A command line utility is available to manage Tekton pipelines.. The commands cover the different pipeline objects such as task, taskrun, pipeline, pipelinerun,  resources, cluster tasks, conditions etc.
 
 The Tekton command line interface is built into the terminal that you create as a pre-requisite for this workshop so you don't have to install anything right now. However, if you want to install the interface on your own workstation then it is available for download from here : https://github.com/tektoncd/cli[https://github.com/tektoncd/cli, window="_blank"] 
 
@@ -101,7 +110,7 @@ TIP: Note that the command response above uses different colours for each block 
 
 === Pipelines
 
-Pipelines are used to manage the execution of a series of tasks within a pipeline. The example pipeline below is used to execute the Tekton tasks : task-1, task-2 and task-3. Remember that each Tekton task can have multiple steps within it.
+Pipelines are used to manage the execution of a series of tasks. The example pipeline below is used to execute the Tekton tasks : task-1, task-2 and task-3. Remember that each Tekton task can have multiple steps within it.
 
 [source]
 ----
@@ -138,11 +147,11 @@ Execute the pipeline with the following Tekton task
 tkn pipeline start pipeline-1
 ----
 
-Once you have executed the command switch back to the OpenShift console. If you select the Developer view you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
+Once you have executed the command switch back to the OpenShift console. Ensure that you have your pipeline project selected. Select the Developer view and you will find there is a menu option on the left hand side labelled 'Pipelines'. Select this option and the screen should look like this:
 
 image::pipelines-2.png[Example Pipelines UI]
 
-Once the pipeline is indicated to have finished by showing 'Succeeded' in the 'Last Run Status' column, go back to the terminal and enter the command suggested by the response to the tkn command - it will look similar to this:
+Once the pipeline is indicated to have finished by showing 'Succeeded' in the 'Status' column, go back to the terminal and enter the command suggested by the response to the tkn command - it will look similar to this:
 
 [source]
 ----
@@ -399,44 +408,9 @@ Now switch to the OpenShift console. Select the Pipelines entry on the left side
 
 image::pipelines-6.png[Two completed pipelines]
 
-You can click on the pipeline-run (labelled pipeline-5-run-XXXXX) and examine the logs for each of the tasks. 
+You can click on the pipeline-run (labelled pipeline-5-run-XXXXX) and examine the logs for each of the tasks ising the web user interface.
 
 image::pipelines-7.png[Task details]
-
-To examine the pipeline run in the terminal window use the command :
-
-[source]
-----
-tkn pipelinerun logs pipeline-5-run-XXXXX
-----
-
-Replace the XXXX with the information reported on screen after the execution of the tkn pipeline start command.
-
-The output will be similar to that that is shown below. Within task 5 the first step creates a file called /workspace/message. The second step displays the file name and the content of the file within the workspace. The third step creates a file in the persistent volume and the fourth step displays the file name and the content of the file within the volume. 
-
-Within task 6 the first step displays the contents of the workspace. Note that this is empty because the workspace is unique to the task. The second step of task 6 shows the content of the persistent volume which is the same a that which was reported for step 5. This shows that workspaces can be used for sharing data between steps in the same task and volumes should be used for sharing data between steps within different tasks.
-
-[task-5 : create-a-file-in-workspace] /workspace/message
-
-[task-5 : view-workspace-content] message
-[task-5 : view-workspace-content] This is a file in the workspace
-
-[task-5 : create-a-file-in-volume] /var/run/message
-
-[task-5 : view-volume-content] lost+found
-[task-5 : view-volume-content] message
-[task-5 : view-volume-content] secrets
-[task-5 : view-volume-content] This is a file in the volume
-
-[task-6 : view-workspace-content] view workspace content
-[task-6 : view-workspace-content] total 0
-[task-6 : view-workspace-content] drwxrwsrwx. 2 root 1000800000  6 May  1 14:17 .
-[task-6 : view-workspace-content] drwxr-xr-x. 1 root root       37 May  1 14:17 ..
-
-[task-6 : view-volume-content] lost+found
-[task-6 : view-volume-content] message
-[task-6 : view-volume-content] secrets
-[task-6 : view-volume-content] This is a file in the volume
 
 ==== Cleaning up
 

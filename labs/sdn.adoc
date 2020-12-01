@@ -6,7 +6,7 @@ If you are not already logged on go to the UI URL at {{OPENSHIFT_CONSOLE_URL}}[{
 
 === The basics of Service Addressing
 
-*In this section we will create a couple of simple applications and show how they are represented via the Service and load-balancing of Pods within the SDN itself.*
+*In this section we will create a couple of simple applications and show how they are represented via the Service objects and load-balancing of Pods within the SDN itself.*
 
 If you do not already have a terminal tab running as defined in the pre-requisites please open one following the instructions in the pre-requisites
 
@@ -14,13 +14,13 @@ Ensure you are on the Administrator View (top level, select Administrator)
 
 Select Home/Projects
 
-Click on ‘Create Project’
+*Click on ‘Create Project’*
 
 For the project name give it networktest-{{USER_ID}}
 
 Display Name and Description are optional
 
-Click on 'Create'
+*Click on 'Create'*
 
 Using the top left selection switch the UI from Administrator to Developer
 
@@ -28,11 +28,11 @@ In the Topology Tab click on ‘From Catalog’
 
 In the search box enter ‘node’. Select the Node.js option (Builder Image)
 
-Click ‘Create Application’
+*Click ‘Create Application’*
 
-Default the builder image to version 12 (it should already have this selected)
+Default the builder image to version 12-ubi7 (it should already have this selected)
 
-For the git repo enter ‘https://github.com/utherp0/nodenews’ - insure the UI indicates 'Validated' when you leave the text field
+For the git repo enter *https://github.com/utherp0/nodenews* - insure the UI indicates 'Validated' when you complete the text
 
 Set the 'Application Name' to ‘application1-app’
 
@@ -40,15 +40,17 @@ Set the 'Name' to 'application1'
 
 In Resources set the deployment type to DeploymentConfig
 
-Click 'Create'
+*Click 'Create'*
 
-Click on ‘+Add’
+At this point the first application will start to build and deploy - we are now going to add a second one
 
-Click on ‘From Catalog’
+*Click on ‘+Add’*
+
+*Click on ‘From Catalog’*
 
 In the search box enter ‘node’. Again select the Node.js option (Builder Image)
 
-Click ‘Create Application’ 
+*Click ‘Create Application’*
 
 For the git repo enter ‘https://github.com/utherp0/nodenews’
 
@@ -60,7 +62,7 @@ Set the Name to ‘application2’
 
 In Resources set the deployment type to DeploymentConfig
 
-Click 'Create'
+*Click 'Create'*
 
 Wait until both applications have built and deployed. The Topology view will look similar to the image below:
 
@@ -68,47 +70,47 @@ image::sdn-1.png[Both Applications Loaded]
 
 Once the applications have created change the mode from Developer to Administrator using the top left selection point
 
-Click on 'Projects'. Select the networktest-{{USER_ID}} project
+*Click on 'Projects'. Select the networktest-{{USER_ID}} project*
 
-Click on 'Networking/Services'
+*Click on 'Networking/Services'*
 
 image::sdn-2.png[Example Services]
 
 TIP: The Services UI shows the services currently available in the Project. Note that there is a Service per application, so in this case there are two Services, application1 and application2. The Location is a singular IP address for each Service within the SDN - more on this later.
 
-Click on 'Workloads/Deployment Configs'
+*Click on 'Workloads/Deployment Configs'*
 
-Click on the application1 dc
+*Click on the application1 dc*
 
 Using the arrows next to the Pod indicator scale the application to three replicas
 
-Click on ‘Pods’ in the DC view (not Workloads/Pods)
+*Click on ‘Pods’ in the DC view (not Workloads/Pods)*
 
 image::sdn-3.png[Pod Listing]
 
-Click on the first active Pod for application1 listed
+*Click on the first active Pod for application1 listed*
 
 Scroll down and take a note of the IP address for the Pod
 
 image::sdn-4.png[Highlighted Pod IP]
 
-Click on 'Networking/Services'
+*Click on 'Networking/Services'*
 
-Click on the application1 service
+*Click on the application1 service*
 
-TIP: Note that the IP address for the Service has NOT changed. Scaling the Application has no impact on the singular IP address for the Service, which in actuality acts as a load-balancer across ALL of the IP addresses for the Pods of that Application.
+TIP: Note that the Cluster IP address for the Service has NOT changed. Scaling the Application has no impact on the singular IP address for the Service, which in actuality acts as a load-balancer across ALL of the IP addresses for the Pods of that Application.
 
 === Using the shorthand Service name directly
 
-Click on 'Workloads/Pods'
+*Click on 'Workloads/Pods'*
 
 Set the filter to 'Running' for ease of view
 
 image::sdn-4b.png[filtered pods]
 
-Click on the first running Pod for application1 (the name will be application1-1-(something)
+*Click on the first running Pod for application1 (the name will be application1-1-(something)*
 
-Click on Terminal
+*Click on Terminal*
 
 In the Terminal window type:
 [source]
@@ -151,7 +153,7 @@ curl http://application2:8080
 
 *We can also connect to any of the Services hosted within the namespace/project by default*
 
-Ask the person sat next to you what their project name is and make a note of it
+If you are working with others ask someone who is also on this lab to provide you their project name, i.e. networktest-user99 - if you are working by yourself skip this test and take our word for it....
 
 In the terminal type:
 
@@ -171,7 +173,7 @@ OpenShift actually provides three distinct levels of information when it comes t
 By default when you create a project it is assigned some default policies that mirror the behaviour of the 'Multitenant' configuration, isolating the namespace. In this section we will remove those defaults and create some others to show the capabilities.
 ****
 
-Click on 'Network/Network Policies'
+*Click on 'Network/Network Policies'*
 
 For each of the policies listed click on the triple dot icon on the far right and choose ‘Delete Network Policy’.
 
@@ -181,13 +183,13 @@ The Network Policy tab should display ‘No Network Policies Found’.
 
 Go to Workloads/Pods, click on one of the application1 Pods, choose Terminal
 
-Repeat the ‘curl’ command listed above for the person sat next to you, i.e. curl their application1 
+Repeat the ‘curl’ command listed above for the person sat next to you, i.e. curl their application1 (again, if there is no one ask the course administrator to create a networktest project you can reference)
 
 Ensure you get a webpage
 
 Go to Networking/Network Policies
 
-Click on ‘Create Network Policy’
+*Click on ‘Create Network Policy’*
 
 Delete the contents of the YAML editor and replace it with the following:
 
@@ -205,11 +207,11 @@ spec:
  ingress: []
 ----
 
-Click ‘Create’
+*Click ‘Create’*
 
 Wait until the person next to you has done the same
 
-Click on 'Workloads/Pods', click on one of the application1 Pods, choose Terminal
+*Click on 'Workloads/Pods', click on one of the application1 Pods, choose Terminal*
 
 Repeat the ‘curl’ command listed above for the person sat next to you, i.e. curl their application1 
 
@@ -217,9 +219,9 @@ The call will eventually fail - feel free to hit Ctrl-C to interrupt
 
 TIP: The creation of a Network Policy that prohibits ingress to the Application Service has stopped access to the Service from external namespaces AND internal Services.
 
-Click on 'Workloads/Pods'
+*Click on 'Workloads/Pods'*
 
-Click on the active pod for application2
+*Click on the active pod for application2*
 
 Click on Terminal
 
@@ -234,7 +236,7 @@ The call will eventually fail
 
 TIP: This shows that the Service is prohibited even from Services in its own namespace/project. This application of Network Policy allows for fine-grain control of traffic egress/ingress at the Service level. The other installation mode for SDN for OpenShift 4 is with Network Policies enabled, with default Network Policies providing a fully multitenanted environment.
 
-Click on 'Projects'
+*Click on 'Projects'*
 
 On the triple dot icon on the far right for networktest-{{USER_ID}} select ‘Delete Project’
 
