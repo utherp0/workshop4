@@ -10,15 +10,15 @@ If you do not already have a terminal tab running as defined in the pre-requisit
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
-In the UI click on 'Home/Projects'
+*In the UI click on 'Home/Projects'*
 
-Click on 'Create Project'
+*Click on 'Create Project'*
 
 For the project name give it rbactest-{{USER_ID}}
 
 Display Name and Description are optional
 
-Click on 'Create'
+*Click on 'Create'*
 
 === Examining Service Accounts
 
@@ -34,17 +34,17 @@ TIP: Service Accounts are effectively virtual users - even though you have logge
 
 Switch to the Developer view using the top left pulldown
 
-In the Topology Tab click on ‘From Catalog’
+*In the Topology Tab click on ‘From Catalog’*
 
 In the search box enter ‘node’. Select the Node.js option (Builder Image)
 
-Click ‘Create Application’
+*Click ‘Create Application’*
 
-Default the Builder Image Version to version 12
+Leave the Builder Image Version as 12-ubi7
 
 For the git repo enter ‘https://github.com/utherp0/nodenews’
 
-Insure the UI displays 'Validated' beneath the URL textbox when you unfocus. If it doesn't check the URL
+Insure the UI displays 'Validated' beneath the URL textbox when you complete typing it in. If it doesn't check the URL
 
 Set the Application Name to ‘rbac’
 
@@ -52,9 +52,9 @@ Set the Name to ‘rbactest’
 
 In Resources set the deployment to DeploymentConfig
 
-Click 'Create'
+*Click 'Create'*
 
-Click on the Node pod indicator so the informational panel appears
+*Click on the Node pod indicator so the informational panel appears*
 
 Watch the build and ensure it completes
 
@@ -62,7 +62,7 @@ Once the build is complete ensure the deployment occurs. The Pod ring will turn 
 
 Switch back to Administrator view using the top left selection point
 
-Click on User Management/Role Bindings
+*Click on User Management/Role Bindings*
 
 image::rbac-2.png[Admin Role]
 
@@ -76,17 +76,17 @@ TIP: Note that with the filter for System Role Bindings we can now see the three
 
 Remove the filter by clicking on the cross next to it
 
-Click on the (CR) admin Role Ref
+*Click on the (CR) admin Role Ref*
 
 *This screen displays ALL the actions, via API, that this role has access to grouped by the API groups. This mapping is what controls what the user can do via the bindings they have.*
 
 === Adding Role Bindings to your namespace/project
 
-Click on 'User Management/Role Bindings'
+*Click on 'User Management/Role Bindings'*
 
-Click on 'Create Binding'
+*Click on 'Create Binding'*
 
-Set Name to ‘partneraccess’
+*Set Name to ‘partneraccess’*
 
 Select ‘rbactest-{{USER_ID}}’ from the Namespace pulldown. 
 
@@ -100,15 +100,15 @@ Enter ‘user(PARTNERUSER)’ for the Subject Name
 
 *What we are doing is adding the user you have chosen to pair with as an admin role binding within your project.*
 
-Click 'Create'
+*Click 'Create'*
 
 Ensure the partner has done the same with your {{USER_ID}}
 
-Click on Home/Projects
+*Click on Home/Projects*
 
 *If the partner user has set the role binding appropriately you will now see two projects - your own and the other person's*
 
-Click on the partner’s project (rbactest_(PARTNERUSERNAME) )
+*Click on the partner’s project (rbactest_(PARTNERUSERNAME) )*
 
 Change to the Developer view using the top left selection point
 
@@ -120,13 +120,13 @@ Select 'Workloads/Deployment Configs'
 
 Ensure that the ‘rbactest’ DC shown has a Namespace that is the Partner’s project
 
-Click on the DC rbactest
+*Click on the DC rbactest*
 
 Using the arrows scale the deployment to 4 pods
 
-Click on 'Home/Projects' and select your project (rbactest-{{USER_ID}})
+*Click on 'Home/Projects' and select your project (rbactest-{{USER_ID}})*
 
-Click on ‘Role Bindings’ in the project overview pane
+*Click on ‘Role Bindings’ in the project overview pane*
 
 On the triple dot for ‘partneraccess’ choose ‘Delete’
 
@@ -134,9 +134,9 @@ Confirm deletion in the pop-up message box
 
 === Giving Users lower levels of permission
 
-Click on 'User Management/Role Bindings'
+*Click on 'User Management/Role Bindings'*
 
-Click on 'Create Binding'
+*Click on 'Create Binding'*
 
 Set Name to ‘partneraccess’
 
@@ -148,11 +148,11 @@ Ensure the Subject radiobox is set to ‘User’
 
 In the Subject Name enter the user name for the partner
 
-Click Create
+*Click Create*
 
 Ensure the partner has done the same with your {{USER_ID}}
 
-Click on 'Home/Projects'
+*Click on 'Home/Projects'*
 
 Select the partner project (rbactest_(PARTNERUSERNAME) )
 
@@ -160,15 +160,15 @@ In the Project overview pane click on Role Bindings
 
 NOTE: You now do not have the appropriate access rights to interact with the role bindings as you only have View access to the target project
 
-Click on 'Workloads/Deployment Config'
+*Click on 'Workloads/Deployment Config'*
 
-Click on the rbactest (DC)
+*Click on the rbactest (DC)*
 
 Try and scale down the Pod to one pod
 
 NOTE: View access allows you to see the state of objects but NOT to change them.
 
-Click on 'Home/Projects'
+*Click on 'Home/Projects'*
 
 In the triple dot menu next to the rbactest_PARTNERUSERNAME select ‘Delete Project’
 
@@ -176,7 +176,7 @@ Type ‘rbactest_(PARTNERUSERNAME)’ in the message box and press ‘Delete’
 
 NOTE: Note that you cannot delete the other persons project.
 
-Hit Cancel
+*Click Cancel*
 
 In the triple dot menu next to your own project (rbactest-{{USER_ID}}) select ‘Delete Project’
 
