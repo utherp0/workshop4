@@ -207,6 +207,8 @@ And this is where the oc command becomes incredibly powerful. Type the following
 oc get dc -o jsonpath='{.items[*].metadata.name}'
 ----
 
+Note that the command does not append a newline so the output will appear next to your command prompt.
+
 We can use the output of an object in json through a jsonpath filter and access *any* component of the object. Here's a more useful example - type the following:
 
 [source]
