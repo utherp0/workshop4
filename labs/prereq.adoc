@@ -28,7 +28,7 @@ Once the project has been created (you will be given a dashboard) change the mod
 
 On the Topology page it will state 'No resources found' - Click on 'Container Image'
 
-In 'Image Name from external registry' enter 'quay.io/ilawson/devex4' and hit return
+In 'Image Name from external registry' enter `quay.io/ilawson/devex4` and hit return
 
 The UI will validate the URL (successfully) - leave everything else as default and scroll down to the bottom of the page. Hit 'Create'
 

@@ -1,8 +1,6 @@
 Author: Ally Kouao (feedback to akouao@redhat.com)
 
-=== Introduction
-
-.Kogito
+.Introduction to Kogito
 ****
 Business Automation covers the appliation area of business processes, workflows, decisions, rules and optimization. Kogito bring these capablities to the Cloud Native world by utilizing the latest innovations in the Java landscape, like Quarkus and GraalVM, while building on battle-test components such as Drools, jBPM and OptaPlanner.
 
@@ -11,7 +9,7 @@ Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cl
 
 ==== Setting up your workspace environment
 
-* The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
+TIP: The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
 To get started, open https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com[Red Hat CodeReady Workspaces, window="_blank"].
 

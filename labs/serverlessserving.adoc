@@ -1,44 +1,57 @@
-Author: Jonny Browning (feedback to browning@redhat.com)
+Author: Jonny Browning (feedback to Ian Lawson at ian.lawson@redhat.com)
 
-=== Introduction
-
-OpenShift Serverless, based on the https://knative.dev[Knative project, window="_blank"], is the serverless technology that was introduced in OpenShift 4.2. OpenShift Serverless enables Pods running on OpenShift to be scaled to zero, therefore taking zero processing power. Only when called, OpenShift Serverless will scale the Pod up on demand before processing the request. OpenShift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received. 
+.Introduction to Serverless
+****
+OpenShift Serverless, based on the https://knative.dev[Knative project, window="_blank"], is the serverless technology that was introduced in OpenShift 4.2. OpenShift Serverless enables Pods running on OpenShift to be scaled to zero, therefore taking zero processing power. Only when called, OpenShift Serverless will scale the Pod up on demand before processing the request. OpenShift Serverless also has the ability to autoscale based on load before eventually scaling back to zero when no requests are being received.
 
 OpenShift Serverless supports "Serving" and "Eventing".
 
 At the time of writing, Eventing is in Tech Preview.
 
 "Serving" enables request/response workloads, and "Eventing" enables asynchronous event based workloads using cloudevents. In this lab, we are going to look at serving.
+****
+
+=== Check the project is ready to use
+
+In the browser based terminal window, check you are still logged on and using the correct project by typing:
+
+[source]
+----
+oc whoami
+oc project
+----
+
+TIP: If the response from the commands indicates that you are not {{USER_ID}} and not using the project sandbox-{{USER_ID}} please repeat the commands in the pre-requisites.
 
 .OpenShift Serverless and the Operator Lifecycle Manager
 ****
 OpenShift Serverless uses the Operator Lifecycle manager, this means that its operator and Custom Resource Definitions (CRDs) will be added to OpenShift via "OLM". Once created, the new CRDs will extend the OpenShift data model allowing OpenShift Serverless to be managed using the standard ‘oc’ command. Installing operators requires a higher cluster privilege so the presenter will have already set these up for you.
 ****
 
-=== Creating the project
+==== Creating the project
 
-Log on to cluster as {{USER_ID}}, password openshift
+Log on to the cluster as {{USER_ID}}, password `openshift`
 
-Ensure you are on the Administrator View (top level, select Administrator)
+Navigate to the Administrator View (top level, select Administrator)
 
 Click on 'Create Project'
 
-Name - ‘serverless-{{USER_ID}}’
+Name - `serverless-{{USER_ID}}`
 
 Display Name and Description - doesn't matter
 
-In the terminal window, switch to the new project with this command
+In the terminal window, switch to the new project with this command:
 
 [source]
 ----
 oc project serverless-{{USER_ID}}
 ----
 
-=== Deploying a serverless application using the Knative CLI
+==== Deploying a serverless application using the Knative CLI
 
 The application we are going to deploy is a simple PHP application. The container image has already been built and is hosted on quay.io.
 
-To deploy the application as a Knative service, run this command in the terminal window.
+To deploy the application as a Knative service, run this command in the terminal window:
 
 [source]
 ----
@@ -55,19 +68,20 @@ Go to the Topology view in the Developer console. You should now see something l
 
 image::serverlessserving-1.png[A Knative service in the Topology view]
 
-The outer box is the *Knative service*, and the circle inside of it is a *Revision* of the Knative service. We will learn more about revisions later on. In the very top right corner of the box, there is an icon labelled "Open URL" (when you hover over it). Click on this to open the application in a new tab.
+The outer box is the *Knative service*, and the circle inside of it is a *Revision* of the Knative service. We will learn more about revisions later on. In the very top right corner of the box, there is an icon labelled `Open URL` (when you hover over it). Click on this to open the application in a new tab.
 
 The application gives some basic information about the pod that it's running in - the name of the pod and the time it was created. Refresh the page a few times (make sure you force refresh using Ctrl + R to ensure the page is properly reloaded). You should see that the name and time don't change.
 
-Now go back to the Topology view and wait. After a few minutes, the blue ring inside the box should disappear. This indicates that the application has scaled down to zero pods, and is not using up any processing power.
+Close the application tab, then return to the Topology view and wait. After a few minutes, the blue ring inside the box should disappear and be clear. This indicates that the application has scaled down to zero pods, and is not using up any processing power.
 
 Open up the application again by clicking the icon in the top right of the box. The name of the pod will have changed, and you can see that the pod has just been created (if you still have the other tab open, you can compare the two pods). On the Topology view, you can see that the blue ring has now reappeared, showing that there is a running pod.
 
-=== Knative Revisions
-
+.Knative Revisions
+****
 Knative revisions are a point-in-time snapshot of the code and configuration for each modification made to a service deployed on OpenShift. Revisions enable progressive rollout and rollback of changes by rerouting traffic between service names and revision instances. 
 
 This is powerful as it means that the Knative route can be configured to balance traffic between different version of the service, ensuring a low risk release of new versions into production. For example, if we create a new version, we can start by only giving it 10% of the traffic whilst the old version takes the main load. Gradually, the percentage can be moved to 100% before retiring the old version of the service. This is known as a Blue-green deployment.
+****
 
 This part of the lab will demonstrate a Blue-green deployment using the Knative CLI.
 
@@ -82,7 +96,7 @@ kn service update my-knative-app \
 --traffic my-knative-app-v1=90,my-knative-app-v2=10
 ----
 
-Now let's look at the revision list to see the change.
+Now let's look at the revision list to see the change:
 
 [source]
 ----
@@ -93,11 +107,12 @@ You can see that the traffic is now being split between the two revisions of the
 
 image::serverlessserving-2.png[Green-blue deployment in the Topology view]
 
-Now let's take a look at our application again. Go to the Topology view and click on the "Open URL" icon in the top right of the rectangular box labelled "my-knative-app" (shown in the screenshot above).
+Now let's take a look at our application again. Go to the Topology view and click on the "Open URL" icon in the top right of the dotted rectangular box labelled "my-knative-app" (shown in the screenshot above).
 
-Repeatedly refresh the page, and watch the message on the web page. Make sure you are forcing a refresh (normally Ctrl + R), so that it fetches a new copy from the server each time, rather than using a locally cached version. Most of the time, the message will be blue (version 1), and occasionally it will be green (version 2).
 
-Now let's change the split to 50/50.
+Repeatedly refresh the page, and watch the message on the web page. Make sure you are forcing a refresh (with `Ctrl + R`), so that it fetches a new copy from the server each time, rather than using a locally cached version. Most of the time, the message will be blue (version 1), and occasionally it will be green (version 2).
+
+Now let's change the split to 50/50 from your terminal:
 
 [source]
 ----
@@ -106,7 +121,7 @@ kn service update my-knative-app --traffic my-knative-app-v1=50,my-knative-app-v
 
 You should now see this reflected when you keep refreshing the web page, because version 2 (green) should appear more often.
 
-Now that we're confident that version 2 is ready for a full rollout, let's update our service again.
+Now that we're confident that version 2 is ready for a full rollout, let's update our service again:
 
 [source]
 ----
@@ -115,7 +130,7 @@ kn service update my-knative-app --traffic @latest=100
 
 Now when you refresh the page, you will only see the latest version (version 2).
 
-=== Autoscaling
+==== Autoscaling
 
 Next, we will configure autoscaling so that the number of pods increases as the load on the application increases.
 
@@ -128,20 +143,20 @@ kn service update my-knative-app --concurrency-target=5
 
 This has created a new revision of the Knative service.
 
-Copy the URL of the Knative route (i.e. the "Pod Details" web page from the other tab), as you will need it in a moment.
-
 Next, we're going to apply some load to the application using the `siege` command.  Before we do this however, we want to make sure that the service has scaled back to zero. To check, look in the Topology view. The application should not have a blue ring around it. If it does, wait a few minutes until it has scaled down again.
 
-Now let's put some load on the application. Remember to replace <URL_OF_SERVICE> with the URL you have copied.
+Now let's put some load on the application:
 
 [source]
 ----
-siege -c 50 -t 30s <URL_OF_SERVICE>
+siege -c 50 -t 30s http://my-knative-app-serverless-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com
 ----
 
 This command bombards the application for 30 seconds.
 
-On the Topology view, click on the application (circle inside the box) to bring up the sidebar, then go to the 'Resources' tab. You will see that a bunch of pods have been spun up to serve the requests (around 11). Once the `siege` command completes, the pods will begin to disappear until the application has scaled back down to zero.
+On the Topology view, click on the application (circle inside the box) to bring up the sidebar, then go to the 'Resources' tab. You will see that a bunch of pods have been spun up to serve the requests (~11). Once the `siege` command completes, the pods will begin to disappear until the application has scaled back down to zero.
+
+TIP: It may take a couple of minutes to see the number of pods change.
 
 ==== Limiting the number of pods
 
@@ -154,11 +169,11 @@ kn service update my-knative-app --scale-max 5
 
 This sets an upper limit of 5 pods for our application.
 
-Go to the Topology view and check that the application has scaled back to zero. If not, wait a few minutes until it does. Then try running the `siege` command again.
+Go to the Topology view and check that the application has scaled back to zero. If not, wait a few minutes until it does - when the circle surrounding the pod turns clear - before you continue. Then, try running the `siege` command again:
 
 [source]
 ----
-siege -c 50 -t 30s <URL_OF_SERVICE>
+siege -c 50 -t 30s http://my-knative-app-serverless-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com
 ----
 
 As before, click on the application (circle inside the box) in the Topology view to bring up the sidebar, then go to the 'Resources' tab. You will see that a bunch of pods have been spun up to serve the requests, but this time it is only 5 pods. Once the `siege` command completes, the pods will begin to disappear until the application has scaled back down to zero.
