@@ -11,9 +11,9 @@ Kogito has multiple uses. Kogito is desgned from ground up to run at scale on cl
 
 ==== Setting up your workspace environment
 
-To get started, access link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[CodeReady Workspaces, window="_blank"]
+* The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-open your `crw` project, and open the CodeReady url.
+To get started, open https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com[Red Hat CodeReady Workspaces, window="_blank"].
 
 You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
@@ -21,12 +21,10 @@ On the login page, select `Register`. You will have to register a new user befor
 
 [source]
 ----
-First name: {{USER_ID}}
-Last name: {{USER_ID}}
 Username: {{USER_ID}}
 Email: {{USER_ID}}@example.com
-Password: openshift
-Confirm password: openshift
+Last name: {{USER_ID}}
+Username: {{USER_ID}}
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create or pre-configure.
@@ -55,6 +53,8 @@ image::kogito-1.png[View of interface with populated workspace name and imported
 
 Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
 
+TIP: If creating the project fails, simply click your your workspace name in the left panel underneath Recent Workspaces.
+
 Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
 
 TIP: If things get weird, you can simply reload the browser tab to refresh the view.
@@ -68,7 +68,7 @@ image::kogito-2.png[Workspace icons on the left pane of workspace]
 
 Many features of CodeReady Workspaces are accessed via Commands. You can see a few of the commands listed with links on the home page (e.g. New File.., Git Clone.., and others).
 
-TIP: If you ever need to run commands that you don’t see in a menu, you can press F1 to open the command window, or the more traditional `Control+SHIFT+P` (or `Command+SHIFT+P on Mac OS X`).
+TIP: If you ever need to run commands that you don’t see in a menu, you can press F1 to open the command window, or the more traditional `Control+SHIFT+P` (or `Command+SHIFT+P` on Mac OS X).
 
 What you will discover in the Kogito `getting-started` section includes:
 
@@ -461,7 +461,7 @@ Once completed, deploy it as an OpenShift application on your CodeReady terminal
 oc new-app kogito-quickstart
 ----
 
-Return to your OpenShift console, and navigate to 'Workloads/Deployment Configs' and select your app.
+Return to your OpenShift console, change to the `Administrator` view on the left panel and navigate to 'Workloads/Deployment Configs' and select your app.
 
 And expose it for all to see on the CodeReady terminal:
 
@@ -550,7 +550,7 @@ Once they are all up and running, try the same load again:
 
 [source]
 ----
-for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}{{}}/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
+for i in {1..50} ; do curl -X POST "http://kogito-quickstart-kogito-{{USER_ID}}.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/getting_started" -H "accept: application/json" -H "Content-Type: application/json" -d "{}" ; sleep .05 ; done
 ----
 
 And witness all 50 pods responding evenly to requests. Try doing that with your average app running a container! Pretty cool, huh?
@@ -728,7 +728,7 @@ Once it has been completed, deploy it as an OpenShift application:
 oc new-app airmiles-service
 ----
 
-Return to your OpenShift console, and navigate to 'Workloads/Deployment Configs' and select your app to view the Deployment Config details.
+Return to your OpenShift console, change to the `Administator` view on the left panel and navigate to 'Workloads/Deployment Configs' and select your app to view the Deployment Config details.
 
 Return to the CodeReady terminal, and expose the app for everyone to see:
 

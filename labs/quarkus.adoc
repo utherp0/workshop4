@@ -11,9 +11,9 @@ Throughout this lab you’ll discover how Quarkus can make your development of c
 
 ==== Setting up your workspace environment
 
-Prerequisite: You must be using a Chrome or Firefox web browser.
+* The workshop was designed and tested on the Chrome browser and it is advised to avoid issues that this browser be used wherever possible
 
-To get started, open the link:http://codeready-crw.apps.cluster-ROOT_URL.example.opentlc.com/[CodeReady URL, window="_blank"]
+To get started, open link:http://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROUTE_URL}}.example.opentlc.com/[Red Hat CodeReady Workspaces, window="_blank"].
 
 TIP: You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
@@ -23,20 +23,15 @@ On the login page, select `Register`. You will have to register a new user befor
 ----
 Username: {{USER_ID}}
 Email: {{USER_ID}}@example.com
-First name: {{USER_ID}}
 Last name: {{USER_ID}}
+Username: {{USER_ID}}
 ----
 
 Once you log in with your username and password, you will be placed on the Get Started page. It gives you a view of the different projects that you can create create or pre-configure.
 
 You will now create a Quarkus workspace to use. Select the `Custom Workspace` tab.
 
-In the `Workspace Name` field, enter the workspace name:
-
-[source]
-----
-quarkus-lab
-----
+For the `Workspace Name`, enter `quarkus-lab`
 
 In the `devfile` section, select the 'URL of devfile' field and enter the following devfile URL:
 
@@ -44,6 +39,8 @@ In the `devfile` section, select the 'URL of devfile' field and enter the follow
 ----
 https://raw.githubusercontent.com/akouao/quarkus-lab/devfile/devfile.yaml
 ----
+
+It will pre-populate your workspace configuation using details from the devfile.
 
 NOTE: Devfiles are YAML files that are consumed and transformed into a cloud workspace composed of multiple containers. The devfile can be saved in the root folder of a Git repository, a feature branch of a Git repository, a publicly accessible destination, or as a separate, locally stored artifact.
 
@@ -54,6 +51,8 @@ image::quarkus-1.png[View of interface with populated workspace name and importe
 
 
 Scroll to the bottom of the page. Click `Create and Open`. After a minute or two, you will be placed in the workspace.
+
+TIP: If creating the project fails, simply click your your workspace name in the left panel underneath Recent Workspaces.
 
 Users of Eclipse, IntelliJ IDEA or Visual Studio Code will see a familiar layout: a project/file browser on the left, a code editor on the right, and a terminal at the bottom. You’ll use all of these during the course of this workshop, so keep this browser tab open throughout. Feel free to close the three tabs titled `Red Hat CodeReady Workspaces`.
 
@@ -294,12 +293,7 @@ public class GreetingService {
 
 This is an injectable bean that implements a `greeting()` method returning a string `hello <hostname>` (where `<hostname>` is the Linux hostname of the machine on which the code runs).
 
-Next, open the existing `GreetingResource.java` file (in the `org.acme.people.rest` package) and add the following method underneath
-
-[source]
-----
-public static final Logger log = LoggerFactory.getLogger(GreetingResource.class);
-----
+Next, open the existing `GreetingResource.java` file (in the `org.acme.people.rest` package) and add the following method below the `Logger`:
 
 [source]
 ----
@@ -448,14 +442,12 @@ TIP: Close any pop-up dialog boxes that appear.
 
 ===== Run Native Image
 
-Since our environment here is Linux, you can just run it. In the terminal, run:
+Since our environment here is Linux, you can just run it. In a terminal, run:
 
 [source]
 ----
 $CHE_PROJECTS_ROOT/quarkus-lab/getting-started/target/getting-started-1.0.0-SNAPSHOT-runner -Dquarkus.http.port=8081
 ----
-
-$CHE_PROJECTS_ROOT/quarkus-workshop-labs/target/people-1.0-SNAPSHOT-runner -Dquarkus.http.port=8081 
 
 TIP: We use port `8081` here to avoid conflicting with our already-running development mode Quarkus app.
 
@@ -482,14 +474,14 @@ You should see something like:
 [source]
 ----
 PID   RSS COMMAND
- 354 62648 /projects/quarkus-lab/getting-started/target/getting-started-1.0.0-SNAPSHOT-runner -Dquarkus.http.port=8081
+ 850 29664 /projects/quarkus-lab/getting-started/target/getting-started-1.0.0-SNAPSHOT-runner -Dquarkus
 ----
 
-This shows that our process is taking around 60 MB of memory (Resident Set Size, or RSS). Pretty compact!
+This shows that our process is taking around 30 MB of memory (Resident Set Size, or RSS). Pretty compact!
 
 TIP: The RSS and memory usage of any app, including Quarkus, will vary depending your specific environment, and will rise as the application experiences load.
 
-Make sure the app is still working as expected (we’ll use `curl` this time to access it directly). In a new Terminal run:
+Make sure the app is still working as expected (we’ll use `curl` this time to access it directly). In a new terminal run:
 
 [source]
 ----
@@ -507,7 +499,7 @@ Nice!
 
 ===== Cleanup
 
-Go to the Terminal in which you ran the native app and press `CTRL+C` to stop our native app. Be sure to leave your Live Coding Terminal open!
+Go to the terminal in which you ran the native app and press `CTRL+C` to stop our native app. Be sure to leave your Live Coding terminal open!
 
 TIP: Close all terminal windows, and file windows, except for the "Start Live Coding" terminal
 
@@ -540,24 +532,26 @@ mvn quarkus:add-extension -Dextensions="openapi" -f $CHE_PROJECTS_ROOT/quarkus-l
 
 This will add the necessary extension for using OpenAPI, and a graphical frontend extension called Swagger which we’ll discuss later. It also enables a new RESTful endpoint in the app accessible at `/openapi`.
 
-Access the new endpoint using the following command in a Terminal:
+Access the new endpoint using the following command in a terminal:
 
 [source]
 ----
 curl http://localhost:8080/openapi
 ----
 
-When prompted, open the port 8080.
-
 This endpoint was created as part of the Quarkus OpenAPI Extension, and emits a programmatic description of your current endpoints as yaml (or json) in your terminal:
 
 [source]
 ----
+openapi: 3.0.1
+info:
+  title: Generated API
+  version: "1.0"
 paths:
   /hello:
     get:
       responses:
-        200:
+        "200":
           description: OK
           content:
             text/plain:
@@ -572,20 +566,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           description: OK
           content:
             text/plain:
               schema:
                 type: string
-# ... and the rest of your endpoints
 ----
 
 TIP: If you want JSON instead of YAML, use `curl -H "Accept: application/json" http://localhost:8080/openapi`
 
 So out of the box all your endpoints are fully documented and will be emitted in a programmatic format from the `/openapi` endpoint. CLIs are great, but for quick testing of APIs, wouldn’t it be great if that programmatic API was turned into an interactive, forms-based web page for quickly trying out endpoints? That’s what Swagger UI does.
 
-TIP: If you were unable to link to the 8080 browser, click the web-development endpoint on the right.
+TIP: If you were unable to link to the 8080 browser, click the `web-development` endpoint on the right.
 
 ===== Access Swagger UI
 
@@ -593,7 +586,7 @@ When building APIs, developers want to test them quickly. Swagger UI is a great 
 
 TIP: By default, Swagger UI is only available when Quarkus is started in dev or test mode. If you want to make it available in production too, you can include the following configuration in your application.properties: `quarkus.swagger-ui.always-include=true`.
 
-Select the web-development endpoint to open the browser page.
+Select the `web-development` endpoint to open the browser page.
 
 Then, add
 
@@ -606,7 +599,7 @@ to the end of the URL to access the Swagger UI and play with your API.
 
 Using the UI, expand the `/hello/greeting/{name}` endpoint. Here you can basic detail about the endpoint: the name of the endpoint, parameters and their type, and the response type one can expect.
 
-Click the `Try it out` button to expand the box allowing you to try it. Enter any openshift into the name field and click Execute:
+Click the `Try it out` button to expand the box allowing you to try it. Enter `openshift` into the name field and click the blue `Execute` button:
 
 
 image::quarkus-11.png[Name input in Swagger UI]
@@ -632,14 +625,12 @@ There are additional types of documentation you can add, for example you can dec
 
 Finally, lets tidy up the cluster now that your introduction to Quarkus is complete.
 
-Navigate to the left of your console and click the `workspaces` tab.
+Click the yellow arrow on CodeReady Workspaces console to reveal the left panel. Click the `workspaces` tab.
 
 Locate the name of your workspace, and click the stop button - a square icon - that is-line your workspace and just below the `Actions` subheading.
 
-Click the cog/settings icon beside the stop icon.
+Click the checkbox beside your workspace name.
 
-Naviate to the `Overview` tab.
+Click `delete` and `delete`.
 
-Click the red `Delete` button. When the pop-up appears, tick the checkbox to confirm that you understand your action to delete, and click the final `Delete` button.
-
-Your workspace has been deleted once it disappears from your workspaces. Upon deletion, close the browser CodeReady workspaces browser tab that you currently have open.
+Upon deletion, close the browser CodeReady workspaces browser tab that you currently have open.

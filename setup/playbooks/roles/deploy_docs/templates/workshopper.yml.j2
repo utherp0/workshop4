@@ -8,6 +8,7 @@ data:
   WORKSHOPS_URLS: "{{ workshop_manifests | map(attribute='id') | map('regex_replace', '^(.*)$', 'http://manifests:8080/\\1') | list | join(',') }}"
   OPENSHIFT_CONSOLE_URL: "{{ OPENSHIFT_CONSOLE_URL }}"
   LOG_TO_STDOUT: "true"
+  ROUTE_URL: "{{ ROUTE_URL }}"
 ---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig

@@ -41,10 +41,10 @@ modules:
   quay:
     name: OpenShift and the Quay Image Repository
   quarkus:
-    name: Introduction to Quarkus on OpenShift
+    name: Quarkus on OpenShift
   codereadyworkspaces:
     name: CodeReady Workspaces
   kogito:
-    name: Introduction to Kogito on Quarkus
+    name: Kogito on OpenShift
   linkback:
     name: Return to the Workshop Portal
