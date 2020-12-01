@@ -17,6 +17,8 @@ To get started, open link:https://codeready-crw.apps.cluster-{{ROUTE_URL}}.{{ROU
 
 {{ROUTE_URL}}
 
+hi
+
 You may be asked to authorize access. If so, ensure the box to give your user full permissions is checked then select `Allow selected permissions` to continue.
 
 On the login page, select `Register`. You will have to register a new user before proceeding. Enter the following in the respective fields:
