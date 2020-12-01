@@ -55,7 +55,7 @@ Set the 'Name' to 'nodeatomic'
 
 Scroll down to the *Resources* section. Select 'Deployment Config'.
 
-Click Create. Leave the application building and switch back to Adminstrator viewpoint (by clicking on Developer at the top left and choosing Developer).
+Click Create. Leave the application building and switch back to Adminstrator viewpoint (by clicking on Developer at the top left and choosing Administrator).
 
 Click on Home/Events. You will see a screen similar to this:
 
