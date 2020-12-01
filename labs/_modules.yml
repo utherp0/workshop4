@@ -45,6 +45,6 @@ modules:
   codereadyworkspaces:
     name: CodeReady Workspaces
   kogito:
-    name: Introduction to Kogito on Quarkus
+    name: Kogito on OpenShift
   linkback:
     name: Return to the Workshop Portal
