@@ -2,15 +2,15 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 == Introduction
 
-During the development process a number of container images will be produced. The source-2-image capability described in the basic workshop creates images catalogued under an image stream within a project. Other container images may be created using command line functions such as docker or buildah (both using docker files potentially) or images may be downloaded from the Red Hat Container Catalogue https://catalog.redhat.com/software/containers/explore[here, window="_blank"], or other vendor supplied images may be used. From a variety of sources and through a variety of mechanisms images will be created that form the microservices of an application. Such images need to be managed through a lifecycle as they progress from Development to QA and finally to production in a process described in the diagram below. The purpose of Red Hat Quay is to provide a repository for the secure and structured storage of images that may be accessed by multiple users from multiple clusters. Quay also provides an image vulnerability scanning capability to identify issues with images stored within it.
+During the development process a number of container images will be produced. The source-2-image capability described in the basic workshop creates images catalogued under an image stream within a project. Other container images may be created using command line functions such as docker or buildah (both using docker files potentially) or images may be downloaded from the Red Hat Container Catalogue https://catalog.redhat.com/software/containers/explore[here, window="_blank"], or other vendor supplied images may be used. Additionally container images may be created as part of a Tekton pipeline process. From a variety of sources and through a variety of mechanisms images will be created that form the microservices of an application. Such images need to be managed through a lifecycle as they progress from Development to QA and finally to production in a process described in the diagram below. The purpose of Red Hat Quay is to provide a repository for the secure and structured storage of images that may be accessed by multiple users from multiple clusters. Quay also provides an image vulnerability scanning capability to identify issues with images stored within it.
 
 image::quay-1.png[Image management process through the route to live]
 
 .Note on the workshop
 ****
-If you wish to do this workshop please register for an account on quay.io. This will allow you to store public images free of charge. It is possible to use Quay.io for your production library creating private image repositories to which you grant access to colleagues and customers as required.
+If you wish to do this workshop please register for an account on quay.io. This will allow you to store public images free of charge. It is possible to use quay.io for your production library creating private image repositories to which you grant access to colleagues and customers as required.
 
-The terminal that we use for the workshops cannot be used for the Buildah commands so you will need to install Buildah locally to complete this section. We apologize for this issue at this time and we are working to overcome this challenge regarding the terminal app as quickly as we can.
+The terminal that we use for the workshops cannot be used for the Buildah commands so you will need to install Buildah locally to complete this section. Installation instructions for Buildah are https://github.com/containers/buildah/blob/master/install.md[here, window="_blank"].
 ****
 
 The image below shows an OpenShift project and the various artifacts that are created. The image stream object is shown here within the context of the builder process that creates it and the running pod that consumes it.
@@ -87,7 +87,7 @@ The diagram below shows the permission structure for an organization.
 image::quay-4.png[Quay organization permissions]
 
 . Teams contain users and robot (automation) users who have permissions on specific repositories.
-. Teams can have a role of 'Creator' - Create new repositories which will inherit the organization default permissions)or 'Admin' - perform all actions including delete, or 'member' - permission is indicated by each repository.
+. Teams can have a role of 'Creator' - Create new repositories which will inherit the organization default permissions) or 'Admin' - perform all actions including delete, or 'member' - permission is indicated by each repository.
 . Member permissions are allocated on a per repository basis and can include 'none' - no access, 'read' - can pull images, 'write' - can pull and push images, 'admin' - can pull, push and perform admin functions such as delete and manage permissions.
 ****
 
@@ -165,7 +165,7 @@ A number of tools exist for the management of images, three of which are describ
 |===
 a| image::buildah.png[] |   Buildah is an image building open source project that can either use Buildah specific commands to build an image or it can simply use an existing docker file. One major advantage of Buildah for some users is that it does not require a docker process to be constantly running on the workstation as root. In the workshop Buildah will be used to get images from / to OpenShift and from / to Quay.
 a| image::podman.png[] |   Podman overlaps somewhat with Buildah but its main focus is with regard to the running and interaction with container images.
-a| image::skopeo.png[] |   Skopeo can be used to copy container images from one image repository to another. It can also be used to convert images between formats. It is possible to perform many of the actions in this workshop with Skopeo but by using Buildah it is possible to see what is being created in an intermediate local repository which may add some value for users.
+a| image::skopeo.png[] |   Skopeo can be used to copy container images from one image repository to another. It can also be used to convert images between formats. It is possible to perform many of the actions in this workshop with Skopeo but by using Buildah it is possible to see what is being created in an intermediate local repository which may be useful.
 |===
 ****
 
@@ -173,17 +173,17 @@ a| image::skopeo.png[] |   Skopeo can be used to copy container images from one 
 
 In order to pull the images it is necessary to login to the OpenShift image repository using the Buildah command. You also need to login to the OpenShift cluster using the oc command first. To do this switch back to the UI and click on the userx displayed at the top right and select 'Copy Login Command'.
 
-In the new tab that appears login with your userx (unique number instead of x) and password 'openshift'
+In the new tab that appears login with your userx (unique number instead of x) and password 'openshift'.
 
-Click on 'Display Token'
+Click on 'Display Token'.
 
-Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command
+Copy the command given for 'Log in with this token' - this may require using the browser 'copy' command after highlighting the command.
 
-Close this tab and switch to the command windows in which you have oc available on your local machine and paste and execute the command
+Close this tab and switch to the command windows in which you have oc available on your local machine and paste and execute the command.
 
-Press 'y' to use insecure connections
+Press 'y' to use insecure connections if prompted.
 
-The terminal should now be logged on - to check it try
+The terminal should now be logged on - to check it try this :
 
 [source]
 ----
@@ -191,7 +191,7 @@ oc whoami
 oc version
 ----
 
-The Buildah command needs to be logged into the OpenShift server registry to gan access to the images. The URL for the OpenShift registry to be used in the Buildah login process is the address in the image repository table up to and including .com.
+The Buildah command needs to be logged into the OpenShift server registry to gain access to the images. The URL for the OpenShift registry to be used in the Buildah login process is the address in the image repository table up to and including .com.
 
 To get just the image repository URL use the command :
 
@@ -260,10 +260,10 @@ Use the command below to list the image and the location within the OpenShift im
 
 [source]
 ----
-oc get is -o jsonpath='{range.items[*]}{.metadata.name}{" "}{.status.publicDockerImageRepository}{"\n"}'
+oc get is -o jsonpath='{range.items[*]}{.status.publicDockerImageRepository}{"\n"}'
 ----
 
-This command will generate a list of all image streams and the registry location to use in the pull command. To pull the image use the full docker image repository name in the command below :
+This command will display the registry location for the image which is to be use in the pull command. To pull the image use the full docker image repository location in the command below :
 
 [source]
 ----
@@ -301,7 +301,7 @@ View the local image repository with the command :
 buildah images
 ----
 
-The result will be similar to that which is shown below:
+The result will be similar to that which is shown below :
 
 [cols="40,10,20,20,10"]
 [grid=none]
@@ -311,7 +311,7 @@ The result will be similar to that which is shown below:
 |default-route-openshift-image-registry.apps.cluster-wfh1-8946.wfh1-8946.example.opentlc.com/quay-workshop-user23/node-app-rest   |latest   |abc6f7ad1964   |6 hours ago   |547 MB
 |===
 
-An image now exists in a local repository - either on your laptop or within the terminal container depending on where you ran the command.
+An image now exists in a local repository.
 
 ==== Tagging images for the Quay repository
 
@@ -326,7 +326,7 @@ The actual tag names used for the existing location need to match what is in the
 
 [source]
 ----
-oc get is -o jsonpath='{range.items[*]}{.metadata.name}{" "}{.status.publicDockerImageRepository}{":"}{.status.tags[0].tag}{"\n"}'
+oc get is -o jsonpath='{range.items[*]}{.status.publicDockerImageRepository}{":"}{.status.tags[0].tag}{"\n"}'
 ----
 
 The new repository location is in the format :
@@ -368,9 +368,9 @@ buildah push quay.io/workshop{{USER_ID}}/node-app-rest:1
 
 ----
 
-Switch to the Quay web user interface. Select the 'tags' view (2nd option down on the repository menu).
+Switch to the Quay web user interface. Se;ect the repositories view within the workshop organisation and then select the 'tags' view (2nd option down on the repository menu).
 
-The tags view shows information on the image tag and the buttons on the right of each line allow the user to select different mechanisms for extracting and manipulating the image.
+The tags view shows information on the image tag and the buttons on the right of each tag allow the user to select different mechanisms for extracting and manipulating the image.
 
 === Using the image in a QA environment
 
