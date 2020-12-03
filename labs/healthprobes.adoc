@@ -4,11 +4,13 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 Liveness and Readiness probes are Kubernetes capabilities that enable teams to make their containerized applications more reliable and robust. However, if used inappropriately they can result in none of the intended benefits, and can actually make a microservice based application unstable. 
 
-The purpose of each probe is quite simple and is described well in the OpenShift documentation here. The use of each probe is best understood by examining the action that will take place if the probe is activated. 
+The purpose of each probe is quite simple and is described well in the OpenShift documentation. The use of each probe is best understood by examining the action that will take place if the probe is activated. 
 
 *Liveness* : Under what circumstances is it appropriate to restart the pod?
 
 *Readiness* : under what circumstances should we take the pod out of the list of service endpoints so that it no longer responds to requests? 
+
+*Startup* : Validates that the application within a container has started successfully. 
 
 Coupled with the action of the probe is the type of test that can be performed within the pod :
 
@@ -24,7 +26,7 @@ Log on to cluster as userx, password openshift
 
 Ensure you are on the Administrator View (top level, select Administrator)
 
-*The Administrator view provides you with an extended functionality interface that allows you to deep dive into the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system for developers. This workshop will have you swapping between the contexts for different tasks.*
+The Administrator view provides you with an extended functionality interface that allows you to deep dive into the objects available to your user. The Developer view is an opinionated interface designed to ease the use of the system for developers. This workshop will have you swapping between the contexts for different tasks.
 
 Click on 'Create Project'
 
@@ -38,8 +40,6 @@ as shown in the image below:
 
 image::healthprobes-1.png[Project creation]
 
-*By default when you create a Project within OpenShift your user is given administration rights. This allows the user to create any objects that they have rights to create and to change the security and access settings for the project itself, i.e. add users as Administrators, Edit Access, Read access or disable other user's abilities to even see the project and the objects within.*
-
 In the top left of the UI, where the label indicates the view mode, change the mode from Administrator to Developer and select the Topology view.
 
 Select ‘From Catalog’
@@ -48,24 +48,11 @@ Clear any checkboxes in the section labelled 'Type' so that all options are avai
 
 Enter ‘node’ in the search box
 
-*The various catalogue items present different configurations of applications that can be created. For example the node selections include a simple node.js application or node.js with a database platform that is pre-integrated and ready to use within the application. For this workshop you will use a simple node.js application.*
+The various catalogue items present different configurations of applications that can be created. For example the node selections include a simple node.js application or node.js with a database platform that is pre-integrated and ready to use within the application. For this workshop you will use a simple node.js application.
 
 Select ‘Node.js’
 
-*A wizard page will then pop up on the right hand side with details of exactly what will be created through the process.*
-
-.Source-2-Image
-****
-One of the most exciting features of OpenShift from a developer's perspective is the concept of S2I, or *Source-2-Image* which provides a standardized way of taking a base image, containing, for example, the framework for running a node.js application, 
-a source code repository, containing the code of the application that matches the framework provided in the base image, and constructing and delivering a composite Application image to the Registry. Simply put this enables a developer to create source code for an application and OpenShift will convert that to a running application within a container with minimal effort. The process that you will use below is the Source-2-Image capability.
-****
-
 Click on ‘Create Application’
-
-*The wizard process has a number of options that the user may elect to use. These include:*
-
-* Selecting a specific version of Node to use
-* Selecting a GIT repository and choosing to use code from a specific directory within the repository.
 
 Select the default offering for the Builder Image Version
 
@@ -73,7 +60,7 @@ For the GIT repository use : https://github.com/marrober/simpleRest.git[https://
 
 In a separate browser tab go to https://github.com/marrober/simpleRest.git[https://github.com/marrober/simpleRest.git, window="_blank"]
 
-*You can see that the GIT repository at this location only has a small number of files specific to the application. There is no content specific to how the application should be built or deployed into a container.*
+You can see that the GIT repository at this location only has a small number of files specific to the application. There is no content specific to how the application should be built or deployed into a container since that will be covered by the OpenShift source-2-image process.
 
 Close the github tab
 
@@ -83,7 +70,7 @@ For the Application name enter 'rest-application'.
 
 For the Name field enter 'node-app-rest'
 
-*The application name field is used to group together multiple items under a single grouping within the topology view. The name field is used to identify the specific containerised application.*
+The application name field is used to group together multiple items under a single grouping within the topology view. The name field is used to identify the specific containerised application.
 
 In the Resources section ensure that you select 'Deployment Config'
 
@@ -91,15 +78,19 @@ In the Advanced Options section ensure the ‘Create a route to the application�
 
 Click Create
 
-*The user interface will then change to display the Topology view. This is a pictorial representation of the various items (applications, databases etc.) that have been created from the catalogue and added to an application grouping.*
+The user interface will then change to display the Topology view. This is a pictorial representation of the various items (applications, databases etc.) that have been created from the catalogue and added to an application grouping.
 
-*Multiple application groupings can exist within a single project.*
+Multiple application groupings can exist within a single project.
 
 === Viewing the running application
 
 Click on the Icon marked ‘Node’
 
-*A side panel will appear with information on the Deployment Configuration that has just been created. The overview tab shows summary information and allows the user to scale the number of pods up and down. The resources tab shows information on the building process, the pods and the services and route to reach the application (if these have been created). The monitoring tab shows information on warnings, metrics and events.*
+A side panel will appear o the right hand side with information on the Deployment Configuration that has just been created. The details tab shows summary information and allows the user to scale the number of pods up and down. The resources tab shows information on the build process, the pods and the services and route to reach the application (if these have been created). The monitoring tab shows information on warnings, metrics and events.
+
+You will also see specific information about Health Checks which can be created using the graphical user interface by clicking on the 'Add Health Checks' hyperlink. If you have an application for which you do not require Health Checks then you can click on the grey cross to dismiss the information panel shown below.
+
+image::healthprobes-1a.png[Health Checks prompt]
 
 Wait for the Build to finish, the Pod to change from Container Creating to Running.
 
@@ -117,58 +108,60 @@ The colour scheme of the pods is important and conveys information about the pod
 * Unknown - Purple
 ****
 
+
+The above graphical mechanism for creating probes will be explained shortly. Since many applications required probes to be created as part of a deployment process it is sensible to start with how to create probes using the command line.
+
 When the build has completed the right hand side panel will shown something similar to the image below. Note that the route will be different to that which is shown below. 
 
 image::healthprobes-2.png[Deployment configuration resource information]
 
-Click on the Tick at the bottom left of the Pod. Note that this display can also be shown by clicking on the ‘View Logs’ section on the right hand side panel.
-
-*The build log will show information on the execution of the source-2-image process.*
-
 Click on the arrow on the top right corner of the Pod, or click on the route URL shown in the right hand side resource details window. The application window will launch in a new browser window and should display text as shown below:
 
-*+Hello - this is a simple REST interface v1.0+*
+[source]
+----
+Hello - this is a simple REST interface v1.0
+----
 
 === Liveness Probe
 
-*A number of probes will be created to show the different behaviors. The first probe will be a liveness probe that will result in the restart of the pod.*
+A number of probes will be created to show the different behaviours. The first probe will be a liveness probe that will result in the restart of the pod.
 
-*Since this work will be done using the oc command line you need to switch the current oc command line to work with the new project using the command:*
+Since this work will be done using the oc command line you need to select the new project using the command:
 
 [source]
 ----
 oc project probes-{{USER_ID}}
 ----
 
-*To create the probe use the OC command line interface to execute the following command.*
+To create the probe use the OC command line interface to execute the following command.
 
 [source]
 ----
 oc set probe dc/node-app-rest --liveness --initial-delay-seconds=30 --failure-threshold=1 --period-seconds=10 --get-url=http://:8080/health
 ----
 
-*The above probe will create a new liveness probe with the characteristics:*
+The above probe will create a new liveness probe with the characteristics:
 
 * Become active after 30 seconds
 * Initiated a reboot after 1 instance of a failure to respond
-* Probe the application every 10 seconds _Note that ordinarily a gap of 10 seconds between probes would be considered very long, but we use this time delay within the workshop to allow time for observing the behavior of the probe._
+* Probe the application every 10 seconds _Note that ordinarily a gap of 10 seconds between probes would be considered very long, but we use this time delay within the workshop to allow time for observing the behaviour of the probe._
 * Use the URL /health on the application at port 8080. Note that there is no need to specify a URL for the application.
 
-*The command line response should be as shown below.*
+The command line response should be as shown below.
 
 [source]
 ----
 deploymentconfig.apps.openshift.io/node-app-rest probes updated
 ----
 
-*Review the liveness probe information by executing the command:*
+Review the liveness probe information by executing the command :
 
 [source]
 ----
 oc describe dc/node-app-rest
 ----
 
-*The output of this command will include the following section that highlights the new liveness probe*
+The output of this command will include the following section that highlights the new liveness probe
 
 [source]
 ----
@@ -187,14 +180,14 @@ Pod Template:
 
 ----
 
-*Alternatively to view the probe in a different format use the command below:*
+Alternatively to view the probe in a different format use the command below :
 
 [source]
 ----
 oc get dc/node-app-rest -o yaml
 ----
 
-*Part of the output will show:*
+Part of the output will show:
 
 [source]
 ----
@@ -210,7 +203,7 @@ livenessProbe:
     timeoutSeconds: 1
 ----
 
-*To view the above information graphically then use the following steps:*
+To view the above information graphically then use the following steps:
 
 Select the Topology view of the application.
 
@@ -219,9 +212,15 @@ From the action menu on the right hand side click *Edit Deployment Configuration
 
 image::healthprobes-3.png[View of the health probe in the Deployment Configuration]
 
-*On the Deployment Configuration page that is displayed ensure that the YAML tab is selected and scroll down to around line 200 to see the YAML definition for the liveness probe. It is also possible to edit the parameters of the probe from this screen if necessary.*
+On the Deployment Configuration page that is displayed ensure that the YAML tab is selected and scroll down to around line 200 to see the YAML definition for the liveness probe. It is also possible to edit the parameters of the probe from this screen if necessary.
 
-*In order to execute the probe it is necessary to simulate a pod failure that will stop the application from responding to the health check. A specific REST interface on the application has been created for this purpose called +/ignore+.*
+Also from the action menu it is possible to display the health information in a dedicated user interface that is much easier to find than looking in the deployment configuration. From the action menu select "Edit Health Checks" to get to a screen as shown below :
+
+image::healthprobes-3a.png[View of the health probe]
+
+Click on the green link with the text "Liveness Probe Added" to view the specific characteristics of the liveness probe.
+
+In order to execute the probe it is necessary to simulate a pod failure that will stop the application from responding to the health check. A specific REST interface on the application has been created for this purpose called +/ignore+.
 
 ==== Activation of the Liveness Prove
 
@@ -243,11 +242,11 @@ The pod will restart after 1 failed probe event which takes up to 10 seconds dep
 
 image::healthprobes-4.png[Pod events showing activation of the liveness probe]
 
-*The events after the firing of the liveness probe are the re-pulling and starting of the container image in a new pod.*
+The events after the firing of the liveness probe are the re-pulling and starting of the container image in a new pod.
 
 Switch to the application tab and put /health on the end of the url and hit return. This will display the amount of time that the new pod has been running, which will understandably be a small number.
 
-*In order to experiment with the readiness probe it is necessary to switch off the liveness probe. This can either be done by changing the deployment configuration YAML definition using the web interface or by executing the following command line:*
+In order to experiment with the readiness probe it is necessary to switch off the liveness probe. This can either be done by changing the deployment configuration YAML definition using the web interface or by executing the following command line:
 
 [source]
 ----
@@ -256,29 +255,21 @@ oc set probe dc/node-app-rest --liveness --remove
 
 === Readiness Probe
 
-*To create the probe use the OC command line interface to execute the following command.*
+To create the readiness probe use the web user interface. From the topology view right click on the node for the application and from the pop up menu select "Add Health Check".
 
-[source]
-----
-oc set probe dc/node-app-rest --readiness --initial-delay-seconds=30 --failure-threshold=3 --success-threshold=1  --period-seconds=5 --get-url=http://:8080/health
-----
+On the health checks page select to add a readiness probe usng the following parameters.
 
-*The above command will create a new readiness probe with the characteristics:*
+* Inital Delay - Become active after 30 seconds
+* Failure Threshold - Remove the pod from the service endpoint after 3 instances of a failure to respond
+* Success Threshold - Cancel the removal of the pod and add it back to the service endpoint after 1 successful response
+* Period - Probe the application every 5 seconds
+* Path - Use the URL /health on the application at port 8080. Note that there is no need to specify a URL for the application.
+* Port - 8080
+* Timeout - 1 second
 
-* Become active after 30 seconds
-* Remove the pod from the service endpoint after 3 instances of a failure to respond
-* Cancel the removal of the pod and add it back to the service endpoint after 1 successful response
-* Probe the application every 5 seconds
-* Use the URL /health on the application at port 8080. Note that there is no need to specify a URL for the application.
+Click the grey tick at the bottom of the parameter box to save the readiness probe and then click the blue 'Add' button to commit the probe.
 
-*The command line response should be as shown below*
-
-[source]
-----
-deploymentconfig.apps.openshift.io/node-app-rest probes updated
-----
-
-*Review the probe created using the commands above:*
+Review the probe created using the above steps :
 
 [source]
 ----
@@ -292,15 +283,14 @@ and
 oc get dc/node-app-rest -o yaml
 ----
 
-*View the state of the pod within the endpoints using the command below:*
+View the state of the pod within the endpoints using the command below :
 
 [source]
 ----
 oc get ep/node-app-rest -o yaml
 ----
 
-
-*The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
+The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.
 
 [source]
 ----
@@ -367,9 +357,9 @@ The pod events will show a screen similar to that which is shown below.
 
 image::healthprobes-5.png[Pod events showing activation of the readiness probe]
 
-*Note that you will see the count of the readiness 'events' incrementing every 5 seconds.*
+Note that you will see the count of the readiness 'events' incrementing every 5 seconds.
 
-*You will also see that the events continue counting up since readiness probes do not stop firing just because the pod has been removed from the endpoint list. It is important that they continue to probe since the conditions may change and it may be appropriate to add the pod back into the endpoint list.*
+You will also see that the events continue counting up since readiness probes do not stop firing just because the pod has been removed from the endpoint list. It is important that they continue to probe since the conditions may change and it may be appropriate to add the pod back into the endpoint list.
 
 View the state of the pod within the endpoints using the command below:
 
@@ -378,7 +368,7 @@ View the state of the pod within the endpoints using the command below:
 oc get ep/node-app-rest -o yaml
 ----
 
-*The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.*
+The output of the above command will list the details of the service endpoint which will include information on the pod to which the health probe is attached as shown below.
 
 [source]
 ----
@@ -389,19 +379,19 @@ subsets:
 
 The subset of the command output shown above indicates that the address is now listed as ‘not ready’ and is not currently part of the endpoint.
 
-*Under production use conditions for the application may change and the pod may recover from the inability to respond to the readiness probe. If this happens then it will be added back to the endpoint list.*
+Under production use, conditions for the application may change and the pod may recover from the inability to respond to the readiness probe. If this happens then it will be added back to the endpoint list.
 
-From OpenShift version 4.5 it is also possible to see the pod events from the fly-out right click menu. To view this select the topology view in the web browser interface and click on the pod. On the dialog on the right hand side select the monitoring tab and open the events (warnings) tab as shown below.
+It is also possible to see the pod events from the fly-out right click menu. To view this select the topology view in the web browser interface and click on the deployment configuration. On the dialog on the right hand side select the monitoring tab and open the "All Events" tab as shown below.
 
 image::healthprobes-6.png[Pod events showing activation of the readiness probe]
 
-*To simulate this the Node application has a REST endpoint at /restore. Since the pod is currently not receiving communications from outside the cluster the call to the restore endpoint is done from within the pod command window.*
+To simulate the recovery of the application the Node application has a REST endpoint at /restore. Since the pod is currently not receiving communications from outside the cluster the call to the restore endpoint is done from within the pod command window.
 
 Switch to the OpenShift browser window that was showing the pod events. 
 
-*Note that you will see a large number of pod readiness probe failures while you were reading the notes.*
+Note that you will see a large number of pod readiness probe failures while you were reading the notes.
 
-In the OpenShift Console choose Administrator View, then Workloads/Pods. Click on the Pod that is running and in the Pod information page click on the Terminal option.
+In the OpenShift Console choose Administrator View, then Workloads/Pods. Click on the Pod that is running and in the Pod information page click on the Terminal tab.
 
 Within the Pod Terminal enter the command :
 
@@ -410,14 +400,14 @@ Within the Pod Terminal enter the command :
 curl -k localhost:8080/restore
 ----
 
-*You should see a response similar to that shown below (with a different IP address):*
+You should see a response similar to that shown below (with a different IP address):
 
 [source]
 ----
 "10.128.2.146 restore switch activated"sh-4.2$
 ----
 
-Now go back to the Terminal tab where you enter 'oc' commands
+Now go back to the command line terminal.
 
 View the state of the pod within the endpoints using the command below:
 
@@ -426,7 +416,7 @@ View the state of the pod within the endpoints using the command below:
 oc get ep/node-app-rest -o yaml
 ----
 
-*You should see that the line of interest, previously shown above, has changed back to that shown below:*
+You should see that the line of interest, previously shown above, has changed back to that shown below:
 
 [source]
 ----
@@ -436,7 +426,7 @@ subsets:
 ----
 
 
-*On the OpenShift browser page switch back to the events tab and you should see that the readiness probe failure count is no longer increasing.*
+On the OpenShift browser page switch back to the events tab and you should see that the readiness probe failure count is no longer increasing.
 
 Finally, switch to the application browser page and change the URL to end in /health. You should see that the application has been running for some time (compared to the liveness probe that showed a restart had taken place) and it should be responding successfully to the health probe.
 

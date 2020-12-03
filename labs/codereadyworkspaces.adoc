@@ -4,7 +4,7 @@ Author: Mark Roberts (feedback to mroberts@redhat.com)
 
 This workshop module will introduce you to the development model of using a browser and a containerized development environment known as CodeReady Workspaces.
 
-CodeReady workspaces are a novel way of delivering a complete development environment to a developer in a consistent and repeatable manner. The configuration of the environment and the work that is done within it are stored within the workspace, providing a high level of security. The workspace allows developers to switch from (say) working at an office on a desktop computer to working from home without having to copy assets from client to client to maintain a consistent working experience.
+CodeReady workspaces are a novel way of delivering a complete development environment to a developer in a consistent and repeatable manner. The configuration of the environment and the work that is done within it are stored within the container platform, providing a high level of security. The workspace allows developers to switch from (say) working at an office on a desktop computer to working from home without having to copy assets from client to client to maintain a consistent working experience.
 
 Workspaces may be created from a definition file that allows team leaders to create shared configurations ensuring that the team has a consistent set of plugins, configuration settings and access to project source code. 
 
@@ -23,7 +23,7 @@ In order to run this workshop completely you need a github repository for which 
 
 Workspaces may be created in a number of different ways from different source content. When used in a large project team it is often best for a team leader to create a 'dev file' that contains the configuration for the workspace and store that dev file in a git repository. This ensures that everyone on the team uses the same workspace configuration. Users can create their own workspaces seeded with content from projects, editor configurations of their own choice and commands that they want to execute on the repository for rapid development. The elements that define the workspace and that are captured within the dev file are:
 
-* Components - Plugins that add specific command capability such as the oc command line for interaction with OpenShift. Components also include editor plugins that can be used to configure the behavior of the editor. 
+* Components - Plugins that add specific command capability such as the oc command line for interaction with OpenShift. Components also include editor plugins that can be used to configure the behaviour of the editor. 
 
 * Projects - A list of references to git based projects. The graphical workspace configuration UI can be used to add repositories to the dev file or you can add them manually by copying an existing entry and using it to create a new entry.
 The yaml that describes a project is includes below for reference :
@@ -43,14 +43,9 @@ The yaml that describes a project is includes below for reference :
 
 The CodeReady workspaces environment is considered to be a separate entity to the normal browser or command line based interaction with OpenShift and so each user is required to register on CodeReady Workspaces. For many users CodeReady Workspaces will be their only interaction with OpenShift, as you will soon see, everything that is needed for development is accessible from within it.  
 
-Find the URL for the CodeReady Workspaces using the following command :
+Switch from the OpenShift web user interface to the CodeReady Workspace user interface using the Red Hat Applications icon shown below (the nine white square blocks), and then select CodeReady Workspaces.
 
-[source]
-----
-echo "codeready-openshift-workspaces."$(oc whoami --show-console=true | cut -d'.' -f2-7)
-----
-
-The above command will display a URL which you should copy and paste into a web browser tab.
+image::codeready-workspaces-00.png[Accessing CodeReady Workspaces]
 
 Authenticate with your user id and password of 'openshift'.
 
@@ -74,15 +69,16 @@ This screen allows you to create a new workspace by selecting a technology stack
 
 In the new workspace screen enter the workspace name in the format {{USER_ID}}-workspace1.
 
-In the dropdown menu for the Devfile select 'NodeJS Express'.
+In the dropdown menu for the Devfile select 'NodeJS Express'. A DevFile is a definition of a workspace that can be shared with a development team to ensure consistency of plugins, commands and content from Git repositories.
 
-Select 'Create & Open'.
+Select the blue 'Create & Open' button which is under the text of the DevFile.
 
+=== Adding projects to the workspace
 When the workspace has been created press the yellow rectangle with a white arrow in the top left corner of the workspace and click the Workspaces(1) link on the left and side. Click the plus sign on the right hand side on the line for the workspace to initiate the 'add project' process.
 
 You may see that there is already a sample project in the list. You can leave this in if you wish but if you want to experiment with GIT interaction press the 'Add or Import Project' button, then press the Git button and then paste into the dialog a Github URL in the format : git@github.com:<user-name>/<repository-name>.git.
 
-If you do not have a project that is suitable then please clone the project from here : git@github.com:marrober/layers.git into a Git repository under your Git ID and then use that. By doing this you will have a repository to which you can push changes from your workspace.
+If you do not have a project that is suitable then please clone the project from here : git@github.com:marrober/layers.git into a Git repository under your Git ID and then use that. By doing this you will have a repository to which you can push changes from your workspace. Remove the sample project repository to leave just your repository behind. Be sure to use the ssh format of the git repository address and not the https varient.
 
 The Projects listed in the project should now show something similar to that which is shown below depending on the project that you selected from Github.
 
@@ -90,7 +86,7 @@ image::codeready-workspaces-03.png[Creating a workspace]
 
 Press the green button 'Save' and then press the green button 'Apply' to restart the workspace.
 
-When you see a pop up that states the workspace has been updated click on the workspace name on the left hand side. This will launch the workspace as shown below.
+Wait for the aminated graphic at the top of the page to stop and display a green circle with 'Running' next to it. Click on the name of the workspace on the bottom of the list on the left hand side as shown below which will start the workspace.
 
 image::codeready-workspaces-04.png[Workspace creating]
 
@@ -128,19 +124,16 @@ image::codeready-workspaces-07.png[Github SSH key addition]
 
 ==== Edit and push to Github.com
 
-Back in the workspace use the project explorer window (top of the four buttons on the left hand side) to open the tree of files within the project and make a change to a source file.
+Back in the workspace use the project explorer window (top of the four buttons on the left hand side) to open the tree of files within the project and make a change to a source file and save it.
 
-Save the file and then move to the source control view (third of the four buttons on the left hand side) and you should see that a change has been recorded. Click on the file from the source control view and you will see a comparison window showing the old version of the file on the left and the new version of the file on the right.
+On the right hand side of the screen click on the cube symbol and then under User Runtimes and nodejs select "New Terminal". This shows the capabilities of the command line from within the workspace. In the terminal window cd to the layers directory and type 'git status' to see the change that you have made. Add and commit the change and then push to the github repository using the command  :
 
-Float the mouse over the file name and press the + symbol to stage the change. 
-
-Enter a comment in the field above the file name and then press the tick symbol above the comment field to commit to the local git repository within the workspace.
-
-The bottom left corner of the workspace will then show that there is a pending commit to be pushed to the Git repository on github.com as shown below:
-
-image::codeready-workspaces-08.png[Source control push required indication]
-
-Mouse click on this message and you will see a pop up warning that you are about to push changes to the Git repository on github.com. Press OK to proceed.
+[source]
+----
+git add .
+git commit -m "CRW change"
+git push
+----
 
 Switch back to the Github browser tab and check that your change has been recorded.
 
@@ -178,11 +171,13 @@ For the component type select nodejs.
 
 For the Node JS version select latest.
 
+When you are prompted to push the new component in the bottom right hand corner select "Push". This will use the OpenShift DO capability to push the configuration for the application to OpenShift where the Source-2-Image build process will be used to build the application. 
+
 If you open up the tree structure under the crw-project-{{USER_ID}} node you should see an application similar to that which is shown below.
 
 image::codeready-workspaces-10.png[Application created by CodeReady Workspaces]
 
-Right click on the lowest node (with @not pushed) on the right hand side and select 'Push'. This will use the OpenShift DO capability to push the configuration for the application to OpenShift where the Source-2-Image build process will be used to build the application. At the bottom of the screen a window will appear as shown below to display the progress of the creation of the application and any errors that may result.
+At the bottom of the screen a window will appear as shown below to display the progress of the creation of the application and any errors that may result.
 
 image::codeready-workspaces-11.png[Application push progress]
 
@@ -190,7 +185,7 @@ When the operation has completed you will get a message stating "Changes success
 
 If you switch to a browser window for the OpenShift cluster you will be able to locate the new project and within the topology view of the project you can see the running application. 
 
-At this stage the running application is not reachable so right click on the application in the OpenShift panel of CodeReady Workspaces again and select 'New URL'. For the URL name enter 'crw-app-1-url' and hit return.
+At this stage the running application is not reachable so right click on the application in the OpenShift panel of CodeReady Workspaces again and select 'New URL'. For the URL name enter 'crw-app-1-url' and hit return. Select a secure URL.
 
 The named URL (an OpenShift route)  will be displayed as a new node under the application name. It will also have an arrow on the right hand side that can be used to access the URL and launch the application. If you click this now you will see a pop up window telling you that the URL has not yet been created in the cluster. 
 
@@ -202,14 +197,6 @@ You should now see a new browser tab with a news feed application.
 
 Back in CodeReady Workspaces click on the file browser on the left hand side and under the /projects folder you should see a .odo directory. This contains the configuration data in a config.yaml file that is created by the commands above and then used with the 'push' command to create the content within OpenShift.
 
-==== Command line interaction
-
-Each plugin that exists within the workspace has a terminal application which given the names of some of the plugins can make it a little difficult to spot the terminal that you need. For general OpenShift command line access use the terminal that appears as an option under the name vscode-openshift-connectorxxx from the right hand side context menu. This menu is reached by clicking on the cube symbol on the right than side of the workspace and then opening the plugins folder as shown below :
-
-image::codeready-workspaces-12.png[Accessing the terminal from CRW]
-
-This will create a new terminal window at the bottom of the screen from which you can perform all the usual oc command line operations and the odo command line operations which are described in detail in a specific lab of the innovation workshop.
-
 === Exporting a Devfile
 
 In order to make a workspace configuration available to a wider group of developers the Devfile must be exported and stored in an accessible location. This short section is most appropriate for those with more of an operational responsibility who are interested in using CodeReady Workspaces to reduce the overheads of a VM per remote user.
@@ -218,19 +205,7 @@ Press the yellow button on the top left corner of the workspace to view the pop 
 
 image::codeready-workspaces-13.png[Workspace Devfile]
 
-The Devfile content could then easily be copied for sharing with teh rest of your development team. The best way to do this (not performed in the workshop) is to store the contents of the Devfile in a yaml file in the root of a github project. in this manner the file may be version controlled and released to the team as required to make changes to the development environments. 
-
-Ensure that you stop this workspace since you can only run one at a time.
-
-To test out the creation of a workspace from a yaml file use the github project at : https://github.com/marrober/crw-cpp-dev-file-example.git. Open this link in a browser and have a look at the yaml file within it. 
-
-Back in CodeReady Workspaces, click on the word 'Workspaces' in the top left of the image above to go back to a list of workspaces. 
-
-Click on the blue 'Add Workspace' button and select the 'IMPORT DEVFILE' tab at the top of the screen.
-
-Select the option for URL and paste the above github location into the URL link further down the screen. The content will be validated and the 'CREATE & OPEN' button will turn green if the validation passes. Press this button to create the workspace from the shared Devfile.
-
-After taking a look at the new workspace you will have completed the chapter. Please remove the workspaces by press the yellow button on the top left corner of the workspace to view the pop out menu on the left hand side and select the workspaces option. Then select each workspace in turn and select the red delete button on the overview tab.
+The Devfile content could then easily be copied for sharing with the rest of your development team. The best way to do this (not performed in the workshop) is to store the contents of the Devfile in a yaml file in the root of a github project. in this manner the file may be version controlled and released to the team as required to make changes to the development environments. 
 
 === Summary
 
