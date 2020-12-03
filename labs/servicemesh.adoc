@@ -134,14 +134,9 @@ gateway.networking.istio.io/layer1-gateway   63s
 
 === Service mesh visualisation with Kiali
 
-Red Hat Service mesh includes a component called Kiali which provides a visualization of the components of the mesh to assist in monitoring and managing the communication processes within a micro-service based application. To find the URL for the Kiali web application enter the command :
+Red Hat Service mesh includes a component called Kiali which provides a visualization of the components of the mesh to assist in monitoring and managing the communication processes within a micro-service based application. To access Kiali go to the web user interface for OpenShift and select the developer mode of view on the left hand side. Select the topology view and locate the 'kiali' link on the right hand side as shown below :
 
-[source]
-----
-echo "kiali-istio-system."$(oc whoami --show-console=true | cut -d'.' -f2-7)
-----
-
-This command will create the URL for the Kiali system in use within the cluster. Open this URL in a new browser tab.
+image::service-mesh-03a.png[Kiali user interface link]
 
 Press the blue 'Log In With OpenShift' button to authenticate with your OpenShift credentials. You will then see a box labelled with your service-mesh-{{USER_ID}} project as shown below :
 
