@@ -98,7 +98,7 @@ Camel K has detected that OpenShift Serverless is installed and automatically de
 
 TIP:: The next set of instructions will only be possible if Knative Serving hasn't already scaled the pod back to zero. If you do not see any running pods then please move on to the section title "Knative in action"  
 
-To view the logs for the integration, click any where inside the "dotted lines"
+To view the logs for the integration, click any where inside the inner squares "dotted lines"
 
 image::camekknativeserving-2.png[Viewing overview of running Integration]
 
@@ -107,16 +107,6 @@ Click on 'View Logs'
 You should see a screen similar to the one below
 
 image::camekknativeserving-3.png[Running Pod]
-
-Click on the row name e.g. greetings-xxxxxxxxxxxx
-
-This should show you a screen similar to the one below
-
-image::camekknativeserving-4.png[Pod Details]
-
-Click on 'Logs' to view the log for the pod. It should look something like the one below
-
-image::camekknativeserving-5.png[Pod Details]
 
 === Knative in action
 
@@ -145,7 +135,7 @@ In the terminal window type (make sure you substitute the URL you see from runni
 curl -m 60 URLFROMABOVE/camel/greetings/YOURNAMEHERE
 ----
 
-After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing.
+After a few seconds you should get a response, and the topology view should now look similar to the picture below. The dark blue circle indicates that the service is now executing (if you switch back to toplogy view quickly you should see the Integration starting - indicated by a light blue ring)
 
 image::camekknativeserving-7.png[Knative serving started]
 
