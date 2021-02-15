@@ -46,7 +46,7 @@ In the terminal window, switch to the new project with this command
 
 [source]
 ----
-oc project eventing-{{USER_ID}}
+oc project sandbox{{USER_ID}}
 ----
 
 Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
