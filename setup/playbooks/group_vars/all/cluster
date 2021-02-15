@@ -1,20 +1,20 @@
 # Please provide the URL for your RHPDS Openshift. 
 # Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
-ocp_url: https://api.cluster-74bc.74bc.example.opentlc.com:6443
+ocp_url: 
 
 
 # Please provide an Openshift login token.
 # Either type on the command line "oc whoami -t" to get a token or
 # use the Openshift Console to get one. 
-ocp_login_token: sha256~WqcR42y-havLHCJS5T0uOD29W5tGZgOWBKChEZhDfGM
+ocp_login_token: 
 
 # OpenShift console URL
 # e.g. https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
-OPENSHIFT_CONSOLE_URL: https://console-openshift-console.apps.cluster-74bc.74bc.example.opentlc.com/
+OPENSHIFT_CONSOLE_URL: 
 
 # name of the project for the username-distribution and documentation apps
 project_name: devex
 
 # Please provide the cluster identifier for personalised route URLs.
 # e.g. aec4 in https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
-ROUTE_URL: aec4
+ROUTE_URL:
