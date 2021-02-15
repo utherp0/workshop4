@@ -32,9 +32,11 @@ If the response from the commands indicates that you are not {{USER_ID}} please 
 
 Log on to cluster as {{USER_ID}}, password openshift
 
-Ensure you are on the Administrator View (top level, select Administrator)
+Ensure you are on the Developer View (top level, select Developer)
 
-Click on 'Create Project'
+Click on the drop down box next to 'Project: sandbox-user1' (see screen shot)
+
+image::camekknative-1a.png[align="center"]
 
 Name - ‘eventing-{{USER_ID}}’
 
@@ -45,6 +47,7 @@ In the terminal window, switch to the new project with this command
 [source]
 ----
 oc project eventing-{{USER_ID}}
+----
 
 Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
 
@@ -894,6 +897,5 @@ Delete Knative Eventing Kafka dispatcher
 oc delete deployment kafka-ch-dispatcher
 ----
 
-////
 
 
