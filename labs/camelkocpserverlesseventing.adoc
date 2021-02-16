@@ -32,11 +32,13 @@ If the response from the commands indicates that you are not {{USER_ID}} please 
 
 Log on to cluster as {{USER_ID}}, password openshift
 
-Ensure you are on the Administrator View (top level, select Administrator)
+Ensure you are on the Developer View (top level, select Developer)
 
-Click on 'Create Project'
+Click on the drop down box next to 'Project: sandbox-user1' (see screen shot)
 
-Name - ‘eventing-{{USER_ID}}’
+image::camekknative-1a.png[align="center"]
+
+Name - ‘sandbox{{USER_ID}}’
 
 Display Name and Description - doesn't matter
 
@@ -44,7 +46,8 @@ In the terminal window, switch to the new project with this command
 
 [source]
 ----
-oc project eventing-{{USER_ID}}
+oc project sandbox{{USER_ID}}
+----
 
 Whilst OpenShift Serverless has it's own cli (kn), the purpose of this lab is to show the integration of Camel K into OpenShift Serverless and how easy this is to use. 
 
@@ -93,6 +96,64 @@ OpenShift Serverless uses Knative eventing. Knative eventing is a loosely couple
 By default, Knative uses an in-memory messaging channel. In this lab we will configure two of these channels to use with Camel K
 
 Options are also available to replace in-memory messaging with other event sources such as the Kafka Channel. By combining Camel K and Red Hat AMQ Streams (Red Hat's Kafka Implementation) on OpenShift you create a powerful and reliable cloud native eventing platform for your applications.
+
+A recent change to the Knative channels mean that the Messaging Channel kind has changed.
+
+Before continuing to to add the channels you need to edit both files, since writing, the CRD's have move from an alpha version to a released version.
+Need to change alphav1 to v1.
+
+Please edit both channel yaml files
+
+[source]
+----
+cd /workspace/examples/knative
+
+vi messages-channel.yaml
+
+change the line that says :-
+
+apiVersion: messaging.knative.dev/v1alpha1
+
+to 
+
+apiVersion: messaging.knative.dev/v1
+
+save the file
+----
+[source]
+----
+cd /workspace/examples/knative
+
+vi words-channel.yaml
+
+change the line that says :-
+
+apiVersion: messaging.knative.dev/v1alpha1
+
+to 
+
+apiVersion: messaging.knative.dev/v1
+
+save the file
+----
+[source]
+----
+Messages channel should look like 
+
+apiVersion: messaging.knative.dev/v1
+kind: InMemoryChannel
+metadata:
+  name: messages
+----
+[source]
+----
+Words channel should look like 
+
+apiVersion: messaging.knative.dev/v1
+kind: InMemoryChannel
+metadata:
+  name: words
+----
 
 In the browser terminal window type the following:
 
@@ -156,6 +217,8 @@ Now go to the developer view in the OpenShift Console
 Now that all 3 of the Integrations are deployed, the topology view should look like the screenshot below
 
 image::camekknative-5.png[Integrations running]
+
+TIP: The inmemory message channels are represented on the developer view along with the Camel K services that are consuming from them.
 
 TIP: The Knative service is represented  by the name "KSVC" and "REV". You should see 2 of these in the topology view. On each of the Knative Services you will see the Knative "K" logo just to the left of the letters "KSVC". You definitely know that you have a Knative service now.  "KSVC" is the Knative Service defined to OpenShift. The artefact called "REV", is the Knative revision that is current running. Revisions can be used to implement a Canary Release strategy. The diagram shows that 100% of the traffic is routed to the revision shown on the topology view. If you click on one of the "KSVC" on the topology view you will see an option to set the traffic distribution
 
@@ -894,6 +957,5 @@ Delete Knative Eventing Kafka dispatcher
 oc delete deployment kafka-ch-dispatcher
 ----
 
-////
 
 
