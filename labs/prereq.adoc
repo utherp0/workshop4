@@ -14,7 +14,7 @@ As of OpenShift 4.6+ you will see an introduction message similar to the one ben
 
 image::prereq-0.png[Skip the tour]
 
-Select the Administrator view buy clicking on 'Developer' at the top left and selecting Administrator.
+Select the Administrator view by clicking on 'Developer' at the top left and selecting Administrator.
 
 You will be presented with a screen listing the projects, of which there are currently none
 
