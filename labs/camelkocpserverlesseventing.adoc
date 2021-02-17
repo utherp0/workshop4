@@ -374,6 +374,9 @@ To clean up before the next chapter run the following commands in the terminal:
 kamel delete feed
 kamel delete splitter
 kamel delete printer
+
+oc delete inmemorychannel words
+oc delete inmemorychannel messages
 ----
 //// 
  === Replace Knative in-memory messaging with AMQ Streams (Kafka)
