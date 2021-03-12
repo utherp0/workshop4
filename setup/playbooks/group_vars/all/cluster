@@ -15,5 +15,5 @@ OPENSHIFT_CONSOLE_URL:
 project_name: devex
 
 # 4-character cluster identifier
-# e.g. aec4 in http://codeready-crw.apps.cluster-aec4.aec4.example.opentlc.com
+# e.g. aec4 in https://codeready-crw.apps.cluster-aec4.aec4.example.opentlc.com
 ROUTE_URL:
