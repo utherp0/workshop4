@@ -1,6 +1,6 @@
 This playbook will automatically install and configure the prerequisites advanced workshop.
 
-The pre-requisites for running this playbook are an installation of Ansible (2.7.x), and installation after installtion of
+The pre-requisites for running this playbook are an installation of Ansible (2.7.x), and installation after installation of
 Ansible via pip of 'openshift' and 'PyYAML', i.e.
 
 'pip3 install openshift'

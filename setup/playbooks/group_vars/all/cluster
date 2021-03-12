@@ -2,7 +2,6 @@
 # Example URL: https://api.cluster-derby-aec4.derby-aec4.example.opentlc.com:6443
 ocp_url: 
 
-
 # Please provide an Openshift login token.
 # Either type on the command line "oc whoami -t" to get a token or
 # use the Openshift Console to get one. 
@@ -15,6 +14,6 @@ OPENSHIFT_CONSOLE_URL:
 # name of the project for the username-distribution and documentation apps
 project_name: devex
 
-# Please provide the cluster identifier for personalised route URLs.
-# e.g. aec4 in https://console-openshift-console.cluster-derby-aec4.derby-aec4.example.opentlc.com
+# 4-character cluster identifier
+# e.g. aec4 in https://codeready-crw.apps.cluster-aec4.aec4.example.opentlc.com
 ROUTE_URL:
